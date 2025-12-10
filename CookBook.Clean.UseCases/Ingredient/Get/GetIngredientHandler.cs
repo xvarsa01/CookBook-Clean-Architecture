@@ -1,0 +1,23 @@
+﻿using CookBook.Clean.Core.Ingredient;
+using MediatR;
+
+namespace CookBook.Clean.UseCases.Ingredient.Get;
+
+public record GetIngredientResult(IngredientDetailModel Ingredient);
+
+public class GetIngredientHandler(IRepository<IngredientEntity> repository) : IRequestHandler<GetIngredientUseCase, UseCaseResult<GetIngredientResult>>
+{
+    public async Task<UseCaseResult<GetIngredientResult>> Handle(GetIngredientUseCase request, CancellationToken cancellationToken)
+    {
+        var entity = await repository.GetByIdAsync(request.Id);
+        return entity is null
+            ? UseCaseResult<GetIngredientResult>.NotFound("Ingredient not found")
+            : UseCaseResult<GetIngredientResult>.Ok(new GetIngredientResult(
+                new IngredientDetailModel
+                {
+                    Id = entity.Id,
+                    Name = entity.Name,
+                    ImageUrl = entity.ImageUrl,
+                }));
+    }
+}

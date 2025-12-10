@@ -1,0 +1,83 @@
+@host=http://localhost
+@port=5003
+
+@ingredient1id={{$responses['Create first ingredient'].body}}
+@ingredient2id={{$responses['Create second ingredient'].body}}
+
+###
+
+# Gets list of ingredients (initial)
+GET {{host}}:{{port}}/ingredient
+Accept: application/json
+
+### Create first ingredient
+
+# Add a new ingredient
+POST {{host}}:{{port}}/ingredient
+Content-Type: application/json
+
+{
+  "Name": "Test ingredient",
+  "Descripton": "test description",
+  "ImageUrl": ""
+}
+
+### Create second ingredient
+
+# Add a second ingredient with image url
+POST {{host}}:{{port}}/ingredient
+Content-Type: application/json
+
+{
+  "Name": "Test second ingredient",
+  "Descripton": "one more ingredient",
+  "ImageUrl": "some image url"
+}
+
+###
+
+# Gets list of ingredients (after adds)
+GET {{host}}:{{port}}/ingredient
+Accept: application/json
+
+###
+
+# Gets second ingredient by id (uses response variable)
+GET {{host}}:{{port}}/ingredient/{{ingredient2id}}
+Accept: application/json
+
+###
+
+# Update the second ingredient
+PUT {{host}}:{{port}}/ingredient
+Content-Type: application/json
+
+{
+  "Id": "{{ingredient2id}}",
+  "Name": "Updated name123",
+  "Descripton": "updated description",
+  "ImageUrl": "some deffierent image url"
+}
+
+###
+
+# Gets second ingredient by id (after update)
+GET {{host}}:{{port}}/ingredient/{{ingredient2id}}
+Accept: application/json
+
+###
+
+# Deletes second ingredient
+DELETE {{host}}:{{port}}/ingredient/{{ingredient2id}}
+
+###
+
+# Gets deleted second ingredient (should be 404)
+GET {{host}}:{{port}}/ingredient/{{ingredient2id}}
+Accept: application/json
+
+###
+
+# Gets list of ingredients and second should no longer be there
+GET {{host}}:{{port}}/ingredient
+Accept: application/json
