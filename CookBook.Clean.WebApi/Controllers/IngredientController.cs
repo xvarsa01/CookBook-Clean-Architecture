@@ -4,6 +4,7 @@ using CookBook.Clean.UseCases.Ingredient.Delete;
 using CookBook.Clean.UseCases.Ingredient.Get;
 using CookBook.Clean.UseCases.Ingredient.GetList;
 using CookBook.Clean.UseCases.Ingredient.Update;
+using CookBook.Clean.WebApi.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,7 @@ public class IngredientController : ControllerBase
     }
 
     [HttpPost(Name = "CreateIngredient")]
-    public async Task<ActionResult<Guid>> Create(CreateIngredientRequestDto requestDto)
+    public async Task<ActionResult<Guid>> Create(IngredientCreateRequestDto requestDto)
     {
         var result = await _mediator.Send(new CreateIngredientUseCase(requestDto.Name, requestDto.Descripton, requestDto.ImageUrl));
         return Ok(result);
@@ -48,7 +49,7 @@ public class IngredientController : ControllerBase
     }
     
     [HttpPut(Name = "UpdateIngredient")]
-    public async Task<ActionResult<Guid>> Update(UpdateIngredientRequestDto requestDto)
+    public async Task<ActionResult<Guid>> Update(IngredientUpdateRequestDto requestDto)
     {
         var result = await _mediator.Send(new UpdateIngredientUseCase(requestDto.Id, requestDto.Name, requestDto.Descripton, requestDto.ImageUrl));
         return Ok(result);
@@ -64,19 +65,4 @@ public class IngredientController : ControllerBase
         }
         return NotFound(result.Error);
     }
-}
-
-public class CreateIngredientRequestDto
-{
-    public string Name { get; set; } = string.Empty;
-    public string? Descripton { get; set; } = null;
-    public string? ImageUrl { get; set; } = null;
-}
-
-public class UpdateIngredientRequestDto
-{
-    public required Guid Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string? Descripton { get; set; } = null;
-    public string? ImageUrl { get; set; } = null;
 }
