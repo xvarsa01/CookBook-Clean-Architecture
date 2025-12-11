@@ -10,8 +10,4 @@
       <ProjectReference Include="..\CookBook.Clean.Core\CookBook.Clean.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Recipe\" />
-    </ItemGroup>
-
 </Project>
