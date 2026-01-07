@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CookBook.Clean.Infrastructure;
 using CookBook.Clean.UseCases;
 
@@ -15,7 +16,9 @@ builder.Services.AddMediatR(options =>
 {
     options.RegisterServicesFromAssemblyContaining<UseCases>();
 });
-builder.Services.InstallInfraServices();
+
+var options = GetDALOptions();
+builder.Services.InstallInfraServices(options);
 
 builder.Services.AddOpenApi();
 
@@ -36,3 +39,14 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+DbOptions GetDALOptions([CallerFilePath] string sourceFilePath = "")
+{
+    var relativePath = Path.Combine(Path.GetDirectoryName(sourceFilePath)!,"../CookBook.Clean.Infrastructure");
+    DbOptions dalOptions = new()
+    {
+        DatabaseDirectory = Path.GetFullPath(relativePath),
+        DatabaseName = "cookbook.db",
+    };
+    return dalOptions;
+}
