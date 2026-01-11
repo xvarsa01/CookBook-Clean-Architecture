@@ -6,5 +6,5 @@ public record RecipeDetailModel
     public required string Name { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
-    public List<RecipeIngredientModel> Ingredients { get; set; } = new();
+    public List<IngredientInRecipeModel> Ingredients { get; set; } = new();
 }
