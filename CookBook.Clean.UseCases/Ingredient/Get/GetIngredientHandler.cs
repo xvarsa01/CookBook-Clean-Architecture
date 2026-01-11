@@ -10,14 +10,12 @@ public class GetIngredientHandler(IRepository<IngredientEntity> repository) : IR
     public async Task<UseCaseResult<GetIngredientResult>> Handle(GetIngredientUseCase request, CancellationToken cancellationToken)
     {
         var entity = await repository.GetByIdAsync(request.Id);
-        return entity is null
-            ? UseCaseResult<GetIngredientResult>.NotFound("Ingredient not found")
-            : UseCaseResult<GetIngredientResult>.Ok(new GetIngredientResult(
-                new IngredientDetailModel
-                {
-                    Id = entity.Id,
-                    Name = entity.Name,
-                    ImageUrl = entity.ImageUrl,
-                }));
+        if (entity is null)
+        {
+            return UseCaseResult<GetIngredientResult>.NotFound("Ingredient not found");
+        }
+
+        return UseCaseResult<GetIngredientResult>.Ok(new GetIngredientResult(
+            new IngredientDetailModel { Id = entity.Id, Name = entity.Name, ImageUrl = entity.ImageUrl, }));
     }
 }

@@ -10,35 +10,14 @@ public class RecipeEntity(string name, string? description, string? imageUrl) : 
     public string? ImageUrl { get; private set; } = imageUrl;
     public RecipeType Type { get; set; }
     
-    private readonly List<Guid> _ingredientIds = [];
-    public IReadOnlyCollection<Guid> IngredientIds => _ingredientIds.AsReadOnly();
-    
-    private readonly List<RecipeIngredient> _ingredients = [];
-    public IReadOnlyCollection<RecipeIngredient> Ingredients => _ingredients.AsReadOnly();
-    
-    public void AddIngredient(Guid ingredientId)
-    {
-        _ingredientIds.Add(ingredientId);
-    }
 
+    private readonly List<IngredientInRecipeEntity> _ingredients = [];
+    public IReadOnlyCollection<IngredientInRecipeEntity> Ingredients => _ingredients.AsReadOnly();
+    
     public void AddIngredient(Guid ingredientId, decimal amount, MeasurementUnit unit)
     {
-        _ingredients.Add(new RecipeIngredient(Guid.NewGuid(), ingredientId, amount, unit));
-    }
-
-    public void RemoveIngredientAt(int index)
-    {
-        if (index < 0 || index >= _ingredients.Count) return;
-        _ingredients.RemoveAt(index);
-    }
-
-    public void RemoveIngredient(Guid ingredientId, decimal amount, MeasurementUnit unit)
-    {
-        var matchIndex = _ingredients.FindIndex(i => i.IngredientId == ingredientId && i.Amount == amount && i.Unit == unit);
-        if (matchIndex >= 0)
-        {
-            _ingredients.RemoveAt(matchIndex);
-        }
+        var ingredient = new IngredientInRecipeEntity(Guid.NewGuid(), ingredientId, amount, unit);
+        _ingredients.Add(ingredient);
     }
 
     public void RemoveIngredientEntry(Guid entryId)
@@ -68,5 +47,3 @@ public class RecipeEntity(string name, string? description, string? imageUrl) : 
         return this;
     }
 }
-
-public record RecipeIngredient(Guid Id, Guid IngredientId, decimal Amount, MeasurementUnit Unit);

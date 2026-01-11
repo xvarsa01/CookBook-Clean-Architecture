@@ -8,6 +8,6 @@ namespace CookBook.Clean.Infrastructure
     {
         public DbSet<IngredientEntity> Ingredients { get; set; } = null!;
         public DbSet<RecipeEntity> Recipes { get; set; } = null!;
-        public DbSet<RecipeIngredient> IngredientInRecipe { get; set; } = null!;
+        public DbSet<IngredientInRecipeEntity> IngredientInRecipe { get; set; } = null!;
     }
 }

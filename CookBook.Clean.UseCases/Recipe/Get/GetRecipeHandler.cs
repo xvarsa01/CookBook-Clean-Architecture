@@ -10,22 +10,25 @@ public class GetRecipeHandler(IRepository<RecipeEntity> repository) : IRequestHa
     public async Task<UseCaseResult<GetRecipeResult>> Handle(GetRecipeUseCase request, CancellationToken cancellationToken)
     {
         var entity = await repository.GetByIdAsync(request.Id);
-        return entity is null
-            ? UseCaseResult<GetRecipeResult>.NotFound("Recipe not found")
-            : UseCaseResult<GetRecipeResult>.Ok(new GetRecipeResult(
-                new RecipeDetailModel
+        if (entity is null)
+        {
+            return UseCaseResult<GetRecipeResult>.NotFound("Recipe not found");
+        }
+
+        return UseCaseResult<GetRecipeResult>.Ok(new GetRecipeResult(
+            new RecipeDetailModel
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Description = entity.Description,
+                ImageUrl = entity.ImageUrl,
+                Ingredients = entity.Ingredients.Select(i => new RecipeIngredientModel
                 {
-                    Id = entity.Id,
-                    Name = entity.Name,
-                    Description = entity.Description,
-                    ImageUrl = entity.ImageUrl,
-                    Ingredients = entity.Ingredients.Select(i => new RecipeIngredientModel
-                    {
-                        Id = i.Id,
-                        IngredientId = i.IngredientId,
-                        Amount = i.Amount,
-                        Unit = i.Unit
-                    }).ToList(),
-                }));
+                    Id = i.Id,
+                    IngredientId = i.IngredientId,
+                    Amount = i.Amount,
+                    Unit = i.Unit
+                }).ToList(),
+            }));
     }
 }
