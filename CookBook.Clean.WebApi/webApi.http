@@ -1,18 +1,12 @@
 @host=http://localhost
 @port=5003
 
-@ingredient1id={{$responses['Create first ingredient'].body}}
-@ingredient2id={{$responses['Create second ingredient'].body}}
-
 ###
-
 # Gets list of ingredients (initial)
 GET {{host}}:{{port}}/ingredient
 Accept: application/json
 
 ### Create first ingredient
-
-# Add a new ingredient
 POST {{host}}:{{port}}/ingredient
 Content-Type: application/json
 
@@ -21,10 +15,9 @@ Content-Type: application/json
   "Descripton": "test description",
   "ImageUrl": ""
 }
+> {% client.global.set("ingredient1id", response.body); %}
 
 ### Create second ingredient
-
-# Add a second ingredient with image url
 POST {{host}}:{{port}}/ingredient
 Content-Type: application/json
 
@@ -33,21 +26,19 @@ Content-Type: application/json
   "Descripton": "one more ingredient",
   "ImageUrl": "some image url"
 }
+> {% client.global.set("ingredient2id", response.body); %}
 
 ###
-
 # Gets list of ingredients (after adds)
 GET {{host}}:{{port}}/ingredient
 Accept: application/json
 
 ###
-
 # Gets second ingredient by id (uses response variable)
 GET {{host}}:{{port}}/ingredient/{{ingredient2id}}
 Accept: application/json
 
 ###
-
 # Update the second ingredient
 PUT {{host}}:{{port}}/ingredient
 Content-Type: application/json
@@ -60,24 +51,20 @@ Content-Type: application/json
 }
 
 ###
-
 # Gets second ingredient by id (after update)
 GET {{host}}:{{port}}/ingredient/{{ingredient2id}}
 Accept: application/json
 
 ###
-
 # Deletes second ingredient
 DELETE {{host}}:{{port}}/ingredient/{{ingredient2id}}
 
 ###
-
 # Gets deleted second ingredient (should be 404)
 GET {{host}}:{{port}}/ingredient/{{ingredient2id}}
 Accept: application/json
 
 ###
-
 # Gets list of ingredients and second should no longer be there
 GET {{host}}:{{port}}/ingredient
 Accept: application/json

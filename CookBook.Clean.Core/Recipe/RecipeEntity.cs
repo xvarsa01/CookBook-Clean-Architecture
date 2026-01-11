@@ -14,10 +14,12 @@ public class RecipeEntity(string name, string? description, string? imageUrl) : 
     private readonly List<IngredientInRecipeEntity> _ingredients = [];
     public IReadOnlyCollection<IngredientInRecipeEntity> Ingredients => _ingredients.AsReadOnly();
     
-    public void AddIngredient(Guid ingredientId, decimal amount, MeasurementUnit unit)
+    public Guid AddIngredient(Guid ingredientId, decimal amount, MeasurementUnit unit)
     {
-        var ingredient = new IngredientInRecipeEntity(Guid.NewGuid(), ingredientId, amount, unit);
+        var ingredientInRecipeId = Guid.NewGuid();
+        var ingredient = new IngredientInRecipeEntity(ingredientInRecipeId, ingredientId, amount, unit);
         _ingredients.Add(ingredient);
+        return ingredientInRecipeId;
     }
 
     public void RemoveIngredientEntry(Guid entryId)

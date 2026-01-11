@@ -1,0 +1,63 @@
+@host=http://localhost
+@port=5003
+
+### Create first ingredient
+POST {{host}}:{{port}}/ingredient
+Content-Type: application/json
+
+{
+  "Name": "Lemon",
+  "Descripton": "ingrediencia v recepte",
+  "ImageUrl": ""
+}
+> {% client.global.set("ingredient1id", response.body); %}
+
+### Create second ingredient
+POST {{host}}:{{port}}/ingredient
+Content-Type: application/json
+
+{
+  "Name": "Soda",
+  "Descripton": "ingrediencia v recepte",
+  "ImageUrl": "some image url"
+}
+> {% client.global.set("ingredient2id", response.body); %}
+
+### Create recepi
+POST {{host}}:{{port}}/recipe
+Content-Type: application/json
+
+{
+  "name": "Mojito",
+  "description": "letny drink",
+  "imageUrl": "string"
+}
+> {% client.global.set("recipe1id", response.body.value.id); %}
+
+### Add Lemon to Mojito 
+POST {{host}}:{{port}}/recipe/{{recipe1id}}/ingredient
+Content-Type: application/json
+
+{
+  "ingredientId": "{{ingredient1id}}",
+  "amount": 2,
+  "unit": 0
+}
+
+### Add Soda to Mojito 
+POST {{host}}:{{port}}/recipe/{{recipe1id}}/ingredient
+Content-Type: application/json
+
+{
+  "ingredientId": "{{ingredient2id}}",
+  "amount": 300,
+  "unit": 1
+}
+> {% client.global.set("recipe1_ingredient2id", response.body.value.id); %}
+
+### Remove Soda from Mojito 
+DELETE {{host}}:{{port}}/recipe/{{recipe1id}}/ingredient/{{recipe1_ingredient2id}}
+
+### Gets Mojito
+GET {{host}}:{{port}}/recipe/{{recipe1id}}
+Accept: application/json

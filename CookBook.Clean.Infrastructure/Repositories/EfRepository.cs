@@ -54,18 +54,19 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class,
 
     public async Task<Guid?> UpdateAsync(TEntity entity)
     {
-        if (!await ExistsAsync(entity))
+        // Assume entity is already tracked if it was loaded via this DbContext
+        // Only attach if it's not tracked yet.
+        var entry = _dbContext.Entry(entity);
+        if (entry.State == EntityState.Detached)
         {
-            return null;
+            // Attach but do NOT immediately mark as Modified; let individual properties/collections be tracked.
+            _dbContext.Set<TEntity>().Attach(entity);
         }
 
-        _dbContext.Set<TEntity>().Attach(entity);
-        var updatedEntity = _dbContext.Set<TEntity>().Update(entity);
         await SaveChangesAsync();
-
-        return updatedEntity.Entity.Id;
+        return entity.Id;
     }
-
+    
     public async ValueTask<bool> ExistsAsync(TEntity entity)
     {
         return entity.Id != Guid.Empty && await _dbSet.AnyAsync(e => e.Id == entity.Id);

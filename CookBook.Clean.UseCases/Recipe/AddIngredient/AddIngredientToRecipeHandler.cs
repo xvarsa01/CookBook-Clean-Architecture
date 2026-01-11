@@ -4,7 +4,7 @@ using MediatR;
 
 namespace CookBook.Clean.UseCases.Recipe.AddIngredient;
 
-public record AddIngredientToRecipeResult;
+public record AddIngredientToRecipeResult(Guid Id);
 
 public class AddIngredientToRecipeHandler(
     IRepository<RecipeEntity> recipeRepository,
@@ -25,9 +25,9 @@ public class AddIngredientToRecipeHandler(
             return UseCaseResult<AddIngredientToRecipeResult>.NotFound("Ingredient not found");
         }
 
-        recipe.AddIngredient(request.IngredientId, request.Amount, request.Unit);
+        var id = recipe.AddIngredient(request.IngredientId, request.Amount, request.Unit);
         await recipeRepository.UpdateAsync(recipe);
 
-        return UseCaseResult<AddIngredientToRecipeResult>.Ok(new AddIngredientToRecipeResult());
+        return UseCaseResult<AddIngredientToRecipeResult>.Ok(new AddIngredientToRecipeResult(id));
     }
 }
