@@ -5,6 +5,7 @@ using CookBook.Clean.UseCases.Ingredient.Get;
 using CookBook.Clean.UseCases.Ingredient.GetList;
 using CookBook.Clean.UseCases.Ingredient.Update;
 using CookBook.Clean.UseCases.Ingredient.Delete;
+using MediatR;
 using Moq;
 
 namespace CookBook.Clean.UnitTests.UseCases.Ingredients;
@@ -28,7 +29,7 @@ public class IngredientUnitTests
 
         // Assert
         Assert.Equal(expectedId, result);
-        mockedRepo.Verify(r => r.InsertAsync(It.Is<IngredientEntity>(e => e.Name == "Sugar" && e.ImageUrl == "http://img123")), Times.Once);
+        mockedRepo.Verify(r => r.InsertAsync(It.Is<IngredientEntity>(e => e.Name == "Sugar" && e.ImageUrl == "http://img")), Times.Once);
     }
 
     [Fact]
@@ -92,7 +93,9 @@ public class IngredientUnitTests
         var repoMock = new Mock<IRepository<IngredientEntity>>();
         repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((IngredientEntity?)null);
 
-        var handler = new UpdateIngredientHandler(repoMock.Object);
+        var publisherMock = new Mock<IPublisher>();
+
+        var handler = new UpdateIngredientHandler(repoMock.Object, publisherMock.Object);
         var useCase = new UpdateIngredientUseCase(Guid.NewGuid(), "New", null, null);
 
         var result = await handler.Handle(useCase, CancellationToken.None);
@@ -111,13 +114,16 @@ public class IngredientUnitTests
         repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
         repoMock.Setup(r => r.UpdateAsync(It.IsAny<IngredientEntity>())).ReturnsAsync(id);
 
-        var handler = new UpdateIngredientHandler(repoMock.Object);
+        var publisherMock = new Mock<IPublisher>();
+
+        var handler = new UpdateIngredientHandler(repoMock.Object, publisherMock.Object);
         var useCase = new UpdateIngredientUseCase(id, "New", "NewDesc", "NewImg");
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
         Assert.True(result.Success);
         repoMock.Verify(r => r.UpdateAsync(It.Is<IngredientEntity>(e => e.Name == "New" && e.Description == "NewDesc" && e.ImageUrl == "NewImg")), Times.Once);
+        publisherMock.Verify(p => p.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -127,12 +133,15 @@ public class IngredientUnitTests
         var repoMock = new Mock<IRepository<IngredientEntity>>();
         repoMock.Setup(r => r.DeleteAsync(id)).Returns(Task.CompletedTask);
 
-        var handler = new DeleteIngredientHandler(repoMock.Object);
+        var publisherMock = new Mock<IPublisher>();
+
+        var handler = new DeleteIngredientHandler(repoMock.Object, publisherMock.Object);
         var useCase = new DeleteIngredientUseCase(id);
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
         Assert.True(result.Success);
         repoMock.Verify(r => r.DeleteAsync(id), Times.Once);
+        publisherMock.Verify(p => p.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 }

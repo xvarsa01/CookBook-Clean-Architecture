@@ -1,11 +1,13 @@
 ﻿using CookBook.Clean.Core.Ingredient;
+using CookBook.Clean.Core.Ingredient.Events;
 using MediatR;
 
 namespace CookBook.Clean.UseCases.Ingredient.Update;
 
 public record UpdateIngredientResult;
 
-public class UpdateIngredientHandler(IRepository<IngredientEntity> repository) : IRequestHandler<UpdateIngredientUseCase, UseCaseResult<UpdateIngredientResult>>
+public class UpdateIngredientHandler(IRepository<IngredientEntity> repository, IPublisher publisher)
+    : IRequestHandler<UpdateIngredientUseCase, UseCaseResult<UpdateIngredientResult>>
 {
     public async Task<UseCaseResult<UpdateIngredientResult>> Handle(UpdateIngredientUseCase request, CancellationToken cancellationToken)
     {
@@ -31,6 +33,8 @@ public class UpdateIngredientHandler(IRepository<IngredientEntity> repository) :
         }
         
         await repository.UpdateAsync(existingIngredient);
+
+        await publisher.Publish(new IngredientUpdatedEvent(existingIngredient), cancellationToken);
 
         return UseCaseResult<UpdateIngredientResult>.Ok(new UpdateIngredientResult());
     }
