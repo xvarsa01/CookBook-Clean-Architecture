@@ -61,3 +61,7 @@ DELETE {{host}}:{{port}}/recipe/{{recipe1id}}/ingredient/{{recipe1_ingredient2id
 ### Gets Mojito
 GET {{host}}:{{port}}/recipe/{{recipe1id}}
 Accept: application/json
+
+### Removes Mojito with all ingredients in Mojito
+DELETE {{host}}:{{port}}/recipe/{{recipe1id}}
+Accept: application/json
