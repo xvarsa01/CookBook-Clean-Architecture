@@ -14,7 +14,8 @@ public class GetListRecipeHandler(IRepository<RecipeEntity> repository) : IReque
         {
             Id = r.Id,
             Name = r.Name,
-            ImageUrl = r.ImageUrl
+            RecipeType = r.Type,
+            ImageUrl = r.ImageUrl,
         }).ToList();
         return UseCaseResult<GetListRecipeResult>.Ok(new GetListRecipeResult(list));
     }

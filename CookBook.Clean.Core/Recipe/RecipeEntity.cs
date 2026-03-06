@@ -16,6 +16,9 @@ public class RecipeEntity(string name, string? description, string? imageUrl) : 
     
     public Guid AddIngredient(Guid ingredientId, decimal amount, MeasurementUnit unit)
     {
+        if (amount <= 0)
+            throw new ArgumentException("Amount must be positive");
+        
         var ingredientInRecipeId = Guid.NewGuid();
         var ingredient = new IngredientInRecipeEntity(ingredientInRecipeId, ingredientId, amount, unit);
         _ingredients.Add(ingredient);
@@ -26,6 +29,19 @@ public class RecipeEntity(string name, string? description, string? imageUrl) : 
     {
         var idx = _ingredients.FindIndex(i => i.Id == entryId);
         if (idx >= 0) _ingredients.RemoveAt(idx);
+    }
+
+    public void UpdateIngredientEntry(Guid entryId, decimal newAmount, MeasurementUnit newUnit)
+    {
+        if (newAmount <= 0)
+            throw new ArgumentException  ("Amount must be positive");
+        
+        var ingredient = _ingredients.FirstOrDefault(i => i.Id == entryId);
+
+        if (ingredient is null)
+            throw new InvalidOperationException($"Ingredient entry {entryId} not found.");
+
+        ingredient.Update(newAmount, newUnit);
     }
 
     public RecipeEntity UpdateName(string newName)

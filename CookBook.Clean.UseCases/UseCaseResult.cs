@@ -15,4 +15,5 @@ public class UseCaseResult<T>
 
     public static UseCaseResult<T> Ok(T value) => new(true, value, null);
     public static UseCaseResult<T> NotFound(string message) => new(false, default, message);
+    public static UseCaseResult<T> Invalid(string message) => new(false, default, message);
 }

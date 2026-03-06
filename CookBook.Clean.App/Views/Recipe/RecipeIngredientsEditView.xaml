@@ -8,7 +8,6 @@
              xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
              xmlns:texts="clr-namespace:CookBook.Clean.App.Resources.Texts"
              xmlns:viewModels="clr-namespace:CookBook.Clean.App.ViewModels"
-             xmlns:ingredient="clr-namespace:CookBook.Clean.UseCases.Ingredient;assembly=CookBook.Clean.UseCases"
              x:Class="CookBook.Clean.App.Views.Recipe.RecipeIngredientsEditView"
              Title="{xaml:Static texts:RecipeIngredientsEditViewTexts.Page_Title}"
              Style="{StaticResource ContentPageStyle}"
@@ -75,7 +74,7 @@
                         <Border Grid.Column="0"
                                 Margin="5, 5, 20, 5"
                                 Style="{StaticResource ImageBorderStyle}">
-                            <Image Source="{Binding IngredientImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
+                            <Image Source="{Binding ImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
                                    WidthRequest="60" HeightRequest="60"
                                    Aspect="AspectFill" />
                         </Border>
@@ -86,7 +85,7 @@
                             <Entry.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="Unfocused"
                                                                   Command="{Binding Source={x:Reference RecipeIngredientsEditViewRoot}, Path=BindingContext.UpdateIngredientCommand}"
-                                                                  CommandParameter="{Binding .}" />
+                                                                  CommandParameter="{Binding Id}" />
                             </Entry.Behaviors>
                         </Entry>
 
@@ -98,13 +97,13 @@
                             <Picker.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged"
                                                                   Command="{Binding Source={x:Reference RecipeIngredientsEditViewRoot}, Path=BindingContext.UpdateIngredientCommand}"
-                                                                  CommandParameter="{Binding .}" />
+                                                                  CommandParameter="{Binding Id}" />
                             </Picker.Behaviors>
                         </Picker>
 
                         <Label Grid.Column="3"
                                VerticalOptions="Center"
-                               Text="{Binding IngredientName}" />
+                               Text="{Binding Name}" />
 
                         <Button Grid.Column="4"
                                 HorizontalOptions="Start" VerticalOptions="Center"

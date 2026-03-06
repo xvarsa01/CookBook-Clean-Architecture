@@ -12,7 +12,7 @@
                        x:Name="RecipeListViewRoot"
                        Style="{StaticResource ContentPageStyle}">
     <Grid>
-        <Grid HorizontalOptions="FillAndExpand"
+        <Grid HorizontalOptions="Fill"
               RowDefinitions="Auto, *"
               RowSpacing="20"
               Margin="{OnIdiom Phone='10, 0'}">
@@ -21,7 +21,7 @@
                    Text="{x:Static t:RecipeListViewTexts.Title_Label}" />
 
             <CollectionView Grid.Row="1" ItemsSource="{Binding Recipes}"
-                            VerticalOptions="FillAndExpand">
+                            VerticalOptions="Fill">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Horizontal"
                                      HorizontalItemSpacing="10" VerticalItemSpacing="10"
@@ -54,7 +54,7 @@
 
                                 <Border Grid.Row="0"
                                         Margin="22" Padding="6,0"
-                                        BackgroundColor="{Binding FoodType, Converter={StaticResource FoodTypeToColorConverter}}"
+                                        BackgroundColor="{Binding RecipeType, Converter={StaticResource FoodTypeToColorConverter}}"
                                         HorizontalOptions="Start"
                                         VerticalOptions="Start"
                                         HeightRequest="20">
@@ -67,7 +67,7 @@
                                                            Spacing="8">
                                         <Label VerticalOptions="Center"
                                                FontSize="11"
-                                               Text="{Binding FoodType, Converter={StaticResource FoodTypeToStringConverter}}"
+                                               Text="{Binding RecipeType, Converter={StaticResource FoodTypeToStringConverter}}"
                                                TextColor="White" />
                                     </HorizontalStackLayout>
                                 </Border>

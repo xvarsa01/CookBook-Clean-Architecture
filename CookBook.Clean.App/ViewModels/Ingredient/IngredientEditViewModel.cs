@@ -17,7 +17,7 @@ public partial class IngredientEditViewModel(
     IMessengerService messengerService)
     : ViewModelBase(messengerService)
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.Empty;
 
     [ObservableProperty]
     public partial IngredientDetailModel Ingredient { get; set; } = IngredientDetailModel.Empty;
@@ -26,6 +26,11 @@ public partial class IngredientEditViewModel(
     {
         await base.LoadDataAsync();
 
+        if (Id == Guid.Empty)
+        {
+            return;
+        }
+        
         var result = (await _mediator.Send(new GetIngredientUseCase(Id)));
         if (result.Success && result.Value is not null)
         {

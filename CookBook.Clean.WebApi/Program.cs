@@ -12,13 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddMediatR(options =>
-{
-    options.RegisterServicesFromAssemblyContaining<UseCases>();
-});
-
 var options = GetDALOptions();
-builder.Services.InstallInfraServices(options);
+builder.Services.AddUseCasesServices()
+                .InstallInfraServices(options);
 
 builder.Services.AddOpenApi();
 

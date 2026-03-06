@@ -5,11 +5,11 @@ using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services.Interfaces;
 using CookBook.Clean.Core.Recipe;
 using CookBook.Clean.UseCases.Ingredient;
-using CookBook.Clean.UseCases.Ingredient.Get;
 using CookBook.Clean.UseCases.Ingredient.GetList;
 using CookBook.Clean.UseCases.Recipe;
 using CookBook.Clean.UseCases.Recipe.AddIngredient;
 using CookBook.Clean.UseCases.Recipe.Get;
+using CookBook.Clean.UseCases.Recipe.IngredientUpdate;
 using CookBook.Clean.UseCases.Recipe.RemoveIngredient;
 using MediatR;
 
@@ -23,10 +23,10 @@ public partial class RecipeIngredientsEditViewModel(
 {
     public Guid Id { get; set; }
 
-    public List<Unit> Units { get; set; } = [.. (Unit[])Enum.GetValues(typeof(Unit))];
+    public List<MeasurementUnit> Units { get; set; } = [.. Enum.GetValues<MeasurementUnit>()];
 
     [ObservableProperty]
-    public partial RecipeDetailModel? Recipe { get; set; }
+    public partial RecipeDetailModel Recipe { get; set; } = RecipeDetailModel.Empty;
 
     [ObservableProperty]
     public partial ObservableCollection<IngredientListModel> Ingredients { get; set; } = [];
@@ -46,10 +46,6 @@ public partial class RecipeIngredientsEditViewModel(
         {
             Recipe = recipeResult.Value.Recipe;
         }
-        else
-        {
-            Recipe = RecipeDetailModel.Empty;
-        }
 
         Ingredients.Clear();
         var ingredientsResult = (await _mediator.Send(new GetListIngredientUseCase()));
@@ -68,13 +64,13 @@ public partial class RecipeIngredientsEditViewModel(
     {
         if (IngredientAmountNew is not null
             && IngredientSelected is not null
-            && Recipe is not null)
+            && Recipe.Id != Guid.Empty)
         {
             IngredientAmountNew.IngredientId = IngredientSelected.Id;
             IngredientAmountNew.Name = IngredientSelected.Name;
             IngredientAmountNew.ImageUrl = IngredientSelected.ImageUrl;
 
-            await _mediator.Send(new AddIngredientToRecipeUseCase(Recipe.Id, IngredientAmountNew.Id, IngredientAmountNew.Amount, IngredientAmountNew.Unit));
+            await _mediator.Send(new AddIngredientToRecipeUseCase(Recipe.Id, IngredientAmountNew.IngredientId, IngredientAmountNew.Amount, IngredientAmountNew.Unit));
             Recipe.Ingredients.Add(IngredientAmountNew);
 
             IngredientAmountNew = GetIngredientAmountNew();
@@ -84,14 +80,13 @@ public partial class RecipeIngredientsEditViewModel(
     }
 
     [RelayCommand]
-    private async Task UpdateIngredientAsync(IngredientInRecipeModel? model)
+    private async Task UpdateIngredientAsync(object? model)
     {
-        // TODO
-        // if (model is not null
-        //     && Recipe is not null)
+        // if (Recipe.Id != Guid.Empty
+        //     && model is not null
+        //     && model.Amount > 0)
         // {
-        //     await recipeFacade.UpdateIngredientAsync(Recipe.Id, model);
-        //
+        //     await _mediator.Send(new UpdateIngredientInRecipeUseCase(Recipe.Id, model.Id,  model.Amount, model.Unit));
         //     MessengerService.Send(new RecipeIngredientEditMessage());
         // }
     }
@@ -99,7 +94,7 @@ public partial class RecipeIngredientsEditViewModel(
     [RelayCommand]
     private async Task RemoveIngredientAsync(IngredientInRecipeModel model)
     {
-        if (Recipe is not null)
+        if (Recipe.Id != Guid.Empty)
         {
             await _mediator.Send(new RemoveIngredientFromRecipeUseCase(Recipe.Id, model.Id));
             Recipe.Ingredients.Remove(model);

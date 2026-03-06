@@ -37,10 +37,6 @@ public partial class RecipeEditViewModel(
         {
             Recipe = result.Value.Recipe;
         }
-        else
-        {
-            Recipe = RecipeDetailModel.Empty;
-        }
     }
 
     [RelayCommand]

@@ -1,4 +1,8 @@
-﻿using CommunityToolkit.Maui;
+﻿using System.Runtime.CompilerServices;
+using CommunityToolkit.Maui;
+using CookBook.Clean.App.Services.Interfaces;
+using CookBook.Clean.Infrastructure;
+using CookBook.Clean.UseCases;
 using Microsoft.Extensions.Logging;
 
 namespace CookBook.Clean.App;
@@ -21,6 +25,36 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
-        return builder.Build();
+        var options = GetDALOptions();
+        
+        builder.Services
+            .AddAppServices()
+            .AddUseCasesServices()
+            .InstallInfraServices(options);
+        
+        
+        var app = builder.Build();
+        RegisterRouting(app.Services.GetRequiredService<INavigationService>());
+        
+        return app;
+    }
+    
+    private static void RegisterRouting(INavigationService navigationService)
+    {
+        foreach (var route in navigationService.Routes)
+        {
+            Routing.RegisterRoute(route.Route, route.ViewType);
+        }
+    }
+    
+    private static DbOptions GetDALOptions([CallerFilePath] string sourceFilePath = "")
+    {
+        var relativePath = Path.Combine(Path.GetDirectoryName(sourceFilePath)!,"../CookBook.Clean.Infrastructure");
+        DbOptions dalOptions = new()
+        {
+            DatabaseDirectory = Path.GetFullPath(relativePath),
+            DatabaseName = "cookbook.db",
+        };
+        return dalOptions;
     }
 }

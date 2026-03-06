@@ -9,7 +9,7 @@ public class IngredientDetailModel
     
     public static IngredientDetailModel Empty => new()
     {
-        Id = Guid.NewGuid(),
+        Id = Guid.Empty,
         Name = string.Empty,
         Description = string.Empty,
         ImageUrl =  string.Empty,

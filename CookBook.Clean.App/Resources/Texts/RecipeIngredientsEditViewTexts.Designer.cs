@@ -36,7 +36,7 @@ namespace CookBook.Clean.App.Resources.Texts {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CookBook.App.Resources.Texts.RecipeIngredientsEditViewTexts", typeof(RecipeIngredientsEditViewTexts).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CookBook.Clean.App.Resources.Texts.RecipeIngredientsEditViewTexts", typeof(RecipeIngredientsEditViewTexts).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

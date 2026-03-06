@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CookBook.Clean.Core.Ingredient;
 using CookBook.Clean.Core.Recipe;
 using CookBook.Clean.UseCases.Ingredient;
@@ -28,7 +29,7 @@ public class GetRecipeHandler(IRepository<RecipeEntity> repository, IRepository<
             }
         }
 
-        var ingredientsInRecipeModel = recipe.Ingredients.Select(i =>
+        List<IngredientInRecipeModel> ingredientsInRecipeModel = recipe.Ingredients.Select(i =>
         {
             var ingredient = ingredients.First(x => x.Id == i.IngredientId);
             return new IngredientInRecipeModel
@@ -49,7 +50,7 @@ public class GetRecipeHandler(IRepository<RecipeEntity> repository, IRepository<
                 Name = recipe.Name,
                 Description = recipe.Description,
                 ImageUrl = recipe.ImageUrl,
-                Ingredients = ingredientsInRecipeModel
+                Ingredients = new ObservableCollection<IngredientInRecipeModel>(ingredientsInRecipeModel)
             }));
     }
 }

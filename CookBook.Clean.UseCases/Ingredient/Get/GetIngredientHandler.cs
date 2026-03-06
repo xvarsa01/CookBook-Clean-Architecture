@@ -16,6 +16,6 @@ public class GetIngredientHandler(IRepository<IngredientEntity> repository) : IR
         }
 
         return UseCaseResult<GetIngredientResult>.Ok(new GetIngredientResult(
-            new IngredientDetailModel { Id = entity.Id, Name = entity.Name, ImageUrl = entity.ImageUrl, }));
+            new IngredientDetailModel { Id = entity.Id, Name = entity.Name, Description = entity.Description, ImageUrl = entity.ImageUrl, }));
     }
 }
