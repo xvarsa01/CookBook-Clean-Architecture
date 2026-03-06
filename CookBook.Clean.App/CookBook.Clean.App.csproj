@@ -45,6 +45,8 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -68,9 +70,20 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Maui" Version="14.0.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageReference Include="MediatR" Version="14.1.0" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.31"/>
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.41" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="Resources\Styles\ContentPageStyle.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CookBook.Clean.UseCases\CookBook.Clean.UseCases.csproj" />
     </ItemGroup>
 
 </Project>

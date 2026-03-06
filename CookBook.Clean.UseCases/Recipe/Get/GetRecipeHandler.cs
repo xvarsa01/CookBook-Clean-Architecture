@@ -1,5 +1,6 @@
 using CookBook.Clean.Core.Ingredient;
 using CookBook.Clean.Core.Recipe;
+using CookBook.Clean.UseCases.Ingredient;
 using MediatR;
 
 namespace CookBook.Clean.UseCases.Recipe.Get;

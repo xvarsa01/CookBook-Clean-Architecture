@@ -1,0 +1,18 @@
+﻿using System.Globalization;
+using CommunityToolkit.Maui.Converters;
+using CookBook.Clean.Core.Recipe;
+
+namespace CookBook.Clean.App.Converters;
+
+public class FoodTypeToColorConverter : BaseConverterOneWay<RecipeType, Color>
+{
+    public override Color ConvertFrom(RecipeType value, CultureInfo? culture)
+    {
+        return ((Application.Current?.Resources.TryGetValue($"{value}FoodTypeColor", out var resource) is true)
+                && (resource is Color color))
+                ? color
+                : DefaultConvertReturnValue;
+    }
+
+    public override Color DefaultConvertReturnValue { get; set; } = Colors.Transparent;
+}
