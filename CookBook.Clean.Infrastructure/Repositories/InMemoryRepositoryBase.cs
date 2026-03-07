@@ -2,9 +2,9 @@
 using CookBook.Clean.Core;
 using CookBook.Clean.UseCases;
 
-namespace CookBook.Clean.Infrastructure;
+namespace CookBook.Clean.Infrastructure.Repositories;
 
-public class InMemoryRepository<TEntity> : IRepository<TEntity>
+public class InMemoryRepositoryBase<TEntity> : IRepository<TEntity>
     where TEntity : class, IEntity
 {
     private readonly ConcurrentDictionary<Guid, TEntity> _store = new();

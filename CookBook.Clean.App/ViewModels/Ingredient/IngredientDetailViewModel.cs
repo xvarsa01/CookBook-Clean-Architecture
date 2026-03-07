@@ -41,16 +41,14 @@ public partial class IngredientDetailViewModel(
     {
         if (Ingredient is not null)
         {
-            try
-            {
-                await _mediator.Send(new DeleteIngredientUseCase(Ingredient.Id));
-                MessengerService.Send(new IngredientDeleteMessage());
-                navigationService.SendBackButtonPressed();
-            }
-            catch (InvalidOperationException)
+            var result = await _mediator.Send(new DeleteIngredientUseCase(Ingredient.Id));
+            if (!result.Success)
             {
                 await alertService.DisplayAsync(IngredientDetailViewModelTexts.DeleteError_Alert_Title, IngredientDetailViewModelTexts.DeleteError_Alert_Message);
+                return;
             }
+            MessengerService.Send(new IngredientDeleteMessage());
+            navigationService.SendBackButtonPressed();
         }
     }
 

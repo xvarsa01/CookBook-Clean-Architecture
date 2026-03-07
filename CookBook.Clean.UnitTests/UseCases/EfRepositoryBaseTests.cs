@@ -1,11 +1,12 @@
 using CookBook.Clean.Infrastructure;
+using CookBook.Clean.Infrastructure.Repositories;
 using CookBook.Clean.UnitTests.TestDoubles;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace CookBook.Clean.UnitTests.UseCases;
 
-public class EfRepositoryTests
+public class EfRepositoryBaseTests
 {
     private class TestDbContext : DbContext
     {
@@ -27,7 +28,7 @@ public class EfRepositoryTests
             context.Set<TestEntity>().Add(entity);
             await context.SaveChangesAsync();
 
-            var repo = new EfRepository<TestEntity>(context);
+            var repo = new EfRepositoryBase<TestEntity>(context);
             var found = await repo.GetByIdAsync(entityId);
             Assert.Equal(entity.Id, found?.Id);
 

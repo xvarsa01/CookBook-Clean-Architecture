@@ -1,4 +1,5 @@
 ﻿using CookBook.Clean.Infrastructure.Factories;
+using CookBook.Clean.Infrastructure.Repositories;
 using CookBook.Clean.UseCases;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,11 +12,13 @@ public static class Installer
     {
         if (options.UseInMemoryDb)
         {
-            services.AddSingleton(typeof(IRepository<>), typeof(InMemoryRepository<>));
+            services.AddSingleton(typeof(IRepository<>), typeof(InMemoryRepositoryBase<>));
+            services.AddSingleton<IRecipeRepository, InMemoryRecipeRepository>();
             return services;   
         }
         
-        services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+        services.AddScoped(typeof(IRepository<>), typeof(EfRepositoryBase<>));
+        services.AddScoped<IRecipeRepository, EfRecipeRepository>();
         
         services.AddSingleton<IDbContextFactory<CookBookDbContext>>(_ =>
             new DbContextSqLiteFactory(options.DatabaseFilePath, options.SeedDemoData));

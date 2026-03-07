@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using CookBook.Clean.Core.Ingredient;
+using CookBook.Clean.Core.Recipe;
 using CookBook.Clean.UseCases;
 using CookBook.Clean.UseCases.Ingredient.Create;
 using CookBook.Clean.UseCases.Ingredient.Get;
@@ -139,11 +140,12 @@ public class IngredientUnitTests
     {
         var id = Guid.NewGuid();
         var repoMock = new Mock<IRepository<IngredientEntity>>();
+        var repoMockRecipe = new Mock<IRecipeRepository>();
         repoMock.Setup(r => r.DeleteAsync(id)).Returns(Task.CompletedTask);
 
         var publisherMock = new Mock<IPublisher>();
 
-        var handler = new DeleteIngredientHandler(repoMock.Object, publisherMock.Object);
+        var handler = new DeleteIngredientHandler(repoMock.Object, repoMockRecipe.Object, publisherMock.Object);
         var useCase = new DeleteIngredientUseCase(id);
 
         var result = await handler.Handle(useCase, CancellationToken.None);
