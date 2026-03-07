@@ -1,7 +1,5 @@
-using System.Collections.ObjectModel;
 using CookBook.Clean.Core.Ingredient;
 using CookBook.Clean.Core.Recipe;
-using CookBook.Clean.UseCases.Ingredient;
 using CookBook.Clean.UseCases.Mappers;
 using MediatR;
 
@@ -13,7 +11,7 @@ public class GetRecipeHandler(IRepository<RecipeEntity> repository, IRepository<
 {
     public async Task<UseCaseResult<GetRecipeResult>> Handle(GetRecipeUseCase request, CancellationToken cancellationToken)
     {
-        var recipe = await repository.GetByIdAsync(request.Id);
+        RecipeEntity? recipe = await repository.GetByIdAsync(request.Id);
         if (recipe is null)
         {
             return UseCaseResult<GetRecipeResult>.NotFound("Recipe not found");

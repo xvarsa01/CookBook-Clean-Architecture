@@ -11,9 +11,16 @@ public class DeleteIngredientHandler(IRepository<IngredientEntity> repository, I
 {
     public async Task<UseCaseResult<DeleteIngredientResult>> Handle(DeleteIngredientUseCase request, CancellationToken cancellationToken)
     {
+        var entity = await repository.GetByIdAsync(request.Id);
+        if (entity is null)
+        {
+            return UseCaseResult<DeleteIngredientResult>.NotFound("Ingredient not found");
+        }
+        
         await repository.DeleteAsync(request.Id);
 
-        await publisher.Publish(new IngredientDeletedEvent(request.Id), cancellationToken);
+        var ingredientDeletedEvent = new IngredientDeletedEvent(request.Id);
+        await publisher.Publish(ingredientDeletedEvent, cancellationToken);
 
         return UseCaseResult<DeleteIngredientResult>.Ok(new DeleteIngredientResult());
     }

@@ -10,5 +10,6 @@ public interface IRecipeMapper
     RecipeListModel MapToListModel(RecipeEntity entity);
     IEnumerable<RecipeListModel> MapToListModels(IEnumerable<RecipeEntity> entities);
     RecipeDetailModel MapToDetailModel(RecipeEntity entity, List<IngredientEntity> usedIngredientDetails);
-    RecipeEntity MapToEntity(CreateRecipeUseCase useCase);
+    
+    RecipeEntity MapToEntity(CreateRecipeUseCase request);
 }

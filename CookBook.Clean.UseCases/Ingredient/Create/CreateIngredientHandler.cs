@@ -1,14 +1,17 @@
 ﻿using CookBook.Clean.Core.Ingredient;
+using CookBook.Clean.UseCases.Mappers;
 using MediatR;
 
 namespace CookBook.Clean.UseCases.Ingredient.Create;
 
-public class CreateIngredientHandler(IRepository<IngredientEntity> repository) : IRequestHandler<CreateIngredientUseCase, Guid>
+public record CreateIngredientResult(Guid Id);
+
+public class CreateIngredientHandler(IRepository<IngredientEntity> repository, IIngredientMapper mapper) : IRequestHandler<CreateIngredientUseCase, UseCaseResult<CreateIngredientResult>>
 {
-    public async Task<Guid> Handle(CreateIngredientUseCase request, CancellationToken cancellationToken) 
+    public async Task<UseCaseResult<CreateIngredientResult>> Handle(CreateIngredientUseCase request, CancellationToken cancellationToken) 
     {
-        var newIngredient = new IngredientEntity(request.Name, request.Description, request.ImageUrl);
-        var createdItemId = await repository.InsertAsync(newIngredient);
-        return createdItemId;
+        var newIngredientEntity = mapper.MapToEntity(request);
+        var createdIngredientId = await repository.InsertAsync(newIngredientEntity);
+        return UseCaseResult<CreateIngredientResult>.Ok(new CreateIngredientResult(createdIngredientId));
     }
 }

@@ -6,7 +6,7 @@ using CookBook.Clean.UseCases.Recipe.Create;
 
 namespace CookBook.Clean.UseCases.Mappers;
 
-public class RecipeMapper : IRecipeMapper
+public class ManualRecipeMapper : IRecipeMapper
 {
     public RecipeListModel MapToListModel(RecipeEntity entity)
     {
@@ -62,8 +62,12 @@ public class RecipeMapper : IRecipeMapper
         };
     }
 
-    public RecipeEntity MapToEntity(CreateRecipeUseCase useCase)
+    public RecipeEntity MapToEntity(CreateRecipeUseCase request)
     {
-        return new RecipeEntity(useCase.Name, useCase.Description, useCase.ImageUrl, useCase.RecipeType);
+        return new RecipeEntity(
+            request.Name,
+            request.Description,
+            request.ImageUrl,
+            request.RecipeType);
     }
 }
