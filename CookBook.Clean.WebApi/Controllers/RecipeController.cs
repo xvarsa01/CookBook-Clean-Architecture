@@ -28,7 +28,7 @@ public class RecipeController : ControllerBase
     [HttpPost(Name = "CreateRecipe")]
     public async Task<ActionResult<Guid>> Create(RecipeCreateRequestDto requestDto)
     {
-        var result = await _mediator.Send(new CreateRecipeUseCase(requestDto.Name, requestDto.Description, requestDto.ImageUrl));
+        var result = await _mediator.Send(new CreateRecipeUseCase(requestDto.Name, requestDto.Description, requestDto.ImageUrl, requestDto.Type));
         return Ok(result);
     }
     
@@ -53,7 +53,7 @@ public class RecipeController : ControllerBase
     [HttpPut(Name = "UpdateRecipe")]
     public async Task<ActionResult> Update(RecipeUpdateRequestDto requestDto)
     {
-        var result = await _mediator.Send(new UpdateRecipeUseCase(requestDto.Id, requestDto.Name, requestDto.Descripton, requestDto.ImageUrl));
+        var result = await _mediator.Send(new UpdateRecipeUseCase(requestDto.Id, requestDto.Name, requestDto.Descripton, requestDto.ImageUrl, requestDto.Type));
         return Ok(result);
     }
 

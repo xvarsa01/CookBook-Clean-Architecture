@@ -2,13 +2,13 @@
 
 namespace CookBook.Clean.Core.Recipe;
 
-public class RecipeEntity(string name, string? description, string? imageUrl) : IEntity
+public class RecipeEntity(string name, string? description, string? imageUrl, RecipeType type) : IEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; private set; } = name;
     public string? Description { get; private set; } = description;
     public string? ImageUrl { get; private set; } = imageUrl;
-    public RecipeType Type { get; set; }
+    public RecipeType Type { get; private set; } = type;
     
 
     private readonly List<IngredientInRecipeEntity> _ingredients = [];
@@ -62,6 +62,13 @@ public class RecipeEntity(string name, string? description, string? imageUrl) : 
     {
         if (ImageUrl == newUrl) return this;
         ImageUrl = newUrl;
+        return this;
+    }
+    
+    public RecipeEntity UpdateType(RecipeType newType)
+    {
+        if (Type == newType) return this;
+        Type = newType;
         return this;
     }
 }

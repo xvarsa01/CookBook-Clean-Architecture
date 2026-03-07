@@ -1,3 +1,5 @@
+using CookBook.Clean.Core.Recipe;
+
 namespace CookBook.Clean.WebApi.DTOs;
 
 public class RecipeUpdateRequestDto
@@ -6,4 +8,5 @@ public class RecipeUpdateRequestDto
     public string? Name { get; set; }
     public string? Descripton { get; set; }
     public string? ImageUrl { get; set; }
+    public RecipeType Type { get; set; }
 }

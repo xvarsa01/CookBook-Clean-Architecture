@@ -4,7 +4,7 @@ using MediatR;
 
 namespace CookBook.Clean.UseCases.Recipe.AddIngredient;
 
-public record AddIngredientToRecipeResult(Guid Id);
+public record AddIngredientToRecipeResult(Guid CreatedEntryId);
 
 public class AddIngredientToRecipeHandler(
     IRepository<RecipeEntity> recipeRepository,

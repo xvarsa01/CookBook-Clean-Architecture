@@ -64,31 +64,37 @@ public partial class RecipeIngredientsEditViewModel(
     {
         if (IngredientAmountNew is not null
             && IngredientSelected is not null
-            && Recipe.Id != Guid.Empty)
+            && Recipe.Id != Guid.Empty
+            && IngredientAmountNew.Amount > 0)
         {
             IngredientAmountNew.IngredientId = IngredientSelected.Id;
             IngredientAmountNew.Name = IngredientSelected.Name;
             IngredientAmountNew.ImageUrl = IngredientSelected.ImageUrl;
 
-            await _mediator.Send(new AddIngredientToRecipeUseCase(Recipe.Id, IngredientAmountNew.IngredientId, IngredientAmountNew.Amount, IngredientAmountNew.Unit));
-            Recipe.Ingredients.Add(IngredientAmountNew);
+            var result = await _mediator.Send(new AddIngredientToRecipeUseCase(Recipe.Id, IngredientAmountNew.IngredientId, IngredientAmountNew.Amount, IngredientAmountNew.Unit));
+            if (result.Success && result.Value is not null)
+            {
+                IngredientAmountNew.Id =  result.Value.CreatedEntryId;
+                Recipe.Ingredients.Add(IngredientAmountNew);
 
-            IngredientAmountNew = GetIngredientAmountNew();
+                IngredientAmountNew = GetIngredientAmountNew();
 
-            MessengerService.Send(new RecipeIngredientAddMessage());
+                MessengerService.Send(new RecipeIngredientAddMessage());
+            }
         }
     }
 
     [RelayCommand]
-    private async Task UpdateIngredientAsync(object? model)
+    private async Task UpdateIngredientAsync(IngredientInRecipeModel? model)
     {
-        // if (Recipe.Id != Guid.Empty
-        //     && model is not null
-        //     && model.Amount > 0)
-        // {
-        //     await _mediator.Send(new UpdateIngredientInRecipeUseCase(Recipe.Id, model.Id,  model.Amount, model.Unit));
-        //     MessengerService.Send(new RecipeIngredientEditMessage());
-        // }
+        if (Recipe.Id != Guid.Empty
+            && model is not null
+            && model.Amount > 0
+            && Recipe.Ingredients.Any(i => i.Id == model.Id))
+        {
+            await _mediator.Send(new UpdateIngredientInRecipeUseCase(Recipe.Id, model.Id, model.Amount, model.Unit));
+            MessengerService.Send(new RecipeIngredientEditMessage());
+        }
     }
 
     [RelayCommand]
@@ -108,7 +114,7 @@ public partial class RecipeIngredientsEditViewModel(
         var ingredientFirst = Ingredients.First();
         return new()
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.Empty,
             IngredientId = ingredientFirst.Id,
             Name = ingredientFirst.Name,
             ImageUrl = ingredientFirst.ImageUrl,

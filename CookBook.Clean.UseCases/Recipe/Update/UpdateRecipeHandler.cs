@@ -27,6 +27,10 @@ public class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IReques
         {
             existing.UpdateImageUrl(request.NewImageUrl);
         }
+        if (request.NewType != existing.Type)
+        {
+            existing.UpdateType(request.NewType);
+        }
 
         await repository.UpdateAsync(existing);
         return UseCaseResult<UpdateRecipeResult>.Ok(new UpdateRecipeResult());

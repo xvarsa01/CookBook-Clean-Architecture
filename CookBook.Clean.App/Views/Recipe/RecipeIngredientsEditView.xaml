@@ -81,23 +81,25 @@
 
                         <Entry Grid.Column="1"
                                VerticalOptions="Center"
-                               Text="{Binding Amount}">
+                               Text="{Binding Amount}"
+                               x:Name="AmountEntry">
                             <Entry.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="Unfocused"
                                                                   Command="{Binding Source={x:Reference RecipeIngredientsEditViewRoot}, Path=BindingContext.UpdateIngredientCommand}"
-                                                                  CommandParameter="{Binding Id}" />
+                                                                  CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
                             </Entry.Behaviors>
                         </Entry>
 
                         <Picker Grid.Column="2"
                                 VerticalOptions="Center"
+                                x:Name="UnitPicker"
                                 ItemsSource="{Binding Source={x:Reference RecipeIngredientsEditViewRoot}, Path=BindingContext.Units}"
                                 ItemDisplayBinding="{Binding ., Converter={StaticResource UnitToStringConverter}}"
                                 SelectedItem="{Binding Unit}">
                             <Picker.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged"
                                                                   Command="{Binding Source={x:Reference RecipeIngredientsEditViewRoot}, Path=BindingContext.UpdateIngredientCommand}"
-                                                                  CommandParameter="{Binding Id}" />
+                                                                  CommandParameter="{Binding Source={x:Reference UnitPicker}, Path=BindingContext}" />
                             </Picker.Behaviors>
                         </Picker>
 
