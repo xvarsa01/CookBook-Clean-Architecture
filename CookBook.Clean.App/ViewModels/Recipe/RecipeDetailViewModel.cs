@@ -37,6 +37,7 @@ public partial class RecipeDetailViewModel(
         if (result.Success && result.Value is not null)
         {
             Recipe = result.Value.Recipe;
+            // converted with color not called
         }
     }
 

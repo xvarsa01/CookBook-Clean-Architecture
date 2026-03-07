@@ -43,9 +43,9 @@
 
                     <Label Grid.Row="0" Grid.Column="1"
                            Text="{x:Static t:RecipeEditViewTexts.Duration_Label_Text}" />
-                    <!-- <TimePicker Grid.Row="1" Grid.Column="1" -->
-                    <!--             Time="{Binding Recipe.Duration}" -->
-                    <!--             Format="HH:mm" /> -->
+                    <TimePicker Grid.Row="1" Grid.Column="1"
+                                Time="{Binding Recipe.Duration}"
+                                Format="HH:mm" />
                 </Grid>
 
                 <StackLayout Grid.Row="2"

@@ -2,12 +2,13 @@
 
 namespace CookBook.Clean.Core.Recipe;
 
-public class RecipeEntity(string name, string? description, string? imageUrl, RecipeType type) : IEntity
+public class RecipeEntity(string name, string? description, string? imageUrl, TimeSpan duration, RecipeType type) : IEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; private set; } = name;
     public string? Description { get; private set; } = description;
     public string? ImageUrl { get; private set; } = imageUrl;
+    public TimeSpan Duration { get; private set; } = duration;
     public RecipeType Type { get; private set; } = type;
     
 
@@ -47,6 +48,7 @@ public class RecipeEntity(string name, string? description, string? imageUrl, Re
     public RecipeEntity UpdateName(string newName)
     {
         if (Name == newName) return this;
+        // fire some event?
         Name = newName;
         return this;
     }
@@ -58,17 +60,25 @@ public class RecipeEntity(string name, string? description, string? imageUrl, Re
         return this;
     }
     
-    public RecipeEntity UpdateImageUrl(string newUrl)
+    public RecipeEntity UpdateRest(string? newUrl, TimeSpan? newDuration, RecipeType? newType)
     {
-        if (ImageUrl == newUrl) return this;
-        ImageUrl = newUrl;
+        if (ImageUrl != newUrl)
+        {
+            ImageUrl = newUrl;
+        }
+
+        if (newDuration is not null && Duration != newDuration)
+        {
+            Duration = newDuration.Value;
+        }
+        
+        if (newType is not null && Type != newType)
+        {
+            Type = newType.Value;
+        }
+
         return this;
     }
-    
-    public RecipeEntity UpdateType(RecipeType newType)
-    {
-        if (Type == newType) return this;
-        Type = newType;
-        return this;
-    }
+
+
 }

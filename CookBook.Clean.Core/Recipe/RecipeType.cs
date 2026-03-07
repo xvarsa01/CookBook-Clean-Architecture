@@ -2,6 +2,7 @@
 
 public enum RecipeType
 {
+    None,
     MainDish,
     Soup,
     Desert,

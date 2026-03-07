@@ -63,11 +63,11 @@
                                    FontSize="11"
                                    TextColor="White" />
 
-                            <!-- <Label Grid.Row="1" Grid.Column="1" -->
-                            <!--        HorizontalOptions="Center" VerticalOptions="Start" -->
-                            <!--        Text="{Binding Recipe.Duration, StringFormat='{0} min'}" -->
-                            <!--        FontSize="11" -->
-                            <!--        TextColor="White" /> -->
+                            <Label Grid.Row="1" Grid.Column="1"
+                                   HorizontalOptions="Center" VerticalOptions="Start"
+                                   Text="{Binding Recipe.Duration, StringFormat='{0} min'}"
+                                   FontSize="11"
+                                   TextColor="White" />
 
                             <Label Grid.Row="1" Grid.Column="2"
                                    HorizontalOptions="Center" VerticalOptions="Start"

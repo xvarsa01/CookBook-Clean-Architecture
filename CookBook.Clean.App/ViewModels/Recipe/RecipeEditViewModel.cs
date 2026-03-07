@@ -55,11 +55,11 @@ public partial class RecipeEditViewModel(
     {
         if (Recipe.Id == Guid.Empty)
         {
-            await _mediator.Send(new CreateRecipeUseCase(Recipe.Name, Recipe.Description, Recipe.ImageUrl, Recipe.Type));
+            await _mediator.Send(new CreateRecipeUseCase(Recipe.Name, Recipe.Description, Recipe.ImageUrl, Recipe.Duration, Recipe.Type));
         }
         else
         {
-            await _mediator.Send(new UpdateRecipeUseCase(Recipe.Id, Recipe.Name, Recipe.Description, Recipe.ImageUrl, Recipe.Type));
+            await _mediator.Send(new UpdateRecipeUseCase(Recipe.Id, Recipe.Name, Recipe.Description, Recipe.ImageUrl, Recipe.Duration, Recipe.Type));
         }
 
         MessengerService.Send(new RecipeEditMessage { RecipeId = Recipe.Id});

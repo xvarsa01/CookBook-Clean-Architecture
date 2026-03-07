@@ -9,7 +9,8 @@ public record RecipeDetailModel : ModelBase
     public required string Name { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
-    public RecipeType Type { get; set; }
+    public required TimeSpan Duration { get; set; }
+    public required RecipeType Type { get; set; }
     public ObservableCollection<IngredientInRecipeModel> Ingredients { get; set; } = [];
     
     public static RecipeDetailModel Empty
@@ -18,7 +19,8 @@ public record RecipeDetailModel : ModelBase
             Id = Guid.Empty,
             Name = string.Empty,
             Description = string.Empty,
-            Type = RecipeType.MainDish
+            Duration = TimeSpan.Zero,
+            Type = RecipeType.None,
         };
 
 }
