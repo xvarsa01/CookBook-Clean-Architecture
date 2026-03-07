@@ -79,10 +79,10 @@ public class RecipeController : ControllerBase
         return NotFound(result.Error);
     }
 
-    [HttpDelete("{id:guid}/ingredient/{entryId:guid}", Name = "RemoveIngredientFromRecipe")]
-    public async Task<ActionResult> RemoveIngredient(Guid id, Guid entryId)
+    [HttpDelete("{id:guid}/ingredient", Name = "RemoveIngredientFromRecipe")]
+    public async Task<ActionResult> RemoveIngredient(Guid id, RecipeRemoveIngredientRequestDto requestDto)
     {
-        var result = await _mediator.Send(new RemoveIngredientFromRecipeUseCase(id, entryId));
+        var result = await _mediator.Send(new RemoveIngredientFromRecipeUseCase(id, requestDto.IngredientId));
         if (result.Success)
         {
             return NoContent();
