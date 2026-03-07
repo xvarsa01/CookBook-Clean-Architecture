@@ -1,8 +1,8 @@
 using CookBook.Clean.Core.Recipe;
 
-namespace CookBook.Clean.UseCases.Recipe;
+namespace CookBook.Clean.UseCases.Models;
 
-public record RecipeListModel
+public record RecipeListModel : ModelBase
 {
     public required Guid Id { get; set; }
     public required string Name { get; set; }

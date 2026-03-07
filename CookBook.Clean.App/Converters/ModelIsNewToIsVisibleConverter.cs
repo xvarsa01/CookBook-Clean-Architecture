@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using CommunityToolkit.Maui.Converters;
-using CookBook.Clean.UseCases.Models_MAUI;
+using CookBook.Clean.UseCases.Models;
 
 namespace CookBook.Clean.App.Converters;
 

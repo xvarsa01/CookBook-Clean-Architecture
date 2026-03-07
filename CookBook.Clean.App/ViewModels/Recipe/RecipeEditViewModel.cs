@@ -5,6 +5,7 @@ using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services;
 using CookBook.Clean.App.Services.Interfaces;
 using CookBook.Clean.Core.Recipe;
+using CookBook.Clean.UseCases.Models;
 using CookBook.Clean.UseCases.Recipe;
 using CookBook.Clean.UseCases.Recipe.Create;
 using CookBook.Clean.UseCases.Recipe.Get;

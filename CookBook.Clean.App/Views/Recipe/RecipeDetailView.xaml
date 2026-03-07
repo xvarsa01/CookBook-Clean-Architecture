@@ -7,6 +7,7 @@
                        xmlns:texts="clr-namespace:CookBook.Clean.App.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.Clean.App.ViewModels"
                        xmlns:ingredient="clr-namespace:CookBook.Clean.UseCases.Ingredient;assembly=CookBook.Clean.UseCases"
+                       xmlns:models="clr-namespace:CookBook.Clean.UseCases.Models;assembly=CookBook.Clean.UseCases"
                        x:Class="CookBook.Clean.App.Views.Recipe.RecipeDetailView"
                        Title="{xaml:Static texts:RecipeDetailViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
@@ -91,7 +92,7 @@
                     <CollectionView Grid.Row="5"
                                     ItemsSource="{Binding Recipe.Ingredients}">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="m:IngredientInRecipeModel">
+                            <DataTemplate x:DataType="models:IngredientInRecipeModel">
                                 <HorizontalStackLayout>
                                     <Border Margin="5, 5, 20, 5"
                                             Style="{StaticResource ImageBorderStyle}">

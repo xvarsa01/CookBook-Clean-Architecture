@@ -2,6 +2,7 @@
 using CookBook.Clean.Core.Recipe;
 using CookBook.Clean.UseCases.Ingredient;
 using CookBook.Clean.UseCases.Ingredient.Create;
+using CookBook.Clean.UseCases.Models;
 using CookBook.Clean.UseCases.Recipe;
 using CookBook.Clean.UseCases.Recipe.Create;
 

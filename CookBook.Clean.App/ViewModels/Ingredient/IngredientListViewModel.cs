@@ -10,6 +10,7 @@ using CookBook.Clean.App.Services;
 using CookBook.Clean.App.Services.Interfaces;
 using CookBook.Clean.UseCases.Ingredient;
 using CookBook.Clean.UseCases.Ingredient.GetList;
+using CookBook.Clean.UseCases.Models;
 using MediatR;
 
 namespace CookBook.Clean.App.ViewModels;

@@ -6,6 +6,7 @@ using CookBook.Clean.App.Services.Interfaces;
 using CookBook.Clean.Core.Recipe;
 using CookBook.Clean.UseCases.Ingredient;
 using CookBook.Clean.UseCases.Ingredient.GetList;
+using CookBook.Clean.UseCases.Models;
 using CookBook.Clean.UseCases.Recipe;
 using CookBook.Clean.UseCases.Recipe.AddIngredient;
 using CookBook.Clean.UseCases.Recipe.Get;

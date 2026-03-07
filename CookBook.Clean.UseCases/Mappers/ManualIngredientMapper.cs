@@ -1,6 +1,7 @@
 ﻿using CookBook.Clean.Core.Ingredient;
 using CookBook.Clean.UseCases.Ingredient;
 using CookBook.Clean.UseCases.Ingredient.Create;
+using CookBook.Clean.UseCases.Models;
 
 namespace CookBook.Clean.UseCases.Mappers;
 

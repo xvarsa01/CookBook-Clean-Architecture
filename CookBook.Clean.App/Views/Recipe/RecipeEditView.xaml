@@ -7,6 +7,7 @@
                        xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
                        xmlns:t="clr-namespace:CookBook.Clean.App.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.Clean.App.ViewModels"
+                       xmlns:models="clr-namespace:CookBook.Clean.UseCases.Models;assembly=CookBook.Clean.UseCases"
                        x:Class="CookBook.Clean.App.Views.Recipe.RecipeEditView"
                        Title="{xaml:Static t:RecipeEditViewTexts.Page_Title}"
                        x:DataType="viewModels:RecipeEditViewModel"
@@ -94,7 +95,7 @@
                 <CollectionView ItemsSource="{Binding Recipe.Ingredients}"
                                 HorizontalOptions="End">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="m:IngredientInRecipeModel">
+                        <DataTemplate x:DataType="models:IngredientInRecipeModel">
                             <HorizontalStackLayout>
                                 <Border Margin="5, 5, 20, 5"
                                         Style="{StaticResource ImageBorderStyle}">

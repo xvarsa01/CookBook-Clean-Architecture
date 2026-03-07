@@ -1,6 +1,6 @@
-﻿namespace CookBook.Clean.UseCases.Ingredient;
+﻿namespace CookBook.Clean.UseCases.Models;
 
-public record IngredientListModel
+public record IngredientListModel : ModelBase
 {
     public required Guid Id { get; set; }
     public required string Name { get; set; }

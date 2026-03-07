@@ -1,8 +1,8 @@
 using CookBook.Clean.Core.Recipe;
 
-namespace CookBook.Clean.UseCases.Recipe;
+namespace CookBook.Clean.UseCases.Models;
 
-public record IngredientInRecipeModel
+public record IngredientInRecipeModel : ModelBase
 {
     public required Guid Id { get; set; }
     public required Guid IngredientId { get; set; }

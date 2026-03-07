@@ -1,5 +1,6 @@
 using CookBook.Clean.Core.Recipe;
 using CookBook.Clean.UseCases.Mappers;
+using CookBook.Clean.UseCases.Models;
 using MediatR;
 
 namespace CookBook.Clean.UseCases.Recipe.GetList;

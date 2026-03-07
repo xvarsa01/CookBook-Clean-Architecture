@@ -6,6 +6,7 @@ using CookBook.Clean.UseCases.Ingredient;
 using CookBook.Clean.UseCases.Ingredient.Create;
 using CookBook.Clean.UseCases.Ingredient.Get;
 using CookBook.Clean.UseCases.Ingredient.Update;
+using CookBook.Clean.UseCases.Models;
 using MediatR;
 
 namespace CookBook.Clean.App.ViewModels;

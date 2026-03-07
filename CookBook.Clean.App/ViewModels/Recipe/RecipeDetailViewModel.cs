@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services;
 using CookBook.Clean.App.Services.Interfaces;
+using CookBook.Clean.UseCases.Models;
 using CookBook.Clean.UseCases.Recipe;
 using CookBook.Clean.UseCases.Recipe.Delete;
 using CookBook.Clean.UseCases.Recipe.Get;

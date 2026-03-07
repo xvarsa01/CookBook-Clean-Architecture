@@ -1,11 +1,11 @@
 using System.Collections.ObjectModel;
 using CookBook.Clean.Core.Recipe;
-using CookBook.Clean.UseCases.Models_MAUI;
 
-namespace CookBook.Clean.UseCases.Recipe;
+namespace CookBook.Clean.UseCases.Models;
 
 public record RecipeDetailModel : ModelBase
 {
+    public Guid Id { get; set; }
     public required string Name { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
@@ -20,4 +20,5 @@ public record RecipeDetailModel : ModelBase
             Description = string.Empty,
             Type = RecipeType.MainDish
         };
+
 }

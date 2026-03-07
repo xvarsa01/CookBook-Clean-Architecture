@@ -8,6 +8,7 @@ using CookBook.Clean.App.Services.Interfaces;
 using CookBook.Clean.UseCases.Ingredient;
 using CookBook.Clean.UseCases.Ingredient.Delete;
 using CookBook.Clean.UseCases.Ingredient.Get;
+using CookBook.Clean.UseCases.Models;
 using MediatR;
 
 namespace CookBook.Clean.App.ViewModels;
