@@ -8,7 +8,7 @@ Content-Type: application/json
 {
   "Name": "Lemon",
   "Descripton": "ingrediencia v recepte",
-  "ImageUrl": ""
+  "ImageUrl": "https://www.eatthis.com/wp-content/uploads/sites/4/2020/02/lemons.jpg?quality=82&strip=1&resize=640%2C360"
 }
 > {% client.global.set("ingredient1id", response.body); %}
 
@@ -19,7 +19,7 @@ Content-Type: application/json
 {
   "Name": "Soda",
   "Descripton": "ingrediencia v recepte",
-  "ImageUrl": "some image url"
+  "ImageUrl": "https://www.pngitem.com/pimgs/m/40-406527_cartoon-glass-of-water-png-glass-of-water.png"
 }
 > {% client.global.set("ingredient2id", response.body); %}
 
@@ -30,9 +30,9 @@ Content-Type: application/json
 {
   "name": "Mojito",
   "description": "letny drink",
-  "imageUrl": "string"
+  "imageUrl": "https://www.thespruceeats.com/thmb/bOkzNHNuzGEH2UUAbmFBtTwAy6M=/2539x2539/smart/filters:no_upscale()/homemade-lemonade-2216227-hero-02copy-767d28c1e7cf468db2282d77103d0bf4.jpg"
 }
-> {% client.global.set("recipe1id", response.body.value.id); %}
+> {% client.global.set("recipe1id", response.body.value); %}
 
 ### Add Lemon to Mojito 
 POST {{host}}:{{port}}/recipe/{{recipe1id}}/ingredient
@@ -53,15 +53,20 @@ Content-Type: application/json
   "amount": 300,
   "unit": 1
 }
-> {% client.global.set("recipe1_ingredient2id", response.body.value.id); %}
+> {% client.global.set("recipe1_ingredient2id", response.body.value); %}
 
-### Remove Soda from Mojito 
-DELETE {{host}}:{{port}}/recipe/{{recipe1id}}/ingredient/{{recipe1_ingredient2id}}
+#### Remove Soda from Mojito 
+#DELETE {{host}}:{{port}}/recipe/{{recipe1id}}/ingredient/
+#Content-Type: application/json
+#
+#{
+#  "entryId": "{{recipe1_ingredient2id}}"
+#}
 
 ### Gets Mojito
 GET {{host}}:{{port}}/recipe/{{recipe1id}}
 Accept: application/json
 
-### Removes Mojito with all ingredients in Mojito
-DELETE {{host}}:{{port}}/recipe/{{recipe1id}}
-Accept: application/json
+#### Removes Mojito with all ingredients in Mojito
+#DELETE {{host}}:{{port}}/recipe/{{recipe1id}}
+#Accept: application/json

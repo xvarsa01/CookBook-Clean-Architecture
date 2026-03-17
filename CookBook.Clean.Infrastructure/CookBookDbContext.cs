@@ -17,7 +17,6 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
         modelBuilder.Entity<RecipeEntity>()
             .OwnsMany(r => r.Ingredients, b =>
             {
-                // use shadow foreign key RecipeId to avoid polluting the domain model
                 b.WithOwner().HasForeignKey("RecipeId");
                 b.Property(i => i.Id).ValueGeneratedNever();
                 b.HasKey(i => i.Id);
