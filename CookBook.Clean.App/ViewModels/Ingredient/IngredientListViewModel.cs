@@ -28,7 +28,7 @@ public partial class IngredientListViewModel(
     {
         await base.LoadDataAsync();
 
-        var result = (await _mediator.Send(new GetListIngredientUseCase())).Value?.Ingredients;
+        var result = (await _mediator.Send(new GetListIngredientUseCase())).Value;
         if (result is not null)
         {
             Ingredients = result;

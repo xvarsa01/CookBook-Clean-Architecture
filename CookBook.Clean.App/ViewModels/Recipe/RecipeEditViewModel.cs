@@ -36,7 +36,7 @@ public partial class RecipeEditViewModel(
         var result = (await _mediator.Send(new GetRecipeUseCase(Id)));
         if (result.Success && result.Value is not null)
         {
-            Recipe = result.Value.Recipe;
+            Recipe = result.Value;
         }
     }
 

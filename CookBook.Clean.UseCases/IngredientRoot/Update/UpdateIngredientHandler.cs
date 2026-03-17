@@ -5,17 +5,16 @@ using MediatR;
 
 namespace CookBook.Clean.UseCases.Ingredient.Update;
 
-public record UpdateIngredientResult;
 
 public class UpdateIngredientHandler(IRepository<IngredientEntity> repository, IPublisher publisher)
-    : IRequestHandler<UpdateIngredientUseCase, UseCaseResult<UpdateIngredientResult>>
+    : IRequestHandler<UpdateIngredientUseCase, UseCaseResult<Guid>>
 {
-    public async Task<UseCaseResult<UpdateIngredientResult>> Handle(UpdateIngredientUseCase request, CancellationToken cancellationToken)
+    public async Task<UseCaseResult<Guid>> Handle(UpdateIngredientUseCase request, CancellationToken cancellationToken)
     {
         var existingIngredient = await repository.GetByIdAsync(request.Id);
         if (existingIngredient == null)
         {
-            return UseCaseResult<UpdateIngredientResult>.NotFound("Ingredient not found");
+            return UseCaseResult<Guid>.NotFound("Ingredient not found");
         }
 
         if (request.NewName is not null)
@@ -33,10 +32,14 @@ public class UpdateIngredientHandler(IRepository<IngredientEntity> repository, I
             existingIngredient.UpdateImageUrl(request.NewImageUrl);
         }
         
-        await repository.UpdateAsync(existingIngredient);
+        var id = await repository.UpdateAsync(existingIngredient);
+        if (id is null)
+        {
+            return UseCaseResult<Guid>.Invalid("Update failed");
+        }
 
         await publisher.Publish(new IngredientUpdatedEvent(existingIngredient), cancellationToken);
 
-        return UseCaseResult<UpdateIngredientResult>.Ok(new UpdateIngredientResult());
+        return UseCaseResult<Guid>.Ok(id.Value);
     }
 }

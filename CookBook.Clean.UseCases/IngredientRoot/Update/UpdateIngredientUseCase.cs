@@ -2,7 +2,4 @@
 
 namespace CookBook.Clean.UseCases.Ingredient.Update;
 
-public record UpdateIngredientUseCase(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl) : IRequest<UseCaseResult<UpdateIngredientResult>>
-{
-    
-}
+public record UpdateIngredientUseCase(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl) : IRequest<UseCaseResult<Guid>>;

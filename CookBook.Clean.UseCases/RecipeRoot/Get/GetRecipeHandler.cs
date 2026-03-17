@@ -7,16 +7,14 @@ using MediatR;
 
 namespace CookBook.Clean.UseCases.Recipe.Get;
 
-public record GetRecipeResult(RecipeDetailModel Recipe);
-
-public class GetRecipeHandler(IRepository<RecipeEntity> repository, IRepository<IngredientEntity> ingredientRepository, IRecipeMapper mapper) : IRequestHandler<GetRecipeUseCase, UseCaseResult<GetRecipeResult>>
+public class GetRecipeHandler(IRepository<RecipeEntity> repository, IRepository<IngredientEntity> ingredientRepository, IRecipeMapper mapper) : IRequestHandler<GetRecipeUseCase, UseCaseResult<RecipeDetailModel>>
 {
-    public async Task<UseCaseResult<GetRecipeResult>> Handle(GetRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<UseCaseResult<RecipeDetailModel>> Handle(GetRecipeUseCase request, CancellationToken cancellationToken)
     {
         RecipeEntity? recipe = await repository.GetByIdAsync(request.Id);
         if (recipe is null)
         {
-            return UseCaseResult<GetRecipeResult>.NotFound("Recipe not found");
+            return UseCaseResult<RecipeDetailModel>.NotFound("Recipe not found");
         }
 
         var ingredientIds = recipe.Ingredients.Select(i => i.IngredientId).ToList();
@@ -31,6 +29,6 @@ public class GetRecipeHandler(IRepository<RecipeEntity> repository, IRepository<
         }
 
         var recipeDetailModel = mapper.MapToDetailModel(recipe, usedIngredients);
-        return UseCaseResult<GetRecipeResult>.Ok(new GetRecipeResult(recipeDetailModel));
+        return UseCaseResult<RecipeDetailModel>.Ok(recipeDetailModel);
     }
 }

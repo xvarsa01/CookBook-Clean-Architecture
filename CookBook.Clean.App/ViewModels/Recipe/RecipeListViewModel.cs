@@ -24,7 +24,7 @@ public partial class RecipeListViewModel(
     {
         await base.LoadDataAsync();
 
-        var result = (await _mediator.Send(new GetListRecipeUseCase())).Value?.Recipes;
+        var result = (await _mediator.Send(new GetListRecipeUseCase())).Value;
         if (result is not null)
         {
             Recipes = result;

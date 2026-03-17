@@ -4,16 +4,14 @@ using MediatR;
 
 namespace CookBook.Clean.UseCases.Recipe.Update;
 
-public record UpdateRecipeResult;
-
-public class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IRequestHandler<UpdateRecipeUseCase, UseCaseResult<UpdateRecipeResult>>
+public class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IRequestHandler<UpdateRecipeUseCase, UseCaseResult<Guid>>
 {
-    public async Task<UseCaseResult<UpdateRecipeResult>> Handle(UpdateRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<UseCaseResult<Guid>> Handle(UpdateRecipeUseCase request, CancellationToken cancellationToken)
     {
         var existing = await repository.GetByIdAsync(request.Id);
         if (existing is null)
         {
-            return UseCaseResult<UpdateRecipeResult>.NotFound("Recipe not found");
+            return UseCaseResult<Guid>.NotFound("Recipe not found");
         }
 
         if (request.NewName is not null)
@@ -27,7 +25,12 @@ public class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IReques
         
         existing.UpdateRest(request.NewImageUrl, request.NewDuration , request.NewType);
 
-        await repository.UpdateAsync(existing);
-        return UseCaseResult<UpdateRecipeResult>.Ok(new UpdateRecipeResult());
+        var id = await repository.UpdateAsync(existing);
+        if (id is null)
+        {
+            return UseCaseResult<Guid>.Invalid("Update failed");
+        }
+        
+        return UseCaseResult<Guid>.Ok(id.Value);
     }
 }

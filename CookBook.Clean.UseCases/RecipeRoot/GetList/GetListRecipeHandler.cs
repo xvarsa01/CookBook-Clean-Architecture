@@ -6,16 +6,14 @@ using MediatR;
 
 namespace CookBook.Clean.UseCases.Recipe.GetList;
 
-public record GetListRecipeResult(List<RecipeListModel> Recipes);
-
-public class GetListRecipeHandler(IRepository<RecipeEntity> repository, IRecipeMapper mapper) : IRequestHandler<GetListRecipeUseCase, UseCaseResult<GetListRecipeResult>>
+public class GetListRecipeHandler(IRepository<RecipeEntity> repository, IRecipeMapper mapper) : IRequestHandler<GetListRecipeUseCase, UseCaseResult<List<RecipeListModel>>>
 {
-    public async Task<UseCaseResult<GetListRecipeResult>> Handle(GetListRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<UseCaseResult<List<RecipeListModel>>> Handle(GetListRecipeUseCase request, CancellationToken cancellationToken)
     {
         var recipes = await repository.GetAllAsync();
         
         var listModels = mapper.MapToListModels(recipes).ToList();
         
-        return UseCaseResult<GetListRecipeResult>.Ok(new GetListRecipeResult(listModels));
+        return UseCaseResult<List<RecipeListModel>>.Ok(listModels);
     }
 }

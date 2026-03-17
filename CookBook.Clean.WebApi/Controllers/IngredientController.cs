@@ -4,6 +4,7 @@ using CookBook.Clean.UseCases.Ingredient.Delete;
 using CookBook.Clean.UseCases.Ingredient.Get;
 using CookBook.Clean.UseCases.Ingredient.GetList;
 using CookBook.Clean.UseCases.Ingredient.Update;
+using CookBook.Clean.UseCases.Models;
 using CookBook.Clean.WebApi.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +28,15 @@ public class IngredientController : ControllerBase
     public async Task<ActionResult<Guid>> Create(IngredientCreateRequestDto requestDto)
     {
         var result = await _mediator.Send(new CreateIngredientUseCase(requestDto.Name, requestDto.Descripton, requestDto.ImageUrl));
-        return Ok(result);
+        if (result.Success)
+        {
+            return Ok(result.Value);
+        }
+        return BadRequest(result.Error);
     }
         
-    [HttpGet("{id}")]
-    public async Task<ActionResult> GetById(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<IngredientDetailModel>> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetIngredientUseCase(id));
         if (result.Success)
@@ -42,17 +47,25 @@ public class IngredientController : ControllerBase
     }
     
     [HttpGet(Name = "GetList")]
-    public async Task<ActionResult> GetList()
+    public async Task<ActionResult<IEnumerable<IngredientListModel>>> GetList()
     {
         var result = await _mediator.Send(new GetListIngredientUseCase());
-        return Ok(result);
+        if (result.Success)
+        {
+            return Ok(result.Value);
+        }
+        return BadRequest(result.Error);
     }
     
     [HttpPut(Name = "UpdateIngredient")]
     public async Task<ActionResult<Guid>> Update(IngredientUpdateRequestDto requestDto)
     {
-        var result = await _mediator.Send(new UpdateIngredientUseCase(requestDto.Id, requestDto.Name, requestDto.Descripton, requestDto.ImageUrl));
-        return Ok(result);
+        var result = await _mediator.Send(new UpdateIngredientUseCase(requestDto.Id, requestDto.Name, requestDto.Description, requestDto.ImageUrl));
+        if (result.Success)
+        {
+            return Ok(result.Value);
+        }
+        return BadRequest(result.Error);
     }
     
     [HttpDelete("{id}")]

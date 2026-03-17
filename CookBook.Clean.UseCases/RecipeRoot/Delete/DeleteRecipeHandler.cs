@@ -4,13 +4,12 @@ using MediatR;
 
 namespace CookBook.Clean.UseCases.Recipe.Delete;
 
-public record DeleteRecipeResult;
 
-public class DeleteRecipeHandler(IRepository<RecipeEntity> repository) : IRequestHandler<DeleteRecipeUseCase, UseCaseResult<DeleteRecipeResult>>
+public class DeleteRecipeHandler(IRepository<RecipeEntity> repository) : IRequestHandler<DeleteRecipeUseCase, UseCaseResult>
 {
-    public async Task<UseCaseResult<DeleteRecipeResult>> Handle(DeleteRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<UseCaseResult> Handle(DeleteRecipeUseCase request, CancellationToken cancellationToken)
     {
         await repository.DeleteAsync(request.Id);
-        return UseCaseResult<DeleteRecipeResult>.Ok(new DeleteRecipeResult());
+        return UseCaseResult.Ok();
     }
 }

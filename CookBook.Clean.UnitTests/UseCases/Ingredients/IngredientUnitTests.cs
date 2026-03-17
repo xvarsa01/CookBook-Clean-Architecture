@@ -33,8 +33,7 @@ public class IngredientUnitTests
         var result = await handler.Handle(useCase, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(result.Value);
-        Assert.Equal(expectedId, result.Value.Id);
+        Assert.Equal(expectedId, result.Value);
         repoMock.Verify(r => r.InsertAsync(It.Is<IngredientEntity>(e => e.Name == "Sugar" && e.ImageUrl == "http://img")), Times.Once);
     }
 
@@ -70,8 +69,8 @@ public class IngredientUnitTests
         var result = await handler.Handle(useCase, CancellationToken.None);
 
         Assert.True(result.Success);
-        Assert.Equal(id, result.Value!.Ingredient.Id);
-        Assert.Equal("Salt", result.Value.Ingredient.Name);
+        Assert.Equal(id, result.Value!.Id);
+        Assert.Equal("Salt", result.Value.Name);
     }
 
     [Fact]
@@ -93,7 +92,7 @@ public class IngredientUnitTests
         var result = await handler.Handle(useCase, CancellationToken.None);
 
         Assert.True(result.Success);
-        Assert.Equal(2, result.Value!.Ingredients.Count);
+        Assert.Equal(2, result.Value!.Count);
     }
 
     [Fact]
