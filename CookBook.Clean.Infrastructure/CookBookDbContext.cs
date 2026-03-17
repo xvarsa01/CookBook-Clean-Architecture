@@ -1,5 +1,5 @@
-﻿using CookBook.Clean.Core.Ingredient;
-using CookBook.Clean.Core.Recipe;
+﻿using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.RecipeRoot;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.Clean.Infrastructure;

@@ -1,4 +1,4 @@
-using CookBook.Clean.Core.Recipe;
+using CookBook.Clean.Core.RecipeRoot;
 
 namespace CookBook.Clean.WebApi.DTOs;
 

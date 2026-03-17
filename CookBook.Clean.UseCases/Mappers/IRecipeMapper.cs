@@ -1,5 +1,5 @@
-﻿using CookBook.Clean.Core.Ingredient;
-using CookBook.Clean.Core.Recipe;
+﻿using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.UseCases.Models;
 using CookBook.Clean.UseCases.Recipe;
 using CookBook.Clean.UseCases.Recipe.Create;

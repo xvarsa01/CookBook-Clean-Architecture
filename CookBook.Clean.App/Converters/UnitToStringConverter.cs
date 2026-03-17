@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using CommunityToolkit.Maui.Converters;
 using CookBook.Clean.App.Resources.Texts;
-using CookBook.Clean.Core.Recipe;
+using CookBook.Clean.Core.RecipeRoot;
 using MediatR;
 
 namespace CookBook.Clean.App.Converters;

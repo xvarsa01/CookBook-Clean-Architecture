@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using CookBook.Clean.Core.Ingredient;
-using CookBook.Clean.Core.Recipe;
+using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.UseCases;
+using CookBook.Clean.UseCases.ExternalInterfaces;
 using CookBook.Clean.UseCases.Ingredient.Create;
 using CookBook.Clean.UseCases.Ingredient.Get;
 using CookBook.Clean.UseCases.Ingredient.GetList;

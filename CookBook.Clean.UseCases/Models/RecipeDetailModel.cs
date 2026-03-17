@@ -1,5 +1,5 @@
 using System.Collections.ObjectModel;
-using CookBook.Clean.Core.Recipe;
+using CookBook.Clean.Core.RecipeRoot;
 
 namespace CookBook.Clean.UseCases.Models;
 

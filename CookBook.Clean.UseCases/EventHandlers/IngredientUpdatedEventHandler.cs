@@ -1,4 +1,4 @@
-using CookBook.Clean.Core.Ingredient.Events;
+using CookBook.Clean.Core.IngredientRoot.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

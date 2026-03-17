@@ -1,6 +1,7 @@
 ﻿using CookBook.Clean.Infrastructure.Factories;
 using CookBook.Clean.Infrastructure.Repositories;
 using CookBook.Clean.UseCases;
+using CookBook.Clean.UseCases.ExternalInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +9,7 @@ namespace CookBook.Clean.Infrastructure;
 
 public static class Installer
 {
-    public static IServiceCollection InstallInfraServices(this IServiceCollection services, DbOptions options)
+    public static IServiceCollection AddInfraServices(this IServiceCollection services, DbOptions options)
     {
         if (options.UseInMemoryDb)
         {

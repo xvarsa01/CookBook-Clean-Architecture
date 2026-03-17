@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services.Interfaces;
-using CookBook.Clean.Core.Recipe;
+using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.UseCases.Ingredient;
 using CookBook.Clean.UseCases.Ingredient.GetList;
 using CookBook.Clean.UseCases.Models;

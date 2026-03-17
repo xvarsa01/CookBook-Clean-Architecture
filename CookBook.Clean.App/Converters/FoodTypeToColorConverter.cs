@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using CommunityToolkit.Maui.Converters;
-using CookBook.Clean.Core.Recipe;
+using CookBook.Clean.Core.RecipeRoot;
 
 namespace CookBook.Clean.App.Converters;
 

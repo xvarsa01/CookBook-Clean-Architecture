@@ -30,8 +30,7 @@ public static class MauiProgram
         builder.Services
             .AddAppServices()
             .AddUseCasesServices()
-            .InstallInfraServices(options);
-        
+            .AddInfraServices(options);
         
         var app = builder.Build();
         RegisterRouting(app.Services.GetRequiredService<INavigationService>());

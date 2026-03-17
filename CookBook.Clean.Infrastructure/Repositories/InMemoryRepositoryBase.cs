@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using CookBook.Clean.Core;
 using CookBook.Clean.UseCases;
+using CookBook.Clean.UseCases.ExternalInterfaces;
 
 namespace CookBook.Clean.Infrastructure.Repositories;
 
