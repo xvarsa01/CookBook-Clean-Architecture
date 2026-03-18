@@ -45,7 +45,7 @@ public class IngredientUnitTests
         var mapperMock = new Mock<IIngredientMapper>();
 
         var handler = new GetIngredientHandler(repoMock.Object, mapperMock.Object);
-        var useCase = new GetIngredientUseCase(Guid.NewGuid());
+        var useCase = new GetIngredientQuery(Guid.NewGuid());
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
@@ -64,7 +64,7 @@ public class IngredientUnitTests
         var mapperMock = new Mock<IIngredientMapper>();
 
         var handler = new GetIngredientHandler(repoMock.Object, mapperMock.Object);
-        var useCase = new GetIngredientUseCase(id);
+        var useCase = new GetIngredientQuery(id);
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
@@ -87,7 +87,7 @@ public class IngredientUnitTests
         var mapperMock = new Mock<IIngredientMapper>();
 
         var handler = new GetListIngredientHandler(repoMock.Object, mapperMock.Object);
-        var useCase = new GetListIngredientUseCase();
+        var useCase = new GetListIngredientQuery();
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 

@@ -40,14 +40,14 @@ public partial class RecipeIngredientsEditViewModel(
     {
         await base.LoadDataAsync();
 
-        var recipeResult = (await _mediator.Send(new GetRecipeUseCase(Id)));
+        var recipeResult = (await _mediator.Send(new GetRecipeQuery(Id)));
         if (recipeResult.Success && recipeResult.Value is not null)
         {
             Recipe = recipeResult.Value;
         }
 
         Ingredients.Clear();
-        var ingredientsResult = (await _mediator.Send(new GetListIngredientUseCase()));
+        var ingredientsResult = (await _mediator.Send(new GetListIngredientQuery()));
         if (ingredientsResult.Success && ingredientsResult.Value is not null)
         {
             foreach (var ingredient in ingredientsResult.Value)

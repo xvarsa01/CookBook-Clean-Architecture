@@ -31,7 +31,7 @@ public partial class IngredientEditViewModel(
             return;
         }
         
-        var result = (await _mediator.Send(new GetIngredientUseCase(Id)));
+        var result = (await _mediator.Send(new GetIngredientQuery(Id)));
         if (result.Success && result.Value is not null)
         {
             Ingredient = result.Value;

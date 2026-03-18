@@ -36,7 +36,7 @@ public class RecipeController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<RecipeDetailModel>> GetById(Guid id)
     {
-        var result = await _mediator.Send(new GetRecipeUseCase(id));
+        var result = await _mediator.Send(new GetRecipeQuery(id));
         if (result.Success)
         {
             return Ok(result.Value);
@@ -47,7 +47,7 @@ public class RecipeController : ControllerBase
     [HttpGet(Name = "GetRecipeList")]
     public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetList()
     {
-        var result = await _mediator.Send(new GetListRecipeUseCase());
+        var result = await _mediator.Send(new GetListRecipeQuery());
         if (result.Success)
         {
             return Ok(result.Value);
