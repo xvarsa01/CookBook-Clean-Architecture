@@ -47,9 +47,9 @@ public class IngredientController : ControllerBase
     }
     
     [HttpGet(Name = "GetList")]
-    public async Task<ActionResult<IEnumerable<IngredientListModel>>> GetList()
+    public async Task<ActionResult<IEnumerable<IngredientListModel>>> GetList([FromQuery] PagingOptions paging)
     {
-        var result = await _mediator.Send(new GetListIngredientQuery());
+        var result = await _mediator.Send(new GetListIngredientQuery(paging));
         if (result.Success)
         {
             return Ok(result.Value);

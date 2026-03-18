@@ -1,3 +1,4 @@
+using CookBook.Clean.UseCases;
 using CookBook.Clean.UseCases.Models;
 using CookBook.Clean.UseCases.RecipeRoot.AddIngredient;
 using CookBook.Clean.UseCases.RecipeRoot.Create;
@@ -45,9 +46,9 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet(Name = "GetRecipeList")]
-    public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetList()
+    public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetList([FromQuery] PagingOptions paging)
     {
-        var result = await _mediator.Send(new GetListRecipeQuery());
+        var result = await _mediator.Send(new GetListRecipeQuery(paging));
         if (result.Success)
         {
             return Ok(result.Value);
