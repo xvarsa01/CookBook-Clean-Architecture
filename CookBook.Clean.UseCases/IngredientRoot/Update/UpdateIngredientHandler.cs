@@ -3,7 +3,7 @@ using CookBook.Clean.Core.IngredientRoot.Events;
 using CookBook.Clean.UseCases.ExternalInterfaces;
 using MediatR;
 
-namespace CookBook.Clean.UseCases.Ingredient.Update;
+namespace CookBook.Clean.UseCases.IngredientRoot.Update;
 
 
 public class UpdateIngredientHandler(IRepository<IngredientEntity> repository, IPublisher publisher)

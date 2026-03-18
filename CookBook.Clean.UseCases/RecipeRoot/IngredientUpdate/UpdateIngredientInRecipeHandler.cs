@@ -2,7 +2,7 @@ using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.UseCases.ExternalInterfaces;
 using MediatR;
 
-namespace CookBook.Clean.UseCases.Recipe.IngredientUpdate;
+namespace CookBook.Clean.UseCases.RecipeRoot.IngredientUpdate;
 
 public class UpdateIngredientInRecipeHandler(IRepository<RecipeEntity> recipeRepository) : IRequestHandler<UpdateIngredientInRecipeUseCase, UseCaseResult>
 {

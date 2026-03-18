@@ -5,9 +5,8 @@ using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Resources.Texts;
 using CookBook.Clean.App.Services;
 using CookBook.Clean.App.Services.Interfaces;
-using CookBook.Clean.UseCases.Ingredient;
-using CookBook.Clean.UseCases.Ingredient.Delete;
-using CookBook.Clean.UseCases.Ingredient.Get;
+using CookBook.Clean.UseCases.IngredientRoot.Delete;
+using CookBook.Clean.UseCases.IngredientRoot.Get;
 using CookBook.Clean.UseCases.Models;
 using MediatR;
 

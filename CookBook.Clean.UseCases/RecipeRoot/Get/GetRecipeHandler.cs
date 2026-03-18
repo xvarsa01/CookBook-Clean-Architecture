@@ -5,7 +5,7 @@ using CookBook.Clean.UseCases.Mappers;
 using CookBook.Clean.UseCases.Models;
 using MediatR;
 
-namespace CookBook.Clean.UseCases.Recipe.Get;
+namespace CookBook.Clean.UseCases.RecipeRoot.Get;
 
 public class GetRecipeHandler(IRepository<RecipeEntity> repository, IRepository<IngredientEntity> ingredientRepository, IRecipeMapper mapper) : IRequestHandler<GetRecipeUseCase, UseCaseResult<RecipeDetailModel>>
 {

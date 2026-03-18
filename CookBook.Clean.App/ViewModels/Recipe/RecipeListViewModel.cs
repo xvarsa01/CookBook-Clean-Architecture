@@ -5,8 +5,7 @@ using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services;
 using CookBook.Clean.App.Services.Interfaces;
 using CookBook.Clean.UseCases.Models;
-using CookBook.Clean.UseCases.Recipe;
-using CookBook.Clean.UseCases.Recipe.GetList;
+using CookBook.Clean.UseCases.RecipeRoot.GetList;
 using MediatR;
 
 namespace CookBook.Clean.App.ViewModels;

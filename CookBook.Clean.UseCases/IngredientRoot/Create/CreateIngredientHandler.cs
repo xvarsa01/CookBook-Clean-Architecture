@@ -3,7 +3,7 @@ using CookBook.Clean.UseCases.ExternalInterfaces;
 using CookBook.Clean.UseCases.Mappers;
 using MediatR;
 
-namespace CookBook.Clean.UseCases.Ingredient.Create;
+namespace CookBook.Clean.UseCases.IngredientRoot.Create;
 
 public class CreateIngredientHandler(IRepository<IngredientEntity> repository, IIngredientMapper mapper) : IRequestHandler<CreateIngredientUseCase, UseCaseResult<Guid>>
 {

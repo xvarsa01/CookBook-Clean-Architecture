@@ -2,7 +2,7 @@ using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.UseCases.ExternalInterfaces;
 using MediatR;
 
-namespace CookBook.Clean.UseCases.Recipe.Delete;
+namespace CookBook.Clean.UseCases.RecipeRoot.Delete;
 
 
 public class DeleteRecipeHandler(IRepository<RecipeEntity> repository) : IRequestHandler<DeleteRecipeUseCase, UseCaseResult>

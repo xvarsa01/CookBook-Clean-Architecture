@@ -1,6 +1,6 @@
 using CookBook.Clean.Core.RecipeRoot;
 using MediatR;
 
-namespace CookBook.Clean.UseCases.Recipe.AddIngredient;
+namespace CookBook.Clean.UseCases.RecipeRoot.AddIngredient;
 
 public record AddIngredientToRecipeUseCase(Guid RecipeId, Guid IngredientId, decimal Amount, MeasurementUnit Unit) : IRequest<UseCaseResult<Guid>>;

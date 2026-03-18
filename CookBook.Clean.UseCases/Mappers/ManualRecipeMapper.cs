@@ -2,7 +2,7 @@
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.UseCases.Models;
-using CookBook.Clean.UseCases.Recipe.Create;
+using CookBook.Clean.UseCases.RecipeRoot.Create;
 
 namespace CookBook.Clean.UseCases.Mappers;
 

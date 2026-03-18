@@ -1,15 +1,10 @@
-﻿// Copyright (c) .NET Foundation and contributors. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-//
-
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services;
 using CookBook.Clean.App.Services.Interfaces;
-using CookBook.Clean.UseCases.Ingredient;
-using CookBook.Clean.UseCases.Ingredient.GetList;
+using CookBook.Clean.UseCases.IngredientRoot.GetList;
 using CookBook.Clean.UseCases.Models;
 using MediatR;
 

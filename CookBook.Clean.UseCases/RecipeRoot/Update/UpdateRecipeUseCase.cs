@@ -1,6 +1,6 @@
 using CookBook.Clean.Core.RecipeRoot;
 using MediatR;
 
-namespace CookBook.Clean.UseCases.Recipe.Update;
+namespace CookBook.Clean.UseCases.RecipeRoot.Update;
 
 public record UpdateRecipeUseCase(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl, TimeSpan? NewDuration, RecipeType? NewType) : IRequest<UseCaseResult<Guid>>;

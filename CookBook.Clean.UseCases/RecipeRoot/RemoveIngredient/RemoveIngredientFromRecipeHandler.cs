@@ -2,7 +2,7 @@ using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.UseCases.ExternalInterfaces;
 using MediatR;
 
-namespace CookBook.Clean.UseCases.Recipe.RemoveIngredient;
+namespace CookBook.Clean.UseCases.RecipeRoot.RemoveIngredient;
 
 public class RemoveIngredientFromRecipeHandler(IRepository<RecipeEntity> recipeRepository)
     : IRequestHandler<RemoveIngredientFromRecipeUseCase, UseCaseResult>

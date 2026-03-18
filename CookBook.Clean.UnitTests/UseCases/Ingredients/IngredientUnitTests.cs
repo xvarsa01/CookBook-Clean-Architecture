@@ -2,11 +2,11 @@
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.UseCases;
 using CookBook.Clean.UseCases.ExternalInterfaces;
-using CookBook.Clean.UseCases.Ingredient.Create;
-using CookBook.Clean.UseCases.Ingredient.Get;
-using CookBook.Clean.UseCases.Ingredient.GetList;
-using CookBook.Clean.UseCases.Ingredient.Update;
-using CookBook.Clean.UseCases.Ingredient.Delete;
+using CookBook.Clean.UseCases.IngredientRoot.Create;
+using CookBook.Clean.UseCases.IngredientRoot.Delete;
+using CookBook.Clean.UseCases.IngredientRoot.Get;
+using CookBook.Clean.UseCases.IngredientRoot.GetList;
+using CookBook.Clean.UseCases.IngredientRoot.Update;
 using CookBook.Clean.UseCases.Mappers;
 using MediatR;
 using Moq;

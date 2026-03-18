@@ -3,7 +3,7 @@ using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.UseCases.ExternalInterfaces;
 using MediatR;
 
-namespace CookBook.Clean.UseCases.Recipe.AddIngredient;
+namespace CookBook.Clean.UseCases.RecipeRoot.AddIngredient;
 
 public class AddIngredientToRecipeHandler(
     IRepository<RecipeEntity> recipeRepository,

@@ -3,7 +3,7 @@ using CookBook.Clean.Core.IngredientRoot.Events;
 using CookBook.Clean.UseCases.ExternalInterfaces;
 using MediatR;
 
-namespace CookBook.Clean.UseCases.Ingredient.Delete;
+namespace CookBook.Clean.UseCases.IngredientRoot.Delete;
 
 public class DeleteIngredientHandler(IRepository<IngredientEntity> repository, IRecipeRepository recipeRepository, IPublisher publisher)
     : IRequestHandler<DeleteIngredientUseCase , UseCaseResult>
