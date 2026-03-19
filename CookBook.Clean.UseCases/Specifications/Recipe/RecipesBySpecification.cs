@@ -18,14 +18,16 @@ public class RecipesBySpecification(RecipeFilter filter, PagingOptions? pagingOp
             queryable = queryable.Where(r => r.Type == filter.RecipeType);
         }
 
-        if (filter.MinimalDuration is not null)
+        if (filter.MinimalDuration.HasValue)
         {
-            queryable = queryable.Where(r => r.Duration >= filter.MinimalDuration);
+            var minTimeStr = filter.MinimalDuration.Value.ToString(@"hh\:mm\:ss");
+            queryable = queryable.Where(r => string.Compare(r.Duration.ToString(), minTimeStr) >= 0);       // workaround for sqlite
         }
 
-        if (filter.MaximalDuration is not null)
+        if (filter.MaximalDuration.HasValue)
         {
-            queryable = queryable.Where(r => r.Duration <= filter.MaximalDuration);
+            var maxTimeStr = filter.MaximalDuration.Value.ToString(@"hh\:mm\:ss");
+            queryable = queryable.Where(r => string.Compare(r.Duration.ToString(), maxTimeStr) <= 0);
         }
         
         queryable = filter.SortParameterName?.ToLower() switch
@@ -37,8 +39,8 @@ public class RecipesBySpecification(RecipeFilter filter, PagingOptions? pagingOp
                 ? queryable.OrderBy(r => r.Type)
                 : queryable.OrderByDescending(r => r.Type),
             "duration" => filter.IsSortAscending
-                ? queryable.OrderBy(r => r.Duration)
-                : queryable.OrderByDescending(r => r.Duration),
+                ? queryable.OrderBy(r => r.Duration.ToString())                 // .ToString() is workaround for sqlite
+                : queryable.OrderByDescending(r => r.Duration.ToString()),
             _ => queryable.OrderBy(r => r.Name)
         };
 
