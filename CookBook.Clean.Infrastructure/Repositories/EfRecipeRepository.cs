@@ -1,5 +1,4 @@
 ﻿using CookBook.Clean.Core.RecipeRoot;
-using CookBook.Clean.UseCases;
 using CookBook.Clean.UseCases.ExternalInterfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +11,13 @@ public class EfRecipeRepository : EfRepositoryBase<RecipeEntity>, IRecipeReposit
     public EfRecipeRepository(DbContext dbContext) : base(dbContext)
     {
         _dbSet = dbContext.Set<RecipeEntity>();
+    }
+
+    public override async Task<RecipeEntity?> GetByIdAsync(Guid id)
+    {
+        return await _dbSet
+            .Include(e => e.Ingredients)
+            .SingleOrDefaultAsync(e => e.Id == id);
     }
 
     public async Task<List<RecipeEntity>> GetAllContainingIngredientAsync(Guid ingredientId)

@@ -20,6 +20,10 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
                 b.WithOwner().HasForeignKey("RecipeId");
                 b.Property(i => i.Id).ValueGeneratedNever();
                 b.HasKey(i => i.Id);
+                
+                b.HasOne<IngredientEntity>()
+                    .WithMany()
+                    .HasForeignKey(i => i.IngredientId);
             });
     }
 }

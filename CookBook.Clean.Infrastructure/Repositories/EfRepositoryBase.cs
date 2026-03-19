@@ -29,7 +29,7 @@ public class EfRepositoryBase<TEntity> : IRepository<TEntity> where TEntity : cl
             .ToListAsync();
     }
 
-    public async Task<TEntity?> GetByIdAsync(Guid id)
+    public virtual async Task<TEntity?> GetByIdAsync(Guid id)
     {
         return await _dbSet.SingleOrDefaultAsync(e => e.Id == id);
     }
