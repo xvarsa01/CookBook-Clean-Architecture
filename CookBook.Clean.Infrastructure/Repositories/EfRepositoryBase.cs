@@ -1,6 +1,6 @@
 ﻿using CookBook.Clean.Core;
-using CookBook.Clean.UseCases;
 using CookBook.Clean.UseCases.ExternalInterfaces;
+using CookBook.Clean.UseCases.Specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.Clean.Infrastructure.Repositories;
@@ -18,15 +18,14 @@ public class EfRepositoryBase<TEntity> : IRepository<TEntity> where TEntity : cl
     
     public async Task<List<TEntity>> GetAllAsync()
     {
-        return await GetAllAsync(1, 1000);
+        return await _dbSet.ToListAsync();
     }
-
-    public async Task<List<TEntity>> GetAllAsync(int pageNumber, int pageSize)
+    
+    public async Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification)
     {
-        return await _dbSet
-            .Skip(pageSize * (pageNumber - 1))
-            .Take(pageSize)
-            .ToListAsync();
+        IQueryable<TEntity> queryable = _dbSet.AsQueryable();
+        IQueryable<TEntity> query = specification.UseFilter(queryable);
+        return await query.ToListAsync();
     }
 
     public virtual async Task<TEntity?> GetByIdAsync(Guid id)

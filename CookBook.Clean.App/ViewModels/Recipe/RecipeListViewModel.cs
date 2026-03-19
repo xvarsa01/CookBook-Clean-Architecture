@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services;
 using CookBook.Clean.App.Services.Interfaces;
+using CookBook.Clean.UseCases.Filters;
 using CookBook.Clean.UseCases.Models;
 using CookBook.Clean.UseCases.RecipeRoot.GetList;
 using MediatR;
@@ -23,7 +24,8 @@ public partial class RecipeListViewModel(
     {
         await base.LoadDataAsync();
 
-        var result = (await _mediator.Send(new GetListRecipeQuery())).Value;
+        var filter = new RecipeFilter();
+        var result = (await _mediator.Send(new GetListRecipeQuery(filter))).Value;
         if (result is not null)
         {
             Recipes = result;

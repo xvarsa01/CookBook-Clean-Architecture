@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services.Interfaces;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.UseCases.Filters;
 using CookBook.Clean.UseCases.IngredientRoot.GetList;
 using CookBook.Clean.UseCases.Models;
 using CookBook.Clean.UseCases.RecipeRoot.AddIngredient;
@@ -47,7 +48,9 @@ public partial class RecipeIngredientsEditViewModel(
         }
 
         Ingredients.Clear();
-        var ingredientsResult = (await _mediator.Send(new GetListIngredientQuery()));
+        
+        var filter = new IngredientFilter();
+        var ingredientsResult = (await _mediator.Send(new GetListIngredientQuery(filter)));
         if (ingredientsResult.Success && ingredientsResult.Value is not null)
         {
             foreach (var ingredient in ingredientsResult.Value)

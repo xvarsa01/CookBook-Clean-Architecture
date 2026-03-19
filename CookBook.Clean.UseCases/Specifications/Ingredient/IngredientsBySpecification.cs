@@ -1,0 +1,46 @@
+﻿using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.UseCases.Filters;
+
+namespace CookBook.Clean.UseCases.Specifications.Ingredient;
+
+public class IngredientsBySpecification(IngredientFilter filter, PagingOptions? pagingOptions) : ISpecification<IngredientEntity, IngredientEntity>
+{
+    public IQueryable<IngredientEntity> UseFilter(IQueryable<IngredientEntity> queryable)
+    {
+        if (filter.Name is not null)
+        {
+            queryable = queryable.Where(i => i.Name.Contains(filter.Name));
+        }
+
+        if (filter.HasDescription is not null)
+        {
+            queryable = filter.HasDescription.Value
+                ? queryable.Where(i => i.Description != null)
+                : queryable.Where(i => i.Description == null);
+        }
+
+        if (filter.HasImage is not null)
+        {
+            queryable = filter.HasImage.Value
+                ? queryable.Where(i => i.ImageUrl != null)
+                : queryable.Where(i => i.ImageUrl == null);
+        }
+        
+        queryable = filter.SortParameterName?.ToLower() switch
+        {
+            "name" => filter.IsSortAscending
+                ? queryable.OrderBy(r => r.Name)
+                : queryable.OrderByDescending(r => r.Name),
+            _ => queryable.OrderBy(r => r.Name)
+        };
+        
+        if (pagingOptions is null)
+        {
+            return queryable;
+        }
+
+        return queryable
+            .Skip(pagingOptions.PageSize * pagingOptions.PageIndex)
+            .Take(pagingOptions.PageSize);
+    }
+}

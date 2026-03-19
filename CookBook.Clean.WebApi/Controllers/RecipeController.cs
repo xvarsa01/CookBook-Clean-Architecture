@@ -1,4 +1,5 @@
 using CookBook.Clean.UseCases;
+using CookBook.Clean.UseCases.Filters;
 using CookBook.Clean.UseCases.Models;
 using CookBook.Clean.UseCases.RecipeRoot.AddIngredient;
 using CookBook.Clean.UseCases.RecipeRoot.Create;
@@ -46,9 +47,11 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet(Name = "GetRecipeList")]
-    public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetList([FromQuery] PagingOptions paging)
+    public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetList(
+        [FromQuery] RecipeFilter filter,
+        [FromQuery] PagingOptions paging)
     {
-        var result = await _mediator.Send(new GetListRecipeQuery(paging));
+        var result = await _mediator.Send(new GetListRecipeQuery(filter, paging));
         if (result.Success)
         {
             return Ok(result.Value);

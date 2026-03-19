@@ -1,4 +1,5 @@
 using CookBook.Clean.UseCases;
+using CookBook.Clean.UseCases.Filters;
 using CookBook.Clean.UseCases.IngredientRoot.Create;
 using CookBook.Clean.UseCases.IngredientRoot.Delete;
 using CookBook.Clean.UseCases.IngredientRoot.Get;
@@ -47,9 +48,11 @@ public class IngredientController : ControllerBase
     }
     
     [HttpGet(Name = "GetList")]
-    public async Task<ActionResult<IEnumerable<IngredientListModel>>> GetList([FromQuery] PagingOptions paging)
+    public async Task<ActionResult<IEnumerable<IngredientListModel>>> GetList(
+        [FromQuery] IngredientFilter filter,
+        [FromQuery] PagingOptions paging)
     {
-        var result = await _mediator.Send(new GetListIngredientQuery(paging));
+        var result = await _mediator.Send(new GetListIngredientQuery(filter, paging));
         if (result.Success)
         {
             return Ok(result.Value);
