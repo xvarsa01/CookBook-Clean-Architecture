@@ -28,7 +28,7 @@ public class IngredientController : ControllerBase
     [HttpPost(Name = "CreateIngredient")]
     public async Task<ActionResult<Guid>> Create(IngredientCreateRequestDto requestDto)
     {
-        var result = await _mediator.Send(new CreateIngredientUseCase(requestDto.Name, requestDto.Descripton, requestDto.ImageUrl));
+        var result = await _mediator.Send(new CreateIngredientUseCase(requestDto.Name, requestDto.Description, requestDto.ImageUrl));
         if (result.Success)
         {
             return Ok(result.Value);
