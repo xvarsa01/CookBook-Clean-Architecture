@@ -1,6 +1,6 @@
 ﻿namespace CookBook.Clean.Core.RecipeRoot;
 
-public class RecipeEntity(string name, string? description, string? imageUrl, TimeSpan duration, RecipeType type) : IEntity
+public class RecipeEntity(string name, string? description, string? imageUrl, TimeSpan duration, RecipeType type) : IRootEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; private set; } = name;

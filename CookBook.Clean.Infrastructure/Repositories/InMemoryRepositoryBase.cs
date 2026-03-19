@@ -6,7 +6,7 @@ using CookBook.Clean.UseCases.ExternalInterfaces;
 namespace CookBook.Clean.Infrastructure.Repositories;
 
 public class InMemoryRepositoryBase<TEntity> : IRepository<TEntity>
-    where TEntity : class, IEntity
+    where TEntity : class, IRootEntity
 {
     private readonly ConcurrentDictionary<Guid, TEntity> _store = new();
 

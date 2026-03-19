@@ -3,7 +3,7 @@
 namespace CookBook.Clean.UseCases.ExternalInterfaces;
 
 public interface IRepository<TEntity>
-    where TEntity : class, IEntity
+    where TEntity : class, IRootEntity
 {
     Task<List<TEntity>> GetAllAsync();
     Task<List<TEntity>> GetAllAsync(int pageNumber, int pageSize);
