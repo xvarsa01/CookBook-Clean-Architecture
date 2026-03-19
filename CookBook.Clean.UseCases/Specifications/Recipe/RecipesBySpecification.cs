@@ -10,7 +10,7 @@ public class RecipesBySpecification(RecipeFilter filter, PagingOptions? pagingOp
     {
         if (!string.IsNullOrEmpty(filter.Name))
         {
-            queryable = queryable.Where(r => r.Name.Contains(filter.Name));
+            queryable = queryable.Where(r => r.Name.ToLower().Contains(filter.Name.ToLower()));
         }
 
         if (filter.RecipeType is not null)

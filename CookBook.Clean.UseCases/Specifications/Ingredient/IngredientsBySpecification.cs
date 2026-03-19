@@ -9,7 +9,7 @@ public class IngredientsBySpecification(IngredientFilter filter, PagingOptions? 
     {
         if (filter.Name is not null)
         {
-            queryable = queryable.Where(i => i.Name.Contains(filter.Name));
+            queryable = queryable.Where(i => i.Name.ToLower().Contains(filter.Name.ToLower()));
         }
 
         if (filter.HasDescription is not null)
