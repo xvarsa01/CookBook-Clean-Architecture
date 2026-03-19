@@ -1,7 +1,7 @@
 @host=http://localhost
 @port=5003
 
-### Create first ingredient
+### Create Lemon
 POST {{host}}:{{port}}/ingredient
 Content-Type: application/json
 
@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 > {% client.global.set("ingredient1id", response.body); %}
 
-### Create second ingredient
+### Create Soda
 POST {{host}}:{{port}}/ingredient
 Content-Type: application/json
 
