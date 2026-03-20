@@ -1,6 +1,6 @@
 ﻿namespace CookBook.Clean.Application.Filters;
 
-public class IngredientFilter
+public class IngredientFilter : IFilter
 {
     public string? Name { get; set; }
     public bool? HasDescription { get; set; }

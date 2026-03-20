@@ -2,7 +2,7 @@
 
 namespace CookBook.Clean.Application.Filters;
 
-public class RecipeFilter
+public class RecipeFilter : IFilter
 {
     public string? Name { get; set; }
     public RecipeType? RecipeType { get; set; }

@@ -5,7 +5,7 @@ using CookBook.Clean.Core.RecipeRoot;
 
 namespace CookBook.Clean.Application.Mappers;
 
-public interface IRecipeMapper
+public interface IRecipeMapper : IMapper
 {
     RecipeListModel MapToListModel(RecipeEntity entity);
     IEnumerable<RecipeListModel> MapToListModels(IEnumerable<RecipeEntity> entities);
