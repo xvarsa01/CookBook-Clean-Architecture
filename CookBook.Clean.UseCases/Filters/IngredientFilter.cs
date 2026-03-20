@@ -1,0 +1,10 @@
+﻿namespace CookBook.Clean.UseCases.Filters;
+
+public class IngredientFilter
+{
+    public string? Name { get; set; }
+    public bool? HasDescription { get; set; }
+    public bool? HasImage { get; set; }
+    public string? SortParameterName { get; set; }
+    public bool IsSortAscending { get; set; } =  true;
+}

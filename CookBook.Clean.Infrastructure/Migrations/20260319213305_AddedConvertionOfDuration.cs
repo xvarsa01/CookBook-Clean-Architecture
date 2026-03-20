@@ -6,25 +6,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CookBook.Clean.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedDuration : Migration
+    public partial class AddedConvertionOfDuration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<TimeSpan>(
+            migrationBuilder.AlterColumn<TimeSpan>(
                 name: "Duration",
                 table: "Recipes",
-                type: "TEXT",
+                type: "time",
                 nullable: false,
-                defaultValue: new TimeSpan(0, 0, 0, 0, 0));
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            migrationBuilder.AlterColumn<int>(
                 name: "Duration",
-                table: "Recipes");
+                table: "Recipes",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(TimeSpan),
+                oldType: "time");
         }
     }
 }

@@ -15,6 +15,10 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<RecipeEntity>()
+            .Property(r => r.Duration)
+            .HasColumnType("time");
+        
+        modelBuilder.Entity<RecipeEntity>()
             .OwnsMany(r => r.Ingredients, b =>
             {
                 b.WithOwner().HasForeignKey("RecipeId");

@@ -1,26 +1,24 @@
 ﻿using System.Collections.Concurrent;
 using CookBook.Clean.Core;
-using CookBook.Clean.UseCases;
 using CookBook.Clean.UseCases.ExternalInterfaces;
+using CookBook.Clean.UseCases.Specifications;
 
 namespace CookBook.Clean.Infrastructure.Repositories;
 
 public class InMemoryRepositoryBase<TEntity> : IRepository<TEntity>
-    where TEntity : class, IEntity
+    where TEntity : class, IRootEntity
 {
     private readonly ConcurrentDictionary<Guid, TEntity> _store = new();
 
     public Task<List<TEntity>> GetAllAsync()
         => Task.FromResult(_store.Values.ToList());
 
-    public Task<List<TEntity>> GetAllAsync(int pageNumber, int pageSize)
+    public Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification)
     {
-        var result = _store.Values
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        return Task.FromResult(result);
+        var queryable = _store.Values.AsQueryable();
+        var query = specification.UseFilter(queryable);
+        var result = query.ToList();
+        return Task.FromResult<IReadOnlyList<TEntity>>(result);
     }
 
     public Task<TEntity?> GetByIdAsync(Guid id)

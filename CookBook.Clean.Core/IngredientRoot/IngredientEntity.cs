@@ -1,6 +1,6 @@
 ﻿namespace CookBook.Clean.Core.IngredientRoot;
 
-public class IngredientEntity(string name, string? description, string? imageUrl) : IEntity
+public class IngredientEntity(string name, string? description, string? imageUrl) : IRootEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; private set; } = name;

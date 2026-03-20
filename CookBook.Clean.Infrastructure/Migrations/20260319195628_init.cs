@@ -33,6 +33,7 @@ namespace CookBook.Clean.Infrastructure.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
+                    Duration = table.Column<TimeSpan>(type: "TEXT", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -54,12 +55,23 @@ namespace CookBook.Clean.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_IngredientInRecipe", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_IngredientInRecipe_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_IngredientInRecipe_Recipes_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientInRecipe_IngredientId",
+                table: "IngredientInRecipe",
+                column: "IngredientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IngredientInRecipe_RecipeId",

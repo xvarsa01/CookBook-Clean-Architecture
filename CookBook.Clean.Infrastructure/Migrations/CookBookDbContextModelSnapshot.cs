@@ -48,7 +48,7 @@ namespace CookBook.Clean.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<TimeSpan>("Duration")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("time");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("TEXT");
@@ -86,9 +86,17 @@ namespace CookBook.Clean.Infrastructure.Migrations
 
                             b1.HasKey("Id");
 
+                            b1.HasIndex("IngredientId");
+
                             b1.HasIndex("RecipeId");
 
-                            b1.ToTable("IngredientInRecipeEntity");
+                            b1.ToTable("IngredientInRecipe");
+
+                            b1.HasOne("CookBook.Clean.Core.IngredientRoot.IngredientEntity", null)
+                                .WithMany()
+                                .HasForeignKey("IngredientId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
 
                             b1.WithOwner()
                                 .HasForeignKey("RecipeId");
