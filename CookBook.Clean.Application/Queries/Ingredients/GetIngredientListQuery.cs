@@ -4,4 +4,4 @@ using MediatR;
 
 namespace CookBook.Clean.Application.Queries.Ingredients;
 
-public record GetListIngredientQuery(IngredientFilter filter, PagingOptions? PagingOptions = null) : IRequest<UseCaseResult<List<IngredientListModel>>>;
+public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions? PagingOptions = null) : IRequest<UseCaseResult<List<IngredientListModel>>>;

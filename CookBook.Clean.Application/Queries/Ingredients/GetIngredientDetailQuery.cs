@@ -3,4 +3,4 @@ using MediatR;
 
 namespace CookBook.Clean.Application.Queries.Ingredients;
 
-public record GetIngredientQuery(Guid Id) : IRequest<UseCaseResult<IngredientDetailModel>>;
+public record GetIngredientDetailQuery(Guid Id) : IRequest<UseCaseResult<IngredientDetailModel>>;

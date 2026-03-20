@@ -7,11 +7,11 @@ using MediatR;
 
 namespace CookBook.Clean.Application.Queries.Ingredients;
 
-public class GetListIngredientHandler (IRepository<IngredientEntity> repository, IIngredientMapper mapper) : IRequestHandler<GetListIngredientQuery, UseCaseResult<List<IngredientListModel>>>
+public class GetIngredientListHandler (IRepository<IngredientEntity> repository, IIngredientMapper mapper) : IRequestHandler<GetIngredientListQuery, UseCaseResult<List<IngredientListModel>>>
 {
-    public async Task<UseCaseResult<List<IngredientListModel>>> Handle(GetListIngredientQuery request, CancellationToken cancellationToken)
+    public async Task<UseCaseResult<List<IngredientListModel>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
     {
-        var specification = new IngredientsBySpecification(request.filter,  request.PagingOptions);
+        var specification = new IngredientsBySpecification(request.Filter,  request.PagingOptions);
         var ingredients = await repository.GetListBySpecificationAsync(specification);
 
         var listModels = mapper.MapToListModels(ingredients).ToList();

@@ -25,7 +25,7 @@ public partial class RecipeListViewModel(
         await base.LoadDataAsync();
 
         var filter = new RecipeFilter();
-        var result = (await _mediator.Send(new GetListRecipeQuery(filter))).Value;
+        var result = (await _mediator.Send(new GetRecipeListQuery(filter))).Value;
         if (result is not null)
         {
             Recipes = result;

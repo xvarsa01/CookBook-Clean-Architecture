@@ -28,7 +28,7 @@ public partial class RecipeDetailViewModel(
     {
         await base.LoadDataAsync();
 
-        var result = (await _mediator.Send(new GetRecipeQuery(Id)));
+        var result = (await _mediator.Send(new GetRecipeDetailQuery(Id)));
         if (result.Success && result.Value is not null)
         {
             Recipe = result.Value;

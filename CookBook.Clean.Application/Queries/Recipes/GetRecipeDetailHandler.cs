@@ -7,9 +7,9 @@ using MediatR;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
 
-public class GetRecipeHandler(IRepository<RecipeEntity> repository, IRepository<IngredientEntity> ingredientRepository, IRecipeMapper mapper) : IRequestHandler<GetRecipeQuery, UseCaseResult<RecipeDetailModel>>
+public class GetRecipeDetailHandler(IRepository<RecipeEntity> repository, IRepository<IngredientEntity> ingredientRepository, IRecipeMapper mapper) : IRequestHandler<GetRecipeDetailQuery, UseCaseResult<RecipeDetailModel>>
 {
-    public async Task<UseCaseResult<RecipeDetailModel>> Handle(GetRecipeQuery request, CancellationToken cancellationToken)
+    public async Task<UseCaseResult<RecipeDetailModel>> Handle(GetRecipeDetailQuery request, CancellationToken cancellationToken)
     {
         RecipeEntity? recipe = await repository.GetByIdAsync(request.Id);
         if (recipe is null)

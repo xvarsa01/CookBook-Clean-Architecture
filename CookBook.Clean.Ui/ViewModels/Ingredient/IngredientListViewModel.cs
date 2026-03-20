@@ -26,7 +26,7 @@ public partial class IngredientListViewModel(
 
         var filter = new IngredientFilter();
         
-        var result = (await _mediator.Send(new GetListIngredientQuery(filter))).Value;
+        var result = (await _mediator.Send(new GetIngredientListQuery(filter))).Value;
         if (result is not null)
         {
             Ingredients = result;

@@ -36,7 +36,7 @@ public class IngredientController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<IngredientDetailModel>> GetById(Guid id)
     {
-        var result = await _mediator.Send(new GetIngredientQuery(id));
+        var result = await _mediator.Send(new GetIngredientDetailQuery(id));
         if (result.Success)
         {
             return Ok(result.Value);
@@ -49,7 +49,7 @@ public class IngredientController : ControllerBase
         [FromQuery] IngredientFilter filter,
         [FromQuery] PagingOptions paging)
     {
-        var result = await _mediator.Send(new GetListIngredientQuery(filter, paging));
+        var result = await _mediator.Send(new GetIngredientListQuery(filter, paging));
         if (result.Success)
         {
             return Ok(result.Value);
