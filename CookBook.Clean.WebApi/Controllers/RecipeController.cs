@@ -1,14 +1,8 @@
-using CookBook.Clean.UseCases;
-using CookBook.Clean.UseCases.Filters;
-using CookBook.Clean.UseCases.Models;
-using CookBook.Clean.UseCases.RecipeRoot.AddIngredient;
-using CookBook.Clean.UseCases.RecipeRoot.Create;
-using CookBook.Clean.UseCases.RecipeRoot.Delete;
-using CookBook.Clean.UseCases.RecipeRoot.Get;
-using CookBook.Clean.UseCases.RecipeRoot.GetList;
-using CookBook.Clean.UseCases.RecipeRoot.IngredientUpdate;
-using CookBook.Clean.UseCases.RecipeRoot.RemoveIngredient;
-using CookBook.Clean.UseCases.RecipeRoot.Update;
+using CookBook.Clean.Application;
+using CookBook.Clean.Application.Filters;
+using CookBook.Clean.Application.Models;
+using CookBook.Clean.Application.Queries.Recipes;
+using CookBook.Clean.Application.UseCases.Recipes;
 using CookBook.Clean.WebApi.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +32,7 @@ public class RecipeController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<RecipeDetailModel>> GetById(Guid id)
     {
-        var result = await _mediator.Send(new GetRecipeQuery(id));
+        var result = await _mediator.Send(new GetRecipeDetailQuery(id));
         if (result.Success)
         {
             return Ok(result.Value);
@@ -51,7 +45,7 @@ public class RecipeController : ControllerBase
         [FromQuery] RecipeFilter filter,
         [FromQuery] PagingOptions paging)
     {
-        var result = await _mediator.Send(new GetListRecipeQuery(filter, paging));
+        var result = await _mediator.Send(new GetRecipeListQuery(filter, paging));
         if (result.Success)
         {
             return Ok(result.Value);

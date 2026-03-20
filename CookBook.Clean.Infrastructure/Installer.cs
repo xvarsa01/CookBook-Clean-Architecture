@@ -1,7 +1,7 @@
 ﻿using CookBook.Clean.Infrastructure.Factories;
 using CookBook.Clean.Infrastructure.Repositories;
-using CookBook.Clean.UseCases;
-using CookBook.Clean.UseCases.ExternalInterfaces;
+using CookBook.Clean.Application;
+using CookBook.Clean.Application.ExternalInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

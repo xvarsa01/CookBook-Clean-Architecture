@@ -1,13 +1,10 @@
 ﻿using CookBook.Clean.Core.IngredientRoot;
-using CookBook.Clean.UseCases.ExternalInterfaces;
-using CookBook.Clean.UseCases.IngredientRoot.Create;
-using CookBook.Clean.UseCases.IngredientRoot.Delete;
-using CookBook.Clean.UseCases.Filters;
-using CookBook.Clean.UseCases.IngredientRoot.Get;
-using CookBook.Clean.UseCases.IngredientRoot.GetList;
-using CookBook.Clean.UseCases.IngredientRoot.Update;
-using CookBook.Clean.UseCases.Mappers;
-using CookBook.Clean.UseCases.Specifications;
+using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Application.Filters;
+using CookBook.Clean.Application.Mappers;
+using CookBook.Clean.Application.Queries.Ingredients;
+using CookBook.Clean.Application.Specifications;
+using CookBook.Clean.Application.UseCases.Ingredients;
 using MediatR;
 using Moq;
 
@@ -44,8 +41,8 @@ public class IngredientUnitTests
         repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((IngredientEntity?)null);
         var mapperMock = new Mock<IIngredientMapper>();
 
-        var handler = new GetIngredientHandler(repoMock.Object, mapperMock.Object);
-        var useCase = new GetIngredientQuery(Guid.NewGuid());
+        var handler = new GetIngredientDetailHandler(repoMock.Object, mapperMock.Object);
+        var useCase = new GetIngredientDetailQuery(Guid.NewGuid());
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
@@ -63,8 +60,8 @@ public class IngredientUnitTests
         repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
         var mapperMock = new Mock<IIngredientMapper>();
 
-        var handler = new GetIngredientHandler(repoMock.Object, mapperMock.Object);
-        var useCase = new GetIngredientQuery(id);
+        var handler = new GetIngredientDetailHandler(repoMock.Object, mapperMock.Object);
+        var useCase = new GetIngredientDetailQuery(id);
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
@@ -87,8 +84,8 @@ public class IngredientUnitTests
             .ReturnsAsync(list);
         var mapperMock = new Mock<IIngredientMapper>();
 
-        var handler = new GetListIngredientHandler(repoMock.Object, mapperMock.Object);
-        var useCase = new GetListIngredientQuery(new IngredientFilter());
+        var handler = new GetIngredientListHandler(repoMock.Object, mapperMock.Object);
+        var useCase = new GetIngredientListQuery(new IngredientFilter());
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 

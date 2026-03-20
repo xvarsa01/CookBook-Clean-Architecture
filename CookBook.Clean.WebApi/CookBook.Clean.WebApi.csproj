@@ -15,7 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CookBook.Clean.Infrastructure\CookBook.Clean.Infrastructure.csproj" />
-      <ProjectReference Include="..\CookBook.Clean.UseCases\CookBook.Clean.UseCases.csproj" />
+      <ProjectReference Include="..\CookBook.Clean.Application\CookBook.Clean.Application.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using CookBook.Clean.Infrastructure;
-using CookBook.Clean.UseCases;
+using CookBook.Clean.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 

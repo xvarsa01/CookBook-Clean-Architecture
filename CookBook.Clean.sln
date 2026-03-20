@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.Core", "CookBook.Clean.Core\CookBook.Clean.Core.csproj", "{18272B6A-2032-4E0B-938A-1760D2840455}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.UseCases", "CookBook.Clean.UseCases\CookBook.Clean.UseCases.csproj", "{D682BB9F-2414-4942-8563-F12D9C0CBF06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.Application", "CookBook.Clean.Application\CookBook.Clean.Application.csproj", "{D682BB9F-2414-4942-8563-F12D9C0CBF06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.Infrastructure", "CookBook.Clean.Infrastructure\CookBook.Clean.Infrastructure.csproj", "{E50659D5-4A5E-4DBB-B6E2-EA53F90CF6F9}"
 EndProject
@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.App", "CookBook.Clean.App\CookBook.Clean.App.csproj", "{04EF643F-3CFF-49C7-8B84-74EEA84EDC4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.Ui", "CookBook.Clean.Ui\CookBook.Clean.Ui.csproj", "{04EF643F-3CFF-49C7-8B84-74EEA84EDC4C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.IntegrationTests", "CookBook.Clean.IntegrationTests\CookBook.Clean.IntegrationTests.csproj", "{0BC4FEBE-4FE6-4932-A6E8-C2F9D555422B}"
 EndProject
