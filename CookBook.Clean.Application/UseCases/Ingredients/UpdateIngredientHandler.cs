@@ -6,7 +6,7 @@ using MediatR;
 namespace CookBook.Clean.Application.UseCases.Ingredients;
 
 
-public class UpdateIngredientHandler(IRepository<IngredientEntity> repository, IPublisher publisher)
+internal class UpdateIngredientHandler(IRepository<IngredientEntity> repository, IPublisher publisher)
     : IRequestHandler<UpdateIngredientUseCase, UseCaseResult<Guid>>
 {
     public async Task<UseCaseResult<Guid>> Handle(UpdateIngredientUseCase request, CancellationToken cancellationToken)
