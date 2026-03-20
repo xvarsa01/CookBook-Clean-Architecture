@@ -58,6 +58,28 @@ public class RecipeController : ControllerBase
         }
         return BadRequest(result.Error);
     }
+    
+    [HttpGet("ingredient/{ingredientId:guid}", Name = "GetRecipeListByIngredientId")]
+    public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetListByIngredient(Guid ingredientId)
+    {
+        var result = await _mediator.Send(new GetRecipeListByContainingIngredientIdQuery(ingredientId));
+        if (result.Success)
+        {
+            return Ok(result.Value);
+        }
+        return BadRequest(result.Error);
+    }
+    
+    [HttpGet("ingredient/{ingredientNameSubstring}", Name = "GetRecipeListByIngredientName")]
+    public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetListByIngredientName(string ingredientNameSubstring)
+    {
+        var result = await _mediator.Send(new GetRecipeListByContainingIngredientNameQuery(ingredientNameSubstring));
+        if (result.Success)
+        {
+            return Ok(result.Value);
+        }
+        return BadRequest(result.Error);
+    }
 
     [HttpPut(Name = "UpdateRecipe")]
     public async Task<ActionResult<Guid>> Update(RecipeUpdateRequestDto requestDto)
