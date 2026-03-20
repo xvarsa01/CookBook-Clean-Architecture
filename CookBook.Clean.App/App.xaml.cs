@@ -1,9 +1,8 @@
 ﻿using CookBook.Clean.App.Shells;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CookBook.Clean.App;
 
-public partial class App : Application
+public partial class App
 {
     private readonly IServiceProvider _serviceProvider;
     

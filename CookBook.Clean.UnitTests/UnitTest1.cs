@@ -1,4 +1,4 @@
-using CookBook.Clean.UseCases;
+using CookBook.Clean.Application;
 using Xunit;
 
 namespace CookBook.Clean.UnitTests;

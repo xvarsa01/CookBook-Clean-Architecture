@@ -4,9 +4,9 @@ using CommunityToolkit.Mvvm.Messaging;
 using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services;
 using CookBook.Clean.App.Services.Interfaces;
-using CookBook.Clean.UseCases.Models;
-using CookBook.Clean.UseCases.RecipeRoot.Delete;
-using CookBook.Clean.UseCases.RecipeRoot.Get;
+using CookBook.Clean.Application.Models;
+using CookBook.Clean.Application.RecipeRoot.Delete;
+using CookBook.Clean.Application.RecipeRoot.Get;
 using MediatR;
 
 namespace CookBook.Clean.App.ViewModels;
@@ -22,7 +22,7 @@ public partial class RecipeDetailViewModel(
     public Guid Id { get; set; }
 
     [ObservableProperty]
-    public partial RecipeDetailModel? Recipe { get; set; }
+    private RecipeDetailModel? recipe;
 
     protected override async Task LoadDataAsync()
     {

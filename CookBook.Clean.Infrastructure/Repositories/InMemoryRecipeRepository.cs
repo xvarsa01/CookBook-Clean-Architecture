@@ -1,6 +1,6 @@
 ﻿using CookBook.Clean.Core.RecipeRoot;
-using CookBook.Clean.UseCases;
-using CookBook.Clean.UseCases.ExternalInterfaces;
+using CookBook.Clean.Application;
+using CookBook.Clean.Application.ExternalInterfaces;
 
 namespace CookBook.Clean.Infrastructure.Repositories;
 

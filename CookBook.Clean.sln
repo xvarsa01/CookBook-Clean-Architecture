@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.Core", "CookBook.Clean.Core\CookBook.Clean.Core.csproj", "{18272B6A-2032-4E0B-938A-1760D2840455}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.UseCases", "CookBook.Clean.UseCases\CookBook.Clean.UseCases.csproj", "{D682BB9F-2414-4942-8563-F12D9C0CBF06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.Application", "CookBook.Clean.Application\CookBook.Clean.Application.csproj", "{D682BB9F-2414-4942-8563-F12D9C0CBF06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.Infrastructure", "CookBook.Clean.Infrastructure\CookBook.Clean.Infrastructure.csproj", "{E50659D5-4A5E-4DBB-B6E2-EA53F90CF6F9}"
 EndProject

@@ -4,9 +4,9 @@ using CommunityToolkit.Mvvm.Messaging;
 using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services;
 using CookBook.Clean.App.Services.Interfaces;
-using CookBook.Clean.UseCases.Filters;
-using CookBook.Clean.UseCases.Models;
-using CookBook.Clean.UseCases.RecipeRoot.GetList;
+using CookBook.Clean.Application.Filters;
+using CookBook.Clean.Application.Models;
+using CookBook.Clean.Application.RecipeRoot.GetList;
 using MediatR;
 
 namespace CookBook.Clean.App.ViewModels;

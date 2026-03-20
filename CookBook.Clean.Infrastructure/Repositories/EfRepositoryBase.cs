@@ -1,6 +1,6 @@
 ﻿using CookBook.Clean.Core;
-using CookBook.Clean.UseCases.ExternalInterfaces;
-using CookBook.Clean.UseCases.Specifications;
+using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Application.Specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.Clean.Infrastructure.Repositories;

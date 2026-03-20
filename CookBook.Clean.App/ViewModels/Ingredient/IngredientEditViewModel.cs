@@ -2,10 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services.Interfaces;
-using CookBook.Clean.UseCases.IngredientRoot.Create;
-using CookBook.Clean.UseCases.IngredientRoot.Get;
-using CookBook.Clean.UseCases.IngredientRoot.Update;
-using CookBook.Clean.UseCases.Models;
+using CookBook.Clean.Application.IngredientRoot.Create;
+using CookBook.Clean.Application.IngredientRoot.Get;
+using CookBook.Clean.Application.IngredientRoot.Update;
+using CookBook.Clean.Application.Models;
 using MediatR;
 
 namespace CookBook.Clean.App.ViewModels;

@@ -2,7 +2,7 @@
 using CommunityToolkit.Maui;
 using CookBook.Clean.App.Services.Interfaces;
 using CookBook.Clean.Infrastructure;
-using CookBook.Clean.UseCases;
+using CookBook.Clean.Application;
 using Microsoft.Extensions.Logging;
 
 namespace CookBook.Clean.App;

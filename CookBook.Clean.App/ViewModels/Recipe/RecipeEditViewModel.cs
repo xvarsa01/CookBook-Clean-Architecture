@@ -5,10 +5,10 @@ using CookBook.Clean.App.Messages;
 using CookBook.Clean.App.Services;
 using CookBook.Clean.App.Services.Interfaces;
 using CookBook.Clean.Core.RecipeRoot;
-using CookBook.Clean.UseCases.Models;
-using CookBook.Clean.UseCases.RecipeRoot.Create;
-using CookBook.Clean.UseCases.RecipeRoot.Get;
-using CookBook.Clean.UseCases.RecipeRoot.Update;
+using CookBook.Clean.Application.Models;
+using CookBook.Clean.Application.RecipeRoot.Create;
+using CookBook.Clean.Application.RecipeRoot.Get;
+using CookBook.Clean.Application.RecipeRoot.Update;
 using MediatR;
 
 namespace CookBook.Clean.App.ViewModels;
