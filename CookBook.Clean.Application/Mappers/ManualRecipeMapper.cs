@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CookBook.Clean.Application.Models;
-using CookBook.Clean.Application.RecipeRoot.Create;
+using CookBook.Clean.Application.UseCases.Recipes;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.RecipeRoot;
 

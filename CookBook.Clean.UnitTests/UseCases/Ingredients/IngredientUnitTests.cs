@@ -1,13 +1,10 @@
 ﻿using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Application.ExternalInterfaces;
-using CookBook.Clean.Application.IngredientRoot.Create;
-using CookBook.Clean.Application.IngredientRoot.Delete;
 using CookBook.Clean.Application.Filters;
-using CookBook.Clean.Application.IngredientRoot.Get;
-using CookBook.Clean.Application.IngredientRoot.GetList;
-using CookBook.Clean.Application.IngredientRoot.Update;
 using CookBook.Clean.Application.Mappers;
+using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Application.Specifications;
+using CookBook.Clean.Application.UseCases.Ingredients;
 using MediatR;
 using Moq;
 

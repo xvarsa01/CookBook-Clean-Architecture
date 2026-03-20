@@ -1,9 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CookBook.Clean.Application.IngredientRoot.Create;
-using CookBook.Clean.Application.IngredientRoot.Get;
-using CookBook.Clean.Application.IngredientRoot.Update;
 using CookBook.Clean.Application.Models;
+using CookBook.Clean.Application.Queries.Ingredients;
+using CookBook.Clean.Application.UseCases.Ingredients;
 using CookBook.Clean.Ui.Messages;
 using CookBook.Clean.Ui.Services.Interfaces;
 using MediatR;

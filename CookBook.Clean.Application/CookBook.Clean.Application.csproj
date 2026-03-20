@@ -10,4 +10,8 @@
       <ProjectReference Include="..\CookBook.Clean.Core\CookBook.Clean.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UseCases\" />
+    </ItemGroup>
+
 </Project>

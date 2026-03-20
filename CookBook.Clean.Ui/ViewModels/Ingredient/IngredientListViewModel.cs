@@ -2,8 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.Clean.Application.Filters;
-using CookBook.Clean.Application.IngredientRoot.GetList;
 using CookBook.Clean.Application.Models;
+using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Ui.Messages;
 using CookBook.Clean.Ui.Services;
 using CookBook.Clean.Ui.Services.Interfaces;

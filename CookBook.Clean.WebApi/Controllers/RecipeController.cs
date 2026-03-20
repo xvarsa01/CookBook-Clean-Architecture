@@ -1,14 +1,8 @@
 using CookBook.Clean.Application;
 using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Models;
-using CookBook.Clean.Application.RecipeRoot.AddIngredient;
-using CookBook.Clean.Application.RecipeRoot.Create;
-using CookBook.Clean.Application.RecipeRoot.Delete;
-using CookBook.Clean.Application.RecipeRoot.Get;
-using CookBook.Clean.Application.RecipeRoot.GetList;
-using CookBook.Clean.Application.RecipeRoot.IngredientUpdate;
-using CookBook.Clean.Application.RecipeRoot.RemoveIngredient;
-using CookBook.Clean.Application.RecipeRoot.Update;
+using CookBook.Clean.Application.Queries.Recipes;
+using CookBook.Clean.Application.UseCases.Recipes;
 using CookBook.Clean.WebApi.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
