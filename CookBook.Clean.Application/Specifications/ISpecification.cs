@@ -2,7 +2,7 @@ using CookBook.Clean.Core;
 
 namespace CookBook.Clean.Application.Specifications;
 
-public interface ISpecification<TEntity, TOut > where TEntity : IRootEntity
+public interface ISpecification<in TEntity, out TOut > where TEntity : IRootEntity
 {
-    IQueryable<TEntity> UseFilter(IQueryable<TEntity> queryable);
+    IQueryable<TOut> UseFilter(IQueryable<TEntity> queryable);
 }
