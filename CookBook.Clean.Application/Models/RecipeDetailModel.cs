@@ -3,7 +3,7 @@ using CookBook.Clean.Core.RecipeRoot;
 
 namespace CookBook.Clean.Application.Models;
 
-public record RecipeDetailModel : ModelBase
+public record RecipeDetailModel : IModel
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }

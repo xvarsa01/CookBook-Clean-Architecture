@@ -14,4 +14,7 @@
       <Folder Include="UseCases\" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="CookBook.Clean.UnitTests" />
+    </ItemGroup>
 </Project>

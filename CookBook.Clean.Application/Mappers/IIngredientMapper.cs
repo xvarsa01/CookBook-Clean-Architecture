@@ -4,7 +4,7 @@ using CookBook.Clean.Core.IngredientRoot;
 
 namespace CookBook.Clean.Application.Mappers;
 
-public interface IIngredientMapper
+public interface IIngredientMapper : IMapper
 {
     IngredientListModel MapToListModel(IngredientEntity entity);
     IEnumerable<IngredientListModel> MapToListModels(IEnumerable<IngredientEntity> entities);

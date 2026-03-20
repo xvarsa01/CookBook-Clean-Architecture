@@ -4,9 +4,9 @@ using CookBook.Clean.Application.Models;
 
 namespace CookBook.Clean.Ui.Converters;
 
-public class ModelIsNewToIsVisibleInvertedConverter : BaseConverterOneWay<ModelBase, bool>
+public class ModelIsNewToIsVisibleInvertedConverter : BaseConverterOneWay<IModel, bool>
 {
-    public override bool ConvertFrom(ModelBase value, CultureInfo? culture)
+    public override bool ConvertFrom(IModel value, CultureInfo? culture)
         => value.Id != Guid.Empty;
     
     public override bool DefaultConvertReturnValue { get; set; } = true;

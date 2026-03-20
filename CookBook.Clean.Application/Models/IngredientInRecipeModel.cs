@@ -2,7 +2,7 @@ using CookBook.Clean.Core.RecipeRoot;
 
 namespace CookBook.Clean.Application.Models;
 
-public record IngredientInRecipeModel : ModelBase
+public record IngredientInRecipeModel : IModel
 {
     public required Guid Id { get; set; }
     public required Guid IngredientId { get; set; }

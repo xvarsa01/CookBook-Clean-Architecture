@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-public class AddIngredientToRecipeHandler(
+internal class AddIngredientToRecipeHandler(
     IRepository<RecipeEntity> recipeRepository,
     IRepository<IngredientEntity> ingredientRepository
 ) : IRequestHandler<AddIngredientToRecipeUseCase, UseCaseResult<Guid>>

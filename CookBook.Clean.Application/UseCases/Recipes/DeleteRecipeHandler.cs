@@ -5,7 +5,7 @@ using MediatR;
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
 
-public class DeleteRecipeHandler(IRepository<RecipeEntity> repository) : IRequestHandler<DeleteRecipeUseCase, UseCaseResult>
+internal class DeleteRecipeHandler(IRepository<RecipeEntity> repository) : IRequestHandler<DeleteRecipeUseCase, UseCaseResult>
 {
     public async Task<UseCaseResult> Handle(DeleteRecipeUseCase request, CancellationToken cancellationToken)
     {

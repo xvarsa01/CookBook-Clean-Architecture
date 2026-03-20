@@ -1,6 +1,6 @@
 ﻿namespace CookBook.Clean.Application.Models;
 
-public class IngredientDetailModel : ModelBase
+public class IngredientDetailModel : IModel
 {
     public required Guid Id { get; set; }
     public required string Name { get; set; }

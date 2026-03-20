@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-public class CreateRecipeHandler(IRepository<RecipeEntity> repository, IRecipeMapper mapper) : IRequestHandler<CreateRecipeUseCase, UseCaseResult<Guid>>
+internal class CreateRecipeHandler(IRepository<RecipeEntity> repository, IRecipeMapper mapper) : IRequestHandler<CreateRecipeUseCase, UseCaseResult<Guid>>
 {
     public async Task<UseCaseResult<Guid>> Handle(CreateRecipeUseCase request, CancellationToken cancellationToken)
     {

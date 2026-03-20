@@ -7,7 +7,7 @@ using MediatR;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
 
-public class GetRecipeListByContainingIngredientIdHandler (IRepository<RecipeEntity> repository, IRecipeMapper mapper) : IRequestHandler<GetRecipeListByContainingIngredientIdQuery, UseCaseResult<List<RecipeListModel>>>
+internal class GetRecipeListByContainingIngredientIdHandler (IRepository<RecipeEntity> repository, IRecipeMapper mapper) : IRequestHandler<GetRecipeListByContainingIngredientIdQuery, UseCaseResult<List<RecipeListModel>>>
 {
     public async Task<UseCaseResult<List<RecipeListModel>>> Handle(GetRecipeListByContainingIngredientIdQuery request, CancellationToken cancellationToken)
     {
