@@ -6,11 +6,20 @@ namespace CookBook.Clean.ArchitectureTests;
 public class ArchitectureFrameworkDependencyTests : ArchitectureTestBase
 {
     [Fact]
-    public void DomainLayer_ShouldNotDependOn_EntityFramework()
+    public void CoreLayer_ShouldNotDependOn_EntityFramework()
     {
         Types().That().ResideInAssembly(CoreAssembly).Should()
             .NotDependOnAnyTypesThat()
             .ResideInNamespace("Microsoft.EntityFrameworkCore")
+            .Check(Architecture);
+    }
+
+    [Fact]
+    public void CoreLayer_ShouldNotDependOn_AspNetCore()
+    {
+        Types().That().ResideInAssembly(CoreAssembly).Should()
+            .NotDependOnAnyTypesThat()
+            .ResideInNamespaceMatching("Microsoft.AspNetCore(\\..+)?")
             .Check(Architecture);
     }
 
@@ -20,6 +29,15 @@ public class ArchitectureFrameworkDependencyTests : ArchitectureTestBase
         Types().That().ResideInAssembly(ApplicationAssembly).Should()
             .NotDependOnAnyTypesThat()
             .ResideInNamespace("Microsoft.EntityFrameworkCore")
+            .Check(Architecture);
+    }
+
+    [Fact]
+    public void ApplicationLayer_ShouldNotDependOn_AspNetCore()
+    {
+        Types().That().ResideInAssembly(ApplicationAssembly).Should()
+            .NotDependOnAnyTypesThat()
+            .ResideInNamespaceMatching("Microsoft.AspNetCore(\\..+)?")
             .Check(Architecture);
     }
 }

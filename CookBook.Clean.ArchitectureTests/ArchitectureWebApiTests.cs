@@ -17,4 +17,25 @@ public class ArchitectureWebApiTests : ArchitectureTestBase
 
             rule.Check(Architecture);
         }
+
+        [Fact]
+        public void WebApi_Controllers_Should_NotDependOnInfrastructure()
+        {
+            Classes()
+                .That()
+                .HaveNameEndingWith("Controller")
+                .Should()
+                .NotDependOnAnyTypesThat()
+                .ResideInNamespaceMatching("CookBook.Clean.Infrastructure(\\..+)?")
+                .Check(Architecture);
+        }
+
+        [Fact]
+        public void WebApi_ShouldNotDependOn_EntityFramework()
+        {
+            Types().That().ResideInAssembly(WebApiAssembly).Should()
+                .NotDependOnAnyTypesThat()
+                .ResideInNamespace("Microsoft.EntityFrameworkCore")
+                .Check(Architecture);
+        }
 }

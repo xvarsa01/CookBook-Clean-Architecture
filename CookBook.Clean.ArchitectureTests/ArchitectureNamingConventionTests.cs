@@ -129,6 +129,15 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
             .Should().ResideInAssembly(InfrastructureAssembly)
             .Check(Architecture);
     }
+
+    [Fact]
+    public void RepositoryInterfaces_ShouldBeIn_Application_Layer()
+    {
+        Interfaces().That()
+            .HaveNameEndingWith("Repository")
+            .Should().ResideInAssembly(ApplicationAssembly)
+            .Check(Architecture);
+    }
     
     [Fact]
     public void Factories_ShouldBeIn_Infrastructure_Layer()
@@ -146,6 +155,24 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
             .HaveNameEndingWith("DTO")
             .Or().HaveNameEndingWith("Dto")
             .Should().ResideInAssembly(WebApiAssembly)
+            .Check(Architecture);
+    }
+
+    [Fact]
+    public void Controllers_ShouldBeIn_WebApi_Layer()
+    {
+        Classes().That()
+            .HaveNameEndingWith("Controller")
+            .Should().ResideInAssembly(WebApiAssembly)
+            .Check(Architecture);
+    }
+
+    [Fact]
+    public void RootEntities_ShouldBeIn_Core_Layer()
+    {
+        Classes().That()
+            .ImplementInterface(typeof(Core.IRootEntity))
+            .Should().ResideInAssembly(CoreAssembly)
             .Check(Architecture);
     }
 }

@@ -17,6 +17,19 @@ namespace CookBook.Clean.ArchitectureTests
 
             rule.Check(Architecture);
         }
+
+        [Fact]
+        public void UseCases_And_Queries_Should_Implement_MediatR_IRequest()
+        {
+            Classes()
+                .That()
+                .HaveNameEndingWith("UseCase")
+                .Or()
+                .HaveNameEndingWith("Query")
+                .Should()
+                .ImplementInterface(typeof(IRequest<>))
+                .Check(Architecture);
+        }
         
         [Fact]
         public void Application_Handlers_Should_HaveDependencyOnCoreProject()
@@ -84,6 +97,28 @@ namespace CookBook.Clean.ArchitectureTests
             handlers
                 .Should()
                 .DependOnAny(allowedTypes)
+                .Check(Architecture);
+        }
+
+        [Fact]
+        public void EventHandlers_Should_Implement_NotificationHandler()
+        {
+            Classes()
+                .That()
+                .HaveNameEndingWith("EventHandler")
+                .Should()
+                .ImplementInterface(typeof(INotificationHandler<>))
+                .Check(Architecture);
+        }
+
+        [Fact]
+        public void Repository_Implementations_Should_Implement_IRepository()
+        {
+            Classes()
+                .That()
+                .HaveNameEndingWith("Repository")
+                .Should()
+                .ImplementInterface(typeof(Application.ExternalInterfaces.IRepository<>))
                 .Check(Architecture);
         }
     }

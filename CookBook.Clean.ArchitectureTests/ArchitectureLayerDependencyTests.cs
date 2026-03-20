@@ -19,7 +19,7 @@ public class ArchitectureLayerDependencyTests : ArchitectureTestBase
         Types().That().ResideInAssembly(WebApiAssembly).As("Presentation Layer");
 
     [Fact]
-    public void DomainLayer_ShouldNotDependOn_ApplicationLayer()
+    public void CoreLayer_ShouldNotDependOn_ApplicationLayer()
     {
         Types().That().Are(CoreLayer).Should()
             .NotDependOnAny(ApplicationLayer)
@@ -27,7 +27,7 @@ public class ArchitectureLayerDependencyTests : ArchitectureTestBase
     }
 
     [Fact]
-    public void DomainLayer_ShouldNotDependOn_InfrastructureLayer()
+    public void CoreLayer_ShouldNotDependOn_InfrastructureLayer()
     {
         Types().That().Are(CoreLayer).Should()
             .NotDependOnAny(InfrastructureLayer)
@@ -35,7 +35,7 @@ public class ArchitectureLayerDependencyTests : ArchitectureTestBase
     }
 
     [Fact]
-    public void DomainLayer_ShouldNotDependOn_PresentationLayer()
+    public void CoreLayer_ShouldNotDependOn_PresentationLayer()
     {
         Types().That().Are(CoreLayer).Should()
             .NotDependOnAny(PresentationLayer)
