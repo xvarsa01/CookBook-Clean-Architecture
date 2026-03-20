@@ -1,7 +1,7 @@
 ﻿// using CommunityToolkit.Mvvm.ComponentModel;
 namespace CookBook.Clean.Application.Models;
 
-public interface ModelBase
+public interface IModel
 {
     Guid Id { get; set; }
 }
