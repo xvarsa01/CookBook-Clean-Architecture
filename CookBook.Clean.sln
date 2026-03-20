@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.App", "CookBook.Clean.App\CookBook.Clean.App.csproj", "{04EF643F-3CFF-49C7-8B84-74EEA84EDC4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.Ui", "CookBook.Clean.Ui\CookBook.Clean.Ui.csproj", "{04EF643F-3CFF-49C7-8B84-74EEA84EDC4C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Clean.IntegrationTests", "CookBook.Clean.IntegrationTests\CookBook.Clean.IntegrationTests.csproj", "{0BC4FEBE-4FE6-4932-A6E8-C2F9D555422B}"
 EndProject
