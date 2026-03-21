@@ -15,7 +15,7 @@ internal class RemoveIngredientFromRecipeHandler(IRepository<RecipeEntity> recip
             return UseCaseResult.NotFound("Recipe not found");
         }
         
-        recipe.RemoveIngredientEntry(request.EntryId);
+        recipe.RemoveIngredientByEntryId(request.EntryId);
 
         await recipeRepository.UpdateAsync(recipe);
         return UseCaseResult.Ok();

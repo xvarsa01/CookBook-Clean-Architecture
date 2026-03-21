@@ -8,7 +8,7 @@ public record IngredientInRecipeEntity
     public decimal Amount { get; private set; }
     public MeasurementUnit Unit { get; private set; }
 
-    public IngredientInRecipeEntity(Guid id, Guid ingredientId, decimal amount, MeasurementUnit unit)
+    internal IngredientInRecipeEntity(Guid id, Guid ingredientId, decimal amount, MeasurementUnit unit)
     {
         Id = id;
         IngredientId = ingredientId;

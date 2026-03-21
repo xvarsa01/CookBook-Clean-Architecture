@@ -7,24 +7,21 @@ public class IngredientEntity(string name, string? description, string? imageUrl
     public string? Description { get; private set; } = description;
     public string? ImageUrl { get; private set; } = imageUrl;
     
-    public IngredientEntity UpdateName(string newName)
+    public void UpdateName(string newName)
     {
-        if (Name == newName) return this;
+        if (Name == newName) return;
         Name = newName;
-        return this;
     }
     
-    public IngredientEntity UpdateDescription(string newDescription)
+    public void UpdateDescription(string newDescription)
     {
-        if (Description == newDescription) return this;
+        if (Description == newDescription) return;
         Description = newDescription;
-        return this;
     }
     
-    public IngredientEntity UpdateImageUrl(string newUrl)
+    public void UpdateImageUrl(string newUrl)
     {
-        if (ImageUrl == newUrl) return this;
+        if (ImageUrl == newUrl) return;
         ImageUrl = newUrl;
-        return this;
     }
 }
