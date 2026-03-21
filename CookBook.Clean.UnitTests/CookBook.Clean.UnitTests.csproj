@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\CookBook.Clean.Common.Tests\CookBook.Clean.Common.Tests.csproj" />
       <ProjectReference Include="..\CookBook.Clean.Application\CookBook.Clean.Application.csproj" />
       <ProjectReference Include="..\CookBook.Clean.Infrastructure\CookBook.Clean.Infrastructure.csproj" />
       <ProjectReference Include="..\CookBook.Clean.Core\CookBook.Clean.Core.csproj" />
