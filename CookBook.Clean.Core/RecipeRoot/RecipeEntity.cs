@@ -1,22 +1,45 @@
 ﻿namespace CookBook.Clean.Core.RecipeRoot;
 
-public class RecipeEntity(string name, string? description, string? imageUrl, TimeSpan duration, RecipeType type) : IRootEntity
+public class RecipeEntity : IRootEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public string Name { get; private set; } = name;
-    public string? Description { get; private set; } = description;
-    public string? ImageUrl { get; private set; } = imageUrl;
-    public TimeSpan Duration { get; private set; } = duration;
-    public RecipeType Type { get; private set; } = type;
+    public string Name { get; private set; }
+    public string? Description { get; private set; }
+    public string? ImageUrl { get; private set; }
+    public TimeSpan Duration { get; private set; }
+    public RecipeType Type { get; private set; }
     
 
     private readonly List<IngredientInRecipeEntity> _ingredients = [];
+
+    public RecipeEntity(string name, string? description, string? imageUrl, TimeSpan duration, RecipeType type)
+    {
+        if (name.Length < 3)
+        {
+            throw new ArgumentException("Recipe name cannot shorter than 3 characters.");
+        }
+
+        if (duration.TotalMinutes <= 0)
+        {
+            throw new ArgumentException("Recipe duration must be positive.");
+        }
+        
+        Name = name;
+        Description = description;
+        ImageUrl = imageUrl;
+        Duration = duration;
+        Type = type;
+    }
+
     public IReadOnlyCollection<IngredientInRecipeEntity> Ingredients => _ingredients.AsReadOnly();
     
     public Guid AddIngredient(Guid ingredientId, decimal amount, MeasurementUnit unit)
     {
         if (amount <= 0)
             throw new ArgumentException("Amount must be positive");
+
+        if (Ingredients.Count == 10)
+            throw new ArgumentException("Recipe cannot have more than 10 ingredients.");
         
         var ingredientInRecipeId = Guid.NewGuid();
         var ingredient = new IngredientInRecipeEntity(ingredientInRecipeId, ingredientId, amount, unit);
@@ -24,10 +47,32 @@ public class RecipeEntity(string name, string? description, string? imageUrl, Ti
         return ingredientInRecipeId;
     }
 
-    public void RemoveIngredientEntry(Guid entryId)
+    public void RemoveIngredientsByIngredientId(Guid ingredientId)
+    {
+        var removedCount = _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
+
+        if (removedCount == 0)
+            throw new InvalidOperationException($"Ingredient {ingredientId} not found in recipe {Id}.");
+    }
+    
+    public void RemoveIngredientByEntryId(Guid entryId)
     {
         var idx = _ingredients.FindIndex(i => i.Id == entryId);
-        if (idx >= 0) _ingredients.RemoveAt(idx);
+
+        if (idx < 0)
+        {
+            throw new InvalidOperationException($"Ingredient entry {entryId} not found.");
+        }
+        _ingredients.RemoveAt(idx);
+    }
+    
+    public void RemoveAllIngredients()
+    {
+        if (_ingredients.Count == 0)
+        {
+            throw new InvalidOperationException($"Recipe entity {Id} has no ingredients.");
+        }
+        _ingredients.Clear();
     }
 
     public void UpdateIngredientEntry(Guid entryId, decimal newAmount, MeasurementUnit newUnit)
@@ -43,23 +88,31 @@ public class RecipeEntity(string name, string? description, string? imageUrl, Ti
         ingredient.Update(newAmount, newUnit);
     }
 
-    public RecipeEntity UpdateName(string newName)
+    public void UpdateName(string newName)
     {
-        if (Name == newName) return this;
+        if (Name == newName) return;
+        if (newName.Length < 3)
+        {
+            throw new ArgumentException("Recipe name cannot shorter than 3 characters.");
+        }
+        
         // fire some event?
         Name = newName;
-        return this;
     }
     
-    public RecipeEntity UpdateDescription(string newDescription)
+    public void UpdateDescription(string newDescription)
     {
-        if (Description == newDescription) return this;
+        if (Description == newDescription) return;
         Description = newDescription;
-        return this;
     }
     
-    public RecipeEntity UpdateRest(string? newUrl, TimeSpan? newDuration, RecipeType? newType)
+    public void UpdateRest(string? newUrl, TimeSpan? newDuration, RecipeType? newType)
     {
+        if (newDuration.HasValue && newDuration.Value.TotalMinutes <= 0)
+        {
+            throw new ArgumentException("Recipe duration must be positive.");
+        }
+        
         if (ImageUrl != newUrl)
         {
             ImageUrl = newUrl;
@@ -74,9 +127,5 @@ public class RecipeEntity(string name, string? description, string? imageUrl, Ti
         {
             Type = newType.Value;
         }
-
-        return this;
     }
-
-
 }
