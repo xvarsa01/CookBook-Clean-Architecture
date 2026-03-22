@@ -1,29 +1,30 @@
-﻿namespace CookBook.Clean.Core.RecipeRoot;
+﻿using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.Exceptions;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
+
+namespace CookBook.Clean.Core.RecipeRoot;
+
+// business rules:
+// - recipe must have a name
+//   - name must be minimal 3 characters long
+// - recipe duration must be positive
+// - recipe can have 0-10 ingredients
+//   - ingredient amount must be positive
 
 public class RecipeEntity : IRootEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public string Name { get; private set; }
+    public RecipeName Name { get; private set; }
     public string? Description { get; private set; }
     public string? ImageUrl { get; private set; }
-    public TimeSpan Duration { get; private set; }
+    public RecipeDuration Duration { get; private set; }
     public RecipeType Type { get; private set; }
     
 
     private readonly List<IngredientInRecipeEntity> _ingredients = [];
 
-    public RecipeEntity(string name, string? description, string? imageUrl, TimeSpan duration, RecipeType type)
+    public RecipeEntity(RecipeName name, string? description, string? imageUrl, RecipeDuration duration, RecipeType type)
     {
-        if (name.Length < 3)
-        {
-            throw new ArgumentException("Recipe name cannot shorter than 3 characters.");
-        }
-
-        if (duration.TotalMinutes <= 0)
-        {
-            throw new ArgumentException("Recipe duration must be positive.");
-        }
-        
         Name = name;
         Description = description;
         ImageUrl = imageUrl;
@@ -33,13 +34,10 @@ public class RecipeEntity : IRootEntity
 
     public IReadOnlyCollection<IngredientInRecipeEntity> Ingredients => _ingredients.AsReadOnly();
     
-    public Guid AddIngredient(Guid ingredientId, decimal amount, MeasurementUnit unit)
+    public Guid AddIngredient(Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
-        if (amount <= 0)
-            throw new ArgumentException("Amount must be positive");
-
-        if (Ingredients.Count == 10)
-            throw new ArgumentException("Recipe cannot have more than 10 ingredients.");
+        if (_ingredients.Count == 10)
+            throw new RecipeMaximumNumberOfIngredients();
         
         var ingredientInRecipeId = Guid.NewGuid();
         var ingredient = new IngredientInRecipeEntity(ingredientInRecipeId, ingredientId, amount, unit);
@@ -52,7 +50,7 @@ public class RecipeEntity : IRootEntity
         var removedCount = _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
 
         if (removedCount == 0)
-            throw new InvalidOperationException($"Ingredient {ingredientId} not found in recipe {Id}.");
+            throw new RecipeIngredientByIdNotFoundException(ingredientId, Id);
     }
     
     public void RemoveIngredientByEntryId(Guid entryId)
@@ -60,42 +58,32 @@ public class RecipeEntity : IRootEntity
         var idx = _ingredients.FindIndex(i => i.Id == entryId);
 
         if (idx < 0)
-        {
-            throw new InvalidOperationException($"Ingredient entry {entryId} not found.");
-        }
+            throw new RecipeIngredientByEntryIdNotFoundException(entryId, Id);
+        
         _ingredients.RemoveAt(idx);
     }
     
     public void RemoveAllIngredients()
     {
         if (_ingredients.Count == 0)
-        {
-            throw new InvalidOperationException($"Recipe entity {Id} has no ingredients.");
-        }
+            throw new RecipeHasNoIngredientsException(Id);
+        
         _ingredients.Clear();
     }
 
-    public void UpdateIngredientEntry(Guid entryId, decimal newAmount, MeasurementUnit newUnit)
+    public void UpdateIngredientEntry(Guid entryId, IngredientAmount newAmount, MeasurementUnit newUnit)
     {
-        if (newAmount <= 0)
-            throw new ArgumentException  ("Amount must be positive");
-        
         var ingredient = _ingredients.FirstOrDefault(i => i.Id == entryId);
 
         if (ingredient is null)
-            throw new InvalidOperationException($"Ingredient entry {entryId} not found.");
+            throw new RecipeIngredientByEntryIdNotFoundException(entryId, Id);
 
         ingredient.Update(newAmount, newUnit);
     }
 
-    public void UpdateName(string newName)
+    public void UpdateName(RecipeName newName)
     {
         if (Name == newName) return;
-        if (newName.Length < 3)
-        {
-            throw new ArgumentException("Recipe name cannot shorter than 3 characters.");
-        }
-        
         // fire some event?
         Name = newName;
     }
@@ -106,13 +94,8 @@ public class RecipeEntity : IRootEntity
         Description = newDescription;
     }
     
-    public void UpdateRest(string? newUrl, TimeSpan? newDuration, RecipeType? newType)
+    public void UpdateRest(string? newUrl, RecipeDuration? newDuration, RecipeType? newType)
     {
-        if (newDuration.HasValue && newDuration.Value.TotalMinutes <= 0)
-        {
-            throw new ArgumentException("Recipe duration must be positive.");
-        }
-        
         if (ImageUrl != newUrl)
         {
             ImageUrl = newUrl;
@@ -120,7 +103,7 @@ public class RecipeEntity : IRootEntity
 
         if (newDuration is not null && Duration != newDuration)
         {
-            Duration = newDuration.Value;
+            Duration = newDuration;
         }
         
         if (newType is not null && Type != newType)

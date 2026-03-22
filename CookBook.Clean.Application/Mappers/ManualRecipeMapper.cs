@@ -3,6 +3,7 @@ using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.UseCases.Recipes;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Mappers;
 
@@ -13,9 +14,9 @@ public class ManualRecipeMapper : IRecipeMapper
         return new RecipeListModel
         {
             Id = entity.Id,
-            Name = entity.Name,
+            Name = entity.Name.Value,
             RecipeType =  entity.Type,
-            Duration = entity.Duration,
+            Duration = entity.Duration.Value,
             ImageUrl = entity.ImageUrl,
         };
     }
@@ -42,7 +43,7 @@ public class ManualRecipeMapper : IRecipeMapper
             {
                 Id = ingredient.Id,
                 IngredientId = ingredient.IngredientId,
-                Amount = ingredient.Amount,
+                Amount = ingredient.Amount.Value,
                 Unit = ingredient.Unit,
                 Name = ingredientDetail.Name,
                 ImageUrl =  ingredientDetail.ImageUrl,
@@ -56,7 +57,7 @@ public class ManualRecipeMapper : IRecipeMapper
             Id = entity.Id,
             Name = entity.Name,
             Description = entity.Description,
-            Duration = entity.Duration,
+            Duration = entity.Duration.Value,
             Type = entity.Type,
             ImageUrl = entity.ImageUrl,
             Ingredients = new ObservableCollection<IngredientInRecipeModel>(ingredients)
@@ -66,10 +67,10 @@ public class ManualRecipeMapper : IRecipeMapper
     public RecipeEntity MapToEntity(CreateRecipeUseCase request)
     {
         return new RecipeEntity(
-            request.Name,
+            new RecipeName(request.Name),
             request.Description,
             request.ImageUrl,
-            request.Duration,
+            new RecipeDuration(request.Duration),
             request.RecipeType);
     }
 }

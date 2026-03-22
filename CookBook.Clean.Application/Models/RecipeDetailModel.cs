@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.Enums;
 
 namespace CookBook.Clean.Application.Models;
 
