@@ -1,4 +1,6 @@
 ﻿using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.TestsBase;
 
 namespace CookBook.Clean.CoreTests.RecipeRoot;
@@ -14,7 +16,7 @@ public class RecipeRootAddIngredientTests
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() =>
-            recipe.AddIngredient(ingredient.Id, -100, MeasurementUnit.Ml)
+            recipe.AddIngredient(ingredient.Id, new IngredientAmount(-100), MeasurementUnit.Ml)
         );
     }
     
@@ -27,7 +29,7 @@ public class RecipeRootAddIngredientTests
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() =>
-            recipe.AddIngredient(ingredient.Id, 0, MeasurementUnit.Ml)
+            recipe.AddIngredient(ingredient.Id, new IngredientAmount(0), MeasurementUnit.Ml)
         );
     }
     
@@ -39,7 +41,7 @@ public class RecipeRootAddIngredientTests
         var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
         
         // Act
-        recipe.AddIngredient(ingredient.Id, 100, MeasurementUnit.Ml);
+        recipe.AddIngredient(ingredient.Id, new IngredientAmount(100), MeasurementUnit.Ml);
         
         // Assert
         Assert.Single(recipe.Ingredients);
@@ -53,7 +55,7 @@ public class RecipeRootAddIngredientTests
         var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
         
         // Act
-        recipe.AddIngredient(ingredient.Id, 100, MeasurementUnit.Ml);
+        recipe.AddIngredient(ingredient.Id, new IngredientAmount(100), MeasurementUnit.Ml);
         
         // Assert
         Assert.Contains(recipe.Ingredients,  i => i.IngredientId == ingredient.Id);
@@ -68,7 +70,7 @@ public class RecipeRootAddIngredientTests
         
         // Act & Assert
         Assert.Throws<ArgumentException>(() =>
-            recipe.AddIngredient(ingredient.Id, 100, MeasurementUnit.Ml)
+            recipe.AddIngredient(ingredient.Id, new IngredientAmount(100), MeasurementUnit.Ml)
         );
     }
 }

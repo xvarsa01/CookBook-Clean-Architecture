@@ -1,4 +1,6 @@
 ﻿using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.TestsBase;
 
 namespace CookBook.Clean.CoreTests.RecipeRoot;
@@ -15,10 +17,10 @@ public class RecipeRootUpdateIngredientTests
             var ingredientInRecipe = recipe.Ingredients.First();
         
             // Act
-            recipe.UpdateIngredientEntry(ingredientInRecipe.Id, 123456, MeasurementUnit.Kg);
+        recipe.UpdateIngredientEntry(ingredientInRecipe.Id, new IngredientAmount(123456), MeasurementUnit.Kg);
         
             // Assert
-            Assert.Equal(123456, recipe.Ingredients.First().Amount);
+        Assert.Equal(123456, recipe.Ingredients.First().Amount.Value);
             Assert.Equal(MeasurementUnit.Kg, recipe.Ingredients.First().Unit);
         }
         
@@ -33,7 +35,7 @@ public class RecipeRootUpdateIngredientTests
         
             // Act & Assert
             Assert.Throws<ArgumentException>(() =>
-                recipe.UpdateIngredientEntry(ingredientInRecipe.Id, 0, MeasurementUnit.Kg)
+            recipe.UpdateIngredientEntry(ingredientInRecipe.Id, new IngredientAmount(0), MeasurementUnit.Kg)
             );
         }
         
@@ -46,7 +48,7 @@ public class RecipeRootUpdateIngredientTests
         
             // Act & Assert
             Assert.Throws<ArgumentException>(() =>
-                    recipe.UpdateIngredientEntry(ingredientInRecipe.Id, -100, MeasurementUnit.Kg)
+                    recipe.UpdateIngredientEntry(ingredientInRecipe.Id, new IngredientAmount(-100), MeasurementUnit.Kg)
             );
         }
         
@@ -58,7 +60,7 @@ public class RecipeRootUpdateIngredientTests
         
             // Act & Assert
             Assert.Throws<InvalidOperationException>(() =>
-                recipe.UpdateIngredientEntry(Guid.NewGuid(), 123456, MeasurementUnit.Kg)
+            recipe.UpdateIngredientEntry(Guid.NewGuid(), new IngredientAmount(123456), MeasurementUnit.Kg)
             );
         }
 }
