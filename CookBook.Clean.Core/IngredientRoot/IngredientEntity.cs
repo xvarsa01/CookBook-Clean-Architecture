@@ -15,7 +15,7 @@ public class IngredientEntity : IRootEntity
     public IngredientEntity(string name, string? description, ImageUrl? imageUrl)
     {
         if (string.IsNullOrEmpty(name))
-            throw new ArgumentNullException(nameof(name));
+            throw new ArgumentException(nameof(name));
         
         Name =  name;
         Description = description;
@@ -25,7 +25,7 @@ public class IngredientEntity : IRootEntity
     public void UpdateName(string newName)
     {
         if (string.IsNullOrEmpty(newName))
-            throw new ArgumentNullException(nameof(newName));
+            throw new ArgumentException(nameof(newName));
         
         if (Name == newName) return;
         Name = newName;
