@@ -1,4 +1,5 @@
 ﻿using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.Enums;
 using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;

@@ -5,6 +5,7 @@ using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Application.Specifications;
 using CookBook.Clean.Application.UseCases.Ingredients;
+using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 using Moq;
 
@@ -54,7 +55,7 @@ public class IngredientUnitTests
     public async Task GetIngredientHandler_ReturnsOk_WhenFound()
     {
         var id = Guid.NewGuid();
-        var entity = new IngredientEntity("Salt", null, "img") { Id = id };
+        var entity = new IngredientEntity("Salt", null, new ImageUrl("http://image.png")) { Id = id };
 
         var repoMock = new Mock<IRepository<IngredientEntity>>();
         repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);

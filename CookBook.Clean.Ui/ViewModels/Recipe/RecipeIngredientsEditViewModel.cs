@@ -7,6 +7,7 @@ using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Application.Queries.Recipes;
 using CookBook.Clean.Application.UseCases.Recipes;
+using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Ui.Messages;
 using CookBook.Clean.Ui.Services.Interfaces;
 using MediatR;
