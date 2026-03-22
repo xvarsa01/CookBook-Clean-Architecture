@@ -1,4 +1,4 @@
-﻿namespace CookBook.Clean.Core.IngredientRoot;
+﻿namespace CookBook.Clean.Core.IngredientRoot.Enums;
 
 public enum IngredientType
 {

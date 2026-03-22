@@ -1,4 +1,5 @@
-﻿using CookBook.Clean.Core.RecipeRoot.ValueObjects;
+﻿using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Core.RecipeRoot;
 

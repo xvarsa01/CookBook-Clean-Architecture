@@ -1,10 +1,10 @@
-﻿namespace CookBook.Clean.Core.RecipeRoot;
+﻿namespace CookBook.Clean.Core.RecipeRoot.Enums;
 
 public enum RecipeType
 {
     None,
     MainDish,
     Soup,
-    Desert,
+    Dessert,
     Drink
 }
