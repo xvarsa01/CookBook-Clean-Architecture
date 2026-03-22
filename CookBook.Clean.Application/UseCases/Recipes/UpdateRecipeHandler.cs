@@ -1,6 +1,7 @@
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
+using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
@@ -29,7 +30,11 @@ internal class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IRequ
             ? new RecipeDuration(request.NewDuration.Value) 
             : null;
         
-        existing.UpdateRest(request.NewImageUrl, duration , request.NewType);
+        var url = request.NewImageUrl is not null
+            ? new ImageUrl(request.NewImageUrl)
+            : null;
+        
+        existing.UpdateRest(url, duration , request.NewType);
 
         var id = await repository.UpdateAsync(existing);
         if (id is null)

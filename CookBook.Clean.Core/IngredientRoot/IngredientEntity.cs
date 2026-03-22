@@ -1,4 +1,6 @@
-﻿namespace CookBook.Clean.Core.IngredientRoot;
+﻿using CookBook.Clean.Core.Shared.ValueObjects;
+
+namespace CookBook.Clean.Core.IngredientRoot;
 
 // business rules:
 // - name can not be empty string
@@ -8,9 +10,9 @@ public class IngredientEntity : IRootEntity
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; private set; }
     public string? Description { get; private set; }
-    public string? ImageUrl { get; private set; }
+    public ImageUrl? ImageUrl { get; private set; }
 
-    public IngredientEntity(string name, string? description, string? imageUrl)
+    public IngredientEntity(string name, string? description, ImageUrl? imageUrl)
     {
         if (string.IsNullOrEmpty(name))
             throw new ArgumentNullException(nameof(name));
@@ -35,7 +37,7 @@ public class IngredientEntity : IRootEntity
         Description = newDescription;
     }
     
-    public void UpdateImageUrl(string newUrl)
+    public void UpdateImageUrl(ImageUrl newUrl)
     {
         if (ImageUrl == newUrl) return;
         ImageUrl = newUrl;

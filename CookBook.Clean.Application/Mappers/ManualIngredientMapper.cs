@@ -1,6 +1,7 @@
 ﻿using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.UseCases.Ingredients;
 using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.Shared.ValueObjects;
 
 namespace CookBook.Clean.Application.Mappers;
 
@@ -12,7 +13,7 @@ public class ManualIngredientMapper : IIngredientMapper
         {
             Id = entity.Id,
             Name = entity.Name,
-            ImageUrl = entity.ImageUrl,
+            ImageUrl = entity.ImageUrl?.Value,
         };
     }
 
@@ -34,15 +35,17 @@ public class ManualIngredientMapper : IIngredientMapper
             Id = entity.Id,
             Name = entity.Name,
             Description = entity.Description,
-            ImageUrl = entity.ImageUrl,
+            ImageUrl = entity.ImageUrl?.Value,
         };
     }
 
     public IngredientEntity MapToEntity(CreateIngredientUseCase request)
     {
+        var url = request.ImageUrl is not null ? new ImageUrl(request.ImageUrl) : null;
+        
         return new IngredientEntity(
             request.Name,
             request.Description,
-            request.ImageUrl);
+            url);
     }
 }
