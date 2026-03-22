@@ -13,5 +13,4 @@ public class RecipeDuration
     }
     
     public static implicit operator TimeSpan(RecipeDuration duration) => duration.Value;
-    
 }
