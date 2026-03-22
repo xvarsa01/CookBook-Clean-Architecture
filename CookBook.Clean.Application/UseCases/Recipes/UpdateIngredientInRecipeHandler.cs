@@ -1,5 +1,6 @@
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
@@ -15,12 +16,17 @@ internal class UpdateIngredientInRecipeHandler(IRepository<RecipeEntity> recipeR
             return UseCaseResult.NotFound("Recipe not found");
         }
 
-        if (request.NewAmount <= 0)
+        IngredientAmount amount;
+        try
         {
-            return UseCaseResult.Invalid("Amount must be positive");
+            amount = new IngredientAmount(request.NewAmount);
+        }
+        catch (ArgumentException ex)
+        {
+            return UseCaseResult.Invalid(ex.Message);
         }
         
-        recipe.UpdateIngredientEntry(request.EntryId, request.NewAmount, request.NewUnit);
+        recipe.UpdateIngredientEntry(request.EntryId, amount, request.NewUnit);
         
         await recipeRepository.UpdateAsync(recipe);
         

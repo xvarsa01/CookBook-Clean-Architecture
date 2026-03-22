@@ -1,3 +1,5 @@
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
+
 namespace CookBook.Clean.Core.RecipeRoot;
 
 public record IngredientInRecipeEntity
@@ -5,10 +7,10 @@ public record IngredientInRecipeEntity
     public Guid Id { get; init; }
     public Guid IngredientId { get; init; }
 
-    public decimal Amount { get; private set; }
+    public IngredientAmount Amount { get; private set; }
     public MeasurementUnit Unit { get; private set; }
 
-    internal IngredientInRecipeEntity(Guid id, Guid ingredientId, decimal amount, MeasurementUnit unit)
+    internal IngredientInRecipeEntity(Guid id, Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
         Id = id;
         IngredientId = ingredientId;
@@ -16,7 +18,7 @@ public record IngredientInRecipeEntity
         Unit = unit;
     }
 
-    public void Update(decimal newAmount, MeasurementUnit newUnit)
+    public void Update(IngredientAmount newAmount, MeasurementUnit newUnit)
     {
         Amount = newAmount;
         Unit = newUnit;
