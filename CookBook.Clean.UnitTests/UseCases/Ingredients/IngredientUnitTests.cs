@@ -5,6 +5,7 @@ using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Application.Specifications;
 using CookBook.Clean.Application.UseCases.Ingredients;
+using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 using Moq;
@@ -25,14 +26,14 @@ public class IngredientUnitTests
             .ReturnsAsync(expectedId);
 
         var handler = new CreateIngredientHandler(repoMock.Object, mapper);
-        var useCase = new CreateIngredientUseCase("Sugar", "Sweet", "http://img");
+        var useCase = new CreateIngredientUseCase("Sugar", "Sweet", "http://a.png");
 
         // Act
         var result = await handler.Handle(useCase, CancellationToken.None);
 
         // Assert
         Assert.Equal(expectedId, result.Value);
-        repoMock.Verify(r => r.InsertAsync(It.Is<IngredientEntity>(e => e.Name == "Sugar" && e.ImageUrl == "http://img")), Times.Once);
+        repoMock.Verify(r => r.InsertAsync(It.Is<IngredientEntity>(e => e.Name == "Sugar" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
     }
 
     [Fact]
@@ -124,12 +125,12 @@ public class IngredientUnitTests
         var publisherMock = new Mock<IPublisher>();
 
         var handler = new UpdateIngredientHandler(repoMock.Object, publisherMock.Object);
-        var useCase = new UpdateIngredientUseCase(id, "New", "NewDesc", "NewImg");
+        var useCase = new UpdateIngredientUseCase(id, "New", "NewDesc", "http://a.png");
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
         Assert.True(result.Success);
-        repoMock.Verify(r => r.UpdateAsync(It.Is<IngredientEntity>(e => e.Name == "New" && e.Description == "NewDesc" && e.ImageUrl == "NewImg")), Times.Once);
+        repoMock.Verify(r => r.UpdateAsync(It.Is<IngredientEntity>(e => e.Name == "New" && e.Description == "NewDesc" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
         publisherMock.Verify(p => p.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 

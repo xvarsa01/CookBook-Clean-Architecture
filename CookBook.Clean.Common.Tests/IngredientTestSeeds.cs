@@ -1,4 +1,5 @@
 ﻿using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.Shared.ValueObjects;
 
 namespace CookBook.Clean.TestsBase;
 
@@ -7,7 +8,7 @@ public class IngredientTestSeeds
     public static readonly IngredientEntity Water =  new(
         name: "water",
         description: "water simply doesnt need description",
-        imageUrl: "https://www.pngitem.com/pimgs/m/40-406527_cartoon-glass-of-water-png-glass-of-water.png");
+        imageUrl: new ImageUrl("https://www.pngitem.com/pimgs/m/40-406527_cartoon-glass-of-water-png-glass-of-water.png"));
     
     public static readonly IngredientEntity Lemon =  new(
         name: "lemon",

@@ -1,6 +1,7 @@
 ﻿using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
+using CookBook.Clean.Core.Shared.ValueObjects;
 
 namespace CookBook.Clean.TestsBase;
 
@@ -11,7 +12,7 @@ public static class RecipeTestSeeds
         return new RecipeEntity(
             name: new RecipeName("empty recipe"),
             description: "no ingredients",
-            imageUrl: "no image",
+            imageUrl: new ImageUrl("http://a.png"),
             duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
             type: RecipeType.None);
     }
@@ -31,7 +32,7 @@ public static class RecipeTestSeeds
         var recipe = new RecipeEntity(
             name: new RecipeName("recipe with 1 ingredient"),
             description: "this will be added",
-            imageUrl: "no image",
+            imageUrl: new ImageUrl("http://a.png"),
             duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
             type: RecipeType.None);
         
