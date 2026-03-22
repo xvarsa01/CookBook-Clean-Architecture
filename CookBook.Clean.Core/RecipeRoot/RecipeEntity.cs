@@ -11,26 +11,17 @@ namespace CookBook.Clean.Core.RecipeRoot;
 // - recipe can have 0-10 ingredients
 //   - ingredient amount must be positive
 
-public class RecipeEntity : IRootEntity
+public class RecipeEntity(RecipeName name, string? description, string? imageUrl, RecipeDuration duration, RecipeType type)
+    : IRootEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public RecipeName Name { get; private set; }
-    public string? Description { get; private set; }
-    public string? ImageUrl { get; private set; }
-    public RecipeDuration Duration { get; private set; }
-    public RecipeType Type { get; private set; }
-    
+    public RecipeName Name { get; private set; } = name;
+    public string? Description { get; private set; } = description;
+    public string? ImageUrl { get; private set; } = imageUrl;
+    public RecipeDuration Duration { get; private set; } = duration;
+    public RecipeType Type { get; private set; } = type;
 
     private readonly List<IngredientInRecipeEntity> _ingredients = [];
-
-    public RecipeEntity(RecipeName name, string? description, string? imageUrl, RecipeDuration duration, RecipeType type)
-    {
-        Name = name;
-        Description = description;
-        ImageUrl = imageUrl;
-        Duration = duration;
-        Type = type;
-    }
 
     public IReadOnlyCollection<IngredientInRecipeEntity> Ingredients => _ingredients.AsReadOnly();
     
