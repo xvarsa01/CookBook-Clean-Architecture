@@ -1,4 +1,5 @@
 ﻿using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Core.RecipeRoot;
@@ -36,7 +37,7 @@ public class RecipeEntity : IRootEntity
     public Guid AddIngredient(Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
         if (_ingredients.Count == 10)
-            throw new ArgumentException("Recipe cannot have more than 10 ingredients.");
+            throw new RecipeMaximumNumberOfIngredients();
         
         var ingredientInRecipeId = Guid.NewGuid();
         var ingredient = new IngredientInRecipeEntity(ingredientInRecipeId, ingredientId, amount, unit);
@@ -49,7 +50,7 @@ public class RecipeEntity : IRootEntity
         var removedCount = _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
 
         if (removedCount == 0)
-            throw new InvalidOperationException($"Ingredient {ingredientId} not found in recipe {Id}.");
+            throw new RecipeIngredientByIdNotFoundException(ingredientId, Id);
     }
     
     public void RemoveIngredientByEntryId(Guid entryId)
@@ -57,18 +58,16 @@ public class RecipeEntity : IRootEntity
         var idx = _ingredients.FindIndex(i => i.Id == entryId);
 
         if (idx < 0)
-        {
-            throw new InvalidOperationException($"Ingredient entry {entryId} not found.");
-        }
+            throw new RecipeIngredientByEntryIdNotFoundException(entryId, Id);
+        
         _ingredients.RemoveAt(idx);
     }
     
     public void RemoveAllIngredients()
     {
         if (_ingredients.Count == 0)
-        {
-            throw new InvalidOperationException($"Recipe entity {Id} has no ingredients.");
-        }
+            throw new RecipeHasNoIngredientsException(Id);
+        
         _ingredients.Clear();
     }
 
@@ -77,7 +76,7 @@ public class RecipeEntity : IRootEntity
         var ingredient = _ingredients.FirstOrDefault(i => i.Id == entryId);
 
         if (ingredient is null)
-            throw new InvalidOperationException($"Ingredient entry {entryId} not found.");
+            throw new RecipeIngredientByEntryIdNotFoundException(entryId, Id);
 
         ingredient.Update(newAmount, newUnit);
     }
