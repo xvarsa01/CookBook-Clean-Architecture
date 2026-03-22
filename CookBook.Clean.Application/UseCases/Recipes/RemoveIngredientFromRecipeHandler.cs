@@ -1,5 +1,6 @@
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
@@ -15,7 +16,14 @@ internal class RemoveIngredientFromRecipeHandler(IRepository<RecipeEntity> recip
             return UseCaseResult.NotFound("Recipe not found");
         }
         
-        recipe.RemoveIngredientByEntryId(request.EntryId);
+        try
+        {
+            recipe.RemoveIngredientByEntryId(request.EntryId);
+        }
+        catch (RecipeIngredientByEntryIdNotFoundException ex)
+        {
+            return UseCaseResult.Invalid(ex.Message);
+        }
 
         await recipeRepository.UpdateAsync(recipe);
         return UseCaseResult.Ok();

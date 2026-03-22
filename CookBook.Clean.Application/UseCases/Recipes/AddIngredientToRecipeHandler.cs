@@ -1,6 +1,7 @@
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using MediatR;
 
@@ -25,7 +26,16 @@ internal class AddIngredientToRecipeHandler(
             return UseCaseResult<Guid>.NotFound("Ingredient not found");
         }
 
-        var id = recipe.AddIngredient(request.IngredientId, new IngredientAmount(request.Amount), request.Unit);
+        Guid id;
+        try
+        {
+            id = recipe.AddIngredient(request.IngredientId, new IngredientAmount(request.Amount), request.Unit);
+        }
+        catch (RecipeMaximumNumberOfIngredients ex)
+        {
+            return UseCaseResult<Guid>.Invalid(ex.Message);
+        }
+        
         await recipeRepository.UpdateAsync(recipe);
 
         return UseCaseResult<Guid>.Ok(id);

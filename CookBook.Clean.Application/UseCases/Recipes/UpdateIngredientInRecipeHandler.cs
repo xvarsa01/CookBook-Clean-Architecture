@@ -1,5 +1,6 @@
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using MediatR;
 
@@ -25,8 +26,15 @@ internal class UpdateIngredientInRecipeHandler(IRepository<RecipeEntity> recipeR
         {
             return UseCaseResult.Invalid(ex.Message);
         }
-        
-        recipe.UpdateIngredientEntry(request.EntryId, amount, request.NewUnit);
+
+        try
+        {
+            recipe.UpdateIngredientEntry(request.EntryId, amount, request.NewUnit);
+        }
+        catch (RecipeIngredientByEntryIdNotFoundException ex)
+        {
+            return UseCaseResult.Invalid(ex.Message);
+        }
         
         await recipeRepository.UpdateAsync(recipe);
         
