@@ -1,4 +1,5 @@
-﻿using CookBook.Clean.TestsBase;
+﻿using CookBook.Clean.Core.RecipeRoot.Exceptions;
+using CookBook.Clean.TestsBase;
 
 namespace CookBook.Clean.CoreTests.RecipeRoot;
 
@@ -76,7 +77,7 @@ public class RecipeRootRemoveIngredientTests
             var ingredient = IngredientTestSeeds.Water;
             
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() =>
+        Assert.Throws<RecipeIngredientByIdNotFoundException>(() =>
                 recipe.RemoveIngredientsByIngredientId(ingredient.Id)
             );
         }
@@ -88,7 +89,7 @@ public class RecipeRootRemoveIngredientTests
             var recipe = RecipeTestSeeds.EmptyRecipe();
             
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() =>
+        Assert.Throws<RecipeHasNoIngredientsException>(() =>
                 recipe.RemoveAllIngredients()
             );
         }
@@ -101,7 +102,7 @@ public class RecipeRootRemoveIngredientTests
             var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
             
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() =>
+        Assert.Throws<RecipeIngredientByIdNotFoundException>(() =>
                 recipe.RemoveIngredientsByIngredientId(ingredient.Id)
             );
         }
@@ -114,7 +115,7 @@ public class RecipeRootRemoveIngredientTests
             var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
             
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() =>
+        Assert.Throws<RecipeIngredientByEntryIdNotFoundException>(() =>
                 recipe.RemoveIngredientByEntryId(ingredient.Id)
             );
         }

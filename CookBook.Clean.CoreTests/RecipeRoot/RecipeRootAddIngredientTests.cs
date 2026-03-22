@@ -1,5 +1,6 @@
 ﻿using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.TestsBase;
 
@@ -69,7 +70,7 @@ public class RecipeRootAddIngredientTests
         var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
         
         // Act & Assert
-        Assert.Throws<ArgumentException>(() =>
+        Assert.Throws<RecipeMaximumNumberOfIngredients>(() =>
             recipe.AddIngredient(ingredient.Id, new IngredientAmount(100), MeasurementUnit.Ml)
         );
     }

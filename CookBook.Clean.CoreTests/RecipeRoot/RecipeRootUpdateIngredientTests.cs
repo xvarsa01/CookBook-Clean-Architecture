@@ -1,5 +1,6 @@
 ﻿using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.TestsBase;
 
@@ -59,7 +60,7 @@ public class RecipeRootUpdateIngredientTests
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
         
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() =>
+        Assert.Throws<RecipeIngredientByEntryIdNotFoundException>(() =>
             recipe.UpdateIngredientEntry(Guid.NewGuid(), new IngredientAmount(123456), MeasurementUnit.Kg)
             );
         }
