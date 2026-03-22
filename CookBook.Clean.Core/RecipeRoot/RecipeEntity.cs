@@ -1,6 +1,7 @@
 ﻿using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
+using CookBook.Clean.Core.Shared.ValueObjects;
 
 namespace CookBook.Clean.Core.RecipeRoot;
 
@@ -11,26 +12,17 @@ namespace CookBook.Clean.Core.RecipeRoot;
 // - recipe can have 0-10 ingredients
 //   - ingredient amount must be positive
 
-public class RecipeEntity : IRootEntity
+public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
+    : IRootEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public RecipeName Name { get; private set; }
-    public string? Description { get; private set; }
-    public string? ImageUrl { get; private set; }
-    public RecipeDuration Duration { get; private set; }
-    public RecipeType Type { get; private set; }
-    
+    public RecipeName Name { get; private set; } = name;
+    public string? Description { get; private set; } = description;
+    public ImageUrl? ImageUrl { get; private set; } = imageUrl;
+    public RecipeDuration Duration { get; private set; } = duration;
+    public RecipeType Type { get; private set; } = type;
 
     private readonly List<IngredientInRecipeEntity> _ingredients = [];
-
-    public RecipeEntity(RecipeName name, string? description, string? imageUrl, RecipeDuration duration, RecipeType type)
-    {
-        Name = name;
-        Description = description;
-        ImageUrl = imageUrl;
-        Duration = duration;
-        Type = type;
-    }
 
     public IReadOnlyCollection<IngredientInRecipeEntity> Ingredients => _ingredients.AsReadOnly();
     
@@ -94,7 +86,7 @@ public class RecipeEntity : IRootEntity
         Description = newDescription;
     }
     
-    public void UpdateRest(string? newUrl, RecipeDuration? newDuration, RecipeType? newType)
+    public void UpdateRest(ImageUrl? newUrl, RecipeDuration? newDuration, RecipeType? newType)
     {
         if (ImageUrl != newUrl)
         {

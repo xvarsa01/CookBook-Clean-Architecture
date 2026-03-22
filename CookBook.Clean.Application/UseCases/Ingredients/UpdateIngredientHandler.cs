@@ -1,6 +1,7 @@
 ﻿using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.Events;
+using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Ingredients;
@@ -29,7 +30,7 @@ internal class UpdateIngredientHandler(IRepository<IngredientEntity> repository,
 
         if (request.NewImageUrl is not null)
         {
-            existingIngredient.UpdateImageUrl(request.NewImageUrl);
+            existingIngredient.UpdateImageUrl(new ImageUrl(request.NewImageUrl));
         }
         
         var id = await repository.UpdateAsync(existingIngredient);
