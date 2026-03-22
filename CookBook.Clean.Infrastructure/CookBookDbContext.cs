@@ -1,5 +1,6 @@
 ﻿using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.Clean.Infrastructure;
@@ -17,6 +18,21 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
         modelBuilder.Entity<RecipeEntity>()
             .Property(r => r.Duration)
             .HasColumnType("time");
+
+        modelBuilder.Entity<RecipeEntity>()
+            .Property(r => r.Name)
+            .HasConversion(
+                v => v.Value,      // store decimal in DB
+                v => new RecipeName(v)  // convert back to VO
+            );
+        
+        modelBuilder.Entity<RecipeEntity>()
+            .Property(r => r.Duration)
+            .HasConversion(
+                v => v.Value,      // store decimal in DB
+                v => new RecipeDuration(v)  // convert back to VO
+            );
+        
         
         modelBuilder.Entity<RecipeEntity>()
             .OwnsMany(r => r.Ingredients, b =>
@@ -24,6 +40,13 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
                 b.WithOwner().HasForeignKey("RecipeId");
                 b.Property(i => i.Id).ValueGeneratedNever();
                 b.HasKey(i => i.Id);
+                
+                b.Property(i => i.Amount)
+                    .HasConversion(
+                        v => v.Value,         // store decimal in DB
+                        v => new IngredientAmount(v)  // convert back to VO
+                    )
+                    .IsRequired();
                 
                 b.HasOne<IngredientEntity>()
                     .WithMany()
