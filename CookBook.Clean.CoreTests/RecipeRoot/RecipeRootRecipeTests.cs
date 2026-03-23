@@ -22,6 +22,20 @@ public class RecipeRootRecipeTests
     }
     
     [Fact]
+    public void Creating_Recipe_Should_Create_At_Correct_Time()
+    {
+        // Arrange
+        var before = DateTime.UtcNow;
+
+        // Act
+        var recipe = new RecipeEntity(new RecipeName("Cappuccino"), "with oak mil", new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg"), new RecipeDuration(TimeSpan.FromMinutes(5)), RecipeType.Drink);
+
+        // Assert
+        var after = DateTime.UtcNow;
+        Assert.InRange(recipe.CreatedAt, before, after);
+    }
+    
+    [Fact]
     public void Creating_Recipe_WithOut_DescriptionAndImage_Should_Create()
     {
         // Act
@@ -96,6 +110,7 @@ public class RecipeRootRecipeTests
             recipe.UpdateName(new RecipeName("AB"))
         );
     }
+    
     [Fact]
     public void Updating_RecipeName_To_Same_Value_Should_Not_Change()
     {
@@ -104,6 +119,22 @@ public class RecipeRootRecipeTests
         recipe.UpdateName(new RecipeName("Cappuccino"));
 
         Assert.Equal("Cappuccino", recipe.Name.Value);
+    }
+    
+    [Fact]
+    public void Updating_RecipeName_Should_Set_ModifiedAt()
+    {
+        // Arrange
+        var recipe = new RecipeEntity(new RecipeName("Cappuccino"), "with oak mil", new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg"), new RecipeDuration(TimeSpan.FromMinutes(5)), RecipeType.Drink);
+        var before = DateTime.UtcNow;
+
+        // Act
+        recipe.UpdateName(new RecipeName("New Name"));
+
+        // Assert
+        var after = DateTime.UtcNow;
+        Assert.NotNull(recipe.ModifiedAt);
+        Assert.InRange(recipe.ModifiedAt.Value, before, after);
     }
     
     
@@ -126,6 +157,22 @@ public class RecipeRootRecipeTests
 
         Assert.Equal("Same", recipe.Description);
     }
+        
+    [Fact]
+    public void Updating_RecipeDescription_Should_Set_ModifiedAt()
+    {
+        // Arrange
+        var recipe = new RecipeEntity(new RecipeName("Cappuccino"), "with oak mil", new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg"), new RecipeDuration(TimeSpan.FromMinutes(5)), RecipeType.Drink);
+        var before = DateTime.UtcNow;
+
+        // Act
+        recipe.UpdateDescription("New");
+
+        // Assert
+        var after = DateTime.UtcNow;
+        Assert.NotNull(recipe.ModifiedAt);
+        Assert.InRange(recipe.ModifiedAt.Value, before, after);
+    }
     
     
     [Fact]
@@ -146,6 +193,22 @@ public class RecipeRootRecipeTests
         recipe.UpdateRest(new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg"), null, null);
 
         Assert.Equal("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg", recipe.ImageUrl?.Value);
+    }
+            
+    [Fact]
+    public void Updating_RecipeImageUrl_Should_Set_ModifiedAt()
+    {
+        // Arrange
+        var recipe = new RecipeEntity(new RecipeName("Cappuccino"), "with oak mil", new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg"), new RecipeDuration(TimeSpan.FromMinutes(5)), RecipeType.Drink);
+        var before = DateTime.UtcNow;
+
+        // Act
+        recipe.UpdateRest(new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg"), null, null);
+
+        // Assert
+        var after = DateTime.UtcNow;
+        Assert.NotNull(recipe.ModifiedAt);
+        Assert.InRange(recipe.ModifiedAt.Value, before, after);
     }
     
     
@@ -179,6 +242,22 @@ public class RecipeRootRecipeTests
         );
     }
     
+    [Fact]
+    public void Updating_RecipeDuration_Should_Set_ModifiedAt()
+    {
+        // Arrange
+        var recipe = new RecipeEntity(new RecipeName("Cappuccino"), "with oak mil", new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg"), new RecipeDuration(TimeSpan.FromMinutes(5)), RecipeType.Drink);
+        var before = DateTime.UtcNow;
+
+        // Act
+        recipe.UpdateRest(null, new RecipeDuration(TimeSpan.FromMinutes(5)), null);
+
+        // Assert
+        var after = DateTime.UtcNow;
+        Assert.NotNull(recipe.ModifiedAt);
+        Assert.InRange(recipe.ModifiedAt.Value, before, after);
+    }
+    
     
     [Fact]
     public void Updating_RecipeType_Should_Update_Type()
@@ -198,6 +277,22 @@ public class RecipeRootRecipeTests
         recipe.UpdateRest(null, new RecipeDuration(TimeSpan.FromMinutes(5)), RecipeType.Drink);
 
         Assert.Equal(RecipeType.Drink, recipe.Type);
+    }
+    
+    [Fact]
+    public void Updating_RecipeType_Should_Set_ModifiedAt()
+    {
+        // Arrange
+        var recipe = new RecipeEntity(new RecipeName("Cappuccino"), "with oak mil", new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg"), new RecipeDuration(TimeSpan.FromMinutes(5)), RecipeType.Drink);
+        var before = DateTime.UtcNow;
+
+        // Act
+        recipe.UpdateRest(null, new RecipeDuration(TimeSpan.FromMinutes(5)), RecipeType.Drink);
+
+        // Assert
+        var after = DateTime.UtcNow;
+        Assert.NotNull(recipe.ModifiedAt);
+        Assert.InRange(recipe.ModifiedAt.Value, before, after);
     }
 
 }
