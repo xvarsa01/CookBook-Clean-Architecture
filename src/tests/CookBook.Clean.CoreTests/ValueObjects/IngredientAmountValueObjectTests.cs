@@ -10,33 +10,38 @@ public class IngredientAmountValueObjectTests
     [Fact]
     public void Creating_IngredientAmount_With_Positive_Amount_Should_Succeed()
     {
-        var amount = new IngredientAmount(1);
-        Assert.Equal(1, amount.Value);
+        var amount = IngredientAmount.CreateObject(1);
+
+        Assert.True(amount.IsSuccess);
+        Assert.Equal(1, amount.Value.Value);
     }
     
     [Fact]
     public void IngredientAmount_With_Same_Value_Should_Be_Equal()
     {
-        var a1 = new IngredientAmount(100);
-        var a2 = new IngredientAmount(100);
+        var a1 = IngredientAmount.CreateObject(100);
+        var a2 = IngredientAmount.CreateObject(100);
 
+        Assert.True(a1.IsSuccess);
+        Assert.True(a2.IsSuccess);
         Assert.Equal(a1.Value, a2.Value);
+        Assert.Equal(a1.Value.Value, a2.Value.Value);
     }
     
     //invalid ones:
     [Fact]
     public void Creating_IngredientAmount_With_Zero_Amount_Should_Throw()
     {
-        Assert.Throws<ArgumentException>(() =>
-                new IngredientAmount(0)
-        );
+        var amount = IngredientAmount.CreateObject(0);
+
+        Assert.False(amount.IsSuccess);
     }
 
     [Fact]
     public void Creating_IngredientAmount_With_Negative_Amount_Should_Throw()
     {
-        Assert.Throws<ArgumentException>(() =>
-            new IngredientAmount(-1)
-        );
+        var amount = IngredientAmount.CreateObject(-1);
+
+        Assert.False(amount.IsSuccess);
     }
 }

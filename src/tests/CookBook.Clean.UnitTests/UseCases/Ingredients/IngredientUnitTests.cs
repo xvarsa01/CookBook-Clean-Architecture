@@ -56,7 +56,8 @@ public class IngredientUnitTests
     public async Task GetIngredientHandler_ReturnsOk_WhenFound()
     {
         var id = Guid.NewGuid();
-        var entity = new IngredientEntity("Salt", null, new ImageUrl("http://image.png")) { Id = id };
+        var entity = IngredientEntity.Create("Salt", null, ImageUrl.CreateObject("http://image.png").Value).Value;
+        entity.Id = id;
 
         var repoMock = new Mock<IRepository<IngredientEntity>>();
         repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
@@ -75,10 +76,15 @@ public class IngredientUnitTests
     [Fact]
     public async Task GetListIngredientHandler_ReturnsList()
     {
+        var entityA = IngredientEntity.Create("A", null, null).Value;
+        entityA.Id = Guid.NewGuid();
+        var entityB = IngredientEntity.Create("B", null, null).Value;
+        entityB.Id = Guid.NewGuid();
+
         var list = new List<IngredientEntity>
         {
-            new IngredientEntity("A", null, null) { Id = Guid.NewGuid() },
-            new IngredientEntity("B", null, null) { Id = Guid.NewGuid() }
+            entityA,
+            entityB
         };
 
         var repoMock = new Mock<IRepository<IngredientEntity>>();
@@ -116,7 +122,8 @@ public class IngredientUnitTests
     public async Task UpdateIngredientHandler_UpdatesAndReturnsOk()
     {
         var id = Guid.NewGuid();
-        var entity = new IngredientEntity("Old", "d", null) { Id = id };
+        var entity = IngredientEntity.Create("Old", "d", null).Value;
+        entity.Id = id;
 
         var repoMock = new Mock<IRepository<IngredientEntity>>();
         repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
@@ -138,8 +145,9 @@ public class IngredientUnitTests
     public async Task DeleteIngredientHandler_DeletesAndReturnsOk()
     {
         var id = Guid.NewGuid();
-        var entity = new IngredientEntity("Old", "d", null) { Id = id };
-        
+        var entity = IngredientEntity.Create("Old", "d", null).Value;
+        entity.Id = id;
+
         var repoMock = new Mock<IRepository<IngredientEntity>>();
         var repoMockRecipe = new Mock<IRecipeRepository>();
         

@@ -9,114 +9,105 @@ public static class RecipeTestSeeds
 {
     public static RecipeEntity EmptyRecipe()
     {
-        return new RecipeEntity(
-            name: new RecipeName("empty recipe"),
+        return RecipeEntity.Create(name: RecipeName.CreateObject("empty recipe").Value,
             description: "no ingredients",
-            imageUrl: new ImageUrl("http://a.png"),
-            duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
-            type: RecipeType.None);
+            imageUrl: ImageUrl.CreateObject("http://a.png").Value,
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
     }
 
     public static RecipeEntity MinimalisticRecipe()
     {
-        return new RecipeEntity(
-            name: new RecipeName("minimalistic"),
+        return RecipeEntity.Create(name: RecipeName.CreateObject("minimalistic").Value,
             description: null,
             imageUrl: null,
-            duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
-            type: RecipeType.None);
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
     }
 
     public static RecipeEntity RecipeWithSingleIngredient()
     {
-        var recipe = new RecipeEntity(
-            name: new RecipeName("recipe with 1 ingredient"),
+        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("recipe with 1 ingredient").Value,
             description: "this will be added",
-            imageUrl: new ImageUrl("http://a.png"),
-            duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
-            type: RecipeType.None);
+            imageUrl: ImageUrl.CreateObject("http://a.png").Value,
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
         
-        recipe.AddIngredient(IngredientTestSeeds.Water.Id, new IngredientAmount(100), MeasurementUnit.Ml);
+        recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
         return recipe;
     }
 
     public static RecipeEntity RecipeWithMultipleIngredients()
     {
-        var recipe = new RecipeEntity(
-            name: new RecipeName("recipe with multiple ingredient"),
+        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("recipe with multiple ingredient").Value,
             description: null,
             imageUrl: null,
-            duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
-            type: RecipeType.None);
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
         
-        recipe.AddIngredient(IngredientTestSeeds.Water.Id, new IngredientAmount(100), MeasurementUnit.Ml);
-        recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, new IngredientAmount(1), MeasurementUnit.Unit);
+        recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
+        recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value, MeasurementUnit.Unit);
         return recipe;
     }
     
     public static RecipeEntity RecipeWithDuplicateIngredientEntries()
     {
-        var recipe = new RecipeEntity(
-            name: new RecipeName("recipe with lemon used twice"),
+        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("recipe with lemon used twice").Value,
             description: null,
             imageUrl: null,
-            duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
-            type: RecipeType.None);
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
         
-        recipe.AddIngredient(IngredientTestSeeds.Water.Id, new IngredientAmount(500), MeasurementUnit.Ml);
-        recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, new IngredientAmount(100), MeasurementUnit.Ml);
-        recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, new IngredientAmount(1), MeasurementUnit.Unit);
+        recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(500).Value, MeasurementUnit.Ml);
+        recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
+        recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value, MeasurementUnit.Unit);
         return recipe;
     }
     
     public static RecipeEntity RecipeFullWith10Ingredients()
     {
-        var recipe = new RecipeEntity(
-            name: new RecipeName("recipe with 10 ingredient"),
+        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("recipe with 10 ingredient").Value,
             description: null,
             imageUrl: null,
-            duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
-            type: RecipeType.None);
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
         
         for (int i = 0; i < 10; i++)
         {
-            recipe.AddIngredient(IngredientTestSeeds.Water.Id, new IngredientAmount(100), MeasurementUnit.Ml);
+            recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
         }
         return recipe;
     }
 
     public static RecipeEntity RecipeForTestOfDeleteWithoutIngredient()
     {
-        return new RecipeEntity(
-            name: new RecipeName("delete me"),
+        return RecipeEntity.Create(name: RecipeName.CreateObject("delete me").Value,
             description: "i will be deleted simply, because i dont contain any ingredients",
             imageUrl: null,
-            duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
-            type: RecipeType.None);
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
     }
 
     public static RecipeEntity RecipeForTestOfDeleteWithIngredient()
     {
-        var recipe = new RecipeEntity(
-            name: new RecipeName("delete me"),
+        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("delete me").Value,
             description: "i will be deleted, but my ingredients should remain in DB",
             imageUrl: null,
-            duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
-            type: RecipeType.None);
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
         
-        recipe.AddIngredient(IngredientTestSeeds.Water.Id, new IngredientAmount(100), MeasurementUnit.Ml);
+        recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
         return recipe;
     }
     
     public static RecipeEntity RecipeForTestOfUpdate(){
-        var recipe = new  RecipeEntity(
-            name: new RecipeName("update me"),
+        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("update me").Value,
             description: "this will be updated",
             imageUrl: null,
-            duration: new RecipeDuration(TimeSpan.FromMinutes(10)),
-            type: RecipeType.None);
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
 
-        recipe.AddIngredient(IngredientTestSeeds.Water.Id, new IngredientAmount(100), MeasurementUnit.Ml);
+        recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
         return recipe;
     }
     

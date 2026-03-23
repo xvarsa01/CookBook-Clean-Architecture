@@ -15,9 +15,10 @@ public class RecipeRootRemoveIngredientTests
             var ingredient = RecipeTestSeeds.RecipeWithSingleIngredient().Ingredients.First();
             
             // Act
-            recipe.RemoveIngredientByEntryId(recipe.Ingredients.First().Id);
+            var result = recipe.RemoveIngredientByEntryId(recipe.Ingredients.First().Id);
             
             // Assert
+            Assert.True(result.IsSuccess);
             Assert.Empty(recipe.Ingredients);
             Assert.DoesNotContain(recipe.Ingredients, i => i.IngredientId == ingredient.Id);
         }
@@ -30,9 +31,10 @@ public class RecipeRootRemoveIngredientTests
             var ingredient = RecipeTestSeeds.RecipeWithSingleIngredient().Ingredients.First();
             
             // Act
-            recipe.RemoveIngredientByEntryId(recipe.Ingredients.First().Id);
+            var result = recipe.RemoveIngredientByEntryId(recipe.Ingredients.First().Id);
             
             // Assert
+            Assert.True(result.IsSuccess);
             Assert.NotEmpty(recipe.Ingredients);
             Assert.DoesNotContain(recipe.Ingredients, i => i.IngredientId == ingredient.Id);
         }
@@ -46,9 +48,10 @@ public class RecipeRootRemoveIngredientTests
             var ingredientId = IngredientTestSeeds.Lemon.Id;
 
             // Act
-            recipe.RemoveIngredientsByIngredientId(ingredientId);
+            var result = recipe.RemoveIngredientsByIngredientId(ingredientId);
 
             // Assert
+            Assert.True(result.IsSuccess);
             Assert.NotEmpty(recipe.Ingredients); // water should remain
             Assert.DoesNotContain(recipe.Ingredients, i => i.IngredientId == ingredientId);
         }
@@ -60,9 +63,10 @@ public class RecipeRootRemoveIngredientTests
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
             
             // Act
-            recipe.RemoveAllIngredients();
+            var result = recipe.RemoveAllIngredients();
             
             // Assert
+            Assert.True(result.IsSuccess);
             Assert.Empty(recipe.Ingredients);
         }
         
@@ -77,9 +81,9 @@ public class RecipeRootRemoveIngredientTests
             var ingredient = IngredientTestSeeds.Water;
             
             // Act & Assert
-        Assert.Throws<RecipeIngredientByIdNotFoundException>(() =>
-                recipe.RemoveIngredientsByIngredientId(ingredient.Id)
-            );
+        var result = recipe.RemoveIngredientsByIngredientId(ingredient.Id);
+
+        Assert.False(result.IsSuccess);
         }
         
         [Fact]
@@ -89,9 +93,9 @@ public class RecipeRootRemoveIngredientTests
             var recipe = RecipeTestSeeds.EmptyRecipe();
             
             // Act & Assert
-        Assert.Throws<RecipeHasNoIngredientsException>(() =>
-                recipe.RemoveAllIngredients()
-            );
+        var result = recipe.RemoveAllIngredients();
+
+        Assert.False(result.IsSuccess);
         }
         
         [Fact]
@@ -102,9 +106,9 @@ public class RecipeRootRemoveIngredientTests
             var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
             
             // Act & Assert
-        Assert.Throws<RecipeIngredientByIdNotFoundException>(() =>
-                recipe.RemoveIngredientsByIngredientId(ingredient.Id)
-            );
+        var result = recipe.RemoveIngredientsByIngredientId(ingredient.Id);
+
+        Assert.False(result.IsSuccess);
         }
         
         [Fact]
@@ -115,8 +119,8 @@ public class RecipeRootRemoveIngredientTests
             var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
             
             // Act & Assert
-        Assert.Throws<RecipeIngredientByEntryIdNotFoundException>(() =>
-                recipe.RemoveIngredientByEntryId(ingredient.Id)
-            );
+        var result = recipe.RemoveIngredientByEntryId(ingredient.Id);
+
+        Assert.False(result.IsSuccess);
         }
 }

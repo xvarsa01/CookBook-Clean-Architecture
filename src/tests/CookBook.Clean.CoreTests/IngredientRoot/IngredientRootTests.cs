@@ -13,7 +13,7 @@ public class IngredientRootTests
     public void Creating_Ingredient_With_Valid_Initial_State_Should_Create()
     {
         // Act
-        var ingredient = new IngredientEntity("milk", "oak milk", new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg"));
+        var ingredient = IngredientEntity.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
         
         // Assert
         Assert.NotEqual(Guid.Empty, ingredient.Id);
@@ -26,7 +26,7 @@ public class IngredientRootTests
     public void Creating_Ingredient_WithOut_DescriptionAndImage_Should_Create()
     {
         // Act
-        var ingredient = new IngredientEntity("milk",null, null);
+        var ingredient = IngredientEntity.Create("milk", null, null).Value;
         
         // Assert
         Assert.NotEqual(Guid.Empty, ingredient.Id);
@@ -38,24 +38,24 @@ public class IngredientRootTests
     [Fact]
     public void Creating_Ingredient_With_Empty_Name_Should_Throw()
     {
-        Assert.Throws<ArgumentException>(() =>
-                new IngredientEntity(string.Empty, null, null)
-        );
+        var result = IngredientEntity.Create(string.Empty, null, null);
+
+        Assert.False(result.IsSuccess);
     }
     
     [Fact]
     public void Creating_Ingredient_With_Invalid_ImageUrl_Should_Throw()
     {
-        Assert.Throws<InvalidImageUrlException>(() =>
-            new IngredientEntity("milk", null, new ImageUrl("a.png "))
-        );
+        var imageUrlResult = ImageUrl.CreateObject("a.png ");
+
+        Assert.False(imageUrlResult.IsSuccess);
     }
     
     
     [Fact]
     public void Updating_IngredientName_Should_Update_Name()
     {
-        var ingredient = new IngredientEntity("milk", "oak milk", new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg"));
+        var ingredient = IngredientEntity.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
 
         ingredient.UpdateName("New");
 
@@ -65,7 +65,7 @@ public class IngredientRootTests
     [Fact]
     public void Updating_IngredientName_ToEmpty_Should_Throw()
     {
-        var ingredient = new IngredientEntity("milk", "oak milk", new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg"));
+        var ingredient = IngredientEntity.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
 
         Assert.Throws<ArgumentException>(() =>
             ingredient.UpdateName(string.Empty)
@@ -75,7 +75,7 @@ public class IngredientRootTests
     [Fact]
     public void Updating_Ingredient_To_Same_Value_Should_Not_Change()
     {
-        var ingredient = new IngredientEntity("milk", "oak milk", new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg"));
+        var ingredient = IngredientEntity.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
 
         ingredient.UpdateName("milk");
 
@@ -86,7 +86,7 @@ public class IngredientRootTests
     [Fact]
     public void Updating_IngredientDescription_Should_Update_Description()
     {
-        var ingredient = new IngredientEntity("milk", "oak milk", new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg"));
+        var ingredient = IngredientEntity.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
 
         ingredient.UpdateDescription("New");
 
@@ -96,7 +96,7 @@ public class IngredientRootTests
     [Fact]
     public void Updating_IngredientDescription_To_Same_Value_Should_Not_Change()
     {
-        var ingredient = new IngredientEntity("milk", "oak milk", new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg"));
+        var ingredient = IngredientEntity.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
 
         ingredient.UpdateDescription("oak milk");
 
@@ -107,9 +107,9 @@ public class IngredientRootTests
     [Fact]
     public void Updating_IngredientImageUrl_Should_Update_ImageUrl()
     {
-        var ingredient = new IngredientEntity("milk", "oak milk", new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg"));
+        var ingredient = IngredientEntity.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
 
-        ingredient.UpdateImageUrl(new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Steamed_milk.jpg"));
+        ingredient.UpdateImageUrl(ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Steamed_milk.jpg").Value);
 
         Assert.Equal("https://en.wikipedia.org/wiki/Milk#/media/File:Steamed_milk.jpg", ingredient.ImageUrl?.Value);
     }
@@ -117,9 +117,9 @@ public class IngredientRootTests
     [Fact]
     public void Updating_RecipeImageUrl_To_Same_Value_Should_Not_Change()
     {
-        var ingredient = new IngredientEntity("milk", "oak milk", new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg"));
+        var ingredient = IngredientEntity.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
 
-        ingredient.UpdateImageUrl(new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg"));
+        ingredient.UpdateImageUrl(ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value);
 
         Assert.Equal("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg", ingredient.ImageUrl?.Value);
     }
@@ -127,11 +127,11 @@ public class IngredientRootTests
     [Fact]
     public void Updating_RecipeImageUrl_To_Invalid_Value_Should_Throw()
     {
-        var ingredient = new IngredientEntity("milk", "oak milk", new ImageUrl("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg"));
+        var ingredient = IngredientEntity.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
 
-        Assert.Throws<InvalidImageUrlException>(() =>
-            ingredient.UpdateImageUrl(new ImageUrl("a.png "))
-        );
+        var imageUrlResult = ImageUrl.CreateObject("a.png ");
+
+        Assert.False(imageUrlResult.IsSuccess);
     }
     
 }

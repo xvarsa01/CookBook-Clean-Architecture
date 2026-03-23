@@ -9,35 +9,35 @@ public class ImageUrlValueObjectTests
     [Fact]
     public void Creating_ImageUrl_With_Valid_Http_Url_Should_Succeed()
     {
-        var url = new ImageUrl("http://a.png");
+        var url = ImageUrl.CreateObject("http://a.png");
         Assert.Equal("http://a.png", url.Value);
     }
 
     [Fact]
     public void Creating_ImageUrl_With_Valid_Https_Url_Should_Succeed()
     {
-        var url = new ImageUrl("https://a.jpg");
+        var url = ImageUrl.CreateObject("https://a.jpg");
         Assert.Equal("https://a.jpg", url.Value);
     }
 
     [Fact]
     public void Creating_ImageUrl_With_Protocol_Relative_Url_Should_Succeed()
     {
-        var url = new ImageUrl("//a.gif");
+        var url = ImageUrl.CreateObject("//a.gif");
         Assert.Equal("//a.gif", url.Value);
     }
 
     [Fact]
     public void Creating_ImageUrl_With_Complex_Path_Should_Succeed()
     {
-        var url = new ImageUrl("https://example.com/images/photo.jpeg");
+        var url = ImageUrl.CreateObject("https://example.com/images/photo.jpeg");
         Assert.Equal("https://example.com/images/photo.jpeg", url.Value);
     }
     
     [Fact]
     public void Creating_ImageUrl_With_Uppercase_Extension_Should_Succeed()
     {
-        var url = new ImageUrl("https://a.PNG");
+        var url = ImageUrl.CreateObject("https://a.PNG");
         Assert.Equal("https://a.PNG", url.Value);
     }
     
@@ -47,7 +47,7 @@ public class ImageUrlValueObjectTests
     public void Creating_ImageUrl_Without_Double_Slash_Should_Throw()
     {
         Assert.Throws<InvalidImageUrlException>(() =>
-                new ImageUrl("http:a.png")
+                ImageUrl.CreateObject("http:a.png")
         );
     }
 
@@ -55,7 +55,7 @@ public class ImageUrlValueObjectTests
     public void Creating_ImageUrl_With_Unsupported_Extension_Should_Throw()
     {
         Assert.Throws<InvalidImageUrlException>(() =>
-            new ImageUrl("https://a.bmp")
+            ImageUrl.CreateObject("https://a.bmp")
         );
     }
 
@@ -63,7 +63,7 @@ public class ImageUrlValueObjectTests
     public void Creating_ImageUrl_With_No_Extension_Should_Throw()
     {
         Assert.Throws<InvalidImageUrlException>(() =>
-            new ImageUrl("https://example.com/image")
+            ImageUrl.CreateObject("https://example.com/image")
         );
     }
 
@@ -71,7 +71,7 @@ public class ImageUrlValueObjectTests
     public void Creating_ImageUrl_With_Invalid_Protocol_Should_Throw()
     {
         Assert.Throws<InvalidImageUrlException>(() =>
-            new ImageUrl("ftp://a.png")
+            ImageUrl.CreateObject("ftp://a.png")
         );
     }
 
@@ -79,7 +79,7 @@ public class ImageUrlValueObjectTests
     public void Creating_ImageUrl_With_Quotes_Should_Throw()
     {
         Assert.Throws<InvalidImageUrlException>(() =>
-            new ImageUrl("https://exa\"mple.com/a.png")
+            ImageUrl.CreateObject("https://exa\"mple.com/a.png")
         );
     }
     
@@ -87,7 +87,7 @@ public class ImageUrlValueObjectTests
     public void Creating_ImageUrl_With_Query_String_Should_Throw()
     {
         Assert.Throws<InvalidImageUrlException>(() =>
-            new ImageUrl("https://a.png?size=large")
+            ImageUrl.CreateObject("https://a.png?size=large")
         );
     }
     

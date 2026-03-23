@@ -18,9 +18,10 @@ public class RecipeRootUpdateIngredientTests
             var ingredientInRecipe = recipe.Ingredients.First();
         
             // Act
-        recipe.UpdateIngredientEntry(ingredientInRecipe.Id, new IngredientAmount(123456), MeasurementUnit.Kg);
+        var result = recipe.UpdateIngredientEntry(ingredientInRecipe.Id, IngredientAmount.CreateObject(123456).Value, MeasurementUnit.Kg);
         
             // Assert
+        Assert.True(result.IsSuccess);
         Assert.Equal(123456, recipe.Ingredients.First().Amount.Value);
             Assert.Equal(MeasurementUnit.Kg, recipe.Ingredients.First().Unit);
         }
@@ -35,9 +36,9 @@ public class RecipeRootUpdateIngredientTests
             var ingredientInRecipe = recipe.Ingredients.First();
         
             // Act & Assert
-            Assert.Throws<ArgumentException>(() =>
-            recipe.UpdateIngredientEntry(ingredientInRecipe.Id, new IngredientAmount(0), MeasurementUnit.Kg)
-            );
+        var amountResult = IngredientAmount.CreateObject(0);
+
+        Assert.False(amountResult.IsSuccess);
         }
         
         [Fact]
@@ -48,9 +49,9 @@ public class RecipeRootUpdateIngredientTests
             var ingredientInRecipe = recipe.Ingredients.First();
         
             // Act & Assert
-            Assert.Throws<ArgumentException>(() =>
-                    recipe.UpdateIngredientEntry(ingredientInRecipe.Id, new IngredientAmount(-100), MeasurementUnit.Kg)
-            );
+        var amountResult = IngredientAmount.CreateObject(-100);
+
+        Assert.False(amountResult.IsSuccess);
         }
         
         [Fact]
@@ -60,8 +61,8 @@ public class RecipeRootUpdateIngredientTests
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
         
             // Act & Assert
-        Assert.Throws<RecipeIngredientByEntryIdNotFoundException>(() =>
-            recipe.UpdateIngredientEntry(Guid.NewGuid(), new IngredientAmount(123456), MeasurementUnit.Kg)
-            );
+        var result = recipe.UpdateIngredientEntry(Guid.NewGuid(), IngredientAmount.CreateObject(123456).Value, MeasurementUnit.Kg);
+
+        Assert.False(result.IsSuccess);
         }
 }

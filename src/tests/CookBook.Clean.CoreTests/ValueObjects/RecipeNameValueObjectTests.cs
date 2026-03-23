@@ -8,15 +8,15 @@ public class RecipeNameValueObjectTests
     [Fact]
     public void Creating_RecipeName_With_AtLeat_3_Characters_Should_Succeed()
     {
-        var name = new RecipeName("aaa");
+        var name = RecipeName.CreateObject("aaa");
         Assert.Equal("aaa", name.Value);
     }
     
     [Fact]
     public void IngredientAmount_With_Same_Value_Should_Be_Equal()
     {
-        var n1 = new RecipeName("longer name");
-        var n2 = new RecipeName("longer name");
+        var n1 = RecipeName.CreateObject("longer name");
+        var n2 = RecipeName.CreateObject("longer name");
 
         Assert.Equal(n1.Value, n2.Value);
     }
@@ -26,7 +26,7 @@ public class RecipeNameValueObjectTests
     public void Creating_RecipeName_With_LessThen_3_Characters_Should_Throw()
     {
         Assert.Throws<ArgumentException>(() =>
-                new RecipeName("aa")
+                RecipeName.CreateObject("aa")
         );
     }
 
@@ -34,7 +34,7 @@ public class RecipeNameValueObjectTests
     public void Creating_RecipeName_With_Empty_String_Should_Throw()
     {
         Assert.Throws<ArgumentException>(() =>
-            new RecipeName(string.Empty)
+            RecipeName.CreateObject(string.Empty)
         );
     }
 }

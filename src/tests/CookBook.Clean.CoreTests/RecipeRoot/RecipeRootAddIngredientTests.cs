@@ -16,9 +16,9 @@ public class RecipeRootAddIngredientTests
         var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() =>
-            recipe.AddIngredient(ingredient.Id, new IngredientAmount(-100), MeasurementUnit.Ml)
-        );
+        var amountResult = IngredientAmount.CreateObject(-100);
+
+        Assert.False(amountResult.IsSuccess);
     }
     
     [Fact]
@@ -29,9 +29,9 @@ public class RecipeRootAddIngredientTests
         var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() =>
-            recipe.AddIngredient(ingredient.Id, new IngredientAmount(0), MeasurementUnit.Ml)
-        );
+        var amountResult = IngredientAmount.CreateObject(0);
+
+        Assert.False(amountResult.IsSuccess);
     }
     
     [Fact]
@@ -42,9 +42,10 @@ public class RecipeRootAddIngredientTests
         var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
         
         // Act
-        recipe.AddIngredient(ingredient.Id, new IngredientAmount(100), MeasurementUnit.Ml);
+        var result = recipe.AddIngredient(ingredient.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
         
         // Assert
+        Assert.True(result.IsSuccess);
         Assert.Single(recipe.Ingredients);
     }
     
@@ -56,9 +57,10 @@ public class RecipeRootAddIngredientTests
         var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
         
         // Act
-        recipe.AddIngredient(ingredient.Id, new IngredientAmount(100), MeasurementUnit.Ml);
+        var result = recipe.AddIngredient(ingredient.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
         
         // Assert
+        Assert.True(result.IsSuccess);
         Assert.Contains(recipe.Ingredients,  i => i.IngredientId == ingredient.Id);
     }
     
@@ -70,8 +72,8 @@ public class RecipeRootAddIngredientTests
         var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
         
         // Act & Assert
-        Assert.Throws<RecipeMaximumNumberOfIngredients>(() =>
-            recipe.AddIngredient(ingredient.Id, new IngredientAmount(100), MeasurementUnit.Ml)
-        );
+        var result = recipe.AddIngredient(ingredient.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
+
+        Assert.False(result.IsSuccess);
     }
 }

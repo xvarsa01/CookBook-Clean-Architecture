@@ -10,15 +10,15 @@ public class RecipeDurationValueObjectTests
     [Fact]
     public void Creating_RecipeDuration_With_Positive_Duration_Should_Succeed()
     {
-        var duration = new RecipeDuration(TimeSpan.FromSeconds(1));
+        var duration = RecipeDuration.CreateObject(TimeSpan.FromSeconds(1));
         Assert.Equal(TimeSpan.FromSeconds(1), duration.Value);
     }
     
     [Fact]
     public void RecipeDuration_With_Same_Value_Should_Be_Equal()
     {
-        var d1 = new RecipeDuration(TimeSpan.FromMinutes(5));
-        var d2 = new RecipeDuration(TimeSpan.FromMinutes(5));
+        var d1 = RecipeDuration.CreateObject(TimeSpan.FromMinutes(5));
+        var d2 = RecipeDuration.CreateObject(TimeSpan.FromMinutes(5));
 
         Assert.Equal(d1.Value, d2.Value);
     }
@@ -28,7 +28,7 @@ public class RecipeDurationValueObjectTests
     public void Creating_RecipeDuration_With_Zero_Duration_Should_Throw()
     {
         Assert.Throws<ArgumentException>(() =>
-                new RecipeDuration(TimeSpan.Zero)
+                RecipeDuration.CreateObject(TimeSpan.Zero)
         );
     }
 
@@ -36,7 +36,7 @@ public class RecipeDurationValueObjectTests
     public void Creating_RecipeDuration_With_Negative_Duration_Should_Throw()
     {
         Assert.Throws<ArgumentException>(() =>
-            new RecipeDuration(TimeSpan.FromSeconds(-1))
+            RecipeDuration.CreateObject(TimeSpan.FromSeconds(-1))
         );
     }
 }
