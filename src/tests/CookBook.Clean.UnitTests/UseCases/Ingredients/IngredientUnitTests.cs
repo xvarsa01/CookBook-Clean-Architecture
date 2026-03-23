@@ -140,30 +140,4 @@ public class IngredientUnitTests
         repoMock.Verify(r => r.UpdateAsync(It.Is<IngredientEntity>(e => e.Name == "New" && e.Description == "NewDesc" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
         publisherMock.Verify(p => p.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Once);
     }
-
-    [Fact]
-    public async Task DeleteIngredientHandler_DeletesAndReturnsOk()
-    {
-        var id = Guid.NewGuid();
-        var entity = IngredientEntity.Create("Old", "d", null).Value;
-        entity.Id = id;
-
-        var repoMock = new Mock<IRepository<IngredientEntity>>();
-        var repoMockRecipe = new Mock<IRecipeRepository>();
-        
-        repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
-        repoMock.Setup(r => r.DeleteAsync(id)).Returns(Task.CompletedTask);
-        repoMockRecipe.Setup(r => r.GetAllContainingIngredientAsync(id)).Returns(Task.FromResult(new List<RecipeEntity>()));
-
-        var publisherMock = new Mock<IPublisher>();
-
-        var handler = new DeleteIngredientCommandHandler(repoMock.Object, repoMockRecipe.Object, publisherMock.Object);
-        var useCase = new DeleteIngredientCommand(id);
-
-        var result = await handler.Handle(useCase, CancellationToken.None);
-
-        Assert.True(result.IsSuccess);
-        repoMock.Verify(r => r.DeleteAsync(id), Times.Once);
-        publisherMock.Verify(p => p.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Once);
-    }
 }

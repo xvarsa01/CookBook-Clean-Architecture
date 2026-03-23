@@ -1,5 +1,6 @@
 ﻿using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Application.Queries.Recipes;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.Events;
@@ -9,7 +10,7 @@ namespace CookBook.Clean.Application.Commands.Ingredients;
 
 public record DeleteIngredientCommand(Guid Id) : ICommand;
 
-internal sealed class DeleteIngredientCommandHandler(IRepository<IngredientEntity> repository, IRecipeRepository recipeRepository, IPublisher publisher)
+internal sealed class DeleteIngredientCommandHandler(IRepository<IngredientEntity> repository, IPublisher publisher, IMediator mediator)
     : ICommandHandler<DeleteIngredientCommand>
 {
     public async Task<Result> Handle(DeleteIngredientCommand request, CancellationToken cancellationToken)
@@ -20,9 +21,13 @@ internal sealed class DeleteIngredientCommandHandler(IRepository<IngredientEntit
             return Result.NotFound("Ingredient not found");
         }
         
-        var recipesContainingIngredient = await recipeRepository.GetAllContainingIngredientAsync(request.Id);
-
-        if (recipesContainingIngredient.Count != 0)
+        var recipesContainingIngredient = await mediator.Send(new GetRecipeListByContainingIngredientIdQuery(request.Id), cancellationToken);
+        if (recipesContainingIngredient.IsFailure)
+        {
+            return Result.Invalid(recipesContainingIngredient.Error ?? string.Empty);
+        }
+        
+        if (recipesContainingIngredient.Value.Count != 0)
         {
             return Result.Invalid("Cannot delete ingredient that is used in recipes. Remove it from all recipes first.");
         }
