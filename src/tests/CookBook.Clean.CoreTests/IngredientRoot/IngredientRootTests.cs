@@ -1,8 +1,4 @@
 ﻿using CookBook.Clean.Core.IngredientRoot;
-using CookBook.Clean.Core.RecipeRoot;
-using CookBook.Clean.Core.RecipeRoot.Enums;
-using CookBook.Clean.Core.RecipeRoot.ValueObjects;
-using CookBook.Clean.Core.Shared.Exceptions;
 using CookBook.Clean.Core.Shared.ValueObjects;
 
 namespace CookBook.Clean.CoreTests.IngredientRoot;

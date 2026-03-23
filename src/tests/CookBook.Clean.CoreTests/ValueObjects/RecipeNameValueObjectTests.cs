@@ -1,6 +1,6 @@
 ﻿using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
-namespace CookBook.Clean.CoreTests;
+namespace CookBook.Clean.CoreTests.ValueObjects;
 
 public class RecipeNameValueObjectTests
 {

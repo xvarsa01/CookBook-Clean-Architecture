@@ -2,7 +2,6 @@ using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
-using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using MediatR;
 
@@ -27,14 +26,9 @@ internal class UpdateIngredientInRecipeHandler(IRepository<RecipeEntity> recipeR
             return Result.Invalid<Guid>(amountResult.Error ?? string.Empty);
         }
 
-        try
-        {
-            recipe.UpdateIngredientEntry(request.EntryId, amountResult.Value, request.NewUnit);
-        }
-        catch (RecipeIngredientByEntryIdNotFoundException ex)
-        {
-            return Result.Invalid(ex.Message);
-        }
+        var result = recipe.UpdateIngredientEntry(request.EntryId, amountResult.Value, request.NewUnit);
+        if (result.IsFailure)
+            return Result.Invalid(result.Error ?? string.Empty);
         
         await recipeRepository.UpdateAsync(recipe);
         

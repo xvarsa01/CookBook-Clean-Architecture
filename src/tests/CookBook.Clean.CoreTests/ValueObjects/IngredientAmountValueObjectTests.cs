@@ -1,8 +1,6 @@
 ﻿using CookBook.Clean.Core.RecipeRoot.ValueObjects;
-using CookBook.Clean.Core.Shared.Exceptions;
-using CookBook.Clean.Core.Shared.ValueObjects;
 
-namespace CookBook.Clean.CoreTests;
+namespace CookBook.Clean.CoreTests.ValueObjects;
 
 public class IngredientAmountValueObjectTests
 {

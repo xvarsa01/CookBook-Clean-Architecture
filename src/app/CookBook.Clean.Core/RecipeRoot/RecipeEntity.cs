@@ -1,5 +1,4 @@
 ﻿using CookBook.Clean.Core.RecipeRoot.Enums;
-using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.Core.Shared.ValueObjects;
 

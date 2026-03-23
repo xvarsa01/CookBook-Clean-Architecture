@@ -1,5 +1,4 @@
-﻿using CookBook.Clean.Core.RecipeRoot.Exceptions;
-using CookBook.Clean.TestsBase;
+﻿using CookBook.Clean.TestsBase;
 
 namespace CookBook.Clean.CoreTests.RecipeRoot;
 

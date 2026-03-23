@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using CookBook.Clean.Core.Shared.Exceptions;
 
 namespace CookBook.Clean.Core.Shared.ValueObjects;
 
