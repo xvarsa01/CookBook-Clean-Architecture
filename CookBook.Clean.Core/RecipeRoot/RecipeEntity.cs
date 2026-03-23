@@ -21,6 +21,8 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
     public ImageUrl? ImageUrl { get; private set; } = imageUrl;
     public RecipeDuration Duration { get; private set; } = duration;
     public RecipeType Type { get; private set; } = type;
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+    public DateTime? ModifiedAt { get; private set; }
 
     private readonly List<IngredientInRecipeEntity> _ingredients = [];
 
@@ -34,6 +36,8 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
         var ingredientInRecipeId = Guid.NewGuid();
         var ingredient = new IngredientInRecipeEntity(ingredientInRecipeId, ingredientId, amount, unit);
         _ingredients.Add(ingredient);
+        
+        ModifiedAt = DateTime.UtcNow;
         return ingredientInRecipeId;
     }
 
@@ -43,6 +47,8 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
 
         if (removedCount == 0)
             throw new RecipeIngredientByIdNotFoundException(ingredientId, Id);
+        
+        ModifiedAt = DateTime.UtcNow;
     }
     
     public void RemoveIngredientByEntryId(Guid entryId)
@@ -53,6 +59,7 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
             throw new RecipeIngredientByEntryIdNotFoundException(entryId, Id);
         
         _ingredients.RemoveAt(idx);
+        ModifiedAt = DateTime.UtcNow;
     }
     
     public void RemoveAllIngredients()
@@ -61,6 +68,7 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
             throw new RecipeHasNoIngredientsException(Id);
         
         _ingredients.Clear();
+        ModifiedAt = DateTime.UtcNow;
     }
 
     public void UpdateIngredientEntry(Guid entryId, IngredientAmount newAmount, MeasurementUnit newUnit)
@@ -71,6 +79,7 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
             throw new RecipeIngredientByEntryIdNotFoundException(entryId, Id);
 
         ingredient.Update(newAmount, newUnit);
+        ModifiedAt = DateTime.UtcNow;
     }
 
     public void UpdateName(RecipeName newName)
@@ -78,12 +87,14 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
         if (Name == newName) return;
         // fire some event?
         Name = newName;
+        ModifiedAt = DateTime.UtcNow;
     }
     
     public void UpdateDescription(string newDescription)
     {
         if (Description == newDescription) return;
         Description = newDescription;
+        ModifiedAt = DateTime.UtcNow;
     }
     
     public void UpdateRest(ImageUrl? newUrl, RecipeDuration? newDuration, RecipeType? newType)
@@ -102,5 +113,6 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
         {
             Type = newType.Value;
         }
+        ModifiedAt = DateTime.UtcNow;
     }
 }

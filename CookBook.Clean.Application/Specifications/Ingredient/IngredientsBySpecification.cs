@@ -26,11 +26,12 @@ public class IngredientsBySpecification(IngredientFilter filter, PagingOptions? 
                 : queryable.Where(i => i.ImageUrl == null);
         }
         
-        queryable = filter.SortParameterName?.ToLower() switch
+        queryable = filter.SortParameter switch
         {
-            "name" => filter.IsSortAscending
+            IngredientsSortParameter.Name => filter.IsSortAscending
                 ? queryable.OrderBy(r => r.Name)
                 : queryable.OrderByDescending(r => r.Name),
+            
             _ => queryable.OrderBy(r => r.Name)
         };
         

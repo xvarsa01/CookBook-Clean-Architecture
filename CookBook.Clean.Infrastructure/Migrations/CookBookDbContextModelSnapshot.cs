@@ -44,6 +44,9 @@ namespace CookBook.Clean.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
@@ -51,6 +54,9 @@ namespace CookBook.Clean.Infrastructure.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")

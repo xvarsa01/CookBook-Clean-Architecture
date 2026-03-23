@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using CookBook.Clean.Infrastructure;
 using CookBook.Clean.Application;
 
@@ -6,11 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.UseInlineDefinitionsForEnums();
+});
 
 var options = GetDALOptions();
 builder.Services.AddUseCasesServices()

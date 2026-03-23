@@ -30,17 +30,28 @@ public class RecipesBySpecification(RecipeFilter filter, PagingOptions? pagingOp
             queryable = queryable.Where(r => string.Compare(r.Duration.ToString(), maxTimeStr) <= 0);
         }
         
-        queryable = filter.SortParameterName?.ToLower() switch
+        queryable = filter.SortParameter switch
         {
-            "name" => filter.IsSortAscending
+            RecipeSortParameter.Name => filter.IsSortAscending 
                 ? queryable.OrderBy(r => r.Name)
                 : queryable.OrderByDescending(r => r.Name),
-            "type" => filter.IsSortAscending
+            
+            RecipeSortParameter.Type => filter.IsSortAscending
                 ? queryable.OrderBy(r => r.Type)
                 : queryable.OrderByDescending(r => r.Type),
-            "duration" => filter.IsSortAscending
+            
+            RecipeSortParameter.Duration => filter.IsSortAscending
                 ? queryable.OrderBy(r => r.Duration.ToString())                 // .ToString() is workaround for sqlite
                 : queryable.OrderByDescending(r => r.Duration.ToString()),
+            
+            RecipeSortParameter.CreatedAt => filter.IsSortAscending
+                ? queryable.OrderBy(r => r.CreatedAt)
+                : queryable.OrderByDescending(r => r.CreatedAt),
+            
+            RecipeSortParameter.ModifiedAt => filter.IsSortAscending
+                ? queryable.OrderBy(r => r.ModifiedAt)
+                : queryable.OrderByDescending(r => r.ModifiedAt),
+            
             _ => queryable.OrderBy(r => r.Name)
         };
 

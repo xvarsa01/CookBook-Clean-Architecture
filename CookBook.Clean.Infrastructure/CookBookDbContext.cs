@@ -1,6 +1,7 @@
 ﻿using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
+using CookBook.Clean.Core.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.Clean.Infrastructure;
@@ -15,9 +16,24 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<IngredientEntity>()
+            .Property(r => r.ImageUrl)
+            .HasConversion(
+                v => v.Value,      // store decimal in DB
+                v => new ImageUrl(v)  // convert back to VO
+            );
+        
+        
         modelBuilder.Entity<RecipeEntity>()
             .Property(r => r.Duration)
             .HasColumnType("time");
+        
+        modelBuilder.Entity<RecipeEntity>()
+            .Property(r => r.ImageUrl)
+            .HasConversion(
+                v => v.Value,      // store decimal in DB
+                v => new ImageUrl(v)  // convert back to VO
+            );
 
         modelBuilder.Entity<RecipeEntity>()
             .Property(r => r.Name)
