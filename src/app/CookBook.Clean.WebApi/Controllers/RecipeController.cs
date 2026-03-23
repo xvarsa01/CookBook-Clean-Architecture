@@ -26,7 +26,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult<Guid>> Create(RecipeCreateRequestDto requestDto)
     {
         var result = await _mediator.Send(new CreateRecipeUseCase(requestDto.Name, requestDto.Description, requestDto.ImageUrl, requestDto.Duration, requestDto.Type));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -37,7 +37,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult<RecipeDetailModel>> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetRecipeDetailQuery(id));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -50,7 +50,7 @@ public class RecipeController : ControllerBase
         [FromQuery] PagingOptions paging)
     {
         var result = await _mediator.Send(new GetRecipeListQuery(filter, paging));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -61,7 +61,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetListByIngredient(Guid ingredientId)
     {
         var result = await _mediator.Send(new GetRecipeListByContainingIngredientIdQuery(ingredientId));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -72,7 +72,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetListByIngredientName(string ingredientNameSubstring)
     {
         var result = await _mediator.Send(new GetRecipeListByContainingIngredientNameQuery(ingredientNameSubstring));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -83,7 +83,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult<Guid>> Update(RecipeUpdateRequestDto requestDto)
     {
         var result = await _mediator.Send(new UpdateRecipeUseCase(requestDto.Id, requestDto.Name, requestDto.Description, requestDto.ImageUrl, requestDto.Duration, requestDto.Type));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -94,7 +94,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult> DeleteAsync(Guid id)
     {
         var result = await _mediator.Send(new DeleteRecipeUseCase(id));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return NoContent();
         }
@@ -105,7 +105,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult<Guid>> AddIngredient(Guid recipeId, RecipeAddIngredientRequestDto requestDto)
     {
         var result = await _mediator.Send(new AddIngredientToRecipeUseCase(recipeId, requestDto.IngredientId, requestDto.Amount, requestDto.Unit));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -116,7 +116,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult> RemoveIngredient(Guid recipeId, RecipeRemoveIngredientRequestDto requestDto)
     {
         var result = await _mediator.Send(new RemoveIngredientFromRecipeUseCase(recipeId, requestDto.EntryId));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return NoContent();
         }
@@ -127,7 +127,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult> Update(Guid recipeId, RecipeUpdateIngredientRequestDto requestDto)
     {
         var result = await _mediator.Send(new UpdateIngredientInRecipeUseCase(recipeId, requestDto.EntryId, requestDto.NewAmount, requestDto.NewUnit));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result);
         }

@@ -16,7 +16,7 @@ internal class UpdateIngredientHandler(IRepository<IngredientEntity> repository,
         var existingIngredient = await repository.GetByIdAsync(request.Id);
         if (existingIngredient == null)
         {
-            return Result<Guid>.NotFound("Ingredient not found");
+            return Result.NotFound<Guid>("Ingredient not found");
         }
 
         if (request.NewName is not null)
@@ -37,11 +37,11 @@ internal class UpdateIngredientHandler(IRepository<IngredientEntity> repository,
         var id = await repository.UpdateAsync(existingIngredient);
         if (id is null)
         {
-            return Result<Guid>.Invalid("Update failed");
+            return Result.Invalid<Guid>("Update failed");
         }
 
         await publisher.Publish(new IngredientUpdatedEvent(existingIngredient), cancellationToken);
 
-        return Result<Guid>.Ok(id.Value);
+        return Result.Ok(id.Value);
     }
 }

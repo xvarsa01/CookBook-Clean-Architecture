@@ -18,13 +18,13 @@ internal class AddIngredientToRecipeHandler(
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return Result<Guid>.NotFound("Recipe not found");
+            return Result.NotFound<Guid>("Recipe not found");
         }
 
         var ingredient = await ingredientRepository.GetByIdAsync(request.IngredientId);
         if (ingredient is null)
         {
-            return Result<Guid>.NotFound("Ingredient not found");
+            return Result.NotFound<Guid>("Ingredient not found");
         }
 
         Guid id;
@@ -34,11 +34,11 @@ internal class AddIngredientToRecipeHandler(
         }
         catch (RecipeMaximumNumberOfIngredients ex)
         {
-            return Result<Guid>.Invalid(ex.Message);
+            return Result.Invalid<Guid>(ex.Message);
         }
         
         await recipeRepository.UpdateAsync(recipe);
 
-        return Result<Guid>.Ok(id);
+        return Result.Ok(id);
     }
 }

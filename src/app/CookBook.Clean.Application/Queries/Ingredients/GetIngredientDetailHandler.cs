@@ -14,10 +14,10 @@ internal class GetIngredientDetailHandler(IRepository<IngredientEntity> reposito
         var entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)
         {
-            return Result<IngredientDetailModel>.NotFound("Ingredient not found");
+            return Result.NotFound<IngredientDetailModel>("Ingredient not found");
         }
 
         var ingredientDetailModel = mapper.MapToDetailModel(entity);
-        return Result<IngredientDetailModel>.Ok(ingredientDetailModel);
+        return Result.Ok<IngredientDetailModel>(ingredientDetailModel);
     }
 }

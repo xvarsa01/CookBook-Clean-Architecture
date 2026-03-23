@@ -48,7 +48,7 @@ public class IngredientUnitTests
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
-        Assert.False(result.Success);
+        Assert.False(result.IsSuccess);
         Assert.Equal("Ingredient not found", result.Error);
     }
 
@@ -67,7 +67,7 @@ public class IngredientUnitTests
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
-        Assert.True(result.Success);
+        Assert.True(result.IsSuccess);
         Assert.Equal(id, result.Value!.Id);
         Assert.Equal("Salt", result.Value.Name);
     }
@@ -91,7 +91,7 @@ public class IngredientUnitTests
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
-        Assert.True(result.Success);
+        Assert.True(result.IsSuccess);
         Assert.Equal(2, result.Value!.Count);
     }
 
@@ -108,7 +108,7 @@ public class IngredientUnitTests
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
-        Assert.False(result.Success);
+        Assert.False(result.IsSuccess);
         Assert.Equal("Ingredient not found", result.Error);
     }
 
@@ -129,7 +129,7 @@ public class IngredientUnitTests
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
-        Assert.True(result.Success);
+        Assert.True(result.IsSuccess);
         repoMock.Verify(r => r.UpdateAsync(It.Is<IngredientEntity>(e => e.Name == "New" && e.Description == "NewDesc" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
         publisherMock.Verify(p => p.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -154,7 +154,7 @@ public class IngredientUnitTests
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
-        Assert.True(result.Success);
+        Assert.True(result.IsSuccess);
         repoMock.Verify(r => r.DeleteAsync(id), Times.Once);
         publisherMock.Verify(p => p.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Once);
     }

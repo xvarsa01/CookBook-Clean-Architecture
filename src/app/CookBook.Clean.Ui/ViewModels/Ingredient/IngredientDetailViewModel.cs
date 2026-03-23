@@ -30,7 +30,7 @@ public partial class IngredientDetailViewModel(
         await base.LoadDataAsync();
 
         var result = (await _mediator.Send(new GetIngredientDetailQuery(Id)));
-        if (result.Success && result.Value is not null)
+        if (result.IsSuccess && result.Value is not null)
         {
             Ingredient = result.Value;
         }
@@ -42,7 +42,7 @@ public partial class IngredientDetailViewModel(
         if (Ingredient is not null)
         {
             var result = await _mediator.Send(new DeleteIngredientUseCase(Ingredient.Id));
-            if (!result.Success)
+            if (!result.IsSuccess)
             {
                 await alertService.DisplayAsync(IngredientDetailViewModelTexts.DeleteError_Alert_Title, IngredientDetailViewModelTexts.DeleteError_Alert_Message);
                 return;

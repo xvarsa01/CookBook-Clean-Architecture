@@ -15,7 +15,7 @@ internal class GetRecipeDetailHandler(IRepository<RecipeEntity> repository, IRep
         RecipeEntity? recipe = await repository.GetByIdAsync(request.Id);
         if (recipe is null)
         {
-            return Result<RecipeDetailModel>.NotFound("Recipe not found");
+            return Result.NotFound<RecipeDetailModel>("Recipe not found");
         }
 
         var ingredientIds = recipe.Ingredients.Select(i => i.IngredientId).ToList();
@@ -30,6 +30,6 @@ internal class GetRecipeDetailHandler(IRepository<RecipeEntity> repository, IRep
         }
 
         var recipeDetailModel = mapper.MapToDetailModel(recipe, usedIngredients);
-        return Result<RecipeDetailModel>.Ok(recipeDetailModel);
+        return Result.Ok(recipeDetailModel);
     }
 }

@@ -29,7 +29,7 @@ public partial class RecipeDetailViewModel(
         await base.LoadDataAsync();
 
         var result = (await _mediator.Send(new GetRecipeDetailQuery(Id)));
-        if (result.Success && result.Value is not null)
+        if (result.IsSuccess && result.Value is not null)
         {
             Recipe = result.Value;
             // converted with color not called

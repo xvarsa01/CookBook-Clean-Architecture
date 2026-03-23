@@ -1,35 +1,34 @@
 ﻿namespace CookBook.Clean.Core;
 
-public class Result<T>
+public class Result<T> : Result
 {
-    public bool Success { get; }
-    public string? Error { get; }
-    public T? Value { get; }
-
-    private Result(bool success, T? value, string? error)
+    private readonly T? _value;
+    public T Value => IsSuccess
+        ? _value!
+        : throw new InvalidOperationException("The value of a failure result can not be accessed.");
+    
+    internal Result(bool isSuccess, T? value, string? error) : base(isSuccess, error)
     {
-        Success = success;
-        Value = value;
-        Error = error;
+        _value = value;
     }
 
-    public static Result<T> Ok(T value) => new(true, value, null);
-    public static Result<T> NotFound(string message) => new(false, default, message);
-    public static Result<T> Invalid(string message) => new(false, default, message);
 }
 
 public class Result
 {
-    public bool Success { get; }
+    public bool IsSuccess { get; }
     public string? Error { get; }
 
-    private Result(bool success, string? error)
+    internal Result(bool isSuccess, string? error)
     {
-        Success = success;
+        IsSuccess = isSuccess;
         Error = error;
     }
 
     public static Result Ok() => new(true, null);
     public static Result NotFound(string message) => new(false, message);
     public static Result Invalid(string message) => new(false, message);
+    public static Result<T> Ok<T>(T value) => new(true, value, null);
+    public static Result<T> NotFound<T>(string message) => new(false, default, message);
+    public static Result<T> Invalid<T>(string message) => new(false, default, message);
 }

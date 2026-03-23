@@ -14,7 +14,7 @@ internal class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IRequ
         var existing = await repository.GetByIdAsync(request.Id);
         if (existing is null)
         {
-            return Result<Guid>.NotFound("Recipe not found");
+            return Result.NotFound<Guid>("Recipe not found");
         }
 
         if (request.NewName is not null)
@@ -40,9 +40,9 @@ internal class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IRequ
         var id = await repository.UpdateAsync(existing);
         if (id is null)
         {
-            return Result<Guid>.Invalid("Update failed");
+            return Result.Invalid<Guid>("Update failed");
         }
         
-        return Result<Guid>.Ok(id.Value);
+        return Result.Ok(id.Value);
     }
 }

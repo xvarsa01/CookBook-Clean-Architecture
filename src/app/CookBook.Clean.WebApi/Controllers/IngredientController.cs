@@ -26,7 +26,7 @@ public class IngredientController : ControllerBase
     public async Task<ActionResult<Guid>> Create(IngredientCreateRequestDto requestDto)
     {
         var result = await _mediator.Send(new CreateIngredientUseCase(requestDto.Name, requestDto.Description, requestDto.ImageUrl));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -37,7 +37,7 @@ public class IngredientController : ControllerBase
     public async Task<ActionResult<IngredientDetailModel>> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetIngredientDetailQuery(id));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -50,7 +50,7 @@ public class IngredientController : ControllerBase
         [FromQuery] PagingOptions paging)
     {
         var result = await _mediator.Send(new GetIngredientListQuery(filter, paging));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -61,7 +61,7 @@ public class IngredientController : ControllerBase
     public async Task<ActionResult<Guid>> Update(IngredientUpdateRequestDto requestDto)
     {
         var result = await _mediator.Send(new UpdateIngredientUseCase(requestDto.Id, requestDto.Name, requestDto.Description, requestDto.ImageUrl));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
@@ -72,7 +72,7 @@ public class IngredientController : ControllerBase
     public async Task<ActionResult> DeleteAsync(Guid id)
     {
         var result = await _mediator.Send(new DeleteIngredientUseCase(id));
-        if (result.Success)
+        if (result.IsSuccess)
         {
             return NoContent();
         }

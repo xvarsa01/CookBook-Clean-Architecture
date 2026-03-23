@@ -14,11 +14,11 @@ internal class CreateRecipeHandler(IRepository<RecipeEntity> repository, IRecipe
         {
             var newRecipe = mapper.MapToEntity(request);
             var createdItemId = await repository.InsertAsync(newRecipe);
-            return Result<Guid>.Ok(createdItemId);
+            return Result.Ok(createdItemId);
         }
         catch (Exception e)
         {
-            return Result<Guid>.Invalid(e.Message);
+            return Result.Invalid<Guid>(e.Message);
         }
     }
 }

@@ -41,7 +41,7 @@ public partial class RecipeIngredientsEditViewModel(
         await base.LoadDataAsync();
 
         var recipeResult = (await _mediator.Send(new GetRecipeDetailQuery(Id)));
-        if (recipeResult.Success && recipeResult.Value is not null)
+        if (recipeResult.IsSuccess && recipeResult.Value is not null)
         {
             Recipe = recipeResult.Value;
         }
@@ -50,7 +50,7 @@ public partial class RecipeIngredientsEditViewModel(
         
         var filter = new IngredientFilter();
         var ingredientsResult = (await _mediator.Send(new GetIngredientListQuery(filter)));
-        if (ingredientsResult.Success && ingredientsResult.Value is not null)
+        if (ingredientsResult.IsSuccess && ingredientsResult.Value is not null)
         {
             foreach (var ingredient in ingredientsResult.Value)
             {
@@ -73,7 +73,7 @@ public partial class RecipeIngredientsEditViewModel(
             IngredientAmountNew.ImageUrl = IngredientSelected.ImageUrl;
 
             var result = await _mediator.Send(new AddIngredientToRecipeUseCase(Recipe.Id, IngredientAmountNew.IngredientId, IngredientAmountNew.Amount, IngredientAmountNew.Unit));
-            if (result.Success)
+            if (result.IsSuccess)
             {
                 IngredientAmountNew.Id =  result.Value;
                 Recipe.Ingredients.Add(IngredientAmountNew);
