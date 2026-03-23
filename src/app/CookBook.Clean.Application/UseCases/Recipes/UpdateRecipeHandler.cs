@@ -22,7 +22,11 @@ internal class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IRequ
 
         if (request.NewName is not null)
         {
-            existing.UpdateName(new RecipeName(request.NewName));
+            var nameObjectResult = RecipeName.CreateObject(request.NewName);
+            if (!nameObjectResult.IsSuccess)            {
+                return Result.Invalid<Guid>(nameObjectResult.Error ?? string.Empty);
+            }
+            existing.UpdateName(nameObjectResult.Value);
         }
         
         if (request.NewDescription is not null)
@@ -30,15 +34,23 @@ internal class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IRequ
             existing.UpdateDescription(request.NewDescription);
         }
 
-        var duration = request.NewDuration is not null 
-            ? new RecipeDuration(request.NewDuration.Value) 
+        var durationObjectResult = request.NewDuration is not null 
+            ? RecipeDuration.CreateObject(request.NewDuration.Value) 
             : null;
+        if (durationObjectResult != null && durationObjectResult.IsFailure)
+        {
+            return Result.Invalid<Guid>(durationObjectResult.Error ?? string.Empty);
+        }
         
-        var url = request.NewImageUrl is not null
-            ? new ImageUrl(request.NewImageUrl)
+        var urlObjectResult = request.NewImageUrl is not null
+            ? ImageUrl.CreateObject(request.NewImageUrl)
             : null;
+        if (urlObjectResult != null && urlObjectResult.IsFailure)
+        {
+            return Result.Invalid<Guid>(urlObjectResult.Error ?? string.Empty);
+        }
         
-        existing.UpdateRest(url, duration , request.NewType);
+        existing.UpdateRest(urlObjectResult?.Value, durationObjectResult?.Value, request.NewType);
 
         var id = await repository.UpdateAsync(existing);
         if (id is null)

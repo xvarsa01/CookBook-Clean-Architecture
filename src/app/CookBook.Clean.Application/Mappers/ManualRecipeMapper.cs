@@ -71,13 +71,14 @@ public class ManualRecipeMapper : IRecipeMapper
 
     public RecipeEntity MapToEntity(CreateRecipeUseCase request)
     {
-        var url = request.ImageUrl is not null ? new ImageUrl(request.ImageUrl) : null;
+        var url = request.ImageUrl is not null ? ImageUrl.CreateObject(request.ImageUrl) : null;
         
-        return new RecipeEntity(
-            new RecipeName(request.Name),
+        var result = RecipeEntity.Create(RecipeName.CreateObject(request.Name).Value,
             request.Description,
-            url,
-            new RecipeDuration(request.Duration),
+            url?.Value,
+            RecipeDuration.CreateObject(request.Duration).Value,
             request.RecipeType);
+        
+        return result.Value;
     }
 }

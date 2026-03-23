@@ -41,11 +41,12 @@ public class ManualIngredientMapper : IIngredientMapper
 
     public IngredientEntity MapToEntity(CreateIngredientUseCase request)
     {
-        var url = request.ImageUrl is not null ? new ImageUrl(request.ImageUrl) : null;
-        
-        return new IngredientEntity(
-            request.Name,
+        var urlObjectResult = request.ImageUrl is not null
+            ? ImageUrl.CreateObject(request.ImageUrl)
+            : null;
+
+        return IngredientEntity.Create(request.Name,
             request.Description,
-            url);
+            urlObjectResult?.Value).Value;
     }
 }

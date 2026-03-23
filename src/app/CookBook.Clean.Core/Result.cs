@@ -17,6 +17,7 @@ public class Result<T> : Result
 public class Result
 {
     public bool IsSuccess { get; }
+    public bool IsFailure => !IsSuccess;
     public string? Error { get; }
 
     internal Result(bool isSuccess, string? error)

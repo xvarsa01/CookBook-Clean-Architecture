@@ -12,12 +12,16 @@ public class ImageUrl
         RegexOptions.IgnoreCase | RegexOptions.Compiled
     );
     
-    public ImageUrl(string value)
+    private ImageUrl(string value)
     {
-        if (string.IsNullOrWhiteSpace(value) || !ImageUrlRegex.IsMatch(value))
-            throw new InvalidImageUrlException(value);
-        
         Value = value;
+    }
+
+    public static Result<ImageUrl> CreateObject(string value)
+    {
+        return (string.IsNullOrWhiteSpace(value) || !ImageUrlRegex.IsMatch(value))
+            ? Result.Invalid<ImageUrl>($"Invalid image URL format : {value}")
+            : Result.Ok(new ImageUrl(value));
     }
 
     public static implicit operator string(ImageUrl name) => name.Value;

@@ -20,20 +20,16 @@ internal class UpdateIngredientInRecipeHandler(IRepository<RecipeEntity> recipeR
         {
             return Result.NotFound("Recipe not found");
         }
-
-        IngredientAmount amount;
-        try
+        
+        var amountResult = IngredientAmount.CreateObject(request.NewAmount);
+        if (!amountResult.IsSuccess)
         {
-            amount = new IngredientAmount(request.NewAmount);
-        }
-        catch (ArgumentException ex)
-        {
-            return Result.Invalid(ex.Message);
+            return Result.Invalid<Guid>(amountResult.Error ?? string.Empty);
         }
 
         try
         {
-            recipe.UpdateIngredientEntry(request.EntryId, amount, request.NewUnit);
+            recipe.UpdateIngredientEntry(request.EntryId, amountResult.Value, request.NewUnit);
         }
         catch (RecipeIngredientByEntryIdNotFoundException ex)
         {

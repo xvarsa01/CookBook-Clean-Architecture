@@ -12,94 +12,123 @@ namespace CookBook.Clean.Core.RecipeRoot;
 // - recipe can have 0-10 ingredients
 //   - ingredient amount must be positive
 
-public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
-    : IRootEntity
+public class RecipeEntity : IRootEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public RecipeName Name { get; private set; } = name;
-    public string? Description { get; private set; } = description;
-    public ImageUrl? ImageUrl { get; private set; } = imageUrl;
-    public RecipeDuration Duration { get; private set; } = duration;
-    public RecipeType Type { get; private set; } = type;
+    public RecipeName Name { get; private set; }
+    public string? Description { get; private set; }
+    public ImageUrl? ImageUrl { get; private set; }
+    public RecipeDuration Duration { get; private set; }
+    public RecipeType Type { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? ModifiedAt { get; private set; }
 
     private readonly List<IngredientInRecipeEntity> _ingredients = [];
-
     public IReadOnlyCollection<IngredientInRecipeEntity> Ingredients => _ingredients.AsReadOnly();
     
-    public Guid AddIngredient(Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
+    private RecipeEntity() { } // for EF
+    private RecipeEntity(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
+    {
+        Name = name;
+        Description = description;
+        ImageUrl = imageUrl;
+        Duration = duration;
+        Type = type;
+    }
+    
+    public static Result<RecipeEntity> Create(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
+    {
+        var entity = new RecipeEntity(name, description, imageUrl, duration, type);
+        return Result.Ok(entity);
+    }
+    
+    public Result<Guid> AddIngredient(Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
         if (_ingredients.Count == 10)
-            throw new RecipeMaximumNumberOfIngredients();
+            return Result.Invalid<Guid>("Recipe cannot have more than 10 ingredients.");
         
         var ingredientInRecipeId = Guid.NewGuid();
-        var ingredient = new IngredientInRecipeEntity(ingredientInRecipeId, ingredientId, amount, unit);
-        _ingredients.Add(ingredient);
+        var ingredientInRecipeResult = IngredientInRecipeEntity.Create(ingredientInRecipeId, ingredientId, amount, unit);
+        
+        if (ingredientInRecipeResult.IsFailure)
+            return Result.Invalid<Guid>(ingredientInRecipeResult.Error ?? string.Empty);
+        
+        _ingredients.Add(ingredientInRecipeResult.Value);
         
         ModifiedAt = DateTime.UtcNow;
-        return ingredientInRecipeId;
+        return Result.Ok(ingredientInRecipeId);
     }
 
-    public void RemoveIngredientsByIngredientId(Guid ingredientId)
+    public Result RemoveIngredientsByIngredientId(Guid ingredientId)
     {
         var removedCount = _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
 
         if (removedCount == 0)
-            throw new RecipeIngredientByIdNotFoundException(ingredientId, Id);
+            return Result.Invalid($"Ingredient {ingredientId} not found in recipe {Id}.");
         
         ModifiedAt = DateTime.UtcNow;
+        return Result.Ok();
     }
     
-    public void RemoveIngredientByEntryId(Guid entryId)
+    public Result RemoveIngredientByEntryId(Guid entryId)
     {
         var idx = _ingredients.FindIndex(i => i.Id == entryId);
 
         if (idx < 0)
-            throw new RecipeIngredientByEntryIdNotFoundException(entryId, Id);
+            return Result.Invalid($"Ingredient entry for {entryId} not found in recipe {Id}.");
         
         _ingredients.RemoveAt(idx);
         ModifiedAt = DateTime.UtcNow;
+        return Result.Ok();
     }
     
-    public void RemoveAllIngredients()
+    public Result RemoveAllIngredients()
     {
         if (_ingredients.Count == 0)
-            throw new RecipeHasNoIngredientsException(Id);
+            return Result.Invalid($"Recipe entity {Id} has no ingredients.");
         
         _ingredients.Clear();
         ModifiedAt = DateTime.UtcNow;
+        return Result.Ok();
     }
 
-    public void UpdateIngredientEntry(Guid entryId, IngredientAmount newAmount, MeasurementUnit newUnit)
+    public Result UpdateIngredientEntry(Guid entryId, IngredientAmount newAmount, MeasurementUnit newUnit)
     {
         var ingredient = _ingredients.FirstOrDefault(i => i.Id == entryId);
 
         if (ingredient is null)
-            throw new RecipeIngredientByEntryIdNotFoundException(entryId, Id);
+            return Result.Invalid($"Ingredient entry for {entryId} not found in recipe {Id}.");
 
         ingredient.Update(newAmount, newUnit);
         ModifiedAt = DateTime.UtcNow;
+        return Result.Ok();
     }
 
-    public void UpdateName(RecipeName newName)
+    public Result UpdateName(RecipeName newName)
     {
-        if (Name == newName) return;
+        if (Name != newName)
+        {
+            // fire some event?
+            Name = newName;
+            ModifiedAt = DateTime.UtcNow;
+        }
         
-        // fire some event?
-        Name = newName;
-        ModifiedAt = DateTime.UtcNow;
+        return Result.Ok();
     }
     
-    public void UpdateDescription(string newDescription)
+    public Result UpdateDescription(string newDescription)
     {
-        if (Description == newDescription) return;
+        if (Description != newDescription)
+        {
+            Description = newDescription;
+            ModifiedAt = DateTime.UtcNow;
+        }
         
-        Description = newDescription;
-        ModifiedAt = DateTime.UtcNow;
+        return Result.Ok();
+        
     }
     
-    public void UpdateRest(ImageUrl? newUrl, RecipeDuration? newDuration, RecipeType? newType)
+    public Result UpdateRest(ImageUrl? newUrl, RecipeDuration? newDuration, RecipeType? newType)
     {
         var updated = false;
 
@@ -125,5 +154,7 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
         {
             ModifiedAt = DateTime.UtcNow;
         }
+        
+        return Result.Ok();
     }
 }

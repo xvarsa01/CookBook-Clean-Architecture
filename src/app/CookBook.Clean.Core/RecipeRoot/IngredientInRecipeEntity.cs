@@ -11,13 +11,25 @@ public class IngredientInRecipeEntity
     public IngredientAmount Amount { get; private set; }
     public MeasurementUnit Unit { get; private set; }
 
-    internal IngredientInRecipeEntity(Guid id, Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
+    private IngredientInRecipeEntity() { } // for EF
+
+    private IngredientInRecipeEntity(Guid id, Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
         Id = id;
         IngredientId = ingredientId;
         Amount = amount;
         Unit = unit;
     }
+
+    internal static Result<IngredientInRecipeEntity> Create(
+        Guid id,
+        Guid ingredientId,
+        IngredientAmount amount,
+        MeasurementUnit unit)
+    {
+        return Result.Ok(new IngredientInRecipeEntity(id, ingredientId, amount, unit));
+    }
+
 
     public void Update(IngredientAmount newAmount, MeasurementUnit newUnit)
     {

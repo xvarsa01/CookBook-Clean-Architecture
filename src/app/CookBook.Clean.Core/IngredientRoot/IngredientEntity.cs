@@ -12,16 +12,23 @@ public class IngredientEntity : IRootEntity
     public string? Description { get; private set; }
     public ImageUrl? ImageUrl { get; private set; }
 
-    public IngredientEntity(string name, string? description, ImageUrl? imageUrl)
+    private IngredientEntity() { } // for EF
+    private IngredientEntity(string name, string? description, ImageUrl? imageUrl)
     {
-        if (string.IsNullOrEmpty(name))
-            throw new ArgumentException(nameof(name));
-        
         Name =  name;
         Description = description;
         ImageUrl = imageUrl;
     }
-    
+
+    public static Result<IngredientEntity> Create(string name, string? description, ImageUrl? imageUrl)
+    {
+        if (string.IsNullOrEmpty(name))
+            return Result.Invalid<IngredientEntity>("Ingredient name can not be empty.");
+
+        var entity = new IngredientEntity(name, description, imageUrl);
+        return Result.Ok(entity);
+    }
+
     public void UpdateName(string newName)
     {
         if (string.IsNullOrEmpty(newName))

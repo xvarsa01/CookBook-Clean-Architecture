@@ -3,13 +3,17 @@
 public class RecipeDuration
 {
     public TimeSpan Value { get; }
-    
-    public RecipeDuration(TimeSpan duration)
+
+    private RecipeDuration(TimeSpan duration)
     {
-        if (duration <= TimeSpan.Zero)
-            throw new ArgumentException("Duration must be positive");
-        
         Value = duration;
+    }
+
+    public static Result<RecipeDuration> CreateObject(TimeSpan duration)
+    {
+        return duration <= TimeSpan.Zero
+            ? Result.Invalid<RecipeDuration>("Duration must be positive")
+            : Result.Ok(new RecipeDuration(duration));
     }
     
     public static implicit operator TimeSpan(RecipeDuration duration) => duration.Value;

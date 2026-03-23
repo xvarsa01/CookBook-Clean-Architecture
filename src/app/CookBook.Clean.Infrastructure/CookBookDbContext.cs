@@ -20,7 +20,7 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
             .Property(r => r.ImageUrl)
             .HasConversion(
                 v => v.Value,      // store decimal in DB
-                v => new ImageUrl(v)  // convert back to VO
+                v => ImageUrl.CreateObject(v).Value  // convert back to VO
             );
         
         
@@ -32,21 +32,21 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
             .Property(r => r.ImageUrl)
             .HasConversion(
                 v => v.Value,      // store decimal in DB
-                v => new ImageUrl(v)  // convert back to VO
+                v => ImageUrl.CreateObject(v).Value  // convert back to VO
             );
 
         modelBuilder.Entity<RecipeEntity>()
             .Property(r => r.Name)
             .HasConversion(
                 v => v.Value,      // store decimal in DB
-                v => new RecipeName(v)  // convert back to VO
+                v => RecipeName.CreateObject(v).Value  // convert back to VO
             );
         
         modelBuilder.Entity<RecipeEntity>()
             .Property(r => r.Duration)
             .HasConversion(
                 v => v.Value,      // store decimal in DB
-                v => new RecipeDuration(v)  // convert back to VO
+                v => RecipeDuration.CreateObject(v).Value  // convert back to VO
             );
         
         
@@ -60,7 +60,7 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
                 b.Property(i => i.Amount)
                     .HasConversion(
                         v => v.Value,         // store decimal in DB
-                        v => new IngredientAmount(v)  // convert back to VO
+                        v => IngredientAmount.CreateObject(v).Value  // convert back to VO
                     )
                     .IsRequired();
                 

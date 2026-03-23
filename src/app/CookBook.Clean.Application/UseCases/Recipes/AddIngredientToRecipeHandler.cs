@@ -30,18 +30,20 @@ internal class AddIngredientToRecipeHandler(
             return Result.NotFound<Guid>("Ingredient not found");
         }
 
-        Guid id;
-        try
+        var amountResult = IngredientAmount.CreateObject(request.Amount);
+        if (!amountResult.IsSuccess)
         {
-            id = recipe.AddIngredient(request.IngredientId, new IngredientAmount(request.Amount), request.Unit);
+            return Result.Invalid<Guid>(amountResult.Error ?? string.Empty);
         }
-        catch (RecipeMaximumNumberOfIngredients ex)
+        
+        var result = recipe.AddIngredient(request.IngredientId, amountResult.Value, request.Unit);
+        if (!result.IsSuccess)
         {
-            return Result.Invalid<Guid>(ex.Message);
+            return Result.Invalid<Guid>(result.Error ?? string.Empty);
         }
         
         await recipeRepository.UpdateAsync(recipe);
 
-        return Result.Ok(id);
+        return Result.Ok(result.Value);
     }
 }

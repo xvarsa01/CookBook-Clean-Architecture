@@ -32,7 +32,12 @@ internal class UpdateIngredientHandler(IRepository<IngredientEntity> repository,
 
         if (request.NewImageUrl is not null)
         {
-            existingIngredient.UpdateImageUrl(new ImageUrl(request.NewImageUrl));
+            var urlObjectResult = ImageUrl.CreateObject(request.NewImageUrl);
+            if (urlObjectResult.IsFailure)
+            {
+                return Result.Invalid<Guid>(urlObjectResult.Error ?? string.Empty);
+            }
+            existingIngredient.UpdateImageUrl(urlObjectResult.Value);
         }
         
         var id = await repository.UpdateAsync(existingIngredient);
