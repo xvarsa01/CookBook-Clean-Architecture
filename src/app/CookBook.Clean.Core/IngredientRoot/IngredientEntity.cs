@@ -5,9 +5,9 @@ namespace CookBook.Clean.Core.IngredientRoot;
 // business rules:
 // - name can not be empty string
 
-public class IngredientEntity : IRootEntity
+public class IngredientEntity : IAggregateRootEntity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; init; } = Guid.NewGuid();
     public string Name { get; private set; }
     public string? Description { get; private set; }
     public ImageUrl? ImageUrl { get; private set; }

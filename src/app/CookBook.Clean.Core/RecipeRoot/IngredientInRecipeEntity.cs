@@ -3,7 +3,7 @@ using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Core.RecipeRoot;
 
-public class IngredientInRecipeEntity
+public class IngredientInRecipeEntity : IEntity
 {
     public Guid Id { get; init; }
     public Guid IngredientId { get; init; }

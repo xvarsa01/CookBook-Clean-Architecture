@@ -183,7 +183,7 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     public void RootEntities_ShouldBeIn_Core_Layer()
     {
         Classes().That()
-            .ImplementInterface(typeof(Core.IRootEntity))
+            .ImplementInterface(typeof(Core.IAggregateRootEntity))
             .Should().ResideInAssembly(CoreAssembly)
             .Check(Architecture);
     }
