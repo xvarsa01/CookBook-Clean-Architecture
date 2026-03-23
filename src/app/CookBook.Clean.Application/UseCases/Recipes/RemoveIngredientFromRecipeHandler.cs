@@ -1,4 +1,5 @@
 using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using MediatR;
@@ -6,14 +7,14 @@ using MediatR;
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
 internal class RemoveIngredientFromRecipeHandler(IRepository<RecipeEntity> recipeRepository)
-    : IRequestHandler<RemoveIngredientFromRecipeUseCase, UseCaseResult>
+    : IRequestHandler<RemoveIngredientFromRecipeUseCase, Result>
 {
-    public async Task<UseCaseResult> Handle(RemoveIngredientFromRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(RemoveIngredientFromRecipeUseCase request, CancellationToken cancellationToken)
     {
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return UseCaseResult.NotFound("Recipe not found");
+            return Result.NotFound("Recipe not found");
         }
         
         try
@@ -22,10 +23,10 @@ internal class RemoveIngredientFromRecipeHandler(IRepository<RecipeEntity> recip
         }
         catch (RecipeIngredientByEntryIdNotFoundException ex)
         {
-            return UseCaseResult.Invalid(ex.Message);
+            return Result.Invalid(ex.Message);
         }
 
         await recipeRepository.UpdateAsync(recipe);
-        return UseCaseResult.Ok();
+        return Result.Ok();
     }
 }

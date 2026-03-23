@@ -1,14 +1,15 @@
 using CookBook.Clean.Application;
+using CookBook.Clean.Core;
 using Xunit;
 
 namespace CookBook.Clean.UnitTests;
 
-public class UseCaseResultTests
+public class ResultTests
 {
     [Fact]
     public void Ok_ReturnsSuccessWithValue()
     {
-        var result = UseCaseResult<string>.Ok("value");
+        var result = Result<string>.Ok("value");
         Assert.True(result.Success);
         Assert.Equal("value", result.Value);
         Assert.Null(result.Error);
@@ -17,7 +18,7 @@ public class UseCaseResultTests
     [Fact]
     public void NotFound_ReturnsFailureWithError()
     {
-        var result = UseCaseResult<int>.NotFound("not found");
+        var result = Result<int>.NotFound("not found");
         Assert.False(result.Success);
         Assert.Equal(default(int), result.Value);
         Assert.Equal("not found", result.Error);

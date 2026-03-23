@@ -1,5 +1,6 @@
+using CookBook.Clean.Core;
 using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-public record RemoveIngredientFromRecipeUseCase(Guid RecipeId, Guid EntryId) : IRequest<UseCaseResult>;
+public record RemoveIngredientFromRecipeUseCase(Guid RecipeId, Guid EntryId) : IRequest<Result>;

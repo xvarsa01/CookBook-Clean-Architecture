@@ -1,4 +1,5 @@
 using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
@@ -6,15 +7,15 @@ using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-internal class UpdateIngredientInRecipeHandler(IRepository<RecipeEntity> recipeRepository) : IRequestHandler<UpdateIngredientInRecipeUseCase, UseCaseResult>
+internal class UpdateIngredientInRecipeHandler(IRepository<RecipeEntity> recipeRepository) : IRequestHandler<UpdateIngredientInRecipeUseCase, Result>
 {
 
-    public async Task<UseCaseResult> Handle(UpdateIngredientInRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateIngredientInRecipeUseCase request, CancellationToken cancellationToken)
     {
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return UseCaseResult.NotFound("Recipe not found");
+            return Result.NotFound("Recipe not found");
         }
 
         IngredientAmount amount;
@@ -24,7 +25,7 @@ internal class UpdateIngredientInRecipeHandler(IRepository<RecipeEntity> recipeR
         }
         catch (ArgumentException ex)
         {
-            return UseCaseResult.Invalid(ex.Message);
+            return Result.Invalid(ex.Message);
         }
 
         try
@@ -33,11 +34,11 @@ internal class UpdateIngredientInRecipeHandler(IRepository<RecipeEntity> recipeR
         }
         catch (RecipeIngredientByEntryIdNotFoundException ex)
         {
-            return UseCaseResult.Invalid(ex.Message);
+            return Result.Invalid(ex.Message);
         }
         
         await recipeRepository.UpdateAsync(recipe);
         
-        return UseCaseResult.Ok();
+        return Result.Ok();
     }
 }

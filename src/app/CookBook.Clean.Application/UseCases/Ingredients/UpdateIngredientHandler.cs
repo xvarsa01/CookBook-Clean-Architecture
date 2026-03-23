@@ -1,4 +1,5 @@
 ﻿using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.Events;
 using CookBook.Clean.Core.Shared.ValueObjects;
@@ -8,14 +9,14 @@ namespace CookBook.Clean.Application.UseCases.Ingredients;
 
 
 internal class UpdateIngredientHandler(IRepository<IngredientEntity> repository, IPublisher publisher)
-    : IRequestHandler<UpdateIngredientUseCase, UseCaseResult<Guid>>
+    : IRequestHandler<UpdateIngredientUseCase, Result<Guid>>
 {
-    public async Task<UseCaseResult<Guid>> Handle(UpdateIngredientUseCase request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(UpdateIngredientUseCase request, CancellationToken cancellationToken)
     {
         var existingIngredient = await repository.GetByIdAsync(request.Id);
         if (existingIngredient == null)
         {
-            return UseCaseResult<Guid>.NotFound("Ingredient not found");
+            return Result<Guid>.NotFound("Ingredient not found");
         }
 
         if (request.NewName is not null)
@@ -36,11 +37,11 @@ internal class UpdateIngredientHandler(IRepository<IngredientEntity> repository,
         var id = await repository.UpdateAsync(existingIngredient);
         if (id is null)
         {
-            return UseCaseResult<Guid>.Invalid("Update failed");
+            return Result<Guid>.Invalid("Update failed");
         }
 
         await publisher.Publish(new IngredientUpdatedEvent(existingIngredient), cancellationToken);
 
-        return UseCaseResult<Guid>.Ok(id.Value);
+        return Result<Guid>.Ok(id.Value);
     }
 }

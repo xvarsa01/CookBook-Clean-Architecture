@@ -2,20 +2,21 @@
 using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.Specifications.Ingredient;
+using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using MediatR;
 
 namespace CookBook.Clean.Application.Queries.Ingredients;
 
-internal class GetIngredientListHandler (IRepository<IngredientEntity> repository, IIngredientMapper mapper) : IRequestHandler<GetIngredientListQuery, UseCaseResult<List<IngredientListModel>>>
+internal class GetIngredientListHandler (IRepository<IngredientEntity> repository, IIngredientMapper mapper) : IRequestHandler<GetIngredientListQuery, Result<List<IngredientListModel>>>
 {
-    public async Task<UseCaseResult<List<IngredientListModel>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<IngredientListModel>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
     {
         var specification = new IngredientsBySpecification(request.Filter,  request.PagingOptions);
         var ingredients = await repository.GetListBySpecificationAsync(specification);
 
         var listModels = mapper.MapToListModels(ingredients).ToList();
         
-        return UseCaseResult<List<IngredientListModel>>.Ok(listModels);
+        return Result<List<IngredientListModel>>.Ok(listModels);
     }
 }

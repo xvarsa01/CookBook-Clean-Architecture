@@ -1,4 +1,5 @@
 using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.Core.Shared.ValueObjects;
@@ -6,14 +7,14 @@ using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-internal class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IRequestHandler<UpdateRecipeUseCase, UseCaseResult<Guid>>
+internal class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IRequestHandler<UpdateRecipeUseCase, Result<Guid>>
 {
-    public async Task<UseCaseResult<Guid>> Handle(UpdateRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(UpdateRecipeUseCase request, CancellationToken cancellationToken)
     {
         var existing = await repository.GetByIdAsync(request.Id);
         if (existing is null)
         {
-            return UseCaseResult<Guid>.NotFound("Recipe not found");
+            return Result<Guid>.NotFound("Recipe not found");
         }
 
         if (request.NewName is not null)
@@ -39,9 +40,9 @@ internal class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : IRequ
         var id = await repository.UpdateAsync(existing);
         if (id is null)
         {
-            return UseCaseResult<Guid>.Invalid("Update failed");
+            return Result<Guid>.Invalid("Update failed");
         }
         
-        return UseCaseResult<Guid>.Ok(id.Value);
+        return Result<Guid>.Ok(id.Value);
     }
 }

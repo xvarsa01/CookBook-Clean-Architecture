@@ -1,20 +1,21 @@
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Models;
+using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.RecipeRoot;
 using MediatR;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
 
-internal class GetRecipeDetailHandler(IRepository<RecipeEntity> repository, IRepository<IngredientEntity> ingredientRepository, IRecipeMapper mapper) : IRequestHandler<GetRecipeDetailQuery, UseCaseResult<RecipeDetailModel>>
+internal class GetRecipeDetailHandler(IRepository<RecipeEntity> repository, IRepository<IngredientEntity> ingredientRepository, IRecipeMapper mapper) : IRequestHandler<GetRecipeDetailQuery, Result<RecipeDetailModel>>
 {
-    public async Task<UseCaseResult<RecipeDetailModel>> Handle(GetRecipeDetailQuery request, CancellationToken cancellationToken)
+    public async Task<Result<RecipeDetailModel>> Handle(GetRecipeDetailQuery request, CancellationToken cancellationToken)
     {
         RecipeEntity? recipe = await repository.GetByIdAsync(request.Id);
         if (recipe is null)
         {
-            return UseCaseResult<RecipeDetailModel>.NotFound("Recipe not found");
+            return Result<RecipeDetailModel>.NotFound("Recipe not found");
         }
 
         var ingredientIds = recipe.Ingredients.Select(i => i.IngredientId).ToList();
@@ -29,6 +30,6 @@ internal class GetRecipeDetailHandler(IRepository<RecipeEntity> repository, IRep
         }
 
         var recipeDetailModel = mapper.MapToDetailModel(recipe, usedIngredients);
-        return UseCaseResult<RecipeDetailModel>.Ok(recipeDetailModel);
+        return Result<RecipeDetailModel>.Ok(recipeDetailModel);
     }
 }
