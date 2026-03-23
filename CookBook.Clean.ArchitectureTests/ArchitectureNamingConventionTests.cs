@@ -42,7 +42,7 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     public void Filters_ShouldHave_NameEndingWith_Filter()
     {
         Classes().That()
-            .ImplementInterface(typeof(IFilter))
+            .ImplementInterface(typeof(IFilter<>))
             .Should().HaveNameMatching("Filter")
             .Check(Architecture);
     }

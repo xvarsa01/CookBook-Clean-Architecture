@@ -1,7 +1,7 @@
 ﻿namespace CookBook.Clean.Application.Filters;
 
-public interface IFilter
+public interface IFilter<TSortParameter >
 {
-    string? SortParameterName { get; set; }
+    TSortParameter  SortParameter { get; set; }
     bool IsSortAscending { get; set; }
 }

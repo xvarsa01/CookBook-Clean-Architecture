@@ -12,6 +12,8 @@ public record RecipeDetailModel : IModel
     public string? ImageUrl { get; set; }
     public required TimeSpan Duration { get; set; }
     public required RecipeType Type { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? ModifiedAt { get; set; }
     public ObservableCollection<IngredientInRecipeModel> Ingredients { get; set; } = [];
     
     public static RecipeDetailModel Empty
@@ -22,6 +24,7 @@ public record RecipeDetailModel : IModel
             Description = string.Empty,
             Duration = TimeSpan.Zero,
             Type = RecipeType.None,
+            CreatedAt =  DateTime.UtcNow,
         };
 
 }

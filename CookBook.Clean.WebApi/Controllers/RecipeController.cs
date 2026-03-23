@@ -26,7 +26,11 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult<Guid>> Create(RecipeCreateRequestDto requestDto)
     {
         var result = await _mediator.Send(new CreateRecipeUseCase(requestDto.Name, requestDto.Description, requestDto.ImageUrl, requestDto.Duration, requestDto.Type));
-        return Ok(result);
+        if (result.Success)
+        {
+            return Ok(result.Value);
+        }
+        return BadRequest(result.Error);
     }
     
     [HttpGet("{id:guid}")]
@@ -103,7 +107,7 @@ public class RecipeController : ControllerBase
         var result = await _mediator.Send(new AddIngredientToRecipeUseCase(recipeId, requestDto.IngredientId, requestDto.Amount, requestDto.Unit));
         if (result.Success)
         {
-            return Ok(result);
+            return Ok(result.Value);
         }
         return BadRequest(result.Error);
     }
