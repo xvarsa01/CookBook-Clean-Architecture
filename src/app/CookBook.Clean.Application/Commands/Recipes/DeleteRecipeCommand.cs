@@ -5,11 +5,11 @@ using CookBook.Clean.Core.RecipeRoot;
 
 namespace CookBook.Clean.Application.Commands.Recipes;
 
-public record DeleteRecipeUseCase(Guid Id) : ICommand;
+public record DeleteRecipeCommand(Guid Id) : ICommand;
 
-internal sealed class DeleteRecipeCommand(IRepository<RecipeEntity> repository) : ICommandHandler<DeleteRecipeUseCase>
+internal sealed class DeleteRecipeCommandHandler(IRepository<RecipeEntity> repository) : ICommandHandler<DeleteRecipeCommand>
 {
-    public async Task<Result> Handle(DeleteRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteRecipeCommand request, CancellationToken cancellationToken)
     {
         await repository.DeleteAsync(request.Id);
         return Result.Ok();

@@ -41,7 +41,7 @@ public partial class RecipeDetailViewModel(
     {
         if (Recipe is not null)
         {
-            var result = (await _mediator.Send(new DeleteRecipeUseCase(Recipe.Id)));
+            var result = (await _mediator.Send(new DeleteRecipeCommand(Recipe.Id)));
 
             MessengerService.Send(new RecipeDeleteMessage());
 

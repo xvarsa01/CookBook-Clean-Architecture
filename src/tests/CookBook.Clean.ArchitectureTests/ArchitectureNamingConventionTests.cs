@@ -1,4 +1,5 @@
 ﻿using ArchUnitNET.xUnit;
+using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Models;
@@ -10,22 +11,33 @@ namespace CookBook.Clean.ArchitectureTests;
 public class ArchitectureNamingConventionTests : ArchitectureTestBase
 {
     [Fact]
-    public void CommandHandlers_ShouldHave_NameEndingWith_CommandHandler()
+    public void Commands_ShouldHave_NameEndingWith_Command()
     {
         Classes().That()
-            .ImplementInterface(typeof(IRequestHandler<>))
+            .ImplementInterface(typeof(ICommand))
             .Or()
-            .ImplementInterface(typeof(IRequestHandler<,>))
-            .Should().HaveNameEndingWith("Handler")
+            .ImplementInterface(typeof(ICommand<>))
+            .Should().HaveNameEndingWith("Command")
             .Check(Architecture);
     }
     
     [Fact]
-    public void UseCases_ShouldHave_NameEndingWith_UseCase()
+    public void Queries_ShouldHave_NameEndingWith_Query()
     {
         Classes().That()
-            .ImplementInterface(typeof(IRequest<>))
-            .Should().HaveNameMatching(".*(UseCase|Query)$")
+            .ImplementInterface(typeof(IQuery<>))
+            .Should().HaveNameEndingWith("Query")
+            .Check(Architecture);
+    }
+    
+    [Fact]
+    public void CommandHandlers_ShouldHave_NameEndingWith_CommandHandler()
+    {
+        Classes().That()
+            .ImplementInterface(typeof(ICommandHandler<>))
+            .Or()
+            .ImplementInterface(typeof(ICommandHandler<,>))
+            .Should().HaveNameEndingWith("Handler")
             .Check(Architecture);
     }
     
@@ -77,10 +89,10 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     }
     
     [Fact]
-    public void UseCases_ShouldBeIn_Application_Layer()
+    public void Commands_ShouldBeIn_Application_Layer()
     {
         Classes().That()
-            .HaveNameEndingWith("UseCase")
+            .HaveNameEndingWith("Command")
             .Should().ResideInAssembly(ApplicationAssembly)
             .Check(Architecture);
     }
