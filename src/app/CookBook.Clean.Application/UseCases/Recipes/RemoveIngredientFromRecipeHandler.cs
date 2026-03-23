@@ -6,6 +6,8 @@ using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
+public record RemoveIngredientFromRecipeUseCase(Guid RecipeId, Guid EntryId) : IRequest<Result>;
+
 internal class RemoveIngredientFromRecipeHandler(IRepository<RecipeEntity> recipeRepository)
     : IRequestHandler<RemoveIngredientFromRecipeUseCase, Result>
 {

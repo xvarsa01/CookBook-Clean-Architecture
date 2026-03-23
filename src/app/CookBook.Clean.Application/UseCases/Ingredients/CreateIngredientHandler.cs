@@ -6,6 +6,8 @@ using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Ingredients;
 
+public record CreateIngredientUseCase(string Name, string? Description, string? ImageUrl) : IRequest<Result<Guid>>;
+
 internal class CreateIngredientHandler(IRepository<IngredientEntity> repository, IIngredientMapper mapper) : IRequestHandler<CreateIngredientUseCase, Result<Guid>>
 {
     public async Task<Result<Guid>> Handle(CreateIngredientUseCase request, CancellationToken cancellationToken) 

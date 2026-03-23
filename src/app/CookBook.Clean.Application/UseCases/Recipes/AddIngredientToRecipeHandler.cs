@@ -2,11 +2,14 @@ using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.Exceptions;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
+
+public record AddIngredientToRecipeUseCase(Guid RecipeId, Guid IngredientId, decimal Amount, MeasurementUnit Unit) : IRequest<Result<Guid>>;
 
 internal class AddIngredientToRecipeHandler(
     IRepository<RecipeEntity> recipeRepository,
