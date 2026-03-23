@@ -85,6 +85,7 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
     public void UpdateName(RecipeName newName)
     {
         if (Name == newName) return;
+        
         // fire some event?
         Name = newName;
         ModifiedAt = DateTime.UtcNow;
@@ -93,26 +94,36 @@ public class RecipeEntity(RecipeName name, string? description, ImageUrl? imageU
     public void UpdateDescription(string newDescription)
     {
         if (Description == newDescription) return;
+        
         Description = newDescription;
         ModifiedAt = DateTime.UtcNow;
     }
     
     public void UpdateRest(ImageUrl? newUrl, RecipeDuration? newDuration, RecipeType? newType)
     {
+        var updated = false;
+
         if (ImageUrl != newUrl)
         {
             ImageUrl = newUrl;
+            updated = true;
         }
 
         if (newDuration is not null && Duration != newDuration)
         {
             Duration = newDuration;
+            updated = true;
         }
-        
+    
         if (newType is not null && Type != newType)
         {
             Type = newType.Value;
+            updated = true;
         }
-        ModifiedAt = DateTime.UtcNow;
+
+        if (updated)
+        {
+            ModifiedAt = DateTime.UtcNow;
+        }
     }
 }
