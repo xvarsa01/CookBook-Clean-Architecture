@@ -10,7 +10,6 @@
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.4"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
-        <PackageReference Include="TngTech.ArchUnitNET.xUnit" Version="0.13.3" />
         <PackageReference Include="xunit" Version="2.9.3"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4"/>
     </ItemGroup>
@@ -20,10 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CookBook.Clean.Application\CookBook.Clean.Application.csproj" />
-      <ProjectReference Include="..\CookBook.Clean.Core\CookBook.Clean.Core.csproj" />
-      <ProjectReference Include="..\CookBook.Clean.Infrastructure\CookBook.Clean.Infrastructure.csproj" />
-      <ProjectReference Include="..\CookBook.Clean.WebApi\CookBook.Clean.WebApi.csproj" />
+      <ProjectReference Include="..\..\app\CookBook.Clean.Infrastructure\CookBook.Clean.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
