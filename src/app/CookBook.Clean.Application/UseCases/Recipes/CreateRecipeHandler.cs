@@ -1,4 +1,5 @@
-﻿using CookBook.Clean.Application.ExternalInterfaces;
+﻿using CookBook.Clean.Application.Abstraction;
+using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
@@ -7,9 +8,9 @@ using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-public record CreateRecipeUseCase(string Name, string? Description, string? ImageUrl, TimeSpan Duration, RecipeType RecipeType) : IRequest<Result<Guid>>;
+public record CreateRecipeUseCase(string Name, string? Description, string? ImageUrl, TimeSpan Duration, RecipeType RecipeType) : ICommand<Guid>;
 
-internal class CreateRecipeHandler(IRepository<RecipeEntity> repository, IRecipeMapper mapper) : IRequestHandler<CreateRecipeUseCase, Result<Guid>>
+internal class CreateRecipeHandler(IRepository<RecipeEntity> repository, IRecipeMapper mapper) : ICommandHandler<CreateRecipeUseCase,Guid>
 {
     public async Task<Result<Guid>> Handle(CreateRecipeUseCase request, CancellationToken cancellationToken)
     {

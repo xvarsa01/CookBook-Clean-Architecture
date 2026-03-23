@@ -1,4 +1,5 @@
-﻿using CookBook.Clean.Application.ExternalInterfaces;
+﻿using CookBook.Clean.Application.Abstraction;
+using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.Events;
@@ -7,10 +8,10 @@ using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Ingredients;
 
-public record UpdateIngredientUseCase(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl) : IRequest<Result<Guid>>;
+public record UpdateIngredientUseCase(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl) : ICommand<Guid>;
 
 internal class UpdateIngredientHandler(IRepository<IngredientEntity> repository, IPublisher publisher)
-    : IRequestHandler<UpdateIngredientUseCase, Result<Guid>>
+    : ICommandHandler<UpdateIngredientUseCase, Guid>
 {
     public async Task<Result<Guid>> Handle(UpdateIngredientUseCase request, CancellationToken cancellationToken)
     {
