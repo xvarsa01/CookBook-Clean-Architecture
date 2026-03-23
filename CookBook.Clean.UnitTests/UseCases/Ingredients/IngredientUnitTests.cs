@@ -5,6 +5,7 @@ using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Application.Specifications;
 using CookBook.Clean.Application.UseCases.Ingredients;
+using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 using Moq;
@@ -18,21 +19,21 @@ public class IngredientUnitTests
     {
         // Arrange
         var repoMock = new Mock<IRepository<IngredientEntity>>();
-        var mapperMock = new Mock<IIngredientMapper>();
+        var mapper = new ManualIngredientMapper();
         
         var expectedId = Guid.NewGuid();
         repoMock.Setup(r => r.InsertAsync(It.IsAny<IngredientEntity>()))
             .ReturnsAsync(expectedId);
 
-        var handler = new CreateIngredientHandler(repoMock.Object, mapperMock.Object);
-        var useCase = new CreateIngredientUseCase("Sugar", "Sweet", "http://img");
+        var handler = new CreateIngredientHandler(repoMock.Object, mapper);
+        var useCase = new CreateIngredientUseCase("Sugar", "Sweet", "http://a.png");
 
         // Act
         var result = await handler.Handle(useCase, CancellationToken.None);
 
         // Assert
         Assert.Equal(expectedId, result.Value);
-        repoMock.Verify(r => r.InsertAsync(It.Is<IngredientEntity>(e => e.Name == "Sugar" && e.ImageUrl == "http://img")), Times.Once);
+        repoMock.Verify(r => r.InsertAsync(It.Is<IngredientEntity>(e => e.Name == "Sugar" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
     }
 
     [Fact]
@@ -59,9 +60,9 @@ public class IngredientUnitTests
 
         var repoMock = new Mock<IRepository<IngredientEntity>>();
         repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
-        var mapperMock = new Mock<IIngredientMapper>();
+        var mapper = new ManualIngredientMapper();
 
-        var handler = new GetIngredientDetailHandler(repoMock.Object, mapperMock.Object);
+        var handler = new GetIngredientDetailHandler(repoMock.Object, mapper);
         var useCase = new GetIngredientDetailQuery(id);
 
         var result = await handler.Handle(useCase, CancellationToken.None);
@@ -83,9 +84,9 @@ public class IngredientUnitTests
         var repoMock = new Mock<IRepository<IngredientEntity>>();
         repoMock.Setup(r => r.GetListBySpecificationAsync(It.IsAny<ISpecification<IngredientEntity, IngredientEntity>>()))
             .ReturnsAsync(list);
-        var mapperMock = new Mock<IIngredientMapper>();
+        var mapper = new ManualIngredientMapper();
 
-        var handler = new GetIngredientListHandler(repoMock.Object, mapperMock.Object);
+        var handler = new GetIngredientListHandler(repoMock.Object, mapper);
         var useCase = new GetIngredientListQuery(new IngredientFilter());
 
         var result = await handler.Handle(useCase, CancellationToken.None);
@@ -124,12 +125,12 @@ public class IngredientUnitTests
         var publisherMock = new Mock<IPublisher>();
 
         var handler = new UpdateIngredientHandler(repoMock.Object, publisherMock.Object);
-        var useCase = new UpdateIngredientUseCase(id, "New", "NewDesc", "NewImg");
+        var useCase = new UpdateIngredientUseCase(id, "New", "NewDesc", "http://a.png");
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
         Assert.True(result.Success);
-        repoMock.Verify(r => r.UpdateAsync(It.Is<IngredientEntity>(e => e.Name == "New" && e.Description == "NewDesc" && e.ImageUrl == "NewImg")), Times.Once);
+        repoMock.Verify(r => r.UpdateAsync(It.Is<IngredientEntity>(e => e.Name == "New" && e.Description == "NewDesc" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
         publisherMock.Verify(p => p.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -137,9 +138,14 @@ public class IngredientUnitTests
     public async Task DeleteIngredientHandler_DeletesAndReturnsOk()
     {
         var id = Guid.NewGuid();
+        var entity = new IngredientEntity("Old", "d", null) { Id = id };
+        
         var repoMock = new Mock<IRepository<IngredientEntity>>();
         var repoMockRecipe = new Mock<IRecipeRepository>();
+        
+        repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
         repoMock.Setup(r => r.DeleteAsync(id)).Returns(Task.CompletedTask);
+        repoMockRecipe.Setup(r => r.GetAllContainingIngredientAsync(id)).Returns(Task.FromResult(new List<RecipeEntity>()));
 
         var publisherMock = new Mock<IPublisher>();
 
