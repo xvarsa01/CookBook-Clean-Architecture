@@ -5,7 +5,7 @@ using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.Events;
 using MediatR;
 
-namespace CookBook.Clean.Application.UseCases.Ingredients;
+namespace CookBook.Clean.Application.Commands.Ingredients;
 
 public record DeleteIngredientCommand(Guid Id) : ICommand;
 

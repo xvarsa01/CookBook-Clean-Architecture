@@ -5,7 +5,7 @@ using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
 
-namespace CookBook.Clean.Application.UseCases.Recipes;
+namespace CookBook.Clean.Application.Commands.Recipes;
 
 public record CreateRecipeCommand(string Name, string? Description, string? ImageUrl, TimeSpan Duration, RecipeType RecipeType) : ICommand<Guid>;
 

@@ -3,7 +3,7 @@ using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 
-namespace CookBook.Clean.Application.UseCases.Recipes;
+namespace CookBook.Clean.Application.Commands.Recipes;
 
 public record DeleteRecipeUseCase(Guid Id) : ICommand;
 

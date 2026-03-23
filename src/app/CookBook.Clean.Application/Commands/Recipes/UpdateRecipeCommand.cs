@@ -6,7 +6,7 @@ using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.Core.Shared.ValueObjects;
 
-namespace CookBook.Clean.Application.UseCases.Recipes;
+namespace CookBook.Clean.Application.Commands.Recipes;
 
 public record UpdateRecipeCommand(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl, TimeSpan? NewDuration, RecipeType? NewType) : ICommand<Guid>;
 

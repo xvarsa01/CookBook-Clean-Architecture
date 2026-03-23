@@ -1,8 +1,8 @@
 using CookBook.Clean.Application;
+using CookBook.Clean.Application.Commands.Recipes;
 using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.Queries.Recipes;
-using CookBook.Clean.Application.UseCases.Recipes;
 using CookBook.Clean.WebApi.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

@@ -4,7 +4,7 @@ using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 
-namespace CookBook.Clean.Application.UseCases.Ingredients;
+namespace CookBook.Clean.Application.Commands.Ingredients;
 
 public record CreateIngredientCommand(string Name, string? Description, string? ImageUrl) : ICommand<Guid>;
 

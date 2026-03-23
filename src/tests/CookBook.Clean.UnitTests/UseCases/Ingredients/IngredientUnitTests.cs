@@ -1,10 +1,10 @@
-﻿using CookBook.Clean.Core.IngredientRoot;
+﻿using CookBook.Clean.Application.Commands.Ingredients;
+using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Application.Specifications;
-using CookBook.Clean.Application.UseCases.Ingredients;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;

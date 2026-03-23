@@ -5,7 +5,7 @@ using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
-namespace CookBook.Clean.Application.UseCases.Recipes;
+namespace CookBook.Clean.Application.Commands.Recipes;
 
 public record UpdateIngredientInRecipeCommand(Guid RecipeId, Guid EntryId, decimal NewAmount, MeasurementUnit NewUnit) : ICommand;
 

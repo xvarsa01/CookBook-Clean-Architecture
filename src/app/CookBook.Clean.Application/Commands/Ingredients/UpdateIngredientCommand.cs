@@ -6,7 +6,7 @@ using CookBook.Clean.Core.IngredientRoot.Events;
 using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 
-namespace CookBook.Clean.Application.UseCases.Ingredients;
+namespace CookBook.Clean.Application.Commands.Ingredients;
 
 public record UpdateIngredientCommand(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl) : ICommand<Guid>;
 

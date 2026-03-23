@@ -6,7 +6,7 @@ using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
-namespace CookBook.Clean.Application.UseCases.Recipes;
+namespace CookBook.Clean.Application.Commands.Recipes;
 
 public record AddIngredientToRecipeCommand(Guid RecipeId, Guid IngredientId, decimal Amount, MeasurementUnit Unit) : ICommand<Guid>;
 

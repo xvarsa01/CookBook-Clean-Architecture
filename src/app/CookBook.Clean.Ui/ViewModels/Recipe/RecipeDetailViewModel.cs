@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CookBook.Clean.Application.Commands.Recipes;
 using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.Queries.Recipes;
-using CookBook.Clean.Application.UseCases.Recipes;
 using CookBook.Clean.Ui.Messages;
 using CookBook.Clean.Ui.Services;
 using CookBook.Clean.Ui.Services.Interfaces;
