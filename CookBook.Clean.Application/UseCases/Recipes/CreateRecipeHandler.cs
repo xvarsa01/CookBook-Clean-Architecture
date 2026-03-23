@@ -9,8 +9,15 @@ internal class CreateRecipeHandler(IRepository<RecipeEntity> repository, IRecipe
 {
     public async Task<UseCaseResult<Guid>> Handle(CreateRecipeUseCase request, CancellationToken cancellationToken)
     {
-        var newRecipe = mapper.MapToEntity(request);
-        var createdItemId = await repository.InsertAsync(newRecipe);
-        return UseCaseResult<Guid>.Ok(createdItemId);
+        try
+        {
+            var newRecipe = mapper.MapToEntity(request);
+            var createdItemId = await repository.InsertAsync(newRecipe);
+            return UseCaseResult<Guid>.Ok(createdItemId);
+        }
+        catch (Exception e)
+        {
+            return UseCaseResult<Guid>.Invalid(e.Message);
+        }
     }
 }

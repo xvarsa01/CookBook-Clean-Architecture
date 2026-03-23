@@ -9,6 +9,6 @@ public class RecipeUpdateRequestDto
     public string? Name { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
-    public TimeSpan Duration { get; set; }
-    public RecipeType Type { get; set; }
+    public TimeSpan? Duration { get; set; }
+    public RecipeType? Type { get; set; }
 }
