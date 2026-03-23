@@ -10,5 +10,5 @@ public interface IIngredientMapper : IMapper
     IEnumerable<IngredientListModel> MapToListModels(IEnumerable<IngredientEntity> entities);
     IngredientDetailModel MapToDetailModel(IngredientEntity entity);
     
-    IngredientEntity MapToEntity(CreateIngredientUseCase request);
+    IngredientEntity MapToEntity(CreateIngredientCommand request);
 }

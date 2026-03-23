@@ -25,7 +25,7 @@ public class IngredientController : ControllerBase
     [HttpPost(Name = "CreateIngredient")]
     public async Task<ActionResult<Guid>> Create(IngredientCreateRequestDto requestDto)
     {
-        var result = await _mediator.Send(new CreateIngredientUseCase(requestDto.Name, requestDto.Description, requestDto.ImageUrl));
+        var result = await _mediator.Send(new CreateIngredientCommand(requestDto.Name, requestDto.Description, requestDto.ImageUrl));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
@@ -60,7 +60,7 @@ public class IngredientController : ControllerBase
     [HttpPut(Name = "UpdateIngredient")]
     public async Task<ActionResult<Guid>> Update(IngredientUpdateRequestDto requestDto)
     {
-        var result = await _mediator.Send(new UpdateIngredientUseCase(requestDto.Id, requestDto.Name, requestDto.Description, requestDto.ImageUrl));
+        var result = await _mediator.Send(new UpdateIngredientCommand(requestDto.Id, requestDto.Name, requestDto.Description, requestDto.ImageUrl));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
@@ -71,7 +71,7 @@ public class IngredientController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteAsync(Guid id)
     {
-        var result = await _mediator.Send(new DeleteIngredientUseCase(id));
+        var result = await _mediator.Send(new DeleteIngredientCommand(id));
         if (result.IsSuccess)
         {
             return NoContent();

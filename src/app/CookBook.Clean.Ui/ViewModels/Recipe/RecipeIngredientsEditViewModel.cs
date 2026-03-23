@@ -72,7 +72,7 @@ public partial class RecipeIngredientsEditViewModel(
             IngredientAmountNew.Name = IngredientSelected.Name;
             IngredientAmountNew.ImageUrl = IngredientSelected.ImageUrl;
 
-            var result = await _mediator.Send(new AddIngredientToRecipeUseCase(Recipe.Id, IngredientAmountNew.IngredientId, IngredientAmountNew.Amount, IngredientAmountNew.Unit));
+            var result = await _mediator.Send(new AddIngredientToRecipeCommand(Recipe.Id, IngredientAmountNew.IngredientId, IngredientAmountNew.Amount, IngredientAmountNew.Unit));
             if (result.IsSuccess)
             {
                 IngredientAmountNew.Id =  result.Value;
@@ -93,7 +93,7 @@ public partial class RecipeIngredientsEditViewModel(
             && model.Amount > 0
             && Recipe.Ingredients.Any(i => i.Id == model.Id))
         {
-            await _mediator.Send(new UpdateIngredientInRecipeUseCase(Recipe.Id, model.Id, model.Amount, model.Unit));
+            await _mediator.Send(new UpdateIngredientInRecipeCommand(Recipe.Id, model.Id, model.Amount, model.Unit));
             MessengerService.Send(new RecipeIngredientEditMessage());
         }
     }
@@ -103,7 +103,7 @@ public partial class RecipeIngredientsEditViewModel(
     {
         if (Recipe.Id != Guid.Empty)
         {
-            await _mediator.Send(new RemoveIngredientFromRecipeUseCase(Recipe.Id, model.Id));
+            await _mediator.Send(new RemoveIngredientFromRecipeCommand(Recipe.Id, model.Id));
             Recipe.Ingredients.Remove(model);
 
             MessengerService.Send(new RecipeIngredientDeleteMessage());

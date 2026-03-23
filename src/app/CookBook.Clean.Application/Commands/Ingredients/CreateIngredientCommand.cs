@@ -6,11 +6,11 @@ using CookBook.Clean.Core.IngredientRoot;
 
 namespace CookBook.Clean.Application.UseCases.Ingredients;
 
-public record CreateIngredientUseCase(string Name, string? Description, string? ImageUrl) : ICommand<Guid>;
+public record CreateIngredientCommand(string Name, string? Description, string? ImageUrl) : ICommand<Guid>;
 
-internal class CreateIngredientHandler(IRepository<IngredientEntity> repository, IIngredientMapper mapper) : ICommandHandler<CreateIngredientUseCase, Guid>
+internal sealed class CreateIngredientCommandHandler(IRepository<IngredientEntity> repository, IIngredientMapper mapper) : ICommandHandler<CreateIngredientCommand, Guid>
 {
-    public async Task<Result<Guid>> Handle(CreateIngredientUseCase request, CancellationToken cancellationToken) 
+    public async Task<Result<Guid>> Handle(CreateIngredientCommand request, CancellationToken cancellationToken) 
     {
         var newIngredientEntity = mapper.MapToEntity(request);
         var createdIngredientId = await repository.InsertAsync(newIngredientEntity);

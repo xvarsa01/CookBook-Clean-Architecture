@@ -46,11 +46,11 @@ public partial class IngredientEditViewModel(
     {
         if (Ingredient.Id == Guid.Empty)
         {
-            await _mediator.Send(new CreateIngredientUseCase(Ingredient.Name, Ingredient.Description, Ingredient.ImageUrl));
+            await _mediator.Send(new CreateIngredientCommand(Ingredient.Name, Ingredient.Description, Ingredient.ImageUrl));
         }
         else
         {
-            await _mediator.Send(new UpdateIngredientUseCase(Ingredient.Id, Ingredient.Name, Ingredient.Description, Ingredient.ImageUrl));
+            await _mediator.Send(new UpdateIngredientCommand(Ingredient.Id, Ingredient.Name, Ingredient.Description, Ingredient.ImageUrl));
         }
 
         MessengerService.Send(new IngredientEditMessage { IngredientId = Ingredient.Id });

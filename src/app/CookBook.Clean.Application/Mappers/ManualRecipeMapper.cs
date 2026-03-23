@@ -69,7 +69,7 @@ public class ManualRecipeMapper : IRecipeMapper
         };
     }
 
-    public RecipeEntity MapToEntity(CreateRecipeUseCase request)
+    public RecipeEntity MapToEntity(CreateRecipeCommand request)
     {
         var url = request.ImageUrl is not null ? ImageUrl.CreateObject(request.ImageUrl) : null;
         

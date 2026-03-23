@@ -8,12 +8,12 @@ using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Ingredients;
 
-public record UpdateIngredientUseCase(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl) : ICommand<Guid>;
+public record UpdateIngredientCommand(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl) : ICommand<Guid>;
 
-internal class UpdateIngredientHandler(IRepository<IngredientEntity> repository, IPublisher publisher)
-    : ICommandHandler<UpdateIngredientUseCase, Guid>
+internal sealed class UpdateIngredientCommandHandler(IRepository<IngredientEntity> repository, IPublisher publisher)
+    : ICommandHandler<UpdateIngredientCommand, Guid>
 {
-    public async Task<Result<Guid>> Handle(UpdateIngredientUseCase request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)
     {
         var existingIngredient = await repository.GetByIdAsync(request.Id);
         if (existingIngredient == null)

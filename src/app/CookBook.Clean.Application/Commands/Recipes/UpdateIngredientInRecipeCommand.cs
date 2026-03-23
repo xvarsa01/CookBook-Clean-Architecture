@@ -4,16 +4,15 @@ using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
-using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-public record UpdateIngredientInRecipeUseCase(Guid RecipeId, Guid EntryId, decimal NewAmount, MeasurementUnit NewUnit) : ICommand;
+public record UpdateIngredientInRecipeCommand(Guid RecipeId, Guid EntryId, decimal NewAmount, MeasurementUnit NewUnit) : ICommand;
 
-internal class UpdateIngredientInRecipeHandler(IRepository<RecipeEntity> recipeRepository) : ICommandHandler<UpdateIngredientInRecipeUseCase>
+internal sealed class UpdateIngredientInRecipeCommandHandler(IRepository<RecipeEntity> recipeRepository) : ICommandHandler<UpdateIngredientInRecipeCommand>
 {
 
-    public async Task<Result> Handle(UpdateIngredientInRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateIngredientInRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)

@@ -2,16 +2,15 @@ using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
-using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-public record RemoveIngredientFromRecipeUseCase(Guid RecipeId, Guid EntryId) : ICommand;
+public record RemoveIngredientFromRecipeCommand(Guid RecipeId, Guid EntryId) : ICommand;
 
-internal class RemoveIngredientFromRecipeHandler(IRepository<RecipeEntity> recipeRepository)
-    : ICommandHandler<RemoveIngredientFromRecipeUseCase>
+internal sealed class RemoveIngredientFromRecipeCommandHandler(IRepository<RecipeEntity> recipeRepository)
+    : ICommandHandler<RemoveIngredientFromRecipeCommand>
 {
-    public async Task<Result> Handle(RemoveIngredientFromRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(RemoveIngredientFromRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)

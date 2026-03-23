@@ -8,14 +8,14 @@ using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-public record AddIngredientToRecipeUseCase(Guid RecipeId, Guid IngredientId, decimal Amount, MeasurementUnit Unit) : ICommand<Guid>;
+public record AddIngredientToRecipeCommand(Guid RecipeId, Guid IngredientId, decimal Amount, MeasurementUnit Unit) : ICommand<Guid>;
 
-internal class AddIngredientToRecipeHandler(
+internal sealed class AddIngredientToRecipeCommandHandler(
     IRepository<RecipeEntity> recipeRepository,
     IRepository<IngredientEntity> ingredientRepository
-) : ICommandHandler<AddIngredientToRecipeUseCase,Guid>
+) : ICommandHandler<AddIngredientToRecipeCommand,Guid>
 {
-    public async Task<Result<Guid>> Handle(AddIngredientToRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(AddIngredientToRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)

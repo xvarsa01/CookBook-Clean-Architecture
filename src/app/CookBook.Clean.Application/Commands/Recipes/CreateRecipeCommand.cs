@@ -4,15 +4,14 @@ using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
-using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-public record CreateRecipeUseCase(string Name, string? Description, string? ImageUrl, TimeSpan Duration, RecipeType RecipeType) : ICommand<Guid>;
+public record CreateRecipeCommand(string Name, string? Description, string? ImageUrl, TimeSpan Duration, RecipeType RecipeType) : ICommand<Guid>;
 
-internal class CreateRecipeHandler(IRepository<RecipeEntity> repository, IRecipeMapper mapper) : ICommandHandler<CreateRecipeUseCase,Guid>
+internal sealed class CreateRecipeCommandHandler(IRepository<RecipeEntity> repository, IRecipeMapper mapper) : ICommandHandler<CreateRecipeCommand,Guid>
 {
-    public async Task<Result<Guid>> Handle(CreateRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
         try
         {

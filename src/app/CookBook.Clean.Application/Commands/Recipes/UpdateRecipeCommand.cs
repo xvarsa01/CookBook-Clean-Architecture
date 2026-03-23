@@ -5,15 +5,14 @@ using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.Core.Shared.ValueObjects;
-using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Recipes;
 
-public record UpdateRecipeUseCase(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl, TimeSpan? NewDuration, RecipeType? NewType) : ICommand<Guid>;
+public record UpdateRecipeCommand(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl, TimeSpan? NewDuration, RecipeType? NewType) : ICommand<Guid>;
 
-internal class UpdateRecipeHandler(IRepository<RecipeEntity> repository) : ICommandHandler<UpdateRecipeUseCase,Guid>
+internal sealed class UpdateRecipeCommandHandler(IRepository<RecipeEntity> repository) : ICommandHandler<UpdateRecipeCommand,Guid>
 {
-    public async Task<Result<Guid>> Handle(UpdateRecipeUseCase request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(UpdateRecipeCommand request, CancellationToken cancellationToken)
     {
         var existing = await repository.GetByIdAsync(request.Id);
         if (existing is null)

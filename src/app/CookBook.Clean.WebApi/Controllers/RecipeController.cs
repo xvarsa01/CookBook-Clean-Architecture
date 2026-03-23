@@ -25,7 +25,7 @@ public class RecipeController : ControllerBase
     [HttpPost(Name = "CreateRecipe")]
     public async Task<ActionResult<Guid>> Create(RecipeCreateRequestDto requestDto)
     {
-        var result = await _mediator.Send(new CreateRecipeUseCase(requestDto.Name, requestDto.Description, requestDto.ImageUrl, requestDto.Duration, requestDto.Type));
+        var result = await _mediator.Send(new CreateRecipeCommand(requestDto.Name, requestDto.Description, requestDto.ImageUrl, requestDto.Duration, requestDto.Type));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
@@ -82,7 +82,7 @@ public class RecipeController : ControllerBase
     [HttpPut(Name = "UpdateRecipe")]
     public async Task<ActionResult<Guid>> Update(RecipeUpdateRequestDto requestDto)
     {
-        var result = await _mediator.Send(new UpdateRecipeUseCase(requestDto.Id, requestDto.Name, requestDto.Description, requestDto.ImageUrl, requestDto.Duration, requestDto.Type));
+        var result = await _mediator.Send(new UpdateRecipeCommand(requestDto.Id, requestDto.Name, requestDto.Description, requestDto.ImageUrl, requestDto.Duration, requestDto.Type));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
@@ -104,7 +104,7 @@ public class RecipeController : ControllerBase
     [HttpPost("{recipeId:guid}/ingredient", Name = "AddIngredientToRecipe")]
     public async Task<ActionResult<Guid>> AddIngredient(Guid recipeId, RecipeAddIngredientRequestDto requestDto)
     {
-        var result = await _mediator.Send(new AddIngredientToRecipeUseCase(recipeId, requestDto.IngredientId, requestDto.Amount, requestDto.Unit));
+        var result = await _mediator.Send(new AddIngredientToRecipeCommand(recipeId, requestDto.IngredientId, requestDto.Amount, requestDto.Unit));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
@@ -115,7 +115,7 @@ public class RecipeController : ControllerBase
     [HttpDelete("{recipeId:guid}/ingredient", Name = "RemoveIngredientFromRecipe")]
     public async Task<ActionResult> RemoveIngredient(Guid recipeId, RecipeRemoveIngredientRequestDto requestDto)
     {
-        var result = await _mediator.Send(new RemoveIngredientFromRecipeUseCase(recipeId, requestDto.EntryId));
+        var result = await _mediator.Send(new RemoveIngredientFromRecipeCommand(recipeId, requestDto.EntryId));
         if (result.IsSuccess)
         {
             return NoContent();
@@ -126,7 +126,7 @@ public class RecipeController : ControllerBase
     [HttpPut("{recipeId:guid}/ingredient", Name = "UpdateIngredientInRecipe")]
     public async Task<ActionResult> Update(Guid recipeId, RecipeUpdateIngredientRequestDto requestDto)
     {
-        var result = await _mediator.Send(new UpdateIngredientInRecipeUseCase(recipeId, requestDto.EntryId, requestDto.NewAmount, requestDto.NewUnit));
+        var result = await _mediator.Send(new UpdateIngredientInRecipeCommand(recipeId, requestDto.EntryId, requestDto.NewAmount, requestDto.NewUnit));
         if (result.IsSuccess)
         {
             return Ok(result);

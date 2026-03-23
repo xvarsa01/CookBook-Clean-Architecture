@@ -25,8 +25,8 @@ public class IngredientUnitTests
         repoMock.Setup(r => r.InsertAsync(It.IsAny<IngredientEntity>()))
             .ReturnsAsync(expectedId);
 
-        var handler = new CreateIngredientHandler(repoMock.Object, mapper);
-        var useCase = new CreateIngredientUseCase("Sugar", "Sweet", "http://a.png");
+        var handler = new CreateIngredientCommandHandler(repoMock.Object, mapper);
+        var useCase = new CreateIngredientCommand("Sugar", "Sweet", "http://a.png");
 
         // Act
         var result = await handler.Handle(useCase, CancellationToken.None);
@@ -109,8 +109,8 @@ public class IngredientUnitTests
 
         var publisherMock = new Mock<IPublisher>();
 
-        var handler = new UpdateIngredientHandler(repoMock.Object, publisherMock.Object);
-        var useCase = new UpdateIngredientUseCase(Guid.NewGuid(), "New", null, null);
+        var handler = new UpdateIngredientCommandHandler(repoMock.Object, publisherMock.Object);
+        var useCase = new UpdateIngredientCommand(Guid.NewGuid(), "New", null, null);
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
@@ -131,8 +131,8 @@ public class IngredientUnitTests
 
         var publisherMock = new Mock<IPublisher>();
 
-        var handler = new UpdateIngredientHandler(repoMock.Object, publisherMock.Object);
-        var useCase = new UpdateIngredientUseCase(id, "New", "NewDesc", "http://a.png");
+        var handler = new UpdateIngredientCommandHandler(repoMock.Object, publisherMock.Object);
+        var useCase = new UpdateIngredientCommand(id, "New", "NewDesc", "http://a.png");
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
@@ -157,8 +157,8 @@ public class IngredientUnitTests
 
         var publisherMock = new Mock<IPublisher>();
 
-        var handler = new DeleteIngredientHandler(repoMock.Object, repoMockRecipe.Object, publisherMock.Object);
-        var useCase = new DeleteIngredientUseCase(id);
+        var handler = new DeleteIngredientCommandHandler(repoMock.Object, repoMockRecipe.Object, publisherMock.Object);
+        var useCase = new DeleteIngredientCommand(id);
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 

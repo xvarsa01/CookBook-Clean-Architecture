@@ -39,7 +39,7 @@ public class ManualIngredientMapper : IIngredientMapper
         };
     }
 
-    public IngredientEntity MapToEntity(CreateIngredientUseCase request)
+    public IngredientEntity MapToEntity(CreateIngredientCommand request)
     {
         var urlObjectResult = request.ImageUrl is not null
             ? ImageUrl.CreateObject(request.ImageUrl)

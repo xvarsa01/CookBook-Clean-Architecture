@@ -7,12 +7,12 @@ using MediatR;
 
 namespace CookBook.Clean.Application.UseCases.Ingredients;
 
-public record DeleteIngredientUseCase(Guid Id) : ICommand;
+public record DeleteIngredientCommand(Guid Id) : ICommand;
 
-internal class DeleteIngredientHandler(IRepository<IngredientEntity> repository, IRecipeRepository recipeRepository, IPublisher publisher)
-    : ICommandHandler<DeleteIngredientUseCase>
+internal sealed class DeleteIngredientCommandHandler(IRepository<IngredientEntity> repository, IRecipeRepository recipeRepository, IPublisher publisher)
+    : ICommandHandler<DeleteIngredientCommand>
 {
-    public async Task<Result> Handle(DeleteIngredientUseCase request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteIngredientCommand request, CancellationToken cancellationToken)
     {
         var entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)

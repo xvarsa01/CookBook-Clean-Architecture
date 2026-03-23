@@ -41,7 +41,7 @@ public partial class IngredientDetailViewModel(
     {
         if (Ingredient is not null)
         {
-            var result = await _mediator.Send(new DeleteIngredientUseCase(Ingredient.Id));
+            var result = await _mediator.Send(new DeleteIngredientCommand(Ingredient.Id));
             if (!result.IsSuccess)
             {
                 await alertService.DisplayAsync(IngredientDetailViewModelTexts.DeleteError_Alert_Title, IngredientDetailViewModelTexts.DeleteError_Alert_Message);
