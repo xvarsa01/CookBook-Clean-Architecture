@@ -19,6 +19,8 @@ public class ManualRecipeMapper : IRecipeMapper
             RecipeType =  entity.Type,
             Duration = entity.Duration.Value,
             ImageUrl = entity.ImageUrl?.Value,
+            CreatedAt = entity.CreatedAt,
+            ModifiedAt = entity.ModifiedAt
         };
     }
 
@@ -58,9 +60,11 @@ public class ManualRecipeMapper : IRecipeMapper
             Id = entity.Id,
             Name = entity.Name,
             Description = entity.Description,
+            ImageUrl = entity.ImageUrl?.Value,
             Duration = entity.Duration.Value,
             Type = entity.Type,
-            ImageUrl = entity.ImageUrl?.Value,
+            CreatedAt = entity.CreatedAt,
+            ModifiedAt = entity.ModifiedAt,
             Ingredients = new ObservableCollection<IngredientInRecipeModel>(ingredients)
         };
     }
