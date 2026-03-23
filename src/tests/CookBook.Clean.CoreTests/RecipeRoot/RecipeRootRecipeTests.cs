@@ -50,35 +50,35 @@ public class RecipeRootRecipeTests
     }
     
     [Fact]
-    public void Creating_Recipe_With_Empty_Name_Should_Throw()
+    public void Creating_Recipe_With_Empty_Name_Should_ReturnFailure()
     {
         var nameResult = RecipeName.CreateObject("");
 
-        Assert.False(nameResult.IsSuccess);
+        Assert.True(nameResult.IsFailure);
     }
     
     [Fact]
-    public void Creating_Recipe_With_Short_Name_Should_Throw()
+    public void Creating_Recipe_With_Short_Name_Should_ReturnFailure()
     {
         var nameResult = RecipeName.CreateObject("AB");
 
-        Assert.False(nameResult.IsSuccess);
+        Assert.True(nameResult.IsFailure);
     }
     
     [Fact]
-    public void Creating_Recipe_With_Negative_Duration_Should_Throw()
+    public void Creating_Recipe_With_Negative_Duration_Should_ReturnFailure()
     {
         var durationResult = RecipeDuration.CreateObject(TimeSpan.FromMinutes(-1));
 
-        Assert.False(durationResult.IsSuccess);
+        Assert.True(durationResult.IsFailure);
     }
     
     [Fact]
-    public void Creating_Recipe_With_Zero_Duration_Should_Throw()
+    public void Creating_Recipe_With_Zero_Duration_Should_ReturnFailure()
     {
         var durationResult = RecipeDuration.CreateObject(TimeSpan.Zero);
 
-        Assert.False(durationResult.IsSuccess);
+        Assert.True(durationResult.IsFailure);
     }
     
     [Fact]
@@ -92,23 +92,23 @@ public class RecipeRootRecipeTests
     }
     
     [Fact]
-    public void Updating_RecipeName_ToEmpty_Should_Throw()
+    public void Updating_RecipeName_ToEmpty_Should_ReturnFailure()
     {
         var recipe = RecipeEntity.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink).Value;
 
         var nameResult = RecipeName.CreateObject("");
 
-        Assert.False(nameResult.IsSuccess);
+        Assert.True(nameResult.IsFailure);
     }
     
     [Fact]
-    public void Updating_RecipeName_ToShort_Should_Throw()
+    public void Updating_RecipeName_ToShort_Should_ReturnFailure()
     {
         var recipe = RecipeEntity.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink).Value;
 
         var nameResult = RecipeName.CreateObject("AB");
 
-        Assert.False(nameResult.IsSuccess);
+        Assert.True(nameResult.IsFailure);
     }
     
     [Fact]
@@ -233,13 +233,13 @@ public class RecipeRootRecipeTests
     }
     
     [Fact]
-    public void Updating_RecipeDuration_To_Negative_Value_Should_Throw()
+    public void Updating_RecipeDuration_To_Negative_Value_Should_ReturnFailure()
     {
         var recipe = RecipeEntity.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink).Value;
 
-        Assert.Throws<ArgumentException>(() =>
-            recipe.UpdateRest(null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(-1)).Value, null)
-        );
+        var durationResult = RecipeDuration.CreateObject(TimeSpan.FromMinutes(-1));
+
+        Assert.True(durationResult.IsFailure);
     }
     
     [Fact]

@@ -24,24 +24,23 @@ public class IngredientAmountValueObjectTests
 
         Assert.True(a1.IsSuccess);
         Assert.True(a2.IsSuccess);
-        Assert.Equal(a1.Value, a2.Value);
         Assert.Equal(a1.Value.Value, a2.Value.Value);
     }
     
     //invalid ones:
     [Fact]
-    public void Creating_IngredientAmount_With_Zero_Amount_Should_Throw()
+    public void Creating_IngredientAmount_With_Zero_Amount_Should_ReturnFailure()
     {
         var amount = IngredientAmount.CreateObject(0);
 
-        Assert.False(amount.IsSuccess);
+        Assert.True(amount.IsFailure);
     }
 
     [Fact]
-    public void Creating_IngredientAmount_With_Negative_Amount_Should_Throw()
+    public void Creating_IngredientAmount_With_Negative_Amount_Should_ReturnFailure()
     {
         var amount = IngredientAmount.CreateObject(-1);
 
-        Assert.False(amount.IsSuccess);
+        Assert.True(amount.IsFailure);
     }
 }

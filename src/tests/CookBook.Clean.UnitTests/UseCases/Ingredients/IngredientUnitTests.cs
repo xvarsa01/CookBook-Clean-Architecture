@@ -48,7 +48,7 @@ public class IngredientUnitTests
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
-        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
         Assert.Equal("Ingredient not found", result.Error);
     }
 
@@ -114,7 +114,7 @@ public class IngredientUnitTests
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
-        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
         Assert.Equal("Ingredient not found", result.Error);
     }
 

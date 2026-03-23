@@ -36,19 +36,19 @@ public class IngredientRootTests
     }
     
     [Fact]
-    public void Creating_Ingredient_With_Empty_Name_Should_Throw()
+    public void Creating_Ingredient_With_Empty_Name_Should_ReturnFailure()
     {
         var result = IngredientEntity.Create(string.Empty, null, null);
 
-        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
     }
     
     [Fact]
-    public void Creating_Ingredient_With_Invalid_ImageUrl_Should_Throw()
+    public void Creating_Ingredient_With_Invalid_ImageUrl_Should_ReturnFailure()
     {
         var imageUrlResult = ImageUrl.CreateObject("a.png ");
 
-        Assert.False(imageUrlResult.IsSuccess);
+        Assert.True(imageUrlResult.IsFailure);
     }
     
     
@@ -125,13 +125,13 @@ public class IngredientRootTests
     }
     
     [Fact]
-    public void Updating_RecipeImageUrl_To_Invalid_Value_Should_Throw()
+    public void Updating_RecipeImageUrl_To_Invalid_Value_Should_ReturnFailure()
     {
         var ingredient = IngredientEntity.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
 
         var imageUrlResult = ImageUrl.CreateObject("a.png ");
 
-        Assert.False(imageUrlResult.IsSuccess);
+        Assert.True(imageUrlResult.IsFailure);
     }
     
 }

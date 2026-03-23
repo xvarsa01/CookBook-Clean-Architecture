@@ -74,7 +74,7 @@ public class RecipeRootRemoveIngredientTests
         // Failed removals
         
         [Fact]
-        public void RemovingIngredient_From_Empty_Recipe_Should_Throw()
+        public void RemovingIngredient_From_Empty_Recipe_Should_ReturnFailure()
         {
             // Arrange
             var recipe = RecipeTestSeeds.EmptyRecipe();
@@ -83,11 +83,11 @@ public class RecipeRootRemoveIngredientTests
             // Act & Assert
         var result = recipe.RemoveIngredientsByIngredientId(ingredient.Id);
 
-        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
         }
         
         [Fact]
-        public void RemovingAllIngredients_From_Empty_Recipe_Should_Throw()
+        public void RemovingAllIngredients_From_Empty_Recipe_Should_ReturnFailure()
         {
             // Arrange
             var recipe = RecipeTestSeeds.EmptyRecipe();
@@ -95,11 +95,11 @@ public class RecipeRootRemoveIngredientTests
             // Act & Assert
         var result = recipe.RemoveAllIngredients();
 
-        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
         }
         
         [Fact]
-        public void RemovingIngredient_Not_Contained_In_Recipe_By_IngredientId_Should_Throw()
+        public void RemovingIngredient_Not_Contained_In_Recipe_By_IngredientId_Should_ReturnFailure()
         {
             // Arrange
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
@@ -108,11 +108,11 @@ public class RecipeRootRemoveIngredientTests
             // Act & Assert
         var result = recipe.RemoveIngredientsByIngredientId(ingredient.Id);
 
-        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
         }
         
         [Fact]
-        public void RemovingIngredient_Not_Contained_In_Recipe_By_EntryId_Should_Throw()
+        public void RemovingIngredient_Not_Contained_In_Recipe_By_EntryId_Should_ReturnFailure()
         {
             // Arrange
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
@@ -121,6 +121,6 @@ public class RecipeRootRemoveIngredientTests
             // Act & Assert
         var result = recipe.RemoveIngredientByEntryId(ingredient.Id);
 
-        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
         }
 }

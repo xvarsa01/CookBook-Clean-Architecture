@@ -9,7 +9,7 @@ namespace CookBook.Clean.CoreTests.RecipeRoot;
 public class RecipeRootAddIngredientTests
 {
     [Fact]
-    public void AddingIngredients_With_Negative_Amount_Should_Throw()
+    public void AddingIngredients_With_Negative_Amount_Should_ReturnFailure()
     {
         // Arrange
         var recipe = RecipeTestSeeds.EmptyRecipe();
@@ -18,11 +18,11 @@ public class RecipeRootAddIngredientTests
         // Act & Assert
         var amountResult = IngredientAmount.CreateObject(-100);
 
-        Assert.False(amountResult.IsSuccess);
+        Assert.True(amountResult.IsFailure);
     }
     
     [Fact]
-    public void AddingIngredients_With_Zero_Amount_Should_Throw()
+    public void AddingIngredients_With_Zero_Amount_Should_ReturnFailure()
     {
         // Arrange
         var recipe = RecipeTestSeeds.EmptyRecipe();
@@ -31,7 +31,7 @@ public class RecipeRootAddIngredientTests
         // Act & Assert
         var amountResult = IngredientAmount.CreateObject(0);
 
-        Assert.False(amountResult.IsSuccess);
+        Assert.True(amountResult.IsFailure);
     }
     
     [Fact]
@@ -65,7 +65,7 @@ public class RecipeRootAddIngredientTests
     }
     
     [Fact]
-    public void AddingIngredients_With_Positive_Amount_To_Full_Recipe_Should_Throw()
+    public void AddingIngredients_With_Positive_Amount_To_Full_Recipe_Should_ReturnFailure()
     {
         // Arrange
         var recipe = RecipeTestSeeds.RecipeFullWith10Ingredients();
@@ -74,6 +74,6 @@ public class RecipeRootAddIngredientTests
         // Act & Assert
         var result = recipe.AddIngredient(ingredient.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
 
-        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
     }
 }

@@ -29,7 +29,7 @@ public class RecipeRootUpdateIngredientTests
         // Failed removals
         
         [Fact]
-        public void UpdatingIngredient_With_Zero_Amount_To_Empty_Recipe_Should_Throw()
+        public void UpdatingIngredient_With_Zero_Amount_To_Empty_Recipe_Should_ReturnFailure()
         {
             // Arrange
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
@@ -38,11 +38,11 @@ public class RecipeRootUpdateIngredientTests
             // Act & Assert
         var amountResult = IngredientAmount.CreateObject(0);
 
-        Assert.False(amountResult.IsSuccess);
+        Assert.True(amountResult.IsFailure);
         }
         
         [Fact]
-        public void UpdatingIngredient_With_Negative_Amount_To_Empty_Recipe_Should_Throw()
+        public void UpdatingIngredient_With_Negative_Amount_To_Empty_Recipe_Should_ReturnFailure()
         {
             // Arrange
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
@@ -51,11 +51,11 @@ public class RecipeRootUpdateIngredientTests
             // Act & Assert
         var amountResult = IngredientAmount.CreateObject(-100);
 
-        Assert.False(amountResult.IsSuccess);
+        Assert.True(amountResult.IsFailure);
         }
         
         [Fact]
-        public void UpdatingIngredient_With_NonExisting_EntryId_Should_Throw()
+        public void UpdatingIngredient_With_NonExisting_EntryId_Should_ReturnFailure()
         {
             // Arrange
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
@@ -63,6 +63,6 @@ public class RecipeRootUpdateIngredientTests
             // Act & Assert
         var result = recipe.UpdateIngredientEntry(Guid.NewGuid(), IngredientAmount.CreateObject(123456).Value, MeasurementUnit.Kg);
 
-        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
         }
 }
