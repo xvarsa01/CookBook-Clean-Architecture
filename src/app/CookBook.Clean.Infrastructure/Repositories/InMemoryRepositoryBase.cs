@@ -10,6 +10,11 @@ public class InMemoryRepositoryBase<TEntity> : IRepository<TEntity>
 {
     private readonly ConcurrentDictionary<Guid, TEntity> _store = new();
 
+    public IQueryable<TEntity> Query()
+    {
+        return _store.Values.AsQueryable();
+    }
+
     public Task<List<TEntity>> GetAllAsync()
         => Task.FromResult(_store.Values.ToList());
 

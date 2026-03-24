@@ -2,7 +2,10 @@ using CookBook.Clean.Application;
 using CookBook.Clean.Application.Commands.Ingredients;
 using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Models;
+using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Application.Queries.Ingredients;
+using CookBook.Clean.Core;
+using CookBook.Clean.Core.Shared.ValueObjects;
 using CookBook.Clean.WebApi.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +28,16 @@ public class IngredientController : ControllerBase
     [HttpPost(Name = "CreateIngredient")]
     public async Task<ActionResult<Guid>> Create(IngredientCreateRequestDto requestDto)
     {
-        var result = await _mediator.Send(new CreateIngredientCommand(requestDto.Name, requestDto.Description, requestDto.ImageUrl));
+        var ingredientCreateDto = new IngredientCreateDto
+        {
+            Name = requestDto.Name,
+            Description = requestDto.Description,
+            ImageUrl = requestDto.ImageUrl != null
+                ? ImageUrl.CreateObject(requestDto.ImageUrl).Value
+                : null
+        };
+        
+        var result = await _mediator.Send(new CreateIngredientCommand(ingredientCreateDto));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
@@ -34,7 +46,7 @@ public class IngredientController : ControllerBase
     }
         
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<IngredientDetailModel>> GetById(Guid id)
+    public async Task<ActionResult<IngredientGetDetailDto>> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetIngredientDetailQuery(id));
         if (result.IsSuccess)
@@ -60,7 +72,23 @@ public class IngredientController : ControllerBase
     [HttpPut(Name = "UpdateIngredient")]
     public async Task<ActionResult<Guid>> Update(IngredientUpdateRequestDto requestDto)
     {
-        var result = await _mediator.Send(new UpdateIngredientCommand(requestDto.Id, requestDto.Name, requestDto.Description, requestDto.ImageUrl));
+        Result<ImageUrl>? urlObjectResult = null;
+        if (requestDto.ImageUrl is not null)
+        {
+            urlObjectResult = ImageUrl.CreateObject(requestDto.ImageUrl);
+            if (urlObjectResult.IsFailure)
+                return BadRequest(urlObjectResult.Error);
+        }
+        
+        var ingredientUpdateDto = new IngredientUpdateDto
+        {
+            Id = requestDto.Id,
+            Name = requestDto.Name,
+            Description = requestDto.Description,
+            ImageUrl = urlObjectResult?.Value
+        };
+        
+        var result = await _mediator.Send(new UpdateIngredientCommand(ingredientUpdateDto));
         if (result.IsSuccess)
         {
             return Ok(result.Value);

@@ -8,7 +8,6 @@ public static class Installer
     public static IServiceCollection AddUseCasesServices(this IServiceCollection services)
     {
         services.AddSingleton<IRecipeMapper, ManualRecipeMapper>();
-        services.AddSingleton<IIngredientMapper, ManualIngredientMapper>();
         
         services.AddMediatR(options =>
         {

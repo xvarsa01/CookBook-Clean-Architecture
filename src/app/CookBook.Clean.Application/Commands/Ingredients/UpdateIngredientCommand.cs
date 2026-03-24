@@ -1,5 +1,6 @@
 ﻿using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.Events;
@@ -8,37 +9,32 @@ using MediatR;
 
 namespace CookBook.Clean.Application.Commands.Ingredients;
 
-public record UpdateIngredientCommand(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl) : ICommand<Guid>;
+public record UpdateIngredientCommand(IngredientUpdateDto Dto) : ICommand<Guid>;
 
 internal sealed class UpdateIngredientCommandHandler(IRepository<IngredientEntity> repository, IPublisher publisher)
     : ICommandHandler<UpdateIngredientCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)
     {
-        var existingIngredient = await repository.GetByIdAsync(request.Id);
+        var existingIngredient = await repository.GetByIdAsync(request.Dto.Id);
         if (existingIngredient == null)
         {
             return Result.NotFound<Guid>("Ingredient not found");
         }
 
-        if (request.NewName is not null)
+        if (request.Dto.Name is not null)
         {
-            existingIngredient.UpdateName(request.NewName);
+            existingIngredient.UpdateName(request.Dto.Name);
         }
 
-        if (request.NewDescription is not null)
+        if (request.Dto.Description is not null)
         {
-            existingIngredient.UpdateDescription(request.NewDescription);
+            existingIngredient.UpdateDescription(request.Dto.Description);
         }
 
-        if (request.NewImageUrl is not null)
+        if (request.Dto.ImageUrl is not null)
         {
-            var urlObjectResult = ImageUrl.CreateObject(request.NewImageUrl);
-            if (urlObjectResult.IsFailure)
-            {
-                return Result.Invalid<Guid>(urlObjectResult.Error ?? string.Empty);
-            }
-            existingIngredient.UpdateImageUrl(urlObjectResult.Value);
+            existingIngredient.UpdateImageUrl(request.Dto.ImageUrl);
         }
         
         var id = await repository.UpdateAsync(existingIngredient);

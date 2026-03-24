@@ -6,6 +6,7 @@ namespace CookBook.Clean.Application.ExternalInterfaces;
 public interface IRepository<TEntity>
     where TEntity : class, IAggregateRootEntity
 {
+    IQueryable<TEntity> Query();
     Task<List<TEntity>> GetAllAsync();
     Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification);
     Task<TEntity?> GetByIdAsync(Guid id);

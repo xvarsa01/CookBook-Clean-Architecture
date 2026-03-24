@@ -15,7 +15,12 @@ public class EfRepositoryBase<TEntity> : IRepository<TEntity> where TEntity : cl
         _dbContext = dbContext;
         _dbSet = dbContext.Set<TEntity>();
     }
-    
+
+    public IQueryable<TEntity> Query()
+    {
+        return _dbSet.AsQueryable();
+    }
+
     public async Task<List<TEntity>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
