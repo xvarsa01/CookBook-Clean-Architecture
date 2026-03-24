@@ -7,6 +7,7 @@ using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.Shared.ValueObjects;
 using CookBook.Clean.WebApi.DTOs;
+using CookBook.Clean.WebApi.DTOs.Ingredient;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,7 +47,7 @@ public class IngredientController : ControllerBase
     }
         
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<IngredientGetDetailDto>> GetById(Guid id)
+    public async Task<ActionResult<IngredientGetDetailDtoOut>> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetIngredientDetailQuery(id));
         if (result.IsSuccess)
@@ -57,7 +58,7 @@ public class IngredientController : ControllerBase
     }
     
     [HttpGet(Name = "GetList")]
-    public async Task<ActionResult<IEnumerable<IngredientListModel>>> GetList(
+    public async Task<ActionResult<IEnumerable<IngredientGetListDtoOut>>> GetList(
         [FromQuery] IngredientFilter filter,
         [FromQuery] PagingOptions paging)
     {

@@ -1,13 +1,13 @@
 using CookBook.Clean.Application;
 using CookBook.Clean.Application.Commands.Recipes;
 using CookBook.Clean.Application.Filters;
-using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.Models.Recipe;
 using CookBook.Clean.Application.Queries.Recipes;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.Core.Shared.ValueObjects;
 using CookBook.Clean.WebApi.DTOs;
+using CookBook.Clean.WebApi.DTOs.Ingredient;
 using CookBook.Clean.WebApi.DTOs.Recipe;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -90,42 +90,63 @@ public class RecipeController : ControllerBase
         [FromQuery] PagingOptions paging)
     {
         var result = await _mediator.Send(new GetRecipeListQuery(filter, paging));
-        if (result.IsSuccess)
+        if (!result.IsSuccess)
         {
-            List<RecipeGetListDtoOut> dtoOut = result.Value
-                .Select(x => new RecipeGetListDtoOut
-                {
-                    Id = x.Id,
-                    Name = x.Name.Value,
-                    ImageUrl = x.ImageUrl?.Value
-                })
-                .ToList();
-
-            return Ok(dtoOut);
+            return BadRequest(result.Error);
         }
-        return BadRequest(result.Error);
+
+        List<RecipeGetListDtoOut> dtoOut = result.Value
+            .Select(x => new RecipeGetListDtoOut
+            {
+                Id = x.Id,
+                Name = x.Name.Value,
+                ImageUrl = x.ImageUrl?.Value
+            })
+            .ToList();
+
+        return Ok(dtoOut);
     }
     
     [HttpGet("ingredient/{ingredientId:guid}", Name = "GetRecipeListByIngredientId")]
-    public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetListByIngredient(Guid ingredientId)
+    public async Task<ActionResult<IEnumerable<IngredientGetListDtoOut>>> GetListByIngredient(Guid ingredientId)
     {
         var result = await _mediator.Send(new GetRecipeListByContainingIngredientIdQuery(ingredientId));
-        if (result.IsSuccess)
+        if (!result.IsSuccess)
         {
-            return Ok(result.Value);
+            return BadRequest(result.Error);
         }
-        return BadRequest(result.Error);
+
+        List<RecipeGetListDtoOut> dtoOut = result.Value
+            .Select(x => new RecipeGetListDtoOut
+            {
+                Id = x.Id,
+                Name = x.Name.Value,
+                ImageUrl = x.ImageUrl?.Value
+            })
+            .ToList();
+
+        return Ok(dtoOut);
     }
     
     [HttpGet("ingredient/{ingredientNameSubstring}", Name = "GetRecipeListByIngredientName")]
-    public async Task<ActionResult<IEnumerable<RecipeListModel>>> GetListByIngredientName(string ingredientNameSubstring)
+    public async Task<ActionResult<IEnumerable<RecipeGetListDtoOut>>> GetListByIngredientName(string ingredientNameSubstring)
     {
         var result = await _mediator.Send(new GetRecipeListByContainingIngredientNameQuery(ingredientNameSubstring));
-        if (result.IsSuccess)
+        if (!result.IsSuccess)
         {
-            return Ok(result.Value);
+            return BadRequest(result.Error);
         }
-        return BadRequest(result.Error);
+
+        List<RecipeGetListDtoOut> dtoOut = result.Value
+            .Select(x => new RecipeGetListDtoOut
+            {
+                Id = x.Id,
+                Name = x.Name.Value,
+                ImageUrl = x.ImageUrl?.Value
+            })
+            .ToList();
+
+        return Ok(dtoOut);
     }
 
     [HttpPut(Name = "UpdateRecipe")]
