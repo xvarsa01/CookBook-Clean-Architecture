@@ -1,7 +1,5 @@
 ﻿using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
-using CookBook.Clean.Application.Mappers;
-using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;

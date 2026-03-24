@@ -1,23 +1,30 @@
 ﻿using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
-using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Models;
+using CookBook.Clean.Application.Models.Recipe;
 using CookBook.Clean.Application.Specifications.Recipe;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
 
-public record GetRecipeListByContainingIngredientIdQuery(Guid IngredientId) : IQuery<List<RecipeListModel>>;
+public record GetRecipeListByContainingIngredientIdQuery(Guid IngredientId) : IQuery<List<RecipeGetListDto>>;
 
-internal class GetRecipeListByContainingIngredientIdQueryHandler (IRepository<RecipeEntity> repository, IRecipeMapper mapper) : IQueryHandler<GetRecipeListByContainingIngredientIdQuery, List<RecipeListModel>>
+internal class GetRecipeListByContainingIngredientIdQueryHandler (IRepository<RecipeEntity> repository) : IQueryHandler<GetRecipeListByContainingIngredientIdQuery, List<RecipeGetListDto>>
 {
-    public async Task<Result<List<RecipeListModel>>> Handle(GetRecipeListByContainingIngredientIdQuery request, CancellationToken cancellationToken)
+    public Task<Result<List<RecipeGetListDto>>> Handle(GetRecipeListByContainingIngredientIdQuery request, CancellationToken cancellationToken)
     {
-        var specification = new RecipesByContainingIngredientId(request.IngredientId);
-        var recipes = await repository.GetListBySpecificationAsync(specification);
+        var queryable = repository.Query();
         
-        var listModels = mapper.MapToListModels(recipes).ToList();
-        return Result.Ok(listModels);
+        queryable = queryable.Where(r => r.Ingredients.Any(i => i.IngredientId == request.IngredientId));
+        
+        var result = queryable.Select(i => new RecipeGetListDto()
+        {
+            Id = i.Id,
+            Name = i.Name,
+            ImageUrl = i.ImageUrl
+        }).ToList();
+        
+        return Task.FromResult(Result.Ok(result));
     }
 }

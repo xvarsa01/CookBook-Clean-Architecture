@@ -1,33 +1,43 @@
 ﻿using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Filters;
-using CookBook.Clean.Application.Mappers;
-using CookBook.Clean.Application.Models;
-using CookBook.Clean.Application.Specifications.Ingredient;
-using CookBook.Clean.Application.Specifications.Recipe;
+using CookBook.Clean.Application.Models.Ingredient;
+using CookBook.Clean.Application.Models.Recipe;
+using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.RecipeRoot;
+using MediatR;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
 
-public record GetRecipeListByContainingIngredientNameQuery(string IngredientNameSubstring) : IQuery<List<RecipeListModel>>;
+public record GetRecipeListByContainingIngredientNameQuery(string IngredientNameSubstring) : IQuery<List<RecipeGetListDto>>;
 
-internal class GetRecipeListByContainingIngredientNameQueryHandler (IRepository<RecipeEntity> repository, IRepository<IngredientEntity> ingredientRepository, IRecipeMapper mapper)
-    : IQueryHandler<GetRecipeListByContainingIngredientNameQuery, List<RecipeListModel>>
+internal class GetRecipeListByContainingIngredientNameQueryHandler (IRepository<RecipeEntity> repository,  IMediator mediator)
+    : IQueryHandler<GetRecipeListByContainingIngredientNameQuery, List<RecipeGetListDto>>
 {
-    public async Task<Result<List<RecipeListModel>>> Handle(GetRecipeListByContainingIngredientNameQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<RecipeGetListDto>>> Handle(GetRecipeListByContainingIngredientNameQuery request, CancellationToken cancellationToken)
     {
         var ingredientFilter = new IngredientFilter { Name = request.IngredientNameSubstring };
-        var ingredientSpecification = new IngredientsBySpecification(ingredientFilter, null);
+        var ingredientResult = await mediator.Send(new GetIngredientListQuery(ingredientFilter), cancellationToken);
+
+        if (!ingredientResult.IsSuccess)
+            return Result.Invalid<List<RecipeGetListDto>>(ingredientResult.Error ?? string.Empty);
+
+        var ingredientIds = ingredientResult.Value
+            .Select(i => i.Id)
+            .ToList();
+
+        var result = repository.Query()
+            .Where(r => r.Ingredients.Any(ri => ingredientIds.Contains(ri.IngredientId)))
+            .Select(r => new RecipeGetListDto
+            {
+                Id = r.Id,
+                Name = r.Name,
+                ImageUrl = r.ImageUrl
+            }).ToList();
         
-        var matchedIngredients = await ingredientRepository.GetListBySpecificationAsync(ingredientSpecification);
-        var matchedIngredientIds = matchedIngredients.Select(i => i.Id).ToList();
-        
-        var specification = new RecipesByContainingIngredientIds(matchedIngredientIds);
-        var recipes = await repository.GetListBySpecificationAsync(specification);
-        
-        var listModels = mapper.MapToListModels(recipes).ToList();
-        return Result.Ok(listModels);
+        return Result.Ok(result);
+
     }
 }

@@ -1,7 +1,6 @@
 ﻿using ArchUnitNET.xUnit;
 using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.Filters;
-using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Models;
 using MediatR;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
@@ -56,15 +55,6 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
         Classes().That()
             .ImplementInterface(typeof(IFilter<>))
             .Should().HaveNameMatching("Filter")
-            .Check(Architecture);
-    }
-    
-    [Fact]
-    public void Mappers_ShouldHave_NameEndingWith_Mapper()
-    {
-        Classes().That()
-            .ImplementInterface(typeof(IMapper))
-            .Should().HaveNameMatching("Mapper")
             .Check(Architecture);
     }
     

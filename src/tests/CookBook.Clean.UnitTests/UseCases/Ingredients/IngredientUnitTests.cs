@@ -2,11 +2,9 @@
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Filters;
-using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Application.Specifications;
-using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 using Moq;

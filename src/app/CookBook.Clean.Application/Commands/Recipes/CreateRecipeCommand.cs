@@ -1,27 +1,29 @@
 ﻿using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
-using CookBook.Clean.Application.Mappers;
+using CookBook.Clean.Application.Models.Recipe;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
-using CookBook.Clean.Core.RecipeRoot.Enums;
 
 namespace CookBook.Clean.Application.Commands.Recipes;
 
-public record CreateRecipeCommand(string Name, string? Description, string? ImageUrl, TimeSpan Duration, RecipeType RecipeType) : ICommand<Guid>;
+public record CreateRecipeCommand(RecipeCreateDto Dto) : ICommand<Guid>;
 
-internal sealed class CreateRecipeCommandHandler(IRepository<RecipeEntity> repository, IRecipeMapper mapper) : ICommandHandler<CreateRecipeCommand,Guid>
+internal sealed class CreateRecipeCommandHandler(IRepository<RecipeEntity> repository) : ICommandHandler<CreateRecipeCommand,Guid>
 {
     public async Task<Result<Guid>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
-        try
-        {
-            var newRecipe = mapper.MapToEntity(request);
-            var createdItemId = await repository.InsertAsync(newRecipe);
-            return Result.Ok(createdItemId);
-        }
-        catch (Exception e)
-        {
-            return Result.Invalid<Guid>(e.Message);
-        }
+        var result = RecipeEntity.Create(
+            request.Dto.Name,
+            request.Dto.Description,
+            request.Dto.ImageUrl,
+            request.Dto.Duration,
+            request.Dto.Type
+        );
+        
+        if (result.IsFailure)
+            return Result.Invalid<Guid>(result.Error ?? string.Empty);
+        
+        var createdRecipeId = await repository.InsertAsync(result.Value);
+        return Result.Ok(createdRecipeId);
     }
 }
