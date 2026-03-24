@@ -12,7 +12,7 @@ namespace CookBook.Clean.Application.Queries.Recipes;
 
 public record GetRecipeListQuery(RecipeFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<RecipeListModel>>;
 
-internal class GetRecipeListQueryHandler(IRepository<RecipeEntity> repository, IRecipeMapper mapper) : IQueryHandler<GetRecipeListQuery, List<RecipeListModel>>
+internal class GetRecipeListQueryHandler(IRepository<RecipeBase> repository, IRecipeMapper mapper) : IQueryHandler<GetRecipeListQuery, List<RecipeListModel>>
 {
     public async Task<Result<List<RecipeListModel>>> Handle(GetRecipeListQuery request, CancellationToken cancellationToken)
     {

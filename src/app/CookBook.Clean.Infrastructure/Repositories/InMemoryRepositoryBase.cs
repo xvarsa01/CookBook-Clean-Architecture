@@ -2,11 +2,12 @@
 using CookBook.Clean.Core;
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Specifications;
+using CookBook.Clean.Core.Shared;
 
 namespace CookBook.Clean.Infrastructure.Repositories;
 
 public class InMemoryRepositoryBase<TEntity> : IRepository<TEntity>
-    where TEntity : class, IAggregateRootEntity
+    where TEntity : AggregateRootBase
 {
     private readonly ConcurrentDictionary<Guid, TEntity> _store = new();
 

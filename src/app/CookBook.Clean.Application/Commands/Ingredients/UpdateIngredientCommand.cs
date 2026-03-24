@@ -10,7 +10,7 @@ namespace CookBook.Clean.Application.Commands.Ingredients;
 
 public record UpdateIngredientCommand(Guid Id, string? NewName, string? NewDescription, string? NewImageUrl) : ICommand<Guid>;
 
-internal sealed class UpdateIngredientCommandHandler(IRepository<IngredientEntity> repository, IPublisher publisher)
+internal sealed class UpdateIngredientCommandHandler(IRepository<IngredientBase> repository, IPublisher publisher)
     : ICommandHandler<UpdateIngredientCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)

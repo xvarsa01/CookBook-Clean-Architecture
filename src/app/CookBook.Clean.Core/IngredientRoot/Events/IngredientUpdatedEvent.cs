@@ -2,7 +2,7 @@
 
 namespace CookBook.Clean.Core.IngredientRoot.Events;
 
-public class IngredientUpdatedEvent(IngredientEntity ingredient) : INotification
+public class IngredientUpdatedEvent(IngredientBase ingredient) : INotification
 {
-    public IngredientEntity Ingredient { get; } = ingredient;
+    public IngredientBase Ingredient { get; } = ingredient;
 }

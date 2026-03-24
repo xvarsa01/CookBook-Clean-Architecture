@@ -7,27 +7,27 @@ namespace CookBook.Clean.TestsBase;
 
 public static class RecipeTestSeeds
 {
-    public static RecipeEntity EmptyRecipe()
+    public static RecipeBase EmptyRecipe()
     {
-        return RecipeEntity.Create(name: RecipeName.CreateObject("empty recipe").Value,
+        return RecipeBase.Create(name: RecipeName.CreateObject("empty recipe").Value,
             description: "no ingredients",
             imageUrl: ImageUrl.CreateObject("http://a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.None).Value;
     }
 
-    public static RecipeEntity MinimalisticRecipe()
+    public static RecipeBase MinimalisticRecipe()
     {
-        return RecipeEntity.Create(name: RecipeName.CreateObject("minimalistic").Value,
+        return RecipeBase.Create(name: RecipeName.CreateObject("minimalistic").Value,
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.None).Value;
     }
 
-    public static RecipeEntity RecipeWithSingleIngredient()
+    public static RecipeBase RecipeWithSingleIngredient()
     {
-        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("recipe with 1 ingredient").Value,
+        var recipe = RecipeBase.Create(name: RecipeName.CreateObject("recipe with 1 ingredient").Value,
             description: "this will be added",
             imageUrl: ImageUrl.CreateObject("http://a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
@@ -37,9 +37,9 @@ public static class RecipeTestSeeds
         return recipe;
     }
 
-    public static RecipeEntity RecipeWithMultipleIngredients()
+    public static RecipeBase RecipeWithMultipleIngredients()
     {
-        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("recipe with multiple ingredient").Value,
+        var recipe = RecipeBase.Create(name: RecipeName.CreateObject("recipe with multiple ingredient").Value,
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
@@ -50,9 +50,9 @@ public static class RecipeTestSeeds
         return recipe;
     }
     
-    public static RecipeEntity RecipeWithDuplicateIngredientEntries()
+    public static RecipeBase RecipeWithDuplicateIngredientEntries()
     {
-        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("recipe with lemon used twice").Value,
+        var recipe = RecipeBase.Create(name: RecipeName.CreateObject("recipe with lemon used twice").Value,
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
@@ -64,9 +64,9 @@ public static class RecipeTestSeeds
         return recipe;
     }
     
-    public static RecipeEntity RecipeFullWith10Ingredients()
+    public static RecipeBase RecipeFullWith10Ingredients()
     {
-        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("recipe with 10 ingredient").Value,
+        var recipe = RecipeBase.Create(name: RecipeName.CreateObject("recipe with 10 ingredient").Value,
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
@@ -79,18 +79,18 @@ public static class RecipeTestSeeds
         return recipe;
     }
 
-    public static RecipeEntity RecipeForTestOfDeleteWithoutIngredient()
+    public static RecipeBase RecipeForTestOfDeleteWithoutIngredient()
     {
-        return RecipeEntity.Create(name: RecipeName.CreateObject("delete me").Value,
+        return RecipeBase.Create(name: RecipeName.CreateObject("delete me").Value,
             description: "i will be deleted simply, because i dont contain any ingredients",
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.None).Value;
     }
 
-    public static RecipeEntity RecipeForTestOfDeleteWithIngredient()
+    public static RecipeBase RecipeForTestOfDeleteWithIngredient()
     {
-        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("delete me").Value,
+        var recipe = RecipeBase.Create(name: RecipeName.CreateObject("delete me").Value,
             description: "i will be deleted, but my ingredients should remain in DB",
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
@@ -100,8 +100,8 @@ public static class RecipeTestSeeds
         return recipe;
     }
     
-    public static RecipeEntity RecipeForTestOfUpdate(){
-        var recipe = RecipeEntity.Create(name: RecipeName.CreateObject("update me").Value,
+    public static RecipeBase RecipeForTestOfUpdate(){
+        var recipe = RecipeBase.Create(name: RecipeName.CreateObject("update me").Value,
             description: "this will be updated",
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
@@ -111,7 +111,7 @@ public static class RecipeTestSeeds
         return recipe;
     }
     
-    public static List<RecipeEntity> SeededRecipes() =>
+    public static List<RecipeBase> SeededRecipes() =>
     [
         EmptyRecipe(),
         MinimalisticRecipe(),

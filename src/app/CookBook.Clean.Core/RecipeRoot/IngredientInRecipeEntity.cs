@@ -1,11 +1,12 @@
 using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
+using CookBook.Clean.Core.Shared;
 
 namespace CookBook.Clean.Core.RecipeRoot;
 
-public class IngredientInRecipeEntity : IEntity
+public record IngredientInRecipeEntity : EntityBase
 {
-    public Guid Id { get; init; }
+    public override Guid Id { get; init; }
     public Guid IngredientId { get; init; }
 
     public IngredientAmount Amount { get; private set; }

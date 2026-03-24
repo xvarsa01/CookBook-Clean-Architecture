@@ -8,7 +8,7 @@ namespace CookBook.Clean.Application.Commands.Ingredients;
 
 public record CreateIngredientCommand(string Name, string? Description, string? ImageUrl) : ICommand<Guid>;
 
-internal sealed class CreateIngredientCommandHandler(IRepository<IngredientEntity> repository, IIngredientMapper mapper) : ICommandHandler<CreateIngredientCommand, Guid>
+internal sealed class CreateIngredientCommandHandler(IRepository<IngredientBase> repository, IIngredientMapper mapper) : ICommandHandler<CreateIngredientCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateIngredientCommand request, CancellationToken cancellationToken) 
     {

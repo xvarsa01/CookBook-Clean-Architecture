@@ -10,21 +10,21 @@ namespace CookBook.Clean.Application.Mappers;
 
 public class ManualRecipeMapper : IRecipeMapper
 {
-    public RecipeListModel MapToListModel(RecipeEntity entity)
+    public RecipeListModel MapToListModel(RecipeBase @base)
     {
         return new RecipeListModel
         {
-            Id = entity.Id,
-            Name = entity.Name.Value,
-            RecipeType =  entity.Type,
-            Duration = entity.Duration.Value,
-            ImageUrl = entity.ImageUrl?.Value,
-            CreatedAt = entity.CreatedAt,
-            ModifiedAt = entity.ModifiedAt
+            Id = @base.Id,
+            Name = @base.Name.Value,
+            RecipeType =  @base.Type,
+            Duration = @base.Duration.Value,
+            ImageUrl = @base.ImageUrl?.Value,
+            CreatedAt = @base.CreatedAt,
+            ModifiedAt = @base.ModifiedAt
         };
     }
 
-    public IEnumerable<RecipeListModel> MapToListModels(IEnumerable<RecipeEntity> entities)
+    public IEnumerable<RecipeListModel> MapToListModels(IEnumerable<RecipeBase> entities)
     {
         List<RecipeListModel> list = [];
         foreach (var entity in entities)
@@ -35,10 +35,10 @@ public class ManualRecipeMapper : IRecipeMapper
         return list;
     }
 
-    public RecipeDetailModel MapToDetailModel(RecipeEntity entity, List<IngredientEntity> usedIngredientDetails)
+    public RecipeDetailModel MapToDetailModel(RecipeBase @base, List<IngredientBase> usedIngredientDetails)
     {
         List<IngredientInRecipeModel> ingredients = [];
-        foreach (var ingredient in entity.Ingredients)
+        foreach (var ingredient in @base.Ingredients)
         {
             var ingredientDetail = usedIngredientDetails.First(i => i.Id == ingredient.IngredientId);
             
@@ -57,23 +57,23 @@ public class ManualRecipeMapper : IRecipeMapper
         
         return new RecipeDetailModel
         {
-            Id = entity.Id,
-            Name = entity.Name,
-            Description = entity.Description,
-            ImageUrl = entity.ImageUrl?.Value,
-            Duration = entity.Duration.Value,
-            Type = entity.Type,
-            CreatedAt = entity.CreatedAt,
-            ModifiedAt = entity.ModifiedAt,
+            Id = @base.Id,
+            Name = @base.Name,
+            Description = @base.Description,
+            ImageUrl = @base.ImageUrl?.Value,
+            Duration = @base.Duration.Value,
+            Type = @base.Type,
+            CreatedAt = @base.CreatedAt,
+            ModifiedAt = @base.ModifiedAt,
             Ingredients = new ObservableCollection<IngredientInRecipeModel>(ingredients)
         };
     }
 
-    public RecipeEntity MapToEntity(CreateRecipeCommand request)
+    public RecipeBase MapToEntity(CreateRecipeCommand request)
     {
         var url = request.ImageUrl is not null ? ImageUrl.CreateObject(request.ImageUrl) : null;
         
-        var result = RecipeEntity.Create(RecipeName.CreateObject(request.Name).Value,
+        var result = RecipeBase.Create(RecipeName.CreateObject(request.Name).Value,
             request.Description,
             url?.Value,
             RecipeDuration.CreateObject(request.Duration).Value,

@@ -11,7 +11,7 @@ public class EfRepositoryBaseTests
     private class TestDbContext : DbContext
     {
         public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
-        public DbSet<TestEntity> TestEntities { get; set; } = null!;
+        public DbSet<TestBase> TestEntities { get; set; } = null!;
     }
 
     [Fact]
@@ -24,11 +24,11 @@ public class EfRepositoryBaseTests
         await using (var context = new TestDbContext(options))
         {
             var entityId = Guid.NewGuid();
-            var entity = new TestEntity { Id = entityId, Name = "Test" };
-            context.Set<TestEntity>().Add(entity);
+            var entity = new TestBase { Id = entityId, Name = "Test" };
+            context.Set<TestBase>().Add(entity);
             await context.SaveChangesAsync();
 
-            var repo = new EfRepositoryBase<TestEntity>(context);
+            var repo = new EfRepositoryBase<TestBase>(context);
             var found = await repo.GetByIdAsync(entityId);
             Assert.Equal(entity.Id, found?.Id);
 

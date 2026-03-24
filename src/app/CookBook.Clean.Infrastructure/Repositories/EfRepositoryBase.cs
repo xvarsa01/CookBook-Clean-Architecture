@@ -1,11 +1,12 @@
 ﻿using CookBook.Clean.Core;
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Specifications;
+using CookBook.Clean.Core.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.Clean.Infrastructure.Repositories;
 
-public class EfRepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class, IAggregateRootEntity
+public class EfRepositoryBase<TEntity> : IRepository<TEntity> where TEntity : AggregateRootBase
 {
     private readonly DbSet<TEntity> _dbSet;
     private readonly DbContext _dbContext;

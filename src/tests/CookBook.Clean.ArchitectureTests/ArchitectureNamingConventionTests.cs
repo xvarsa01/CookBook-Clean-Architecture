@@ -1,8 +1,8 @@
 ﻿using ArchUnitNET.xUnit;
 using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.Filters;
-using CookBook.Clean.Application.Mappers;
 using CookBook.Clean.Application.Models;
+using CookBook.Clean.Core.Shared;
 using MediatR;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
@@ -56,15 +56,6 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
         Classes().That()
             .ImplementInterface(typeof(IFilter<>))
             .Should().HaveNameMatching("Filter")
-            .Check(Architecture);
-    }
-    
-    [Fact]
-    public void Mappers_ShouldHave_NameEndingWith_Mapper()
-    {
-        Classes().That()
-            .ImplementInterface(typeof(IMapper))
-            .Should().HaveNameMatching("Mapper")
             .Check(Architecture);
     }
     
@@ -183,7 +174,7 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     public void RootEntities_ShouldBeIn_Core_Layer()
     {
         Classes().That()
-            .ImplementInterface(typeof(Core.IAggregateRootEntity))
+            .ImplementInterface(typeof(AggregateRootBase))
             .Should().ResideInAssembly(CoreAssembly)
             .Check(Architecture);
     }

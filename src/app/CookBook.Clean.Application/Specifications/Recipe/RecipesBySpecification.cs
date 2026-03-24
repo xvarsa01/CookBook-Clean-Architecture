@@ -4,10 +4,10 @@ using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Specifications.Recipe;
 
-public class RecipesBySpecification(RecipeFilter filter, PagingOptions? pagingOptions) : ISpecification<RecipeEntity, RecipeEntity>
+public class RecipesBySpecification(RecipeFilter filter, PagingOptions? pagingOptions) : ISpecification<RecipeBase, RecipeBase>
 {
     
-    public IQueryable<RecipeEntity> UseFilter(IQueryable<RecipeEntity> queryable)
+    public IQueryable<RecipeBase> UseFilter(IQueryable<RecipeBase> queryable)
     {
         if (!string.IsNullOrEmpty(filter.Name))
         {

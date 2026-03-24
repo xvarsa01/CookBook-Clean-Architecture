@@ -10,18 +10,18 @@ namespace CookBook.Clean.Application.Queries.Recipes;
 
 public record GetRecipeDetailQuery(Guid Id) : IQuery<RecipeDetailModel>;
 
-internal class GetRecipeDetailQueryHandler(IRepository<RecipeEntity> repository, IRepository<IngredientEntity> ingredientRepository, IRecipeMapper mapper) : IQueryHandler<GetRecipeDetailQuery, RecipeDetailModel>
+internal class GetRecipeDetailQueryHandler(IRepository<RecipeBase> repository, IRepository<IngredientBase> ingredientRepository, IRecipeMapper mapper) : IQueryHandler<GetRecipeDetailQuery, RecipeDetailModel>
 {
     public async Task<Result<RecipeDetailModel>> Handle(GetRecipeDetailQuery request, CancellationToken cancellationToken)
     {
-        RecipeEntity? recipe = await repository.GetByIdAsync(request.Id);
+        RecipeBase? recipe = await repository.GetByIdAsync(request.Id);
         if (recipe is null)
         {
             return Result.NotFound<RecipeDetailModel>("Recipe not found");
         }
 
         var ingredientIds = recipe.Ingredients.Select(i => i.IngredientId).ToList();
-        List<IngredientEntity> usedIngredients = [];
+        List<IngredientBase> usedIngredients = [];
         foreach (var ingredientId in ingredientIds)
         {
             var ingredient = await ingredientRepository.GetByIdAsync(ingredientId);

@@ -6,9 +6,9 @@ namespace CookBook.Clean.Application.Mappers;
 
 public interface IIngredientMapper : IMapper
 {
-    IngredientListModel MapToListModel(IngredientEntity entity);
-    IEnumerable<IngredientListModel> MapToListModels(IEnumerable<IngredientEntity> entities);
-    IngredientDetailModel MapToDetailModel(IngredientEntity entity);
+    IngredientListModel MapToListModel(IngredientBase @base);
+    IEnumerable<IngredientListModel> MapToListModels(IEnumerable<IngredientBase> entities);
+    IngredientDetailModel MapToDetailModel(IngredientBase @base);
     
-    IngredientEntity MapToEntity(CreateIngredientCommand request);
+    IngredientBase MapToEntity(CreateIngredientCommand request);
 }

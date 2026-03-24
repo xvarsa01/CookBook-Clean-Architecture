@@ -7,17 +7,17 @@ namespace CookBook.Clean.Application.Mappers;
 
 public class ManualIngredientMapper : IIngredientMapper
 {
-    public IngredientListModel MapToListModel(IngredientEntity entity)
+    public IngredientListModel MapToListModel(IngredientBase @base)
     {
         return new IngredientListModel
         {
-            Id = entity.Id,
-            Name = entity.Name,
-            ImageUrl = entity.ImageUrl?.Value,
+            Id = @base.Id,
+            Name = @base.Name,
+            ImageUrl = @base.ImageUrl?.Value,
         };
     }
 
-    public IEnumerable<IngredientListModel> MapToListModels(IEnumerable<IngredientEntity> entities)
+    public IEnumerable<IngredientListModel> MapToListModels(IEnumerable<IngredientBase> entities)
     {
         List<IngredientListModel> list = [];
         foreach (var entity in entities)
@@ -28,24 +28,24 @@ public class ManualIngredientMapper : IIngredientMapper
         return list;
     }
 
-    public IngredientDetailModel MapToDetailModel(IngredientEntity entity)
+    public IngredientDetailModel MapToDetailModel(IngredientBase @base)
     {
         return new IngredientDetailModel
         {
-            Id = entity.Id,
-            Name = entity.Name,
-            Description = entity.Description,
-            ImageUrl = entity.ImageUrl?.Value,
+            Id = @base.Id,
+            Name = @base.Name,
+            Description = @base.Description,
+            ImageUrl = @base.ImageUrl?.Value,
         };
     }
 
-    public IngredientEntity MapToEntity(CreateIngredientCommand request)
+    public IngredientBase MapToEntity(CreateIngredientCommand request)
     {
         var urlObjectResult = request.ImageUrl is not null
             ? ImageUrl.CreateObject(request.ImageUrl)
             : null;
 
-        return IngredientEntity.Create(request.Name,
+        return IngredientBase.Create(request.Name,
             request.Description,
             urlObjectResult?.Value).Value;
     }
