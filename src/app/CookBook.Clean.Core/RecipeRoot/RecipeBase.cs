@@ -45,8 +45,7 @@ public record RecipeBase : AggregateRootBase
         if (_ingredients.Count == 10)
             return Result.Invalid<Guid>("Recipe cannot have more than 10 ingredients.");
         
-        var ingredientInRecipeId = Guid.NewGuid();
-        var ingredientInRecipeResult = IngredientInRecipeEntity.Create(ingredientInRecipeId, ingredientId, amount, unit);
+        var ingredientInRecipeResult = IngredientInRecipeEntity.Create(ingredientId, amount, unit);
         
         if (ingredientInRecipeResult.IsFailure)
             return Result.Invalid<Guid>(ingredientInRecipeResult.Error ?? string.Empty);
@@ -54,7 +53,7 @@ public record RecipeBase : AggregateRootBase
         _ingredients.Add(ingredientInRecipeResult.Value);
         
         ModifiedAt = DateTime.UtcNow;
-        return Result.Ok(ingredientInRecipeId);
+        return Result.Ok(ingredientInRecipeResult.Value.Id);
     }
 
     public Result RemoveIngredientsByIngredientId(Guid ingredientId)

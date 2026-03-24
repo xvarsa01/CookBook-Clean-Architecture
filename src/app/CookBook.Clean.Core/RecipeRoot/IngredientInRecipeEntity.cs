@@ -6,7 +6,7 @@ namespace CookBook.Clean.Core.RecipeRoot;
 
 public record IngredientInRecipeEntity : EntityBase
 {
-    public override Guid Id { get; init; }
+    public override Guid Id { get; init; } = Guid.NewGuid();
     public Guid IngredientId { get; init; }
 
     public IngredientAmount Amount { get; private set; }
@@ -14,21 +14,18 @@ public record IngredientInRecipeEntity : EntityBase
 
     private IngredientInRecipeEntity() { } // for EF
 
-    private IngredientInRecipeEntity(Guid id, Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
+    private IngredientInRecipeEntity(Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
-        Id = id;
         IngredientId = ingredientId;
         Amount = amount;
         Unit = unit;
     }
 
-    internal static Result<IngredientInRecipeEntity> Create(
-        Guid id,
-        Guid ingredientId,
+    internal static Result<IngredientInRecipeEntity> Create(Guid ingredientId,
         IngredientAmount amount,
         MeasurementUnit unit)
     {
-        return Result.Ok(new IngredientInRecipeEntity(id, ingredientId, amount, unit));
+        return Result.Ok(new IngredientInRecipeEntity(ingredientId, amount, unit));
     }
 
 
