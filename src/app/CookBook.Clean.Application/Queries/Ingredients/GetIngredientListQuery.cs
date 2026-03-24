@@ -11,7 +11,7 @@ namespace CookBook.Clean.Application.Queries.Ingredients;
 
 public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<IngredientListModel>>;
 
-internal class GetIngredientListQueryHandler (IRepository<IngredientBase> repository, IIngredientMapper mapper) : IQueryHandler<GetIngredientListQuery, List<IngredientListModel>>
+internal class GetIngredientListQueryHandler (IRepository<Ingredient> repository, IIngredientMapper mapper) : IQueryHandler<GetIngredientListQuery, List<IngredientListModel>>
 {
     public async Task<Result<List<IngredientListModel>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
     {

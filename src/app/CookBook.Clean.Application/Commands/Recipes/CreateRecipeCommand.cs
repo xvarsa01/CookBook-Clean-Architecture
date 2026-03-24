@@ -9,7 +9,7 @@ namespace CookBook.Clean.Application.Commands.Recipes;
 
 public record CreateRecipeCommand(string Name, string? Description, string? ImageUrl, TimeSpan Duration, RecipeType RecipeType) : ICommand<Guid>;
 
-internal sealed class CreateRecipeCommandHandler(IRepository<RecipeBase> repository, IRecipeMapper mapper) : ICommandHandler<CreateRecipeCommand,Guid>
+internal sealed class CreateRecipeCommandHandler(IRepository<Recipe> repository, IRecipeMapper mapper) : ICommandHandler<CreateRecipeCommand,Guid>
 {
     public async Task<Result<Guid>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {

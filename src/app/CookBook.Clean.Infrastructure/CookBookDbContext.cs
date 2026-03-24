@@ -8,36 +8,36 @@ namespace CookBook.Clean.Infrastructure;
 
 public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : DbContext(options)
 {
-    public DbSet<IngredientBase> Ingredients { get; set; } = null!;
-    public DbSet<RecipeBase> Recipes { get; set; } = null!;
+    public DbSet<Ingredient> Ingredients { get; set; } = null!;
+    public DbSet<Recipe> Recipes { get; set; } = null!;
     public DbSet<IngredientInRecipeEntity> IngredientInRecipe { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<IngredientBase>()
+        modelBuilder.Entity<Ingredient>()
             .Property(r => r.ImageUrl)
             .HasConversion(
                 v => v.Value,                     // string in DB
                 v => ImageUrl.CreateObject(v).Value  // convert back to VO
             );
         
-        modelBuilder.Entity<RecipeBase>()
+        modelBuilder.Entity<Recipe>()
             .Property(r => r.ImageUrl)
             .HasConversion(
                 v => v.Value,                     // string in DB
                 v => ImageUrl.CreateObject(v).Value  // convert back to VO
             );
 
-        modelBuilder.Entity<RecipeBase>()
+        modelBuilder.Entity<Recipe>()
             .Property(r => r.Name)
             .HasConversion(
                 v => v.Value,                     // string in DB
                 v => RecipeName.CreateObject(v).Value  // convert back to VO
             );
         
-        modelBuilder.Entity<RecipeBase>()
+        modelBuilder.Entity<Recipe>()
             .Property(r => r.Duration)
             .HasColumnType("INTEGER")
             .HasConversion(
@@ -46,7 +46,7 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
             );
         
         
-        modelBuilder.Entity<RecipeBase>()
+        modelBuilder.Entity<Recipe>()
             .OwnsMany(r => r.Ingredients, b =>
             {
                 b.WithOwner().HasForeignKey("RecipeId");
@@ -60,7 +60,7 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
                     )
                     .IsRequired();
                 
-                b.HasOne<IngredientBase>()
+                b.HasOne<Ingredient>()
                     .WithMany()
                     .HasForeignKey(i => i.IngredientId);
             });

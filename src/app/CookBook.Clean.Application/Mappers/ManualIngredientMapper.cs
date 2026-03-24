@@ -7,7 +7,7 @@ namespace CookBook.Clean.Application.Mappers;
 
 public class ManualIngredientMapper : IIngredientMapper
 {
-    public IngredientListModel MapToListModel(IngredientBase @base)
+    public IngredientListModel MapToListModel(Ingredient @base)
     {
         return new IngredientListModel
         {
@@ -17,7 +17,7 @@ public class ManualIngredientMapper : IIngredientMapper
         };
     }
 
-    public IEnumerable<IngredientListModel> MapToListModels(IEnumerable<IngredientBase> entities)
+    public IEnumerable<IngredientListModel> MapToListModels(IEnumerable<Ingredient> entities)
     {
         List<IngredientListModel> list = [];
         foreach (var entity in entities)
@@ -28,7 +28,7 @@ public class ManualIngredientMapper : IIngredientMapper
         return list;
     }
 
-    public IngredientDetailModel MapToDetailModel(IngredientBase @base)
+    public IngredientDetailModel MapToDetailModel(Ingredient @base)
     {
         return new IngredientDetailModel
         {
@@ -39,13 +39,13 @@ public class ManualIngredientMapper : IIngredientMapper
         };
     }
 
-    public IngredientBase MapToEntity(CreateIngredientCommand request)
+    public Ingredient MapToEntity(CreateIngredientCommand request)
     {
         var urlObjectResult = request.ImageUrl is not null
             ? ImageUrl.CreateObject(request.ImageUrl)
             : null;
 
-        return IngredientBase.Create(request.Name,
+        return Ingredient.Create(request.Name,
             request.Description,
             urlObjectResult?.Value).Value;
     }

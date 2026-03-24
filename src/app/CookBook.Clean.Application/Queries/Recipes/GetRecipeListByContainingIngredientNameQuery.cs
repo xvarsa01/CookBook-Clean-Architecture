@@ -13,7 +13,7 @@ namespace CookBook.Clean.Application.Queries.Recipes;
 
 public record GetRecipeListByContainingIngredientNameQuery(string IngredientNameSubstring) : IQuery<List<RecipeListModel>>;
 
-internal class GetRecipeListByContainingIngredientNameQueryHandler (IRepository<RecipeBase> repository, IRepository<IngredientBase> ingredientRepository, IRecipeMapper mapper)
+internal class GetRecipeListByContainingIngredientNameQueryHandler (IRepository<Recipe> repository, IRepository<Ingredient> ingredientRepository, IRecipeMapper mapper)
     : IQueryHandler<GetRecipeListByContainingIngredientNameQuery, List<RecipeListModel>>
 {
     public async Task<Result<List<RecipeListModel>>> Handle(GetRecipeListByContainingIngredientNameQuery request, CancellationToken cancellationToken)

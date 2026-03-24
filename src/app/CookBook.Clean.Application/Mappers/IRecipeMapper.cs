@@ -7,9 +7,9 @@ namespace CookBook.Clean.Application.Mappers;
 
 public interface IRecipeMapper : IMapper
 {
-    RecipeListModel MapToListModel(RecipeBase @base);
-    IEnumerable<RecipeListModel> MapToListModels(IEnumerable<RecipeBase> entities);
-    RecipeDetailModel MapToDetailModel(RecipeBase @base, List<IngredientBase> usedIngredientDetails);
+    RecipeListModel MapToListModel(Recipe @base);
+    IEnumerable<RecipeListModel> MapToListModels(IEnumerable<Recipe> entities);
+    RecipeDetailModel MapToDetailModel(Recipe @base, List<Ingredient> usedIngredientDetails);
     
-    RecipeBase MapToEntity(CreateRecipeCommand request);
+    Recipe MapToEntity(CreateRecipeCommand request);
 }

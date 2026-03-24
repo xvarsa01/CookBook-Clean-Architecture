@@ -3,9 +3,9 @@ using CookBook.Clean.Core.IngredientRoot;
 
 namespace CookBook.Clean.Application.Specifications.Ingredient;
 
-public class IngredientsBySpecification(IngredientFilter filter, PagingOptions? pagingOptions) : ISpecification<IngredientBase, IngredientBase>
+public class IngredientsBySpecification(IngredientFilter filter, PagingOptions? pagingOptions) : ISpecification<Core.IngredientRoot.Ingredient, Core.IngredientRoot.Ingredient>
 {
-    public IQueryable<IngredientBase> UseFilter(IQueryable<IngredientBase> queryable)
+    public IQueryable<Core.IngredientRoot.Ingredient> UseFilter(IQueryable<Core.IngredientRoot.Ingredient> queryable)
     {
         if (filter.Name is not null)
         {

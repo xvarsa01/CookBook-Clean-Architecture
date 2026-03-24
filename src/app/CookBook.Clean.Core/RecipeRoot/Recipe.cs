@@ -12,7 +12,7 @@ namespace CookBook.Clean.Core.RecipeRoot;
 // - recipe can have 0-10 ingredients
 //   - ingredient amount must be positive
 
-public record RecipeBase : AggregateRootBase
+public record Recipe : AggregateRootBase
 {
     public override Guid Id { get; init; } = Guid.NewGuid();
     public RecipeName Name { get; private set; }
@@ -24,8 +24,8 @@ public record RecipeBase : AggregateRootBase
     private readonly List<IngredientInRecipeEntity> _ingredients = [];
     public IReadOnlyCollection<IngredientInRecipeEntity> Ingredients => _ingredients.AsReadOnly();
     
-    private RecipeBase() { } // for EF
-    private RecipeBase(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
+    private Recipe() { } // for EF
+    private Recipe(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
     {
         Name = name;
         Description = description;
@@ -34,9 +34,9 @@ public record RecipeBase : AggregateRootBase
         Type = type;
     }
     
-    public static Result<RecipeBase> Create(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
+    public static Result<Recipe> Create(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
     {
-        var entity = new RecipeBase(name, description, imageUrl, duration, type);
+        var entity = new Recipe(name, description, imageUrl, duration, type);
         return Result.Ok(entity);
     }
     

@@ -6,27 +6,27 @@ namespace CookBook.Clean.Core.IngredientRoot;
 // business rules:
 // - name can not be empty string
 
-public record IngredientBase : AggregateRootBase
+public record Ingredient : AggregateRootBase
 {
     public override Guid Id { get; init; } = Guid.NewGuid();
     public string Name { get; private set; }
     public string? Description { get; private set; }
     public ImageUrl? ImageUrl { get; private set; }
 
-    private IngredientBase() { } // for EF
-    private IngredientBase(string name, string? description, ImageUrl? imageUrl)
+    private Ingredient() { } // for EF
+    private Ingredient(string name, string? description, ImageUrl? imageUrl)
     {
         Name =  name;
         Description = description;
         ImageUrl = imageUrl;
     }
 
-    public static Result<IngredientBase> Create(string name, string? description, ImageUrl? imageUrl)
+    public static Result<Ingredient> Create(string name, string? description, ImageUrl? imageUrl)
     {
         if (string.IsNullOrEmpty(name))
-            return Result.Invalid<IngredientBase>("Ingredient name can not be empty.");
+            return Result.Invalid<Ingredient>("Ingredient name can not be empty.");
 
-        var entity = new IngredientBase(name, description, imageUrl);
+        var entity = new Ingredient(name, description, imageUrl);
         return Result.Ok(entity);
     }
 
