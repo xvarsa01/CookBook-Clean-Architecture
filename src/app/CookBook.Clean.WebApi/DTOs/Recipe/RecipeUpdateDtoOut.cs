@@ -3,7 +3,7 @@ using CookBook.Clean.Core.RecipeRoot.Enums;
 
 namespace CookBook.Clean.WebApi.DTOs;
 
-public class RecipeUpdateRequestDto
+public class RecipeUpdateDtoOut
 {
     public required Guid Id { get; set; }
     public string? Name { get; set; }

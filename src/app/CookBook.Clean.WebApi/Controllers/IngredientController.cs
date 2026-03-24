@@ -1,12 +1,10 @@
 using CookBook.Clean.Application;
 using CookBook.Clean.Application.Commands.Ingredients;
 using CookBook.Clean.Application.Filters;
-using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.Shared.ValueObjects;
-using CookBook.Clean.WebApi.DTOs;
 using CookBook.Clean.WebApi.DTOs.Ingredient;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -27,14 +25,14 @@ public class IngredientController : ControllerBase
     }
 
     [HttpPost(Name = "CreateIngredient")]
-    public async Task<ActionResult<Guid>> Create(IngredientCreateRequestDto requestDto)
+    public async Task<ActionResult<Guid>> Create(IngredientCreateDtoOut dtoOut)
     {
         var ingredientCreateDto = new IngredientCreateDto
         {
-            Name = requestDto.Name,
-            Description = requestDto.Description,
-            ImageUrl = requestDto.ImageUrl != null
-                ? ImageUrl.CreateObject(requestDto.ImageUrl).Value
+            Name = dtoOut.Name,
+            Description = dtoOut.Description,
+            ImageUrl = dtoOut.ImageUrl != null
+                ? ImageUrl.CreateObject(dtoOut.ImageUrl).Value
                 : null
         };
         
@@ -71,21 +69,21 @@ public class IngredientController : ControllerBase
     }
     
     [HttpPut(Name = "UpdateIngredient")]
-    public async Task<ActionResult<Guid>> Update(IngredientUpdateRequestDto requestDto)
+    public async Task<ActionResult<Guid>> Update(IngredientUpdateDtoOut dtoOut)
     {
         Result<ImageUrl>? urlObjectResult = null;
-        if (requestDto.ImageUrl is not null)
+        if (dtoOut.ImageUrl is not null)
         {
-            urlObjectResult = ImageUrl.CreateObject(requestDto.ImageUrl);
+            urlObjectResult = ImageUrl.CreateObject(dtoOut.ImageUrl);
             if (urlObjectResult.IsFailure)
                 return BadRequest(urlObjectResult.Error);
         }
         
         var ingredientUpdateDto = new IngredientUpdateDto
         {
-            Id = requestDto.Id,
-            Name = requestDto.Name,
-            Description = requestDto.Description,
+            Id = dtoOut.Id,
+            Name = dtoOut.Name,
+            Description = dtoOut.Description,
             ImageUrl = urlObjectResult?.Value
         };
         

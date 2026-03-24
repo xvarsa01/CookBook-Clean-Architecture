@@ -28,31 +28,31 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPost(Name = "CreateRecipe")]
-    public async Task<ActionResult<Guid>> Create(RecipeCreateRequestDto requestDto)
+    public async Task<ActionResult<Guid>> Create(RecipeCreateDtoOut dtoOut)
     {
         Result<ImageUrl>? urlObjectResult = null;
-        if (requestDto.ImageUrl is not null)
+        if (dtoOut.ImageUrl is not null)
         {
-            urlObjectResult = ImageUrl.CreateObject(requestDto.ImageUrl);
+            urlObjectResult = ImageUrl.CreateObject(dtoOut.ImageUrl);
             if (urlObjectResult.IsFailure)
                 return BadRequest(urlObjectResult.Error);
         }
 
-        var nameObjectResult = RecipeName.CreateObject(requestDto.Name);
+        var nameObjectResult = RecipeName.CreateObject(dtoOut.Name);
         if (nameObjectResult.IsFailure)
             return BadRequest(nameObjectResult.Error);
 
-        var durationObjectResult = RecipeDuration.CreateObject(requestDto.Duration);
+        var durationObjectResult = RecipeDuration.CreateObject(dtoOut.Duration);
         if (durationObjectResult.IsFailure)
             return BadRequest(durationObjectResult.Error);
         
         var recipeCreateDto = new RecipeCreateDto
         {
             Name = nameObjectResult.Value,
-            Description = requestDto.Description,
+            Description = dtoOut.Description,
             ImageUrl = urlObjectResult?.Value,
             Duration = durationObjectResult.Value,
-            Type = requestDto.Type
+            Type = dtoOut.Type
         };
         
         var result = await _mediator.Send(new CreateRecipeCommand(recipeCreateDto));
@@ -150,38 +150,38 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPut(Name = "UpdateRecipe")]
-    public async Task<ActionResult<Guid>> Update(RecipeUpdateRequestDto requestDto)
+    public async Task<ActionResult<Guid>> Update(RecipeUpdateDtoOut dtoOut)
     {
         Result<ImageUrl>? urlObjectResult = null;
-        if (requestDto.ImageUrl is not null)
+        if (dtoOut.ImageUrl is not null)
         {
-            urlObjectResult = ImageUrl.CreateObject(requestDto.ImageUrl);
+            urlObjectResult = ImageUrl.CreateObject(dtoOut.ImageUrl);
             if (urlObjectResult.IsFailure)
                 return BadRequest(urlObjectResult.Error);
         }
         Result<RecipeName>? nameObjectResult = null;
-        if (requestDto.Name is not null)
+        if (dtoOut.Name is not null)
         {
-            nameObjectResult = RecipeName.CreateObject(requestDto.Name);
+            nameObjectResult = RecipeName.CreateObject(dtoOut.Name);
             if (nameObjectResult.IsFailure)
                 return BadRequest(nameObjectResult.Error);
         }
         Result<RecipeDuration>? durationObjectResult = null;
-        if (requestDto.Duration is not null)
+        if (dtoOut.Duration is not null)
         {
-            durationObjectResult = RecipeDuration.CreateObject(requestDto.Duration.Value);
+            durationObjectResult = RecipeDuration.CreateObject(dtoOut.Duration.Value);
             if (durationObjectResult.IsFailure)
                 return BadRequest(durationObjectResult.Error);
         }
         
         var recipeUpdateDto = new RecipeUpdateDto
         {
-            Id = requestDto.Id,
+            Id = dtoOut.Id,
             Name = nameObjectResult?.Value,
-            Description = requestDto.Description,
+            Description = dtoOut.Description,
             ImageUrl = urlObjectResult?.Value,
             Duration = durationObjectResult?.Value,
-            Type = requestDto.Type
+            Type = dtoOut.Type
         };
         
         var result = await _mediator.Send(new UpdateRecipeCommand(recipeUpdateDto));
