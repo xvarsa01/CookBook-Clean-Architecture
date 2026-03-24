@@ -17,16 +17,22 @@ namespace CookBook.Clean.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.11");
 
-            modelBuilder.Entity("CookBook.Clean.Core.IngredientRoot.IngredientEntity", b =>
+            modelBuilder.Entity("CookBook.Clean.Core.IngredientRoot.IngredientBase", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -38,7 +44,7 @@ namespace CookBook.Clean.Infrastructure.Migrations
                     b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("CookBook.Clean.Core.RecipeRoot.RecipeEntity", b =>
+            modelBuilder.Entity("CookBook.Clean.Core.RecipeRoot.RecipeBase", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +77,7 @@ namespace CookBook.Clean.Infrastructure.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("CookBook.Clean.Core.RecipeRoot.RecipeEntity", b =>
+            modelBuilder.Entity("CookBook.Clean.Core.RecipeRoot.RecipeBase", b =>
                 {
                     b.OwnsMany("CookBook.Clean.Core.RecipeRoot.IngredientInRecipeEntity", "Ingredients", b1 =>
                         {
@@ -81,7 +87,13 @@ namespace CookBook.Clean.Infrastructure.Migrations
                             b1.Property<decimal>("Amount")
                                 .HasColumnType("TEXT");
 
+                            b1.Property<DateTime>("CreatedAt")
+                                .HasColumnType("TEXT");
+
                             b1.Property<Guid>("IngredientId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateTime?>("ModifiedAt")
                                 .HasColumnType("TEXT");
 
                             b1.Property<Guid>("RecipeId")
@@ -98,7 +110,7 @@ namespace CookBook.Clean.Infrastructure.Migrations
 
                             b1.ToTable("IngredientInRecipe");
 
-                            b1.HasOne("CookBook.Clean.Core.IngredientRoot.IngredientEntity", null)
+                            b1.HasOne("CookBook.Clean.Core.IngredientRoot.IngredientBase", null)
                                 .WithMany()
                                 .HasForeignKey("IngredientId")
                                 .OnDelete(DeleteBehavior.Cascade)
