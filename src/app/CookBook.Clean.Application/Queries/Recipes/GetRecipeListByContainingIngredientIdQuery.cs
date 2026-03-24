@@ -10,7 +10,7 @@ namespace CookBook.Clean.Application.Queries.Recipes;
 
 public record GetRecipeListByContainingIngredientIdQuery(Guid IngredientId) : IQuery<List<RecipeGetListDto>>;
 
-internal class GetRecipeListByContainingIngredientIdQueryHandler (IRepository<RecipeEntity> repository) : IQueryHandler<GetRecipeListByContainingIngredientIdQuery, List<RecipeGetListDto>>
+internal class GetRecipeListByContainingIngredientIdQueryHandler (IRepository<Recipe> repository) : IQueryHandler<GetRecipeListByContainingIngredientIdQuery, List<RecipeGetListDto>>
 {
     public Task<Result<List<RecipeGetListDto>>> Handle(GetRecipeListByContainingIngredientIdQuery request, CancellationToken cancellationToken)
     {

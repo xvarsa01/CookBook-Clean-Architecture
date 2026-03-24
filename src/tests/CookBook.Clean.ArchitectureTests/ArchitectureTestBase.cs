@@ -1,5 +1,6 @@
 ﻿using ArchUnitNET.Domain;
 using ArchUnitNET.Loader;
+using CookBook.Clean.Core.Shared;
 using Assembly = System.Reflection.Assembly;
 
 namespace CookBook.Clean.ArchitectureTests;
@@ -12,7 +13,7 @@ public class ArchitectureTestBase
     protected const string MauiNamespace = "CookBook.Clean.Ui";
     protected const string WebApiNamespace = "CookBook.Clean.WebApi";
     
-    protected static readonly Assembly CoreAssembly = typeof(Core.IAggregateRootEntity).Assembly;
+    protected static readonly Assembly CoreAssembly = typeof(AggregateRootBase).Assembly;
     protected static readonly Assembly ApplicationAssembly = typeof(Application.Installer).Assembly;
     protected static readonly Assembly InfrastructureAssembly = typeof(Infrastructure.Installer).Assembly;
     protected static readonly Assembly WebApiAssembly = typeof(Program).Assembly;

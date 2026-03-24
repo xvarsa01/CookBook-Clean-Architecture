@@ -168,7 +168,7 @@ Content-Type: application/json
   "duration": "00:05:00",
   "type": 1
 }
-> {% client.global.set("rec1", response.body.value); %}
+> {% client.global.set("rec1", response.body); %}
 
 
 ### Create Lemonade (no image)
@@ -181,7 +181,7 @@ Content-Type: application/json
   "duration": "00:03:00",
   "type": 0
 }
-> {% client.global.set("rec2", response.body.value); %}
+> {% client.global.set("rec2", response.body); %}
 
 
 ### Create Orange Drink (minimal)
@@ -193,7 +193,7 @@ Content-Type: application/json
   "duration": "00:02:00",
   "type": 0
 }
-> {% client.global.set("rec3", response.body.value); %}
+> {% client.global.set("rec3", response.body); %}
 
 
 ### Create Latte (with description only)
@@ -206,7 +206,7 @@ Content-Type: application/json
   "duration": "00:04:00",
   "type": 3
 }
-> {% client.global.set("rec4", response.body.value); %}
+> {% client.global.set("rec4", response.body); %}
 
 
 ### Create Chocolate Milkshake (full)
@@ -220,7 +220,7 @@ Content-Type: application/json
   "duration": "00:06:00",
   "type": 2
 }
-> {% client.global.set("rec5", response.body.value); %}
+> {% client.global.set("rec5", response.body); %}
 
 
 ### Create Strawberry Smoothie (image only)
@@ -233,7 +233,7 @@ Content-Type: application/json
   "duration": "00:05:00",
   "type": 4
 }
-> {% client.global.set("rec6", response.body.value); %}
+> {% client.global.set("rec6", response.body); %}
 
 
 
@@ -319,8 +319,6 @@ Content-Type: application/json
 { "ingredientId": "{{ing11}}", "amount": 100, "unit": 1 }
 
 
-
-> {% client.global.set("rec5", response.body.value); %}
 
 ### Milkshake Ingredients
 POST {{host}}:{{port}}/recipe/{{rec5}}/ingredient

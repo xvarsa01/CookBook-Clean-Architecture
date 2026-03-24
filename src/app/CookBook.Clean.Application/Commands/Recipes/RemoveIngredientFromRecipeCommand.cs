@@ -7,7 +7,7 @@ namespace CookBook.Clean.Application.Commands.Recipes;
 
 public record RemoveIngredientFromRecipeCommand(Guid RecipeId, Guid EntryId) : ICommand;
 
-internal sealed class RemoveIngredientFromRecipeCommandHandler(IRepository<RecipeEntity> recipeRepository)
+internal sealed class RemoveIngredientFromRecipeCommandHandler(IRepository<Recipe> recipeRepository)
     : ICommandHandler<RemoveIngredientFromRecipeCommand>
 {
     public async Task<Result> Handle(RemoveIngredientFromRecipeCommand request, CancellationToken cancellationToken)

@@ -2,9 +2,9 @@
 
 namespace CookBook.Clean.Application.Specifications.Recipe;
 
-public class RecipesByContainingIngredientIds(List<Guid> ids) : ISpecification<RecipeEntity, RecipeEntity>
+public class RecipesByContainingIngredientIds(List<Guid> ids) : ISpecification<Core.RecipeRoot.Recipe, Core.RecipeRoot.Recipe>
 {
-    public IQueryable<RecipeEntity> UseFilter(IQueryable<RecipeEntity> queryable)
+    public IQueryable<Core.RecipeRoot.Recipe> UseFilter(IQueryable<Core.RecipeRoot.Recipe> queryable)
     {
         queryable =  queryable.Where(r => r.Ingredients.Any(i => ids.Contains(i.IngredientId)));
         return queryable;

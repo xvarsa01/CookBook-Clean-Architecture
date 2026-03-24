@@ -8,7 +8,7 @@ namespace CookBook.Clean.Application.Queries.Ingredients;
 
 public record GetIngredientDetailQuery(Guid Id) : IQuery<IngredientGetDetailDto>;
 
-internal class GetIngredientDetailQueryHandler(IRepository<IngredientEntity> repository) : IQueryHandler<GetIngredientDetailQuery, IngredientGetDetailDto>
+internal class GetIngredientDetailQueryHandler(IRepository<Ingredient> repository) : IQueryHandler<GetIngredientDetailQuery, IngredientGetDetailDto>
 {
     public async Task<Result<IngredientGetDetailDto>> Handle(GetIngredientDetailQuery request, CancellationToken cancellationToken)
     {

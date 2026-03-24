@@ -1,31 +1,32 @@
-﻿using CookBook.Clean.Core.Shared.ValueObjects;
+﻿using CookBook.Clean.Core.Shared;
+using CookBook.Clean.Core.Shared.ValueObjects;
 
 namespace CookBook.Clean.Core.IngredientRoot;
 
 // business rules:
 // - name can not be empty string
 
-public class IngredientEntity : IAggregateRootEntity
+public record Ingredient : AggregateRootBase
 {
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public override Guid Id { get; init; } = Guid.NewGuid();
     public string Name { get; private set; }
     public string? Description { get; private set; }
     public ImageUrl? ImageUrl { get; private set; }
 
-    private IngredientEntity() { } // for EF
-    private IngredientEntity(string name, string? description, ImageUrl? imageUrl)
+    private Ingredient() { } // for EF
+    private Ingredient(string name, string? description, ImageUrl? imageUrl)
     {
         Name =  name;
         Description = description;
         ImageUrl = imageUrl;
     }
 
-    public static Result<IngredientEntity> Create(string name, string? description, ImageUrl? imageUrl)
+    public static Result<Ingredient> Create(string name, string? description, ImageUrl? imageUrl)
     {
         if (string.IsNullOrEmpty(name))
-            return Result.Invalid<IngredientEntity>("Ingredient name can not be empty.");
+            return Result.Invalid<Ingredient>("Ingredient name can not be empty.");
 
-        var entity = new IngredientEntity(name, description, imageUrl);
+        var entity = new Ingredient(name, description, imageUrl);
         return Result.Ok(entity);
     }
 

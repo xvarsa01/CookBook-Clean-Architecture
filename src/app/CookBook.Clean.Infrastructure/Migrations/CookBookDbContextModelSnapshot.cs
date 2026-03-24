@@ -17,28 +17,7 @@ namespace CookBook.Clean.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.11");
 
-            modelBuilder.Entity("CookBook.Clean.Core.IngredientRoot.IngredientEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ingredients");
-                });
-
-            modelBuilder.Entity("CookBook.Clean.Core.RecipeRoot.RecipeEntity", b =>
+            modelBuilder.Entity("CookBook.Clean.Core.IngredientRoot.Ingredient", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,8 +29,65 @@ namespace CookBook.Clean.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ingredients");
+                });
+
+            modelBuilder.Entity("CookBook.Clean.Core.RecipeRoot.IngredientInRecipeEntity", b =>
+                {
+                    b.Property<Guid>("RecipeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("RecipeId", "Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("IngredientInRecipe");
+                });
+
+            modelBuilder.Entity("CookBook.Clean.Core.RecipeRoot.Recipe", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Duration")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("TEXT");
@@ -71,43 +107,23 @@ namespace CookBook.Clean.Infrastructure.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("CookBook.Clean.Core.RecipeRoot.RecipeEntity", b =>
+            modelBuilder.Entity("CookBook.Clean.Core.RecipeRoot.IngredientInRecipeEntity", b =>
                 {
-                    b.OwnsMany("CookBook.Clean.Core.RecipeRoot.IngredientInRecipeEntity", "Ingredients", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("TEXT");
+                    b.HasOne("CookBook.Clean.Core.IngredientRoot.Ingredient", null)
+                        .WithMany()
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("TEXT");
+                    b.HasOne("CookBook.Clean.Core.RecipeRoot.Recipe", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                            b1.Property<Guid>("IngredientId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<Guid>("RecipeId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<int>("Unit")
-                                .HasColumnType("INTEGER");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("IngredientId");
-
-                            b1.HasIndex("RecipeId");
-
-                            b1.ToTable("IngredientInRecipe");
-
-                            b1.HasOne("CookBook.Clean.Core.IngredientRoot.IngredientEntity", null)
-                                .WithMany()
-                                .HasForeignKey("IngredientId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b1.WithOwner()
-                                .HasForeignKey("RecipeId");
-                        });
-
+            modelBuilder.Entity("CookBook.Clean.Core.RecipeRoot.Recipe", b =>
+                {
                     b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618

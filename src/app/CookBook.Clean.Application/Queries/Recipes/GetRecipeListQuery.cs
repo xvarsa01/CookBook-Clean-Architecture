@@ -4,12 +4,13 @@ using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Models.Recipe;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
 
 public record GetRecipeListQuery(RecipeFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<RecipeGetListDto>>;
 
-internal class GetRecipeListQueryHandler(IRepository<RecipeEntity> repository) : IQueryHandler<GetRecipeListQuery, List<RecipeGetListDto>>
+internal class GetRecipeListQueryHandler(IRepository<Recipe> repository) : IQueryHandler<GetRecipeListQuery, List<RecipeGetListDto>>
 {
     public Task<Result<List<RecipeGetListDto>>> Handle(GetRecipeListQuery request, CancellationToken cancellationToken)
     {
@@ -27,14 +28,14 @@ internal class GetRecipeListQueryHandler(IRepository<RecipeEntity> repository) :
 
         if (request.Filter.MinimalDuration.HasValue)
         {
-            var minTimeStr = request.Filter.MinimalDuration.Value.ToString(@"hh\:mm\:ss");
-            queryable = queryable.Where(r => string.Compare(r.Duration.ToString(), minTimeStr) >= 0);       // workaround for sqlite
+            var min = RecipeDuration.CreateObject(request.Filter.MinimalDuration.Value).Value;
+            queryable = queryable.Where(r => r.Duration >= min);
         }
 
         if (request.Filter.MaximalDuration.HasValue)
         {
-            var maxTimeStr = request.Filter.MaximalDuration.Value.ToString(@"hh\:mm\:ss");
-            queryable = queryable.Where(r => string.Compare(r.Duration.ToString(), maxTimeStr) <= 0);
+            var max = RecipeDuration.CreateObject(request.Filter.MaximalDuration.Value).Value;
+            queryable = queryable.Where(r => r.Duration <= max);
         }
         
         queryable = request.Filter.SortParameter switch
@@ -48,8 +49,8 @@ internal class GetRecipeListQueryHandler(IRepository<RecipeEntity> repository) :
                 : queryable.OrderByDescending(r => r.Type),
             
             RecipeSortParameter.Duration => request.Filter.IsSortAscending
-                ? queryable.OrderBy(r => r.Duration.ToString())                 // .ToString() is workaround for sqlite
-                : queryable.OrderByDescending(r => r.Duration.ToString()),
+                ? queryable.OrderBy(r => r.Duration)
+                : queryable.OrderByDescending(r => r.Duration),
             
             RecipeSortParameter.CreatedAt => request.Filter.IsSortAscending
                 ? queryable.OrderBy(r => r.CreatedAt)

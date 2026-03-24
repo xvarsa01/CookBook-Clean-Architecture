@@ -17,10 +17,10 @@ public class IngredientUnitTests
     public async Task CreateIngredientHandler_InsertsEntityAndReturnsId()
     {
         // Arrange
-        var repoMock = new Mock<IRepository<IngredientEntity>>();
+        var repoMock = new Mock<IRepository<Ingredient>>();
         
         var expectedId = Guid.NewGuid();
-        repoMock.Setup(r => r.InsertAsync(It.IsAny<IngredientEntity>()))
+        repoMock.Setup(r => r.InsertAsync(It.IsAny<Ingredient>()))
             .ReturnsAsync(expectedId);
 
         var handler = new CreateIngredientCommandHandler(repoMock.Object);
@@ -37,14 +37,14 @@ public class IngredientUnitTests
 
         // Assert
         Assert.Equal(expectedId, result.Value);
-        repoMock.Verify(r => r.InsertAsync(It.Is<IngredientEntity>(e => e.Name == "Sugar" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
+        repoMock.Verify(r => r.InsertAsync(It.Is<Ingredient>(e => e.Name == "Sugar" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
     }
 
     [Fact]
     public async Task GetIngredientHandler_ReturnsNotFound_WhenMissing()
     {
-        var repoMock = new Mock<IRepository<IngredientEntity>>();
-        repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((IngredientEntity?)null);
+        var repoMock = new Mock<IRepository<Ingredient>>();
+        repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((Ingredient?)null);
 
         var handler = new GetIngredientDetailQueryHandler(repoMock.Object);
         var useCase = new GetIngredientDetailQuery(Guid.NewGuid());
@@ -58,11 +58,11 @@ public class IngredientUnitTests
     [Fact]
     public async Task GetIngredientHandler_ReturnsOk_WhenFound()
     {
-        var entity = IngredientEntity.Create("Salt", null, ImageUrl.CreateObject("http://image.png").Value).Value;
+        var entity = Ingredient.Create("Salt", null, ImageUrl.CreateObject("http://image.png").Value).Value;
         var id = entity.Id;
 
 
-        var repoMock = new Mock<IRepository<IngredientEntity>>();
+        var repoMock = new Mock<IRepository<Ingredient>>();
         repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
 
         var handler = new GetIngredientDetailQueryHandler(repoMock.Object);
@@ -78,17 +78,17 @@ public class IngredientUnitTests
     [Fact]
     public async Task GetListIngredientHandler_ReturnsList()
     {
-        var entityA = IngredientEntity.Create("A", null, null).Value;
-        var entityB = IngredientEntity.Create("B", null, null).Value;
+        var entityA = Ingredient.Create("A", null, null).Value;
+        var entityB = Ingredient.Create("B", null, null).Value;
 
-        var list = new List<IngredientEntity>
+        var list = new List<Ingredient>
         {
             entityA,
             entityB
         };
 
-        var repoMock = new Mock<IRepository<IngredientEntity>>();
-        repoMock.Setup(r => r.GetListBySpecificationAsync(It.IsAny<ISpecification<IngredientEntity, IngredientEntity>>()))
+        var repoMock = new Mock<IRepository<Ingredient>>();
+        repoMock.Setup(r => r.GetListBySpecificationAsync(It.IsAny<ISpecification<Ingredient, Ingredient>>()))
             .ReturnsAsync(list);
 
         var handler = new GetIngredientListQueryHandler(repoMock.Object);
@@ -103,8 +103,8 @@ public class IngredientUnitTests
     [Fact]
     public async Task UpdateIngredientHandler_ReturnsNotFound_WhenMissing()
     {
-        var repoMock = new Mock<IRepository<IngredientEntity>>();
-        repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((IngredientEntity?)null);
+        var repoMock = new Mock<IRepository<Ingredient>>();
+        repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((Ingredient?)null);
 
         var publisherMock = new Mock<IPublisher>();
 
@@ -127,12 +127,12 @@ public class IngredientUnitTests
     [Fact]
     public async Task UpdateIngredientHandler_UpdatesAndReturnsOk()
     {
-        var entity = IngredientEntity.Create("Old", "d", null).Value;
+        var entity = Ingredient.Create("Old", "d", null).Value;
         var id = entity.Id;
 
-        var repoMock = new Mock<IRepository<IngredientEntity>>();
+        var repoMock = new Mock<IRepository<Ingredient>>();
         repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
-        repoMock.Setup(r => r.UpdateAsync(It.IsAny<IngredientEntity>())).ReturnsAsync(id);
+        repoMock.Setup(r => r.UpdateAsync(It.IsAny<Ingredient>())).ReturnsAsync(id);
 
         var publisherMock = new Mock<IPublisher>();
 
@@ -149,7 +149,7 @@ public class IngredientUnitTests
         var result = await handler.Handle(useCase, CancellationToken.None);
 
         Assert.True(result.IsSuccess);
-        repoMock.Verify(r => r.UpdateAsync(It.Is<IngredientEntity>(e => e.Name == "New" && e.Description == "NewDesc" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
+        repoMock.Verify(r => r.UpdateAsync(It.Is<Ingredient>(e => e.Name == "New" && e.Description == "NewDesc" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
         publisherMock.Verify(p => p.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 }

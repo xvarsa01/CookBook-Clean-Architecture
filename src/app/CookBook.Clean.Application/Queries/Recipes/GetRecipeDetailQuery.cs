@@ -10,11 +10,11 @@ namespace CookBook.Clean.Application.Queries.Recipes;
 
 public record GetRecipeDetailQuery(Guid Id) : IQuery<RecipeGetDetailDto>;
 
-internal class GetRecipeDetailQueryHandler(IRepository<RecipeEntity> repository, IRepository<IngredientEntity> ingredientRepository) : IQueryHandler<GetRecipeDetailQuery, RecipeGetDetailDto>
+internal class GetRecipeDetailQueryHandler(IRepository<Recipe> repository, IRepository<Ingredient> ingredientRepository) : IQueryHandler<GetRecipeDetailQuery, RecipeGetDetailDto>
 {
     public async Task<Result<RecipeGetDetailDto>> Handle(GetRecipeDetailQuery request, CancellationToken cancellationToken)
     {
-        RecipeEntity? entity = await repository.GetByIdAsync(request.Id);
+        Recipe? entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)
         {
             return Result.NotFound<RecipeGetDetailDto>("Recipe not found");

@@ -11,7 +11,7 @@ namespace CookBook.Clean.Application.Commands.Recipes;
 
 public record UpdateRecipeCommand(RecipeUpdateDto Dto) : ICommand<Guid>;
 
-internal sealed class UpdateRecipeCommandHandler(IRepository<RecipeEntity> repository) : ICommandHandler<UpdateRecipeCommand,Guid>
+internal sealed class UpdateRecipeCommandHandler(IRepository<Recipe> repository) : ICommandHandler<UpdateRecipeCommand,Guid>
 {
     public async Task<Result<Guid>> Handle(UpdateRecipeCommand request, CancellationToken cancellationToken)
     {

@@ -1,33 +1,31 @@
 using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
+using CookBook.Clean.Core.Shared;
 
 namespace CookBook.Clean.Core.RecipeRoot;
 
-public class IngredientInRecipeEntity : IEntity
+public record IngredientInRecipeEntity : EntityBase
 {
-    public Guid Id { get; init; }
+    public override Guid Id { get; init; } = Guid.NewGuid();
     public Guid IngredientId { get; init; }
+    public Guid RecipeId { get; init; }
 
     public IngredientAmount Amount { get; private set; }
     public MeasurementUnit Unit { get; private set; }
 
     private IngredientInRecipeEntity() { } // for EF
 
-    private IngredientInRecipeEntity(Guid id, Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
+    private IngredientInRecipeEntity(Guid ingredientId, Guid recipeId, IngredientAmount amount, MeasurementUnit unit)
     {
-        Id = id;
         IngredientId = ingredientId;
+        RecipeId = recipeId;
         Amount = amount;
         Unit = unit;
     }
 
-    internal static Result<IngredientInRecipeEntity> Create(
-        Guid id,
-        Guid ingredientId,
-        IngredientAmount amount,
-        MeasurementUnit unit)
+    internal static Result<IngredientInRecipeEntity> Create(Guid ingredientId, Guid recipeId, IngredientAmount amount, MeasurementUnit unit) 
     {
-        return Result.Ok(new IngredientInRecipeEntity(id, ingredientId, amount, unit));
+        return Result.Ok(new IngredientInRecipeEntity(ingredientId, recipeId, amount, unit));
     }
 
 

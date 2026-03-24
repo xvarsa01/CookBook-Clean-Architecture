@@ -10,7 +10,7 @@ namespace CookBook.Clean.Application.Commands.Ingredients;
 
 public record DeleteIngredientCommand(Guid Id) : ICommand;
 
-internal sealed class DeleteIngredientCommandHandler(IRepository<IngredientEntity> repository, IPublisher publisher, IMediator mediator)
+internal sealed class DeleteIngredientCommandHandler(IRepository<Ingredient> repository, IPublisher publisher, IMediator mediator)
     : ICommandHandler<DeleteIngredientCommand>
 {
     public async Task<Result> Handle(DeleteIngredientCommand request, CancellationToken cancellationToken)

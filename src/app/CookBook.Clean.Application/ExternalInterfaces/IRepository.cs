@@ -1,10 +1,11 @@
 ﻿using CookBook.Clean.Application.Specifications;
 using CookBook.Clean.Core;
+using CookBook.Clean.Core.Shared;
 
 namespace CookBook.Clean.Application.ExternalInterfaces;
 
 public interface IRepository<TEntity>
-    where TEntity : class, IAggregateRootEntity
+    where TEntity : AggregateRootBase
 {
     IQueryable<TEntity> Query();
     Task<List<TEntity>> GetAllAsync();

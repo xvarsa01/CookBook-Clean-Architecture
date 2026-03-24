@@ -11,8 +11,8 @@ namespace CookBook.Clean.Application.Commands.Recipes;
 public record AddIngredientToRecipeCommand(Guid RecipeId, Guid IngredientId, decimal Amount, MeasurementUnit Unit) : ICommand<Guid>;
 
 internal sealed class AddIngredientToRecipeCommandHandler(
-    IRepository<RecipeEntity> recipeRepository,
-    IRepository<IngredientEntity> ingredientRepository
+    IRepository<Recipe> recipeRepository,
+    IRepository<Ingredient> ingredientRepository
 ) : ICommandHandler<AddIngredientToRecipeCommand,Guid>
 {
     public async Task<Result<Guid>> Handle(AddIngredientToRecipeCommand request, CancellationToken cancellationToken)

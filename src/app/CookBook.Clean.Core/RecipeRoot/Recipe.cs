@@ -1,5 +1,6 @@
 ﻿using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
+using CookBook.Clean.Core.Shared;
 using CookBook.Clean.Core.Shared.ValueObjects;
 
 namespace CookBook.Clean.Core.RecipeRoot;
@@ -11,22 +12,20 @@ namespace CookBook.Clean.Core.RecipeRoot;
 // - recipe can have 0-10 ingredients
 //   - ingredient amount must be positive
 
-public class RecipeEntity : IAggregateRootEntity
+public record Recipe : AggregateRootBase
 {
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public override Guid Id { get; init; } = Guid.NewGuid();
     public RecipeName Name { get; private set; }
     public string? Description { get; private set; }
     public ImageUrl? ImageUrl { get; private set; }
     public RecipeDuration Duration { get; private set; }
     public RecipeType Type { get; private set; }
-    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
-    public DateTime? ModifiedAt { get; private set; }
 
     private readonly List<IngredientInRecipeEntity> _ingredients = [];
     public IReadOnlyCollection<IngredientInRecipeEntity> Ingredients => _ingredients.AsReadOnly();
     
-    private RecipeEntity() { } // for EF
-    private RecipeEntity(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
+    private Recipe() { } // for EF
+    private Recipe(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
     {
         Name = name;
         Description = description;
@@ -35,9 +34,9 @@ public class RecipeEntity : IAggregateRootEntity
         Type = type;
     }
     
-    public static Result<RecipeEntity> Create(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
+    public static Result<Recipe> Create(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
     {
-        var entity = new RecipeEntity(name, description, imageUrl, duration, type);
+        var entity = new Recipe(name, description, imageUrl, duration, type);
         return Result.Ok(entity);
     }
     
@@ -46,8 +45,7 @@ public class RecipeEntity : IAggregateRootEntity
         if (_ingredients.Count == 10)
             return Result.Invalid<Guid>("Recipe cannot have more than 10 ingredients.");
         
-        var ingredientInRecipeId = Guid.NewGuid();
-        var ingredientInRecipeResult = IngredientInRecipeEntity.Create(ingredientInRecipeId, ingredientId, amount, unit);
+        var ingredientInRecipeResult = IngredientInRecipeEntity.Create(ingredientId, Id, amount, unit);
         
         if (ingredientInRecipeResult.IsFailure)
             return Result.Invalid<Guid>(ingredientInRecipeResult.Error ?? string.Empty);
@@ -55,7 +53,7 @@ public class RecipeEntity : IAggregateRootEntity
         _ingredients.Add(ingredientInRecipeResult.Value);
         
         ModifiedAt = DateTime.UtcNow;
-        return Result.Ok(ingredientInRecipeId);
+        return Result.Ok(ingredientInRecipeResult.Value.Id);
     }
 
     public Result RemoveIngredientsByIngredientId(Guid ingredientId)

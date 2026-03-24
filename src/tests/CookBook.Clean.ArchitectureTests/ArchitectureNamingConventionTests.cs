@@ -2,6 +2,7 @@
 using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Models;
+using CookBook.Clean.Core.Shared;
 using MediatR;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
@@ -173,7 +174,7 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     public void RootEntities_ShouldBeIn_Core_Layer()
     {
         Classes().That()
-            .ImplementInterface(typeof(Core.IAggregateRootEntity))
+            .ImplementInterface(typeof(AggregateRootBase))
             .Should().ResideInAssembly(CoreAssembly)
             .Check(Architecture);
     }

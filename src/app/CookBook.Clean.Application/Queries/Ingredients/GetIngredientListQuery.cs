@@ -9,7 +9,7 @@ namespace CookBook.Clean.Application.Queries.Ingredients;
 
 public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<IngredientGetListDto>>;
 
-internal class GetIngredientListQueryHandler (IRepository<IngredientEntity> repository) : IQueryHandler<GetIngredientListQuery, List<IngredientGetListDto>>
+internal class GetIngredientListQueryHandler (IRepository<Ingredient> repository) : IQueryHandler<GetIngredientListQuery, List<IngredientGetListDto>>
 {
     public Task<Result<List<IngredientGetListDto>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
     {

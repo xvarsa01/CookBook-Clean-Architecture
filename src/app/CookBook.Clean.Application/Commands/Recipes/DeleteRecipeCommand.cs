@@ -7,7 +7,7 @@ namespace CookBook.Clean.Application.Commands.Recipes;
 
 public record DeleteRecipeCommand(Guid Id) : ICommand;
 
-internal sealed class DeleteRecipeCommandHandler(IRepository<RecipeEntity> repository) : ICommandHandler<DeleteRecipeCommand>
+internal sealed class DeleteRecipeCommandHandler(IRepository<Recipe> repository) : ICommandHandler<DeleteRecipeCommand>
 {
     public async Task<Result> Handle(DeleteRecipeCommand request, CancellationToken cancellationToken)
     {
