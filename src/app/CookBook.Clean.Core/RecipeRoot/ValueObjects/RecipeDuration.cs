@@ -17,4 +17,19 @@ public class RecipeDuration
     }
     
     public static implicit operator TimeSpan(RecipeDuration duration) => duration.Value;
+    
+    public int CompareTo(RecipeDuration? other)
+        => Value.CompareTo(other!.Value);
+
+    public static bool operator >=(RecipeDuration a, RecipeDuration b)
+        => a.Value >= b.Value;
+
+    public static bool operator <=(RecipeDuration a, RecipeDuration b)
+        => a.Value <= b.Value;
+
+    public static bool operator >(RecipeDuration a, RecipeDuration b)
+        => a.Value > b.Value;
+
+    public static bool operator <(RecipeDuration a, RecipeDuration b)
+        => a.Value < b.Value;
 }

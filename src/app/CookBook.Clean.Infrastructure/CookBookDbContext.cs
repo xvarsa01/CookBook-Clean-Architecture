@@ -19,34 +19,30 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
         modelBuilder.Entity<IngredientEntity>()
             .Property(r => r.ImageUrl)
             .HasConversion(
-                v => v.Value,      // store decimal in DB
+                v => v.Value,                     // string in DB
                 v => ImageUrl.CreateObject(v).Value  // convert back to VO
             );
-        
-        
-        modelBuilder.Entity<RecipeEntity>()
-            .Property(r => r.Duration)
-            .HasColumnType("time");
         
         modelBuilder.Entity<RecipeEntity>()
             .Property(r => r.ImageUrl)
             .HasConversion(
-                v => v.Value,      // store decimal in DB
+                v => v.Value,                     // string in DB
                 v => ImageUrl.CreateObject(v).Value  // convert back to VO
             );
 
         modelBuilder.Entity<RecipeEntity>()
             .Property(r => r.Name)
             .HasConversion(
-                v => v.Value,      // store decimal in DB
+                v => v.Value,                     // string in DB
                 v => RecipeName.CreateObject(v).Value  // convert back to VO
             );
         
         modelBuilder.Entity<RecipeEntity>()
             .Property(r => r.Duration)
+            .HasColumnType("INTEGER")
             .HasConversion(
-                v => v.Value,      // store decimal in DB
-                v => RecipeDuration.CreateObject(v).Value  // convert back to VO
+                v => v.Value.TotalSeconds,                                           // int in DB
+                v => RecipeDuration.CreateObject(TimeSpan.FromSeconds(v)).Value  // convert back to VO
             );
         
         

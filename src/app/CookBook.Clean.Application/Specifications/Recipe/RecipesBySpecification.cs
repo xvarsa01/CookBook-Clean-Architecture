@@ -1,5 +1,6 @@
 ﻿using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Specifications.Recipe;
 
@@ -20,14 +21,14 @@ public class RecipesBySpecification(RecipeFilter filter, PagingOptions? pagingOp
 
         if (filter.MinimalDuration.HasValue)
         {
-            var minTimeStr = filter.MinimalDuration.Value.ToString(@"hh\:mm\:ss");
-            queryable = queryable.Where(r => string.Compare(r.Duration.ToString(), minTimeStr) >= 0);       // workaround for sqlite
+            var min = RecipeDuration.CreateObject(filter.MinimalDuration.Value).Value;
+            queryable = queryable.Where(r => r.Duration >= min);
         }
 
         if (filter.MaximalDuration.HasValue)
         {
-            var maxTimeStr = filter.MaximalDuration.Value.ToString(@"hh\:mm\:ss");
-            queryable = queryable.Where(r => string.Compare(r.Duration.ToString(), maxTimeStr) <= 0);
+            var max = RecipeDuration.CreateObject(filter.MaximalDuration.Value).Value;
+            queryable = queryable.Where(r => r.Duration <= max);
         }
         
         queryable = filter.SortParameter switch
@@ -41,8 +42,8 @@ public class RecipesBySpecification(RecipeFilter filter, PagingOptions? pagingOp
                 : queryable.OrderByDescending(r => r.Type),
             
             RecipeSortParameter.Duration => filter.IsSortAscending
-                ? queryable.OrderBy(r => r.Duration.ToString())                 // .ToString() is workaround for sqlite
-                : queryable.OrderByDescending(r => r.Duration.ToString()),
+                ? queryable.OrderBy(r => r.Duration)
+                : queryable.OrderByDescending(r => r.Duration),
             
             RecipeSortParameter.CreatedAt => filter.IsSortAscending
                 ? queryable.OrderBy(r => r.CreatedAt)
