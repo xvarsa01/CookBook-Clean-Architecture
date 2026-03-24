@@ -8,24 +8,24 @@ public record IngredientInRecipeEntity : EntityBase
 {
     public override Guid Id { get; init; } = Guid.NewGuid();
     public Guid IngredientId { get; init; }
+    public Guid RecipeId { get; init; }
 
     public IngredientAmount Amount { get; private set; }
     public MeasurementUnit Unit { get; private set; }
 
     private IngredientInRecipeEntity() { } // for EF
 
-    private IngredientInRecipeEntity(Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
+    private IngredientInRecipeEntity(Guid ingredientId, Guid recipeId, IngredientAmount amount, MeasurementUnit unit)
     {
         IngredientId = ingredientId;
+        RecipeId = recipeId;
         Amount = amount;
         Unit = unit;
     }
 
-    internal static Result<IngredientInRecipeEntity> Create(Guid ingredientId,
-        IngredientAmount amount,
-        MeasurementUnit unit)
+    internal static Result<IngredientInRecipeEntity> Create(Guid ingredientId, Guid recipeId, IngredientAmount amount, MeasurementUnit unit) 
     {
-        return Result.Ok(new IngredientInRecipeEntity(ingredientId, amount, unit));
+        return Result.Ok(new IngredientInRecipeEntity(ingredientId, recipeId, amount, unit));
     }
 
 

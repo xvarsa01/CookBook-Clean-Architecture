@@ -47,22 +47,24 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
         
         
         modelBuilder.Entity<Recipe>()
-            .OwnsMany(r => r.Ingredients, b =>
-            {
-                b.WithOwner().HasForeignKey("RecipeId");
-                b.Property(i => i.Id).ValueGeneratedNever();
-                b.HasKey(i => i.Id);
-                
-                b.Property(i => i.Amount)
-                    .HasConversion(
-                        v => v.Value,         // store decimal in DB
-                        v => IngredientAmount.CreateObject(v).Value  // convert back to VO
-                    )
-                    .IsRequired();
-                
-                b.HasOne<Ingredient>()
-                    .WithMany()
-                    .HasForeignKey(i => i.IngredientId);
-            });
+            .HasMany(r => r.Ingredients)
+            .WithOne()
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<IngredientInRecipeEntity>(b =>
+        {
+            b.HasKey(i => new { i.RecipeId, i.Id });
+            
+            b.Property(i => i.Amount)
+                .HasConversion(
+                    v => v.Value,
+                    v => IngredientAmount.CreateObject(v).Value
+                )
+                .IsRequired();
+
+            b.HasOne<Ingredient>()
+                .WithMany()
+                .HasForeignKey(i => i.IngredientId);
+        });
     }
 }
