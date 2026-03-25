@@ -24,17 +24,23 @@ internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient> rep
 
         if (request.Dto.Name is not null)
         {
-            existingIngredient.UpdateName(request.Dto.Name);
+            var result = existingIngredient.UpdateName(request.Dto.Name);
+            if (result.IsFailure)
+                return Result.Invalid<Guid>(result.Error);
         }
 
         if (request.Dto.Description is not null)
         {
-            existingIngredient.UpdateDescription(request.Dto.Description);
+            var result = existingIngredient.UpdateDescription(request.Dto.Description);
+            if (result.IsFailure)
+                return Result.Invalid<Guid>(result.Error);
         }
 
         if (request.Dto.ImageUrl is not null)
         {
-            existingIngredient.UpdateImageUrl(request.Dto.ImageUrl);
+            var result = existingIngredient.UpdateImageUrl(request.Dto.ImageUrl);
+            if (result.IsFailure)
+                return Result.Invalid<Guid>(result.Error);
         }
         
         var id = await repository.UpdateAsync(existingIngredient);

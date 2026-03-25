@@ -23,16 +23,22 @@ internal sealed class UpdateRecipeCommandHandler(IRepository<Recipe> repository)
 
         if (request.Dto.Name is not null)
         {
-            existing.UpdateName(request.Dto.Name);
+            var result = existing.UpdateName(request.Dto.Name);
+            if (result.IsFailure)
+                return Result.Invalid<Guid>(result.Error);
         }
         
         if (request.Dto.Description is not null)
         {
-            existing.UpdateDescription(request.Dto.Description);
+            var result = existing.UpdateDescription(request.Dto.Description);
+            if (result.IsFailure)
+                return Result.Invalid<Guid>(result.Error);
         }
         
-        existing.UpdateRest(request.Dto.ImageUrl, request.Dto.Duration, request.Dto.Type);
-
+        var restResult = existing.UpdateRest(request.Dto.ImageUrl, request.Dto.Duration, request.Dto.Type);
+        if (restResult.IsFailure)
+            return Result.Invalid<Guid>(restResult.Error);
+        
         var id = await repository.UpdateAsync(existing);
         if (id is null)
         {

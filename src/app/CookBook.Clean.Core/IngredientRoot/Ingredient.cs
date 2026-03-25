@@ -30,24 +30,35 @@ public record Ingredient : AggregateRootBase
         return Result.Ok(entity);
     }
 
-    public void UpdateName(string newName)
+    public Result UpdateName(string newName)
     {
         if (string.IsNullOrEmpty(newName))
-            throw new ArgumentException(nameof(newName));
+            return Result.Invalid("Ingredient name can not be empty.");
         
-        if (Name == newName) return;
-        Name = newName;
+        if (Name != newName)
+        {
+            Name = newName;
+        }
+        
+        return Result.Ok();
     }
     
-    public void UpdateDescription(string newDescription)
+    public Result UpdateDescription(string newDescription)
     {
-        if (Description == newDescription) return;
-        Description = newDescription;
+        if (Description != newDescription)
+        {
+            Description = newDescription;
+        }
+        
+        return Result.Ok();
     }
     
-    public void UpdateImageUrl(ImageUrl newUrl)
+    public Result UpdateImageUrl(ImageUrl newUrl)
     {
-        if (ImageUrl == newUrl) return;
-        ImageUrl = newUrl;
+        if (ImageUrl != newUrl)
+        {
+            ImageUrl = newUrl;
+        }
+        return Result.Ok();
     }
 }
