@@ -1,4 +1,6 @@
-﻿using ArchUnitNET.xUnit;
+﻿using System.Windows.Input;
+using ArchUnitNET.xUnit;
+using CookBook.Clean.Application.Abstraction;
 using MediatR;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
@@ -7,11 +9,11 @@ namespace CookBook.Clean.ArchitectureTests
     public class ArchitectureApplicationTests : ArchitectureTestBase
     {
         [Fact]
-        public void Application_UseCases_Should_Not_HaveDependencyOnAnything()
+        public void Commands_Should_Not_HaveDependencyOnAnything()
         {
             var rule = Classes()
                 .That()
-                .HaveNameEndingWith("UseCase")
+                .HaveNameEndingWith("Command")
                 .Should()
                 .NotDependOnAny();
 
@@ -19,20 +21,18 @@ namespace CookBook.Clean.ArchitectureTests
         }
 
         [Fact]
-        public void UseCases_And_Queries_Should_Implement_MediatR_IRequest()
+        public void Commands_Should_Implement_ICommand()
         {
             Classes()
                 .That()
-                .HaveNameEndingWith("UseCase")
-                .Or()
-                .HaveNameEndingWith("Query")
+                .HaveNameEndingWith("Command")
                 .Should()
-                .ImplementInterface(typeof(IRequest<>))
+                .ImplementInterface(typeof(ICommandBase))
                 .Check(Architecture);
         }
         
         [Fact]
-        public void Application_Handlers_Should_HaveDependencyOnCoreProject()
+        public void CommandHandlers_Should_HaveDependencyOnCoreProject()
         {
             var coreTypes = Types()
                 .That()
@@ -40,36 +40,19 @@ namespace CookBook.Clean.ArchitectureTests
             
             var rule = Classes()
                 .That()
-                .HaveNameEndingWith("Handler")
+                .HaveNameEndingWith("CommandHandler")
                 .Should()
                 .DependOnAny(coreTypes);
 
             rule.Check(Architecture);
         }
-
-        [Fact]
-        public void UseCase_Should_Not_HaveDependencyOnRepositories()
-        {
-            var useCaseOrQueryTypes = Classes()
-                .That()
-                .HaveNameEndingWith("UseCase");
-
-            var forbiddenRepoTypes = Types()
-                .That()
-                .HaveNameEndingWith("Repository");
-            
-            useCaseOrQueryTypes
-                .Should()
-                .NotDependOnAny(forbiddenRepoTypes)
-                .Check(Architecture);
-        }
         
         [Fact]
-        public void Handlers_Should_Not_HaveDependencyOnRepositories()
+        public void CommandHandlers_Should_Not_HaveDependencyOnRepositories()
         {
             var handlers = Classes()
                 .That()
-                .HaveNameEndingWith("Handler");
+                .HaveNameEndingWith("CommandHandler");
 
             var forbiddenClasses = Classes()
                 .That()
@@ -82,12 +65,12 @@ namespace CookBook.Clean.ArchitectureTests
         }
         
         [Fact]
-        public void Handlers_Should_HaveDependencyOnIRepositories()
+        public void CommandHandler_Should_HaveDependencyOnIRepositories()
         {
             var handlers = Classes()
                 .That()
-                .ImplementInterface(typeof(IRequestHandler<>))
-                .Or().ImplementInterface(typeof(IRequestHandler<,>));
+                .ImplementInterface(typeof(ICommandHandler<>))
+                .Or().ImplementInterface(typeof(ICommandHandler<,>));
 
             // Include the generic interface directly
             var allowedTypes = Types()
@@ -116,7 +99,7 @@ namespace CookBook.Clean.ArchitectureTests
         {
             Classes()
                 .That()
-                .HaveNameEndingWith("Repository")
+                .HaveNameContaining("Repository")
                 .Should()
                 .ImplementInterface(typeof(Application.ExternalInterfaces.IRepository<,>))
                 .Check(Architecture);

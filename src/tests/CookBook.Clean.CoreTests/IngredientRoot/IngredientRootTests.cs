@@ -63,9 +63,9 @@ public class IngredientRootTests
     {
         var ingredient = Ingredient.Create("milk", "oak milk", ImageUrl.CreateObject("https://en.wikipedia.org/wiki/Milk#/media/File:Glass_of_Milk_(33657535532).jpg").Value).Value;
 
-        Assert.Throws<ArgumentException>(() =>
-            ingredient.UpdateName(string.Empty)
-        );
+        var updateResult = ingredient.UpdateName(string.Empty);
+
+        Assert.True(updateResult.IsFailure);
     }
     
     [Fact]

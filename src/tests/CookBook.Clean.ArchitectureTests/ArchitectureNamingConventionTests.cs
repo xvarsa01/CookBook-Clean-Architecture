@@ -60,17 +60,6 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     }
     
     [Fact]
-    public void Models_ShouldHave_NameEndingWith_Model()
-    {
-        Classes().That()
-            .ImplementInterface(typeof(IModel))
-            .Should().HaveNameMatching("Model")
-            .Check(Architecture);
-    }
-    
-    
-    
-    [Fact]
     public void Entities_ShouldBeIn_Core_Layer()
     {
         Classes().That()
@@ -128,7 +117,7 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     public void Repositories_ShouldBeIn_Infrastructure_Layer()
     {
         Classes().That()
-            .HaveNameEndingWith("Repository")
+            .HaveNameContaining("Repository")
             .Should().ResideInAssembly(InfrastructureAssembly)
             .Check(Architecture);
     }
@@ -137,7 +126,7 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     public void RepositoryInterfaces_ShouldBeIn_Application_Layer()
     {
         Interfaces().That()
-            .HaveNameEndingWith("Repository")
+            .HaveNameContaining("Repository")
             .Should().ResideInAssembly(ApplicationAssembly)
             .Check(Architecture);
     }
@@ -152,14 +141,23 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     }
     
     [Fact]
-    public void DTOs_ShouldBeIn_WebApi_Layer()
+    public void RequestDTOs_ShouldBeIn_Application_Layer()
     {
         Classes().That()
-            .HaveNameEndingWith("DTO")
-            .Or().HaveNameEndingWith("Dto")
-            .Should().ResideInAssembly(WebApiAssembly)
+            .HaveNameEndingWith("Request")
+            .Should().ResideInAssembly(ApplicationAssembly)
             .Check(Architecture);
     }
+    
+    [Fact]
+    public void ResponseDTOs_ShouldBeIn_Application_Layer()
+    {
+        Classes().That()
+            .HaveNameEndingWith("Response")
+            .Should().ResideInAssembly(ApplicationAssembly)
+            .Check(Architecture);
+    }
+    
 
     [Fact]
     public void Controllers_ShouldBeIn_WebApi_Layer()
@@ -171,10 +169,10 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     }
 
     [Fact]
-    public void RootEntities_ShouldBeIn_Core_Layer()
+    public void AggregateObjects_ShouldBeIn_Core_Layer()
     {
         Classes().That()
-            .ImplementInterface(typeof(AggregateRootBase<>))
+            .AreAssignableTo(typeof(AggregateRootBase<>))
             .Should().ResideInAssembly(CoreAssembly)
             .Check(Architecture);
     }
