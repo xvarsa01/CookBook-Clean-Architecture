@@ -1,6 +1,4 @@
-﻿using CookBook.Clean.Core;
-using CookBook.Clean.Application.ExternalInterfaces;
-using CookBook.Clean.Application.Specifications;
+﻿using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core.Shared;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,12 +25,12 @@ public class EfRepositoryBase<TEntity> : IRepository<TEntity> where TEntity : Ag
         return await _dbSet.ToListAsync();
     }
     
-    public async Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification)
-    {
-        IQueryable<TEntity> queryable = _dbSet.AsQueryable();
-        IQueryable<TEntity> query = specification.UseFilter(queryable);
-        return await query.ToListAsync();
-    }
+    // public async Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification)
+    // {
+    //     IQueryable<TEntity> queryable = _dbSet.AsQueryable();
+    //     IQueryable<TEntity> query = specification.UseFilter(queryable);
+    //     return await query.ToListAsync();
+    // }
 
     public virtual async Task<TEntity?> GetByIdAsync(Guid id)
     {

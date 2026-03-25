@@ -4,7 +4,6 @@ using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Application.Queries.Ingredients;
-using CookBook.Clean.Application.Specifications;
 using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 using Moq;
@@ -73,31 +72,6 @@ public class IngredientUnitTests
         Assert.True(result.IsSuccess);
         Assert.Equal(id, result.Value!.Id);
         Assert.Equal("Salt", result.Value.Name);
-    }
-
-    [Fact]
-    public async Task GetListIngredientHandler_ReturnsList()
-    {
-        var entityA = Ingredient.Create("A", null, null).Value;
-        var entityB = Ingredient.Create("B", null, null).Value;
-
-        var list = new List<Ingredient>
-        {
-            entityA,
-            entityB
-        };
-
-        var repoMock = new Mock<IRepository<Ingredient>>();
-        repoMock.Setup(r => r.GetListBySpecificationAsync(It.IsAny<ISpecification<Ingredient, Ingredient>>()))
-            .ReturnsAsync(list);
-
-        var handler = new GetIngredientListQueryHandler(repoMock.Object);
-        var useCase = new GetIngredientListQuery(new IngredientFilter());
-
-        var result = await handler.Handle(useCase, CancellationToken.None);
-
-        Assert.True(result.IsSuccess);
-        Assert.Equal(2, result.Value!.Count);
     }
 
     [Fact]

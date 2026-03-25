@@ -1,7 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using CookBook.Clean.Core;
 using CookBook.Clean.Application.ExternalInterfaces;
-using CookBook.Clean.Application.Specifications;
 using CookBook.Clean.Core.Shared;
 
 namespace CookBook.Clean.Infrastructure.Repositories;
@@ -18,14 +16,6 @@ public class InMemoryRepositoryBase<TEntity> : IRepository<TEntity>
 
     public Task<List<TEntity>> GetAllAsync()
         => Task.FromResult(_store.Values.ToList());
-
-    public Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification)
-    {
-        var queryable = _store.Values.AsQueryable();
-        var query = specification.UseFilter(queryable);
-        var result = query.ToList();
-        return Task.FromResult<IReadOnlyList<TEntity>>(result);
-    }
 
     public Task<TEntity?> GetByIdAsync(Guid id)
     {

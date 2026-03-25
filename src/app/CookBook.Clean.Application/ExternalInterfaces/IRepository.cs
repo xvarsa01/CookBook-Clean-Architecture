@@ -1,6 +1,4 @@
-﻿using CookBook.Clean.Application.Specifications;
-using CookBook.Clean.Core;
-using CookBook.Clean.Core.Shared;
+﻿using CookBook.Clean.Core.Shared;
 
 namespace CookBook.Clean.Application.ExternalInterfaces;
 
@@ -9,7 +7,7 @@ public interface IRepository<TEntity>
 {
     IQueryable<TEntity> Query();
     Task<List<TEntity>> GetAllAsync();
-    Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification);
+    // Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification);
     Task<TEntity?> GetByIdAsync(Guid id);
     Task DeleteAsync(Guid entityId);
     Task<Guid> InsertAsync(TEntity entity);

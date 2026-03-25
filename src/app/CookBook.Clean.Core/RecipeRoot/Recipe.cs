@@ -52,7 +52,6 @@ public record Recipe : AggregateRootBase
         
         _ingredients.Add(ingredientInRecipeResult.Value);
         
-        ModifiedAt = DateTime.UtcNow;
         return Result.Ok(ingredientInRecipeResult.Value.Id);
     }
 
@@ -63,7 +62,6 @@ public record Recipe : AggregateRootBase
         if (removedCount == 0)
             return Result.Invalid($"Ingredient {ingredientId} not found in recipe {Id}.");
         
-        ModifiedAt = DateTime.UtcNow;
         return Result.Ok();
     }
     
@@ -75,7 +73,6 @@ public record Recipe : AggregateRootBase
             return Result.Invalid($"Ingredient entry for {entryId} not found in recipe {Id}.");
         
         _ingredients.RemoveAt(idx);
-        ModifiedAt = DateTime.UtcNow;
         return Result.Ok();
     }
     
@@ -85,7 +82,6 @@ public record Recipe : AggregateRootBase
             return Result.Invalid($"Recipe entity {Id} has no ingredients.");
         
         _ingredients.Clear();
-        ModifiedAt = DateTime.UtcNow;
         return Result.Ok();
     }
 
@@ -97,7 +93,6 @@ public record Recipe : AggregateRootBase
             return Result.Invalid($"Ingredient entry for {entryId} not found in recipe {Id}.");
 
         ingredient.Update(newAmount, newUnit);
-        ModifiedAt = DateTime.UtcNow;
         return Result.Ok();
     }
 
@@ -107,7 +102,6 @@ public record Recipe : AggregateRootBase
         {
             // fire some event?
             Name = newName;
-            ModifiedAt = DateTime.UtcNow;
         }
         
         return Result.Ok();
@@ -118,38 +112,26 @@ public record Recipe : AggregateRootBase
         if (Description != newDescription)
         {
             Description = newDescription;
-            ModifiedAt = DateTime.UtcNow;
         }
         
         return Result.Ok();
-        
     }
     
     public Result UpdateRest(ImageUrl? newUrl, RecipeDuration? newDuration, RecipeType? newType)
     {
-        var updated = false;
-
         if (ImageUrl != newUrl)
         {
             ImageUrl = newUrl;
-            updated = true;
         }
 
         if (newDuration is not null && Duration != newDuration)
         {
             Duration = newDuration;
-            updated = true;
         }
     
         if (newType is not null && Type != newType)
         {
             Type = newType.Value;
-            updated = true;
-        }
-
-        if (updated)
-        {
-            ModifiedAt = DateTime.UtcNow;
         }
         
         return Result.Ok();
