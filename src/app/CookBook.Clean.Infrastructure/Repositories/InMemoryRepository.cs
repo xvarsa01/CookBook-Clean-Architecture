@@ -4,7 +4,7 @@ using CookBook.Clean.Core.Shared;
 
 namespace CookBook.Clean.Infrastructure.Repositories;
 
-public class InMemoryRepositoryBase<TEntity, TId> : IRepository<TEntity, TId>
+public class InMemoryRepository<TEntity, TId> : IRepository<TEntity, TId>
     where TEntity : AggregateRootBase<TId>
     where TId : StronglyTypedId
 {

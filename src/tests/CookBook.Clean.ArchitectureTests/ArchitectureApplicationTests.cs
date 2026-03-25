@@ -92,7 +92,7 @@ namespace CookBook.Clean.ArchitectureTests
             // Include the generic interface directly
             var allowedTypes = Types()
                 .That()
-                .Are(typeof(Application.ExternalInterfaces.IRepository<>));
+                .Are(typeof(Application.ExternalInterfaces.IRepository<,>));
 
             handlers
                 .Should()
@@ -118,7 +118,7 @@ namespace CookBook.Clean.ArchitectureTests
                 .That()
                 .HaveNameEndingWith("Repository")
                 .Should()
-                .ImplementInterface(typeof(Application.ExternalInterfaces.IRepository<>))
+                .ImplementInterface(typeof(Application.ExternalInterfaces.IRepository<,>))
                 .Check(Architecture);
         }
     }

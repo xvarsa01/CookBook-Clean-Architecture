@@ -1,10 +1,10 @@
-using CookBook.Clean.Core;
 using CookBook.Clean.Core.Shared;
 
 namespace CookBook.Clean.UnitTests.TestDoubles;
 
-public record TestBase : AggregateRootBase
+public sealed record TestBaseId(Guid Id) : StronglyTypedId(Id);
+
+public record TestBase : AggregateRootBase<TestBaseId>
 {
-    public override Guid Id { get; init; }
     public string Name { get; set; } = string.Empty;
 }

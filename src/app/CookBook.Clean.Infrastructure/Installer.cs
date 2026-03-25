@@ -13,11 +13,11 @@ public static class Installer
     {
         if (options.UseInMemoryDb)
         {
-            services.AddSingleton(typeof(IRepository<,>), typeof(InMemoryRepositoryBase<,>));
+            services.AddSingleton(typeof(IRepository<,>), typeof(InMemoryRepository<,>));
             return services;   
         }
         
-        services.AddScoped(typeof(IRepository<,>), typeof(EfRepositoryBase<,>));
+        services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
         
         services.AddSingleton<IDbContextFactory<CookBookDbContext>>(_ =>
             new DbContextSqLiteFactory(options.DatabaseFilePath, options.SeedDemoData));
