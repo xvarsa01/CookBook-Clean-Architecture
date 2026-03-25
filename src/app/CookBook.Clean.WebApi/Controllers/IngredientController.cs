@@ -5,7 +5,6 @@ using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.Shared.ValueObjects;
-using CookBook.Clean.WebApi.DTOs.Ingredient;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,18 +24,9 @@ public class IngredientController : ControllerBase
     }
 
     [HttpPost(Name = "CreateIngredient")]
-    public async Task<ActionResult<Guid>> Create(IngredientCreateDtoOut dtoOut)
+    public async Task<ActionResult<Guid>> Create(IngredientCreateDto dtoOut)
     {
-        var ingredientCreateDto = new IngredientCreateDto
-        {
-            Name = dtoOut.Name,
-            Description = dtoOut.Description,
-            ImageUrl = dtoOut.ImageUrl != null
-                ? ImageUrl.CreateObject(dtoOut.ImageUrl).Value
-                : null
-        };
-        
-        var result = await _mediator.Send(new CreateIngredientCommand(ingredientCreateDto));
+        var result = await _mediator.Send(new CreateIngredientCommand(dtoOut));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
@@ -45,7 +35,7 @@ public class IngredientController : ControllerBase
     }
         
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<IngredientGetDetailDtoOut>> GetById(Guid id)
+    public async Task<ActionResult<IngredientGetDetailDto>> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetIngredientDetailQuery(id));
         if (result.IsSuccess)
@@ -56,7 +46,7 @@ public class IngredientController : ControllerBase
     }
     
     [HttpGet(Name = "GetList")]
-    public async Task<ActionResult<IEnumerable<IngredientGetListDtoOut>>> GetList(
+    public async Task<ActionResult<IEnumerable<IngredientGetListDto>>> GetList(
         [FromQuery] IngredientFilter filter,
         [FromQuery] PagingOptions paging)
     {
@@ -69,25 +59,9 @@ public class IngredientController : ControllerBase
     }
     
     [HttpPut(Name = "UpdateIngredient")]
-    public async Task<ActionResult<Guid>> Update(IngredientUpdateDtoOut dtoOut)
+    public async Task<ActionResult<Guid>> Update(IngredientUpdateDto dtoOut)
     {
-        Result<ImageUrl>? urlObjectResult = null;
-        if (dtoOut.ImageUrl is not null)
-        {
-            urlObjectResult = ImageUrl.CreateObject(dtoOut.ImageUrl);
-            if (urlObjectResult.IsFailure)
-                return BadRequest(urlObjectResult.Error);
-        }
-        
-        var ingredientUpdateDto = new IngredientUpdateDto
-        {
-            Id = dtoOut.Id,
-            Name = dtoOut.Name,
-            Description = dtoOut.Description,
-            ImageUrl = urlObjectResult?.Value
-        };
-        
-        var result = await _mediator.Send(new UpdateIngredientCommand(ingredientUpdateDto));
+        var result = await _mediator.Send(new UpdateIngredientCommand(dtoOut));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
