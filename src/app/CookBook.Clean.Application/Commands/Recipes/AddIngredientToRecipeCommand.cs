@@ -6,13 +6,12 @@ using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.Errors;
 using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 using CookBook.Clean.Core.RecipeRoot;
-using CookBook.Clean.Core.RecipeRoot.Enums;
 using CookBook.Clean.Core.RecipeRoot.Errors;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Commands.Recipes;
 
-public record AddIngredientToRecipeCommand(Guid RecipeId, RecipeAddIngredientRequest Data) : ICommand<Guid>;
+public record AddIngredientToRecipeCommand(Guid RecipeId, RecipeAddIngredientRequest Request) : ICommand<Guid>;
 
 internal sealed class AddIngredientToRecipeCommandHandler(
     IRepository<Recipe, RecipeId> recipeRepository,
@@ -27,13 +26,13 @@ internal sealed class AddIngredientToRecipeCommandHandler(
             return Result.NotFound<Guid>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.RecipeId)));
         }
 
-        var ingredient = await ingredientRepository.GetByIdAsync(request.Data.IngredientId);
+        var ingredient = await ingredientRepository.GetByIdAsync(request.Request.IngredientId);
         if (ingredient is null)
         {
-            return Result.NotFound<Guid>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Data.IngredientId)));
+            return Result.NotFound<Guid>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Request.IngredientId)));
         }
 
-        var result = recipe.AddIngredient(request.Data.IngredientId, request.Data.Amount, request.Data.Unit);
+        var result = recipe.AddIngredient(request.Request.IngredientId, request.Request.Amount, request.Request.Unit);
         if (!result.IsSuccess)
         {
             return Result.Invalid<Guid>(result.Error);

@@ -10,36 +10,36 @@ using MediatR;
 
 namespace CookBook.Clean.Application.Commands.Ingredients;
 
-public record UpdateIngredientCommand(IngredientUpdateRequest Model) : ICommand<Guid>;
+public record UpdateIngredientCommand(IngredientUpdateRequest Request) : ICommand<Guid>;
 
 internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository, IPublisher publisher)
     : ICommandHandler<UpdateIngredientCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)
     {
-        var existingIngredient = await repository.GetByIdAsync(request.Model.Id);
+        var existingIngredient = await repository.GetByIdAsync(request.Request.Id);
         if (existingIngredient == null)
         {
-            return Result.NotFound<Guid>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Model.Id)));
+            return Result.NotFound<Guid>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Request.Id)));
         }
 
-        if (request.Model.Name is not null)
+        if (request.Request.Name is not null)
         {
-            var result = existingIngredient.UpdateName(request.Model.Name);
+            var result = existingIngredient.UpdateName(request.Request.Name);
             if (result.IsFailure)
                 return Result.Invalid<Guid>(result.Error);
         }
 
-        if (request.Model.Description is not null)
+        if (request.Request.Description is not null)
         {
-            var result = existingIngredient.UpdateDescription(request.Model.Description);
+            var result = existingIngredient.UpdateDescription(request.Request.Description);
             if (result.IsFailure)
                 return Result.Invalid<Guid>(result.Error);
         }
 
-        if (request.Model.ImageUrl is not null)
+        if (request.Request.ImageUrl is not null)
         {
-            var result = existingIngredient.UpdateImageUrl(request.Model.ImageUrl);
+            var result = existingIngredient.UpdateImageUrl(request.Request.ImageUrl);
             if (result.IsFailure)
                 return Result.Invalid<Guid>(result.Error);
         }
@@ -47,7 +47,7 @@ internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, Ing
         var id = await repository.UpdateAsync(existingIngredient);
         if (id is null)
         {
-            return Result.Invalid<Guid>(IngredientErrors.IngredientUpdateFailedError(new IngredientId(request.Model.Id)));
+            return Result.Invalid<Guid>(IngredientErrors.IngredientUpdateFailedError(new IngredientId(request.Request.Id)));
         }
 
         await publisher.Publish(new IngredientUpdatedEvent(existingIngredient), cancellationToken);
