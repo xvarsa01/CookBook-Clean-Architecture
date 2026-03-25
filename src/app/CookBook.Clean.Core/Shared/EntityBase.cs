@@ -1,8 +1,8 @@
 ﻿namespace CookBook.Clean.Core.Shared;
 
-public abstract record EntityBase : IEntity
+public abstract record EntityBase<TId> : IEntity<TId> where TId : StronglyTypedId
 {
-    public abstract Guid Id { get; init; }
+    public TId Id { get; init; } = null!;
     public DateTime CreatedAt { get; set; }
 
     public DateTime? ModifiedAt { get; set; }

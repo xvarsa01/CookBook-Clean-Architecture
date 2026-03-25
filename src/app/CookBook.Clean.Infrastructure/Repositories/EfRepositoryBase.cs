@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.Clean.Infrastructure.Repositories;
 
-public class EfRepositoryBase<TEntity> : IRepository<TEntity> where TEntity : AggregateRootBase
+public class EfRepositoryBase<TEntity, TId> : IRepository<TEntity, TId>
+    where TEntity : AggregateRootBase<TId>
+    where TId : StronglyTypedId
 {
     private readonly DbSet<TEntity> _dbSet;
     private readonly DbContext _dbContext;

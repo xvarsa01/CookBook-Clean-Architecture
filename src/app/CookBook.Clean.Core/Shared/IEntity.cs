@@ -2,8 +2,12 @@
 
 public interface IEntity
 {
-    Guid Id { get; init; }
     DateTime CreatedAt { get; set; }
 
     DateTime? ModifiedAt { get; set; }
+}
+
+public interface IEntity<out TId> : IEntity where TId : IStronglyTypedId
+{
+    TId Id { get; }
 }

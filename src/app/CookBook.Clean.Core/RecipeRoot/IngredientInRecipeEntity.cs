@@ -4,9 +4,8 @@ using CookBook.Clean.Core.Shared;
 
 namespace CookBook.Clean.Core.RecipeRoot;
 
-public record IngredientInRecipeEntity : EntityBase
+public record IngredientInRecipeEntity : EntityBase<IngredientInRecipeId>
 {
-    public override Guid Id { get; init; } = Guid.NewGuid();
     public Guid IngredientId { get; init; }
     public Guid RecipeId { get; init; }
 
@@ -17,6 +16,7 @@ public record IngredientInRecipeEntity : EntityBase
 
     private IngredientInRecipeEntity(Guid ingredientId, Guid recipeId, IngredientAmount amount, MeasurementUnit unit)
     {
+        Id = new IngredientInRecipeId(Guid.NewGuid());
         IngredientId = ingredientId;
         RecipeId = recipeId;
         Amount = amount;

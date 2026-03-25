@@ -2,8 +2,8 @@
 
 namespace CookBook.Clean.Application.ExternalInterfaces;
 
-public interface IRepository<TEntity>
-    where TEntity : AggregateRootBase
+public interface IRepository<TEntity, TId>
+    where TEntity : AggregateRootBase<TId> where TId : StronglyTypedId
 {
     IQueryable<TEntity> Query();
     Task<List<TEntity>> GetAllAsync();

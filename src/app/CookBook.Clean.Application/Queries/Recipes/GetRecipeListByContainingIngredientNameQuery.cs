@@ -7,13 +7,14 @@ using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using MediatR;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
 
 public record GetRecipeListByContainingIngredientNameQuery(string IngredientNameSubstring) : IQuery<List<RecipeGetListDto>>;
 
-internal class GetRecipeListByContainingIngredientNameQueryHandler (IRepository<Recipe> repository,  IMediator mediator)
+internal class GetRecipeListByContainingIngredientNameQueryHandler (IRepository<Recipe, RecipeId> repository,  IMediator mediator)
     : IQueryHandler<GetRecipeListByContainingIngredientNameQuery, List<RecipeGetListDto>>
 {
     public async Task<Result<List<RecipeGetListDto>>> Handle(GetRecipeListByContainingIngredientNameQuery request, CancellationToken cancellationToken)

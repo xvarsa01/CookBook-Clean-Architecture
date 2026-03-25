@@ -4,8 +4,9 @@ using CookBook.Clean.Core.Shared;
 
 namespace CookBook.Clean.Infrastructure.Repositories;
 
-public class InMemoryRepositoryBase<TEntity> : IRepository<TEntity>
-    where TEntity : AggregateRootBase
+public class InMemoryRepositoryBase<TEntity, TId> : IRepository<TEntity, TId>
+    where TEntity : AggregateRootBase<TId>
+    where TId : StronglyTypedId
 {
     private readonly ConcurrentDictionary<Guid, TEntity> _store = new();
 
@@ -32,7 +33,7 @@ public class InMemoryRepositoryBase<TEntity> : IRepository<TEntity>
     public Task<Guid> InsertAsync(TEntity entity)
     {
         _store[entity.Id] = entity;
-        return Task.FromResult(entity.Id);
+        return Task.FromResult(entity.Id.Id);
     }
 
     public Task<Guid?> UpdateAsync(TEntity entity)

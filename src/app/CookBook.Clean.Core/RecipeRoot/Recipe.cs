@@ -12,9 +12,8 @@ namespace CookBook.Clean.Core.RecipeRoot;
 // - recipe can have 0-10 ingredients
 //   - ingredient amount must be positive
 
-public record Recipe : AggregateRootBase
+public record Recipe : AggregateRootBase<RecipeId>
 {
-    public override Guid Id { get; init; } = Guid.NewGuid();
     public RecipeName Name { get; private set; }
     public string? Description { get; private set; }
     public ImageUrl? ImageUrl { get; private set; }
@@ -27,6 +26,7 @@ public record Recipe : AggregateRootBase
     private Recipe() { } // for EF
     private Recipe(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
     {
+        Id = new RecipeId(Guid.NewGuid());
         Name = name;
         Description = description;
         ImageUrl = imageUrl;
@@ -52,7 +52,7 @@ public record Recipe : AggregateRootBase
         
         _ingredients.Add(ingredientInRecipeResult.Value);
         
-        return Result.Ok(ingredientInRecipeResult.Value.Id);
+        return Result.Ok(ingredientInRecipeResult.Value.Id.Id);
     }
 
     public Result RemoveIngredientsByIngredientId(Guid ingredientId)

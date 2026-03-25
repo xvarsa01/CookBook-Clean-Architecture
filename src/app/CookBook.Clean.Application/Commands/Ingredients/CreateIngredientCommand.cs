@@ -3,12 +3,13 @@ using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Commands.Ingredients;
 
 public record CreateIngredientCommand(IngredientCreateDto Dto) : ICommand<Guid>;
 
-internal sealed class CreateIngredientCommandHandler(IRepository<Ingredient> repository) : ICommandHandler<CreateIngredientCommand, Guid>
+internal sealed class CreateIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository) : ICommandHandler<CreateIngredientCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateIngredientCommand request, CancellationToken cancellationToken) 
     {

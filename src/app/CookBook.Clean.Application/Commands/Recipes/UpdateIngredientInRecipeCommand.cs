@@ -9,7 +9,7 @@ namespace CookBook.Clean.Application.Commands.Recipes;
 
 public record UpdateIngredientInRecipeCommand(Guid RecipeId, Guid EntryId, decimal NewAmount, MeasurementUnit NewUnit) : ICommand;
 
-internal sealed class UpdateIngredientInRecipeCommandHandler(IRepository<Recipe> recipeRepository) : ICommandHandler<UpdateIngredientInRecipeCommand>
+internal sealed class UpdateIngredientInRecipeCommandHandler(IRepository<Recipe, RecipeId> recipeRepository) : ICommandHandler<UpdateIngredientInRecipeCommand>
 {
 
     public async Task<Result> Handle(UpdateIngredientInRecipeCommand request, CancellationToken cancellationToken)

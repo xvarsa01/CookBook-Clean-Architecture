@@ -1,4 +1,5 @@
-﻿using CookBook.Clean.Core.Shared;
+﻿using CookBook.Clean.Core.IngredientRoot.ValueObjects;
+using CookBook.Clean.Core.Shared;
 using CookBook.Clean.Core.Shared.ValueObjects;
 
 namespace CookBook.Clean.Core.IngredientRoot;
@@ -6,9 +7,8 @@ namespace CookBook.Clean.Core.IngredientRoot;
 // business rules:
 // - name can not be empty string
 
-public record Ingredient : AggregateRootBase
+public record Ingredient : AggregateRootBase<IngredientId>
 {
-    public override Guid Id { get; init; } = Guid.NewGuid();
     public string Name { get; private set; }
     public string? Description { get; private set; }
     public ImageUrl? ImageUrl { get; private set; }
@@ -16,6 +16,7 @@ public record Ingredient : AggregateRootBase
     private Ingredient() { } // for EF
     private Ingredient(string name, string? description, ImageUrl? imageUrl)
     {
+        Id = new IngredientId(Guid.NewGuid());
         Name =  name;
         Description = description;
         ImageUrl = imageUrl;

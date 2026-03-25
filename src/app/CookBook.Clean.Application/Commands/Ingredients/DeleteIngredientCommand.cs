@@ -4,13 +4,14 @@ using CookBook.Clean.Application.Queries.Recipes;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.Events;
+using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 using MediatR;
 
 namespace CookBook.Clean.Application.Commands.Ingredients;
 
 public record DeleteIngredientCommand(Guid Id) : ICommand;
 
-internal sealed class DeleteIngredientCommandHandler(IRepository<Ingredient> repository, IPublisher publisher, IMediator mediator)
+internal sealed class DeleteIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository, IPublisher publisher, IMediator mediator)
     : ICommandHandler<DeleteIngredientCommand>
 {
     public async Task<Result> Handle(DeleteIngredientCommand request, CancellationToken cancellationToken)

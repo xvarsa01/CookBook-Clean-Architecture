@@ -4,6 +4,7 @@ using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.Events;
+using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 
@@ -11,7 +12,7 @@ namespace CookBook.Clean.Application.Commands.Ingredients;
 
 public record UpdateIngredientCommand(IngredientUpdateDto Dto) : ICommand<Guid>;
 
-internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient> repository, IPublisher publisher)
+internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository, IPublisher publisher)
     : ICommandHandler<UpdateIngredientCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)

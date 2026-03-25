@@ -4,13 +4,15 @@ using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.Models.Recipe;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
 
 public record GetRecipeDetailQuery(Guid Id) : IQuery<RecipeGetDetailDto>;
 
-internal class GetRecipeDetailQueryHandler(IRepository<Recipe> repository, IRepository<Ingredient> ingredientRepository) : IQueryHandler<GetRecipeDetailQuery, RecipeGetDetailDto>
+internal class GetRecipeDetailQueryHandler(IRepository<Recipe, RecipeId> repository, IRepository<Ingredient, IngredientId> ingredientRepository) : IQueryHandler<GetRecipeDetailQuery, RecipeGetDetailDto>
 {
     public async Task<Result<RecipeGetDetailDto>> Handle(GetRecipeDetailQuery request, CancellationToken cancellationToken)
     {

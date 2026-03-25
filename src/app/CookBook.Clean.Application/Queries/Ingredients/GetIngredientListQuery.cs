@@ -4,12 +4,14 @@ using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.IngredientRoot.ValueObjects;
+using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Queries.Ingredients;
 
 public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<IngredientGetListDto>>;
 
-internal class GetIngredientListQueryHandler (IRepository<Ingredient> repository) : IQueryHandler<GetIngredientListQuery, List<IngredientGetListDto>>
+internal class GetIngredientListQueryHandler (IRepository<Ingredient, IngredientId> repository) : IQueryHandler<GetIngredientListQuery, List<IngredientGetListDto>>
 {
     public Task<Result<List<IngredientGetListDto>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
     {

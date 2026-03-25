@@ -3,12 +3,13 @@ using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Queries.Ingredients;
 
 public record GetIngredientDetailQuery(Guid Id) : IQuery<IngredientGetDetailDto>;
 
-internal class GetIngredientDetailQueryHandler(IRepository<Ingredient> repository) : IQueryHandler<GetIngredientDetailQuery, IngredientGetDetailDto>
+internal class GetIngredientDetailQueryHandler(IRepository<Ingredient, IngredientId> repository) : IQueryHandler<GetIngredientDetailQuery, IngredientGetDetailDto>
 {
     public async Task<Result<IngredientGetDetailDto>> Handle(GetIngredientDetailQuery request, CancellationToken cancellationToken)
     {
