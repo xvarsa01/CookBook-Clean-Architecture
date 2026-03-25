@@ -1,5 +1,6 @@
 using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Application.Models.Recipe;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.ValueObjects;
@@ -9,7 +10,7 @@ using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Commands.Recipes;
 
-public record AddIngredientToRecipeCommand(Guid RecipeId, Guid IngredientId, decimal Amount, MeasurementUnit Unit) : ICommand<Guid>;
+public record AddIngredientToRecipeCommand(Guid RecipeId, RecipeAddIngredientRequest Data) : ICommand<Guid>;
 
 internal sealed class AddIngredientToRecipeCommandHandler(
     IRepository<Recipe, RecipeId> recipeRepository,
@@ -24,19 +25,13 @@ internal sealed class AddIngredientToRecipeCommandHandler(
             return Result.NotFound<Guid>("Recipe not found");
         }
 
-        var ingredient = await ingredientRepository.GetByIdAsync(request.IngredientId);
+        var ingredient = await ingredientRepository.GetByIdAsync(request.Data.IngredientId);
         if (ingredient is null)
         {
             return Result.NotFound<Guid>("Ingredient not found");
         }
 
-        var amountResult = IngredientAmount.CreateObject(request.Amount);
-        if (!amountResult.IsSuccess)
-        {
-            return Result.Invalid<Guid>(amountResult.Error);
-        }
-        
-        var result = recipe.AddIngredient(request.IngredientId, amountResult.Value, request.Unit);
+        var result = recipe.AddIngredient(request.Data.IngredientId, request.Data.Amount, request.Data.Unit);
         if (!result.IsSuccess)
         {
             return Result.Invalid<Guid>(result.Error);

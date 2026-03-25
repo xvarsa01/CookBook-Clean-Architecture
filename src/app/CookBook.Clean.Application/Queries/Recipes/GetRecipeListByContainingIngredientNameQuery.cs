@@ -12,18 +12,18 @@ using MediatR;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
 
-public record GetRecipeListByContainingIngredientNameQuery(string IngredientNameSubstring) : IQuery<List<RecipeGetListDto>>;
+public record GetRecipeListByContainingIngredientNameQuery(string IngredientNameSubstring) : IQuery<List<RecipeGetListResponse>>;
 
 internal class GetRecipeListByContainingIngredientNameQueryHandler (IRepository<Recipe, RecipeId> repository,  IMediator mediator)
-    : IQueryHandler<GetRecipeListByContainingIngredientNameQuery, List<RecipeGetListDto>>
+    : IQueryHandler<GetRecipeListByContainingIngredientNameQuery, List<RecipeGetListResponse>>
 {
-    public async Task<Result<List<RecipeGetListDto>>> Handle(GetRecipeListByContainingIngredientNameQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<RecipeGetListResponse>>> Handle(GetRecipeListByContainingIngredientNameQuery request, CancellationToken cancellationToken)
     {
         var ingredientFilter = new IngredientFilter { Name = request.IngredientNameSubstring };
         var ingredientResult = await mediator.Send(new GetIngredientListQuery(ingredientFilter), cancellationToken);
 
         if (!ingredientResult.IsSuccess)
-            return Result.Invalid<List<RecipeGetListDto>>(ingredientResult.Error);
+            return Result.Invalid<List<RecipeGetListResponse>>(ingredientResult.Error);
 
         var ingredientIds = ingredientResult.Value
             .Select(i => i.Id)
@@ -31,12 +31,8 @@ internal class GetRecipeListByContainingIngredientNameQueryHandler (IRepository<
 
         var result = repository.Query()
             .Where(r => r.Ingredients.Any(ri => ingredientIds.Contains(ri.IngredientId)))
-            .Select(r => new RecipeGetListDto
-            {
-                Id = r.Id,
-                Name = r.Name,
-                ImageUrl = r.ImageUrl
-            }).ToList();
+            .Select(i => new RecipeGetListResponse(i.Id, i.Name, i.ImageUrl))
+            .ToList();
         
         return Result.Ok(result);
 

@@ -3,5 +3,5 @@ namespace CookBook.Clean.Application.Models;
 
 public interface IModel
 {
-    Guid Id { get; set; }
+    Guid Id { get; }
 }

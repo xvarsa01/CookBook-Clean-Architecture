@@ -23,12 +23,9 @@ public class IngredientUnitTests
             .ReturnsAsync(expectedId);
 
         var handler = new CreateIngredientCommandHandler(repoMock.Object);
-        var dto = new IngredientCreateDto
-        {
-            Name = "Sugar",
-            Description = "Sweet",
-            ImageUrl = ImageUrl.CreateObject("http://a.png").Value 
-        };
+        var dto = IngredientCreateRequest.Instance;
+        dto.Description = "Sweet";
+        dto.ImageUrl = ImageUrl.CreateObject("http://a.png").Value;
         var useCase = new CreateIngredientCommand(dto);
 
         // Act
@@ -83,7 +80,7 @@ public class IngredientUnitTests
         var publisherMock = new Mock<IPublisher>();
 
         var handler = new UpdateIngredientCommandHandler(repoMock.Object, publisherMock.Object);
-        var dto = new IngredientUpdateDto
+        var dto = new IngredientUpdateRequest
         {
             Id = Guid.NewGuid(),
             Name = "New",
@@ -111,7 +108,7 @@ public class IngredientUnitTests
         var publisherMock = new Mock<IPublisher>();
 
         var handler = new UpdateIngredientCommandHandler(repoMock.Object, publisherMock.Object);
-        var dto = new IngredientUpdateDto
+        var dto = new IngredientUpdateRequest
         {
             Id = id,
             Name = "New",

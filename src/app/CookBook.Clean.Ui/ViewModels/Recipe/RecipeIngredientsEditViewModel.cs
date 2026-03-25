@@ -5,6 +5,7 @@ using CookBook.Clean.Application.Commands.Recipes;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Models;
+using CookBook.Clean.Application.Models.Recipe;
 using CookBook.Clean.Application.Queries.Ingredients;
 using CookBook.Clean.Application.Queries.Recipes;
 using CookBook.Clean.Core.RecipeRoot.Enums;
@@ -34,7 +35,7 @@ public partial class RecipeIngredientsEditViewModel(
     public partial IngredientListModel? IngredientSelected { get; set; }
 
     [ObservableProperty]
-    public partial IngredientInRecipeModel? IngredientAmountNew { get; set; }
+    public partial IngredientInRecipe? IngredientAmountNew { get; set; }
 
     protected override async Task LoadDataAsync()
     {
@@ -86,7 +87,7 @@ public partial class RecipeIngredientsEditViewModel(
     }
 
     [RelayCommand]
-    private async Task UpdateIngredientAsync(IngredientInRecipeModel? model)
+    private async Task UpdateIngredientAsync(IngredientInRecipe? model)
     {
         if (Recipe.Id != Guid.Empty
             && model is not null
@@ -99,7 +100,7 @@ public partial class RecipeIngredientsEditViewModel(
     }
 
     [RelayCommand]
-    private async Task RemoveIngredientAsync(IngredientInRecipeModel model)
+    private async Task RemoveIngredientAsync(IngredientInRecipe model)
     {
         if (Recipe.Id != Guid.Empty)
         {
@@ -110,7 +111,7 @@ public partial class RecipeIngredientsEditViewModel(
         }
     }
 
-    private IngredientInRecipeModel GetIngredientAmountNew()
+    private IngredientInRecipe GetIngredientAmountNew()
     {
         var ingredientFirst = Ingredients.First();
         return new()

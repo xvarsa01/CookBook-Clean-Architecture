@@ -5,41 +5,40 @@ using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.Events;
 using CookBook.Clean.Core.IngredientRoot.ValueObjects;
-using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 
 namespace CookBook.Clean.Application.Commands.Ingredients;
 
-public record UpdateIngredientCommand(IngredientUpdateDto Dto) : ICommand<Guid>;
+public record UpdateIngredientCommand(IngredientUpdateRequest Model) : ICommand<Guid>;
 
 internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository, IPublisher publisher)
     : ICommandHandler<UpdateIngredientCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)
     {
-        var existingIngredient = await repository.GetByIdAsync(request.Dto.Id);
+        var existingIngredient = await repository.GetByIdAsync(request.Model.Id);
         if (existingIngredient == null)
         {
             return Result.NotFound<Guid>("Ingredient not found");
         }
 
-        if (request.Dto.Name is not null)
+        if (request.Model.Name is not null)
         {
-            var result = existingIngredient.UpdateName(request.Dto.Name);
+            var result = existingIngredient.UpdateName(request.Model.Name);
             if (result.IsFailure)
                 return Result.Invalid<Guid>(result.Error);
         }
 
-        if (request.Dto.Description is not null)
+        if (request.Model.Description is not null)
         {
-            var result = existingIngredient.UpdateDescription(request.Dto.Description);
+            var result = existingIngredient.UpdateDescription(request.Model.Description);
             if (result.IsFailure)
                 return Result.Invalid<Guid>(result.Error);
         }
 
-        if (request.Dto.ImageUrl is not null)
+        if (request.Model.ImageUrl is not null)
         {
-            var result = existingIngredient.UpdateImageUrl(request.Dto.ImageUrl);
+            var result = existingIngredient.UpdateImageUrl(request.Model.ImageUrl);
             if (result.IsFailure)
                 return Result.Invalid<Guid>(result.Error);
         }

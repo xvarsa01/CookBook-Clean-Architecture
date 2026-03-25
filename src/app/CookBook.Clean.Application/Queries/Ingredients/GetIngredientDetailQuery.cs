@@ -7,25 +7,19 @@ using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Queries.Ingredients;
 
-public record GetIngredientDetailQuery(Guid Id) : IQuery<IngredientGetDetailDto>;
+public record GetIngredientDetailQuery(Guid Id) : IQuery<IngredientGetDetailResponse>;
 
-internal class GetIngredientDetailQueryHandler(IRepository<Ingredient, IngredientId> repository) : IQueryHandler<GetIngredientDetailQuery, IngredientGetDetailDto>
+internal class GetIngredientDetailQueryHandler(IRepository<Ingredient, IngredientId> repository) : IQueryHandler<GetIngredientDetailQuery, IngredientGetDetailResponse>
 {
-    public async Task<Result<IngredientGetDetailDto>> Handle(GetIngredientDetailQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IngredientGetDetailResponse>> Handle(GetIngredientDetailQuery request, CancellationToken cancellationToken)
     {
         var entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)
         {
-            return Result.NotFound<IngredientGetDetailDto>("Ingredient not found");
+            return Result.NotFound<IngredientGetDetailResponse>("Ingredient not found");
         }
 
-        var model = new IngredientGetDetailDto
-        {
-            Id = entity.Id,
-            Name = entity.Name,
-            Description = entity.Description,
-            ImageUrl = entity.ImageUrl
-        };
+        var model = new IngredientGetDetailResponse(entity.Id, entity.Name, entity.Description, entity.ImageUrl);
         return Result.Ok(model);
     }
 }

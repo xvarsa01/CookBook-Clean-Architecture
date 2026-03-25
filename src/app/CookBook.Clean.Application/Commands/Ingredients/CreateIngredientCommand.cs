@@ -7,16 +7,16 @@ using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Commands.Ingredients;
 
-public record CreateIngredientCommand(IngredientCreateDto Dto) : ICommand<Guid>;
+public record CreateIngredientCommand(IngredientCreateRequest Request) : ICommand<Guid>;
 
 internal sealed class CreateIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository) : ICommandHandler<CreateIngredientCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateIngredientCommand request, CancellationToken cancellationToken) 
     {
         var result = Ingredient.Create(
-            request.Dto.Name,
-            request.Dto.Description,
-            request.Dto.ImageUrl);
+            request.Request.Name,
+            request.Request.Description,
+            request.Request.ImageUrl);
         
         if (result.IsFailure)
             return Result.Invalid<Guid>(result.Error);

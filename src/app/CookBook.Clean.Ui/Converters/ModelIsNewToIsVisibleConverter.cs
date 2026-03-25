@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using CommunityToolkit.Maui.Converters;
-using CookBook.Clean.Application.Models;
+﻿using CookBook.Clean.Application.Models;
 
 namespace CookBook.Clean.Ui.Converters;
 

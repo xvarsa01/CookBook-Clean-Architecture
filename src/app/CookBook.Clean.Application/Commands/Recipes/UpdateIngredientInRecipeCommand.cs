@@ -1,5 +1,6 @@
 using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Application.Models.Recipe;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
@@ -7,7 +8,7 @@ using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Commands.Recipes;
 
-public record UpdateIngredientInRecipeCommand(Guid RecipeId, Guid EntryId, decimal NewAmount, MeasurementUnit NewUnit) : ICommand;
+public record UpdateIngredientInRecipeCommand(Guid RecipeId, RecipeUpdateIngredientRequest Model) : ICommand;
 
 internal sealed class UpdateIngredientInRecipeCommandHandler(IRepository<Recipe, RecipeId> recipeRepository) : ICommandHandler<UpdateIngredientInRecipeCommand>
 {
@@ -20,13 +21,7 @@ internal sealed class UpdateIngredientInRecipeCommandHandler(IRepository<Recipe,
             return Result.NotFound("Recipe not found");
         }
         
-        var amountResult = IngredientAmount.CreateObject(request.NewAmount);
-        if (!amountResult.IsSuccess)
-        {
-            return Result.Invalid<Guid>(amountResult.Error);
-        }
-
-        var result = recipe.UpdateIngredientEntry(request.EntryId, amountResult.Value, request.NewUnit);
+        var result = recipe.UpdateIngredientEntry(request.Model.EntryId, request.Model.NewAmount, request.Model.NewUnit);
         if (result.IsFailure)
             return Result.Invalid(result.Error);
         

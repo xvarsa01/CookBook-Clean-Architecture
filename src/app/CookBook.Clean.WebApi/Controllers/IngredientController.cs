@@ -3,8 +3,6 @@ using CookBook.Clean.Application.Commands.Ingredients;
 using CookBook.Clean.Application.Filters;
 using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Application.Queries.Ingredients;
-using CookBook.Clean.Core;
-using CookBook.Clean.Core.Shared.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,9 +22,9 @@ public class IngredientController : ControllerBase
     }
 
     [HttpPost(Name = "CreateIngredient")]
-    public async Task<ActionResult<Guid>> Create(IngredientCreateDto dtoOut)
+    public async Task<ActionResult<Guid>> Create(IngredientCreateRequest request)
     {
-        var result = await _mediator.Send(new CreateIngredientCommand(dtoOut));
+        var result = await _mediator.Send(new CreateIngredientCommand(request));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
@@ -35,7 +33,7 @@ public class IngredientController : ControllerBase
     }
         
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<IngredientGetDetailDto>> GetById(Guid id)
+    public async Task<ActionResult<IngredientGetDetailResponse>> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetIngredientDetailQuery(id));
         if (result.IsSuccess)
@@ -46,7 +44,7 @@ public class IngredientController : ControllerBase
     }
     
     [HttpGet(Name = "GetList")]
-    public async Task<ActionResult<IEnumerable<IngredientGetListDto>>> GetList(
+    public async Task<ActionResult<IEnumerable<IngredientGetListResponse>>> GetList(
         [FromQuery] IngredientFilter filter,
         [FromQuery] PagingOptions paging)
     {
@@ -59,9 +57,9 @@ public class IngredientController : ControllerBase
     }
     
     [HttpPut(Name = "UpdateIngredient")]
-    public async Task<ActionResult<Guid>> Update(IngredientUpdateDto dtoOut)
+    public async Task<ActionResult<Guid>> Update(IngredientUpdateRequest request)
     {
-        var result = await _mediator.Send(new UpdateIngredientCommand(dtoOut));
+        var result = await _mediator.Send(new UpdateIngredientCommand(request));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
