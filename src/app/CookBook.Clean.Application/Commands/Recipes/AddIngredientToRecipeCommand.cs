@@ -2,9 +2,11 @@ using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.IngredientRoot.Errors;
 using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.Errors;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Commands.Recipes;
@@ -21,13 +23,13 @@ internal sealed class AddIngredientToRecipeCommandHandler(
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return Result.NotFound<Guid>("Recipe not found");
+            return Result.NotFound<Guid>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.RecipeId)));
         }
 
         var ingredient = await ingredientRepository.GetByIdAsync(request.IngredientId);
         if (ingredient is null)
         {
-            return Result.NotFound<Guid>("Ingredient not found");
+            return Result.NotFound<Guid>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.IngredientId)));
         }
 
         var amountResult = IngredientAmount.CreateObject(request.Amount);

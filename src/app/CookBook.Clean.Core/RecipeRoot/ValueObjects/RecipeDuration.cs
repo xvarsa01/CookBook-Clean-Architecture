@@ -1,4 +1,6 @@
-﻿namespace CookBook.Clean.Core.RecipeRoot.ValueObjects;
+﻿using CookBook.Clean.Core.RecipeRoot.Errors;
+
+namespace CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 public class RecipeDuration
 {
@@ -12,7 +14,7 @@ public class RecipeDuration
     public static Result<RecipeDuration> CreateObject(TimeSpan duration)
     {
         return duration <= TimeSpan.Zero
-            ? Result.Invalid<RecipeDuration>("Duration must be positive")
+            ? Result.Invalid<RecipeDuration>(ValueObjectsErrors.RecipeDurationNotPositiveError())
             : Result.Ok(new RecipeDuration(duration));
     }
     

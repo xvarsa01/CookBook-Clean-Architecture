@@ -1,4 +1,7 @@
-﻿namespace CookBook.Clean.Core.RecipeRoot.ValueObjects;
+﻿using CookBook.Clean.Core.RecipeRoot.Errors;
+using CookBook.Clean.Core.Shared.Errors;
+
+namespace CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 public class RecipeName
 {
@@ -12,7 +15,7 @@ public class RecipeName
     public static Result<RecipeName> CreateObject(string value)
     {
         return string.IsNullOrWhiteSpace(value) || value.Length < 3
-            ? Result.Invalid<RecipeName>("Recipe name must be at least 3 characters.")
+            ? Result.Invalid<RecipeName>(ValueObjectsErrors.RecipeNameNotInvalidError())
             : Result.Ok(new RecipeName(value));
     }
 

@@ -6,6 +6,7 @@ using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
 using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 using CookBook.Clean.Core.RecipeRoot;
+using CookBook.Clean.Core.RecipeRoot.Errors;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
@@ -19,7 +20,7 @@ internal class GetRecipeDetailQueryHandler(IRepository<Recipe, RecipeId> reposit
         Recipe? entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)
         {
-            return Result.NotFound<RecipeGetDetailDto>("Recipe not found");
+            return Result.NotFound<RecipeGetDetailDto>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.Id)));
         }
 
         var ingredientIds = entity.Ingredients.Select(i => i.IngredientId).ToList();

@@ -1,4 +1,5 @@
-﻿using CookBook.Clean.Core.IngredientRoot.ValueObjects;
+﻿using CookBook.Clean.Core.IngredientRoot.Errors;
+using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 using CookBook.Clean.Core.Shared;
 using CookBook.Clean.Core.Shared.ValueObjects;
 
@@ -25,7 +26,7 @@ public record Ingredient : AggregateRootBase<IngredientId>
     public static Result<Ingredient> Create(string name, string? description, ImageUrl? imageUrl)
     {
         if (string.IsNullOrEmpty(name))
-            return Result.Invalid<Ingredient>("Ingredient name can not be empty.");
+            return Result.Invalid<Ingredient>(IngredientErrors.IngredientNameEmptyError());
 
         var entity = new Ingredient(name, description, imageUrl);
         return Result.Ok(entity);
@@ -34,7 +35,7 @@ public record Ingredient : AggregateRootBase<IngredientId>
     public Result UpdateName(string newName)
     {
         if (string.IsNullOrEmpty(newName))
-            return Result.Invalid("Ingredient name can not be empty.");
+            return Result.Invalid(IngredientErrors.IngredientNameEmptyError());
         
         if (Name != newName)
         {

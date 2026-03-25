@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using CookBook.Clean.Core.Shared.Errors;
 
 namespace CookBook.Clean.Core.Shared.ValueObjects;
 
@@ -19,7 +20,7 @@ public class ImageUrl
     public static Result<ImageUrl> CreateObject(string value)
     {
         return (string.IsNullOrWhiteSpace(value) || !ImageUrlRegex.IsMatch(value))
-            ? Result.Invalid<ImageUrl>($"Invalid image URL format : {value}")
+            ? Result.Invalid<ImageUrl>(SharedErrors.InvalidImageUrlFormatError(value))
             : Result.Ok(new ImageUrl(value));
     }
 

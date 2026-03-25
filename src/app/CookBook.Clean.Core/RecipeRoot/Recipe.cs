@@ -1,4 +1,6 @@
-﻿using CookBook.Clean.Core.RecipeRoot.Enums;
+﻿using CookBook.Clean.Core.IngredientRoot.ValueObjects;
+using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.Errors;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.Core.Shared;
 using CookBook.Clean.Core.Shared.ValueObjects;
@@ -43,7 +45,7 @@ public record Recipe : AggregateRootBase<RecipeId>
     public Result<Guid> AddIngredient(Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
         if (_ingredients.Count == 10)
-            return Result.Invalid<Guid>("Recipe cannot have more than 10 ingredients.");
+            return Result.Invalid<Guid>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
         
         var ingredientInRecipeResult = IngredientInRecipeEntity.Create(ingredientId, Id, amount, unit);
         
@@ -60,7 +62,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         var removedCount = _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
 
         if (removedCount == 0)
-            return Result.Invalid($"Ingredient {ingredientId} not found in recipe {Id}.");
+            return Result.Invalid(RecipeErrors.RecipeIngredientByIdNotFoundError(new IngredientId(ingredientId), Id));
         
         return Result.Ok();
     }
@@ -70,7 +72,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         var idx = _ingredients.FindIndex(i => i.Id == entryId);
 
         if (idx < 0)
-            return Result.Invalid($"Ingredient entry for {entryId} not found in recipe {Id}.");
+            return Result.Invalid(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(new IngredientInRecipeId(entryId), Id));
         
         _ingredients.RemoveAt(idx);
         return Result.Ok();
@@ -79,7 +81,7 @@ public record Recipe : AggregateRootBase<RecipeId>
     public Result RemoveAllIngredients()
     {
         if (_ingredients.Count == 0)
-            return Result.Invalid($"Recipe entity {Id} has no ingredients.");
+            return Result.Invalid(RecipeErrors.RecipeHasNoIngredientsError(Id));
         
         _ingredients.Clear();
         return Result.Ok();
@@ -90,7 +92,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         var ingredient = _ingredients.FirstOrDefault(i => i.Id == entryId);
 
         if (ingredient is null)
-            return Result.Invalid($"Ingredient entry for {entryId} not found in recipe {Id}.");
+            return Result.Invalid(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(new IngredientInRecipeId(entryId), Id));
 
         ingredient.Update(newAmount, newUnit);
         return Result.Ok();

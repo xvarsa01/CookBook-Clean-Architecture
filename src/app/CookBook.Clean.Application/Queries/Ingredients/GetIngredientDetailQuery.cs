@@ -3,6 +3,7 @@ using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.IngredientRoot.Errors;
 using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Queries.Ingredients;
@@ -16,7 +17,7 @@ internal class GetIngredientDetailQueryHandler(IRepository<Ingredient, Ingredien
         var entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)
         {
-            return Result.NotFound<IngredientGetDetailDto>("Ingredient not found");
+            return Result.NotFound<IngredientGetDetailDto>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Id)));
         }
 
         var model = new IngredientGetDetailDto

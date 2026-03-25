@@ -3,6 +3,7 @@ using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Application.Models.Ingredient;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
+using CookBook.Clean.Core.IngredientRoot.Errors;
 using CookBook.Clean.Core.IngredientRoot.Events;
 using CookBook.Clean.Core.IngredientRoot.ValueObjects;
 using CookBook.Clean.Core.Shared.ValueObjects;
@@ -20,7 +21,7 @@ internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, Ing
         var existingIngredient = await repository.GetByIdAsync(request.Dto.Id);
         if (existingIngredient == null)
         {
-            return Result.NotFound<Guid>("Ingredient not found");
+            return Result.NotFound<Guid>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Dto.Id)));
         }
 
         if (request.Dto.Name is not null)
@@ -47,7 +48,7 @@ internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, Ing
         var id = await repository.UpdateAsync(existingIngredient);
         if (id is null)
         {
-            return Result.Invalid<Guid>("Update failed");
+            return Result.Invalid<Guid>(IngredientErrors.IngredientUpdateFailedError(new IngredientId(request.Dto.Id)));
         }
 
         await publisher.Publish(new IngredientUpdatedEvent(existingIngredient), cancellationToken);

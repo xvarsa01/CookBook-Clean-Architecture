@@ -4,6 +4,7 @@ using CookBook.Clean.Application.Models.Recipe;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.Errors;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 using CookBook.Clean.Core.Shared.ValueObjects;
 
@@ -18,7 +19,7 @@ internal sealed class UpdateRecipeCommandHandler(IRepository<Recipe, RecipeId> r
         var existing = await repository.GetByIdAsync(request.Dto.Id);
         if (existing is null)
         {
-            return Result.NotFound<Guid>("Recipe not found");
+            return Result.NotFound<Guid>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.Dto.Id)));
         }
 
         if (request.Dto.Name is not null)
@@ -42,7 +43,7 @@ internal sealed class UpdateRecipeCommandHandler(IRepository<Recipe, RecipeId> r
         var id = await repository.UpdateAsync(existing);
         if (id is null)
         {
-            return Result.Invalid<Guid>("Update failed");
+            return Result.Invalid<Guid>(RecipeErrors.RecipeUpdateFailedError(new RecipeId(request.Dto.Id)));
         }
         
         return Result.Ok(id.Value);

@@ -1,4 +1,6 @@
-﻿namespace CookBook.Clean.Core.RecipeRoot.ValueObjects;
+﻿using CookBook.Clean.Core.RecipeRoot.Errors;
+
+namespace CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 public class IngredientAmount
 {
@@ -12,7 +14,7 @@ public class IngredientAmount
     public static Result<IngredientAmount> CreateObject(decimal amount)
     {
         return amount <= 0
-            ? Result.Invalid<IngredientAmount>("Amount must be positive")
+            ? Result.Invalid<IngredientAmount>(ValueObjectsErrors.IngredientAmountNotPositiveError())
             : Result.Ok(new IngredientAmount(amount));
     }
     

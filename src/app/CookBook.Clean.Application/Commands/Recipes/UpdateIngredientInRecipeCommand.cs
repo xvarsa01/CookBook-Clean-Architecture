@@ -3,6 +3,7 @@ using CookBook.Clean.Application.ExternalInterfaces;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.Clean.Core.RecipeRoot.Errors;
 using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Commands.Recipes;
@@ -17,7 +18,7 @@ internal sealed class UpdateIngredientInRecipeCommandHandler(IRepository<Recipe,
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return Result.NotFound("Recipe not found");
+            return Result.NotFound(RecipeErrors.RecipeNotFoundError(new RecipeId(request.RecipeId)));
         }
         
         var amountResult = IngredientAmount.CreateObject(request.NewAmount);
