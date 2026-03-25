@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <RootNamespace>CookBook.CleanArch.ArchitectureTests</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.4"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
+        <PackageReference Include="TngTech.ArchUnitNET.xUnit" Version="0.13.3" />
+        <PackageReference Include="xunit" Version="2.9.3"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\app\CookBook.CleanArch.Application\CookBook.CleanArch.Application.csproj" />
+      <ProjectReference Include="..\..\app\CookBook.CleanArch.Domain\CookBook.CleanArch.Domain.csproj" />
+      <ProjectReference Include="..\..\app\CookBook.CleanArch.Infrastructure\CookBook.CleanArch.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\app\CookBook.CleanArch.Presentation.WebApi\CookBook.CleanArch.Presentation.WebApi.csproj" />
+    </ItemGroup>
+
+</Project>

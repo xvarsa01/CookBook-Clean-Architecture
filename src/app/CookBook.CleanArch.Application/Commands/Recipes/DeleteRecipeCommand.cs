@@ -1,0 +1,18 @@
+using CookBook.CleanArch.Application.Abstraction;
+using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Domain;
+using CookBook.CleanArch.Domain.RecipeRoot;
+using CookBook.CleanArch.Domain.RecipeRoot.ValueObjects;
+
+namespace CookBook.CleanArch.Application.Commands.Recipes;
+
+public record DeleteRecipeCommand(Guid Id) : ICommand;
+
+internal sealed class DeleteRecipeCommandHandler(IRepository<Recipe, RecipeId> repository) : ICommandHandler<DeleteRecipeCommand>
+{
+    public async Task<Result> Handle(DeleteRecipeCommand request, CancellationToken cancellationToken)
+    {
+        await repository.DeleteAsync(request.Id);
+        return Result.Ok();
+    }
+}
