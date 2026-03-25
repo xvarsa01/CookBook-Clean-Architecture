@@ -1,6 +1,5 @@
 using CookBook.Clean.Application.Abstraction;
 using CookBook.Clean.Application.ExternalInterfaces;
-using CookBook.Clean.Application.Models;
 using CookBook.Clean.Application.Models.Recipe;
 using CookBook.Clean.Core;
 using CookBook.Clean.Core.IngredientRoot;
@@ -11,16 +10,16 @@ using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Queries.Recipes;
 
-public record GetRecipeDetailQuery(Guid Id) : IQuery<RecipeGetDetailDto>;
+public record GetRecipeDetailQuery(Guid Id) : IQuery<RecipeGetDetailResponse>;
 
-internal class GetRecipeDetailQueryHandler(IRepository<Recipe, RecipeId> repository, IRepository<Ingredient, IngredientId> ingredientRepository) : IQueryHandler<GetRecipeDetailQuery, RecipeGetDetailDto>
+internal class GetRecipeDetailQueryHandler(IRepository<Recipe, RecipeId> repository, IRepository<Ingredient, IngredientId> ingredientRepository) : IQueryHandler<GetRecipeDetailQuery, RecipeGetDetailResponse>
 {
-    public async Task<Result<RecipeGetDetailDto>> Handle(GetRecipeDetailQuery request, CancellationToken cancellationToken)
+    public async Task<Result<RecipeGetDetailResponse>> Handle(GetRecipeDetailQuery request, CancellationToken cancellationToken)
     {
         Recipe? entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)
         {
-            return Result.NotFound<RecipeGetDetailDto>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.Id)));
+            return Result.NotFound<RecipeGetDetailResponse>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.Id)));
         }
 
         var ingredientIds = entity.Ingredients.Select(i => i.IngredientId).ToList();
@@ -30,27 +29,24 @@ internal class GetRecipeDetailQueryHandler(IRepository<Recipe, RecipeId> reposit
                 entity.Ingredients.AsQueryable(),
                 ingredient => ingredient.Id,
                 recipeIngredient => recipeIngredient.IngredientId,
-                (ingredient, recipeIngredient) => new IngredientInRecipeModel
-                {
-                    Id = recipeIngredient.Id,
-                    IngredientId = recipeIngredient.IngredientId,
-                    Amount = recipeIngredient.Amount,
-                    Unit = recipeIngredient.Unit,
-                    Name = ingredient.Name,
-                    ImageUrl = ingredient.ImageUrl
-                })
+                (ingredient, recipeIngredient) => new IngredientInRecipe(
+                    recipeIngredient.Id,
+                    recipeIngredient.IngredientId,
+                    recipeIngredient.Amount,
+                    recipeIngredient.Unit,
+                    ingredient.Name,
+                    ingredient.ImageUrl)
+                )
             .ToList();
         
-        var model = new RecipeGetDetailDto
-        {
-            Id = entity.Id,
-            Name = entity.Name,
-            Description = entity.Description,
-            ImageUrl = entity.ImageUrl,
-            Duration = entity.Duration,
-            Type = entity.Type,
-            Ingredients = ingredientModels
-        };
+        var model = new RecipeGetDetailResponse(
+            entity.Id,
+            entity.Name,
+            entity.Description,
+            entity.ImageUrl,
+            entity.Duration,
+            entity.Type,
+            ingredientModels);
         
         return Result.Ok(model);
     }

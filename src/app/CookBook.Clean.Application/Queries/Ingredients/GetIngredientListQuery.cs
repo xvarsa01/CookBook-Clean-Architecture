@@ -9,11 +9,11 @@ using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Queries.Ingredients;
 
-public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<IngredientGetListDto>>;
+public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<IngredientGetListResponse>>;
 
-internal class GetIngredientListQueryHandler (IRepository<Ingredient, IngredientId> repository) : IQueryHandler<GetIngredientListQuery, List<IngredientGetListDto>>
+internal class GetIngredientListQueryHandler (IRepository<Ingredient, IngredientId> repository) : IQueryHandler<GetIngredientListQuery, List<IngredientGetListResponse>>
 {
-    public Task<Result<List<IngredientGetListDto>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
+    public Task<Result<List<IngredientGetListResponse>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
     {
         var queryable = repository.Query();
         
@@ -51,12 +51,7 @@ internal class GetIngredientListQueryHandler (IRepository<Ingredient, Ingredient
                 .Skip(request.PagingOptions.PageSize * request.PagingOptions.PageIndex)
                 .Take(request.PagingOptions.PageSize);
         }
-        var result = queryable.Select(i => new IngredientGetListDto()
-        {
-            Id = i.Id,
-            Name = i.Name,
-            ImageUrl = i.ImageUrl
-        }).ToList();
+        var result = queryable.Select(i => new IngredientGetListResponse(i.Id, i.Name, i.ImageUrl)).ToList();
         
         return Task.FromResult(Result.Ok(result));
     }

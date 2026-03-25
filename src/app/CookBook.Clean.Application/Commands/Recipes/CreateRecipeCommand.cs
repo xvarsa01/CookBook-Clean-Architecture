@@ -7,18 +7,18 @@ using CookBook.Clean.Core.RecipeRoot.ValueObjects;
 
 namespace CookBook.Clean.Application.Commands.Recipes;
 
-public record CreateRecipeCommand(RecipeCreateDto Dto) : ICommand<Guid>;
+public record CreateRecipeCommand(RecipeCreateRequest Request) : ICommand<Guid>;
 
 internal sealed class CreateRecipeCommandHandler(IRepository<Recipe, RecipeId> repository) : ICommandHandler<CreateRecipeCommand,Guid>
 {
     public async Task<Result<Guid>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
         var result = Recipe.Create(
-            request.Dto.Name,
-            request.Dto.Description,
-            request.Dto.ImageUrl,
-            request.Dto.Duration,
-            request.Dto.Type
+            request.Request.Name,
+            request.Request.Description,
+            request.Request.ImageUrl,
+            request.Request.Duration,
+            request.Request.Type
         );
         
         if (result.IsFailure)

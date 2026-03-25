@@ -38,8 +38,7 @@ public record Recipe : AggregateRootBase<RecipeId>
     
     public static Result<Recipe> Create(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
     {
-        var entity = new Recipe(name, description, imageUrl, duration, type);
-        return Result.Ok(entity);
+        return Result.Ok(new Recipe(name, description, imageUrl, duration, type));
     }
     
     public Result<Guid> AddIngredient(Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
