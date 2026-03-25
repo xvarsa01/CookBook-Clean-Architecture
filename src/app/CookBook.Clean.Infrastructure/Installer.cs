@@ -1,7 +1,7 @@
 ﻿using CookBook.Clean.Infrastructure.Factories;
 using CookBook.Clean.Infrastructure.Repositories;
-using CookBook.Clean.Application;
 using CookBook.Clean.Application.ExternalInterfaces;
+using CookBook.Clean.Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,11 +21,26 @@ public static class Installer
         
         services.AddSingleton<IDbContextFactory<CookBookDbContext>>(_ =>
             new DbContextSqLiteFactory(options.DatabaseFilePath, options.SeedDemoData));
-        services.AddDbContext<CookBookDbContext>(contextOptions =>
-            contextOptions.UseSqlite($"Data Source={options.DatabaseFilePath}"));
+        services.AddDbContext<CookBookDbContext>((sp, contextOptions) =>
+        {
+            contextOptions.UseSqlite($"Data Source={options.DatabaseFilePath}");
+            contextOptions.AddCreatedDateUpdatedDateInterceptor(sp);
+        });
         
         services.AddScoped<DbContext>(provider => provider.GetRequiredService<CookBookDbContext>());
+        services.AddSingleton<CreatedDateUpdatedDateInterceptor>();
         
         return services;
+    }
+    
+    private static void AddCreatedDateUpdatedDateInterceptor(this DbContextOptionsBuilder dbContextOptionsBuilder,
+        IServiceProvider serviceProvider)
+    {
+        var interceptor = serviceProvider.GetService<CreatedDateUpdatedDateInterceptor>();
+
+        if (interceptor != null)
+        {
+            dbContextOptionsBuilder.AddInterceptors(interceptor);
+        }
     }
 }
