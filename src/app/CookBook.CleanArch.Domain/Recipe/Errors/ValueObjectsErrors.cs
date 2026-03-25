@@ -1,4 +1,4 @@
-﻿namespace CookBook.CleanArch.Domain.RecipeRoot.Errors;
+﻿namespace CookBook.CleanArch.Domain.Recipe.Errors;
 
 public static class ValueObjectsErrors
 {

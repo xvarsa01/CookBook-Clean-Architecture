@@ -2,15 +2,15 @@
 
 namespace CookBook.CleanArch.Application.ExternalInterfaces;
 
-public interface IRepository<TEntity, TId>
-    where TEntity : AggregateRootBase<TId> where TId : StronglyTypedId
+public interface IRepository<TAggregate, TId>
+    where TAggregate : AggregateRootBase<TId> where TId : StronglyTypedId
 {
-    IQueryable<TEntity> Query();
-    Task<List<TEntity>> GetAllAsync();
+    IQueryable<TAggregate> Query();
+    Task<List<TAggregate>> GetAllAsync();
     // Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification);
-    Task<TEntity?> GetByIdAsync(Guid id);
+    Task<TAggregate?> GetByIdAsync(Guid id);
     Task DeleteAsync(Guid entityId);
-    Task<Guid> InsertAsync(TEntity entity);
-    Task<Guid?> UpdateAsync(TEntity entity);
-    ValueTask<bool> ExistsAsync(TEntity entity);
+    Task<Guid> InsertAsync(TAggregate aggregate);
+    Task<Guid?> UpdateAsync(TAggregate aggregate);
+    ValueTask<bool> ExistsAsync(TAggregate aggregate);
 }

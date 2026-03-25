@@ -1,4 +1,4 @@
-using CookBook.CleanArch.Domain.IngredientRoot.Events;
+using CookBook.CleanArch.Domain.Ingredient.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

@@ -1,4 +1,4 @@
-namespace CookBook.CleanArch.Domain.RecipeRoot.Enums;
+namespace CookBook.CleanArch.Domain.Recipe.Enums;
 
 public enum MeasurementUnit
 {

@@ -51,31 +51,31 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
         await SaveChangesAsync();
     }
 
-    public async Task<Guid> InsertAsync(TEntity entity)
+    public async Task<Guid> InsertAsync(TEntity aggregate)
     {
-        var entityId = _dbSet.Add(entity).Entity.Id;
+        var entityId = _dbSet.Add(aggregate).Entity.Id;
         await SaveChangesAsync();
         return entityId;
     }
 
-    public async Task<Guid?> UpdateAsync(TEntity entity)
+    public async Task<Guid?> UpdateAsync(TEntity aggregate)
     {
         // Assume entity is already tracked if it was loaded via this DbContext
         // Only attach if it's not tracked yet.
-        var entry = _dbContext.Entry(entity);
+        var entry = _dbContext.Entry(aggregate);
         if (entry.State == EntityState.Detached)
         {
             // Attach but do NOT immediately mark as Modified; let individual properties/collections be tracked.
-            _dbContext.Set<TEntity>().Attach(entity);
+            _dbContext.Set<TEntity>().Attach(aggregate);
         }
 
         await SaveChangesAsync();
-        return entity.Id;
+        return aggregate.Id;
     }
     
-    public async ValueTask<bool> ExistsAsync(TEntity entity)
+    public async ValueTask<bool> ExistsAsync(TEntity aggregate)
     {
-        return entity.Id != Guid.Empty && await _dbSet.AnyAsync(e => e.Id == entity.Id);
+        return aggregate.Id != Guid.Empty && await _dbSet.AnyAsync(e => e.Id == aggregate.Id);
     }
 
     protected virtual async Task SaveChangesAsync(CancellationToken cancellationToken = default)

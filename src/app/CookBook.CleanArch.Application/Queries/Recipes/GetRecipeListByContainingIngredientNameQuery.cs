@@ -5,9 +5,8 @@ using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Application.Queries.Ingredients;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.IngredientRoot;
-using CookBook.CleanArch.Domain.RecipeRoot;
-using CookBook.CleanArch.Domain.RecipeRoot.ValueObjects;
+using CookBook.CleanArch.Domain.Recipe;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using MediatR;
 
 namespace CookBook.CleanArch.Application.Queries.Recipes;

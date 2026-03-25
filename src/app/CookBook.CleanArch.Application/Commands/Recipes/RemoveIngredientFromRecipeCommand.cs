@@ -1,9 +1,9 @@
 using CookBook.CleanArch.Application.Abstraction;
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.RecipeRoot;
-using CookBook.CleanArch.Domain.RecipeRoot.Errors;
-using CookBook.CleanArch.Domain.RecipeRoot.ValueObjects;
+using CookBook.CleanArch.Domain.Recipe;
+using CookBook.CleanArch.Domain.Recipe.Errors;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Recipes;
 

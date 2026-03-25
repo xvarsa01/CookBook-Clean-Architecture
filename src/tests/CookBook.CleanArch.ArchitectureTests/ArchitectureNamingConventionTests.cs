@@ -59,15 +59,6 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     }
     
     [Fact]
-    public void Entities_ShouldBeIn_Core_Layer()
-    {
-        Classes().That()
-            .HaveNameEndingWith("Entity")
-            .Should().ResideInAssembly(CoreAssembly)
-            .Check(Architecture);
-    }
-    
-    [Fact]
     public void Commands_ShouldBeIn_Application_Layer()
     {
         Classes().That()

@@ -1,6 +1,6 @@
-﻿using CookBook.CleanArch.Domain.IngredientRoot;
-using CookBook.CleanArch.Domain.RecipeRoot;
-using CookBook.CleanArch.Domain.RecipeRoot.ValueObjects;
+﻿using CookBook.CleanArch.Domain.Ingredient;
+using CookBook.CleanArch.Domain.Recipe;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +10,7 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
 {
     public DbSet<Ingredient> Ingredients { get; set; } = null!;
     public DbSet<Recipe> Recipes { get; set; } = null!;
-    public DbSet<IngredientInRecipeEntity> IngredientInRecipe { get; set; } = null!;
+    public DbSet<IngredientInRecipe> IngredientInRecipe { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -51,7 +51,7 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
             .WithOne()
             .OnDelete(DeleteBehavior.Cascade);
         
-        modelBuilder.Entity<IngredientInRecipeEntity>(b =>
+        modelBuilder.Entity<IngredientInRecipe>(b =>
         {
             b.HasKey(i => new { i.RecipeId, i.Id });
             

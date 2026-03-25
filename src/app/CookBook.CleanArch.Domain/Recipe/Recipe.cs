@@ -1,11 +1,11 @@
-﻿using CookBook.CleanArch.Domain.IngredientRoot.ValueObjects;
-using CookBook.CleanArch.Domain.RecipeRoot.Enums;
-using CookBook.CleanArch.Domain.RecipeRoot.Errors;
-using CookBook.CleanArch.Domain.RecipeRoot.ValueObjects;
+﻿using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Recipe.Enums;
+using CookBook.CleanArch.Domain.Recipe.Errors;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Domain.Shared;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.Domain.RecipeRoot;
+namespace CookBook.CleanArch.Domain.Recipe;
 
 // business rules:
 // - recipe must have a name
@@ -22,8 +22,8 @@ public record Recipe : AggregateRootBase<RecipeId>
     public RecipeDuration Duration { get; private set; }
     public RecipeType Type { get; private set; }
 
-    private readonly List<IngredientInRecipeEntity> _ingredients = [];
-    public IReadOnlyCollection<IngredientInRecipeEntity> Ingredients => _ingredients.AsReadOnly();
+    private readonly List<IngredientInRecipe> _ingredients = [];
+    public IReadOnlyCollection<IngredientInRecipe> Ingredients => _ingredients.AsReadOnly();
     
     private Recipe() { } // for EF
     private Recipe(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
@@ -46,7 +46,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         if (_ingredients.Count == 10)
             return Result.Invalid<Guid>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
         
-        var ingredientInRecipeResult = IngredientInRecipeEntity.Create(ingredientId, Id, amount, unit);
+        var ingredientInRecipeResult = IngredientInRecipe.Create(ingredientId, Id, amount, unit);
         
         if (ingredientInRecipeResult.IsFailure)
             return Result.Invalid<Guid>(ingredientInRecipeResult.Error);

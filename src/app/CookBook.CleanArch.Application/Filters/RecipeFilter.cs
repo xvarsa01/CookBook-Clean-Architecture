@@ -1,5 +1,4 @@
-﻿using CookBook.CleanArch.Domain.RecipeRoot;
-using CookBook.CleanArch.Domain.RecipeRoot.Enums;
+﻿using CookBook.CleanArch.Domain.Recipe.Enums;
 
 namespace CookBook.CleanArch.Application.Filters;
 

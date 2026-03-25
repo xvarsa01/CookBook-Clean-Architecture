@@ -1,5 +1,4 @@
-﻿using CookBook.CleanArch.Domain.RecipeRoot.ValueObjects;
-
+﻿using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.DomainTests.ValueObjects;
 

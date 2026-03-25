@@ -1,7 +1,6 @@
-﻿using CookBook.CleanArch.Domain.Shared.Errors;
-using CookBook.CleanArch.Domain.RecipeRoot.Errors;
+﻿using CookBook.CleanArch.Domain.Recipe.Errors;
 
-namespace CookBook.CleanArch.Domain.RecipeRoot.ValueObjects;
+namespace CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 public class RecipeName
 {

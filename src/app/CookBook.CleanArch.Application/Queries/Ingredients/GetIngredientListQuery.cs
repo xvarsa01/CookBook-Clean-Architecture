@@ -3,9 +3,8 @@ using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.IngredientRoot;
-using CookBook.CleanArch.Domain.IngredientRoot.ValueObjects;
-using CookBook.CleanArch.Domain.RecipeRoot.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredient;
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Queries.Ingredients;
 

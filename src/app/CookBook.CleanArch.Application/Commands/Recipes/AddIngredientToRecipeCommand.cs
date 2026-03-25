@@ -2,12 +2,12 @@ using CookBook.CleanArch.Application.Abstraction;
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.IngredientRoot;
-using CookBook.CleanArch.Domain.IngredientRoot.Errors;
-using CookBook.CleanArch.Domain.IngredientRoot.ValueObjects;
-using CookBook.CleanArch.Domain.RecipeRoot;
-using CookBook.CleanArch.Domain.RecipeRoot.Errors;
-using CookBook.CleanArch.Domain.RecipeRoot.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredient;
+using CookBook.CleanArch.Domain.Ingredient.Errors;
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Recipe;
+using CookBook.CleanArch.Domain.Recipe.Errors;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Recipes;
 

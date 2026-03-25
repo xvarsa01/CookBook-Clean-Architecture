@@ -30,21 +30,21 @@ public class InMemoryRepository<TEntity, TId> : IRepository<TEntity, TId>
         return Task.CompletedTask;
     }
 
-    public Task<Guid> InsertAsync(TEntity entity)
+    public Task<Guid> InsertAsync(TEntity aggregate)
     {
-        _store[entity.Id] = entity;
-        return Task.FromResult(entity.Id.Id);
+        _store[aggregate.Id] = aggregate;
+        return Task.FromResult(aggregate.Id.Id);
     }
 
-    public Task<Guid?> UpdateAsync(TEntity entity)
+    public Task<Guid?> UpdateAsync(TEntity aggregate)
     {
-        if (!_store.ContainsKey(entity.Id))
+        if (!_store.ContainsKey(aggregate.Id))
             return Task.FromResult<Guid?>(null);
 
-        _store[entity.Id] = entity;
-        return Task.FromResult<Guid?>(entity.Id);
+        _store[aggregate.Id] = aggregate;
+        return Task.FromResult<Guid?>(aggregate.Id);
     }
 
-    public ValueTask<bool> ExistsAsync(TEntity entity)
-        => new(_store.ContainsKey(entity.Id));
+    public ValueTask<bool> ExistsAsync(TEntity aggregate)
+        => new(_store.ContainsKey(aggregate.Id));
 }

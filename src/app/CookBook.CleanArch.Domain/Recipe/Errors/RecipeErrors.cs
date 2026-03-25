@@ -1,7 +1,7 @@
-﻿using CookBook.CleanArch.Domain.IngredientRoot.ValueObjects;
-using CookBook.CleanArch.Domain.RecipeRoot.ValueObjects;
+﻿using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
-namespace CookBook.CleanArch.Domain.RecipeRoot.Errors;
+namespace CookBook.CleanArch.Domain.Recipe.Errors;
 
 public static class RecipeErrors
 {
