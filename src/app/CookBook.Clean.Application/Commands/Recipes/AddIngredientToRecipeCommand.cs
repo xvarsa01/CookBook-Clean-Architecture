@@ -32,13 +32,13 @@ internal sealed class AddIngredientToRecipeCommandHandler(
         var amountResult = IngredientAmount.CreateObject(request.Amount);
         if (!amountResult.IsSuccess)
         {
-            return Result.Invalid<Guid>(amountResult.Error ?? string.Empty);
+            return Result.Invalid<Guid>(amountResult.Error);
         }
         
         var result = recipe.AddIngredient(request.IngredientId, amountResult.Value, request.Unit);
         if (!result.IsSuccess)
         {
-            return Result.Invalid<Guid>(result.Error ?? string.Empty);
+            return Result.Invalid<Guid>(result.Error);
         }
         
         await recipeRepository.UpdateAsync(recipe);

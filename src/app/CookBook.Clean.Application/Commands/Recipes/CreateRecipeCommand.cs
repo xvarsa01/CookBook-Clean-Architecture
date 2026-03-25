@@ -21,7 +21,7 @@ internal sealed class CreateRecipeCommandHandler(IRepository<Recipe> repository)
         );
         
         if (result.IsFailure)
-            return Result.Invalid<Guid>(result.Error ?? string.Empty);
+            return Result.Invalid<Guid>(result.Error);
         
         var createdRecipeId = await repository.InsertAsync(result.Value);
         return Result.Ok(createdRecipeId);

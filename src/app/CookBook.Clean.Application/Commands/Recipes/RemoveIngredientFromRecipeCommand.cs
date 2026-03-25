@@ -20,7 +20,7 @@ internal sealed class RemoveIngredientFromRecipeCommandHandler(IRepository<Recip
         
         var result = recipe.RemoveIngredientByEntryId(request.EntryId);
         if (result.IsFailure)
-            return Result.Invalid(result.Error ?? string.Empty);
+            return Result.Invalid(result.Error);
             
         await recipeRepository.UpdateAsync(recipe);
         return Result.Ok();

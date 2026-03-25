@@ -24,7 +24,7 @@ internal sealed class DeleteIngredientCommandHandler(IRepository<Ingredient> rep
         var recipesContainingIngredient = await mediator.Send(new GetRecipeListByContainingIngredientIdQuery(request.Id), cancellationToken);
         if (recipesContainingIngredient.IsFailure)
         {
-            return Result.Invalid(recipesContainingIngredient.Error ?? string.Empty);
+            return Result.Invalid(recipesContainingIngredient.Error);
         }
         
         if (recipesContainingIngredient.Value.Count != 0)

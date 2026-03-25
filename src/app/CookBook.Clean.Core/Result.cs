@@ -18,12 +18,16 @@ public class Result
 {
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
-    public string? Error { get; }
+    
+    private readonly string? _error;
+    public string Error => IsFailure
+        ? _error!
+        : throw new InvalidOperationException("The error of a success result can not be accessed.");
 
     internal Result(bool isSuccess, string? error)
     {
         IsSuccess = isSuccess;
-        Error = error;
+        _error = error;
     }
 
     public static Result Ok() => new(true, null);

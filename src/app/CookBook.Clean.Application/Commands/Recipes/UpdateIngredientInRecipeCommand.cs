@@ -23,12 +23,12 @@ internal sealed class UpdateIngredientInRecipeCommandHandler(IRepository<Recipe>
         var amountResult = IngredientAmount.CreateObject(request.NewAmount);
         if (!amountResult.IsSuccess)
         {
-            return Result.Invalid<Guid>(amountResult.Error ?? string.Empty);
+            return Result.Invalid<Guid>(amountResult.Error);
         }
 
         var result = recipe.UpdateIngredientEntry(request.EntryId, amountResult.Value, request.NewUnit);
         if (result.IsFailure)
-            return Result.Invalid(result.Error ?? string.Empty);
+            return Result.Invalid(result.Error);
         
         await recipeRepository.UpdateAsync(recipe);
         

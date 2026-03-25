@@ -48,7 +48,7 @@ public record Recipe : AggregateRootBase
         var ingredientInRecipeResult = IngredientInRecipeEntity.Create(ingredientId, Id, amount, unit);
         
         if (ingredientInRecipeResult.IsFailure)
-            return Result.Invalid<Guid>(ingredientInRecipeResult.Error ?? string.Empty);
+            return Result.Invalid<Guid>(ingredientInRecipeResult.Error);
         
         _ingredients.Add(ingredientInRecipeResult.Value);
         

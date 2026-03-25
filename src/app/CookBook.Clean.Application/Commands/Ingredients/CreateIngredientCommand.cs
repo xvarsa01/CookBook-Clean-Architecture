@@ -18,7 +18,7 @@ internal sealed class CreateIngredientCommandHandler(IRepository<Ingredient> rep
             request.Dto.ImageUrl);
         
         if (result.IsFailure)
-            return Result.Invalid<Guid>(result.Error ?? string.Empty);
+            return Result.Invalid<Guid>(result.Error);
         
         var createdIngredientId = await repository.InsertAsync(result.Value);
         return Result.Ok(createdIngredientId);

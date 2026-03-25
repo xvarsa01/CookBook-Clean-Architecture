@@ -22,7 +22,7 @@ internal class GetRecipeListByContainingIngredientNameQueryHandler (IRepository<
         var ingredientResult = await mediator.Send(new GetIngredientListQuery(ingredientFilter), cancellationToken);
 
         if (!ingredientResult.IsSuccess)
-            return Result.Invalid<List<RecipeGetListDto>>(ingredientResult.Error ?? string.Empty);
+            return Result.Invalid<List<RecipeGetListDto>>(ingredientResult.Error);
 
         var ingredientIds = ingredientResult.Value
             .Select(i => i.Id)
