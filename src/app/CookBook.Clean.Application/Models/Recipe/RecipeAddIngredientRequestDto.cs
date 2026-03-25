@@ -1,7 +1,6 @@
-using CookBook.Clean.Core.RecipeRoot;
 using CookBook.Clean.Core.RecipeRoot.Enums;
 
-namespace CookBook.Clean.WebApi.DTOs;
+namespace CookBook.Clean.Application.Models.Recipe;
 
 public class RecipeAddIngredientRequestDto
 {
