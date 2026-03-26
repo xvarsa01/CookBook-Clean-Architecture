@@ -3,6 +3,7 @@ using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Domain;
+using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,62 +17,75 @@ internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryH
     {
         var queryable = dbContext.Recipes.AsQueryable();
         
-        if (!string.IsNullOrEmpty(request.Filter.Name))
+        queryable = ApplyFilter(request.Filter, queryable);
+        queryable = ApplyPaging(request.PagingOptions, queryable);
+        
+        var result = await queryable.Select(i => new RecipeGetListResponse(i.Id, i.Name, i.ImageUrl)).ToListAsync(cancellationToken);
+        
+        return Result.Ok(result);
+    }
+
+    private static IQueryable<Recipe> ApplyPaging(PagingOptions? pagingOptions, IQueryable<Recipe> queryable)
+    {
+        if (pagingOptions is not null)
         {
-            queryable = queryable.Where(r => r.Name.Value.ToLower().Contains(request.Filter.Name.ToLower()));
+            queryable = queryable
+                .Skip(pagingOptions.PageSize * pagingOptions.PageIndex)
+                .Take(pagingOptions.PageSize);
         }
 
-        if (request.Filter.RecipeType is not null)
+        return queryable;
+    }
+
+    private static IQueryable<Recipe> ApplyFilter(RecipeFilter filter, IQueryable<Recipe> queryable)
+    {
+        GetRecipeListQuery request;
+        if (!string.IsNullOrEmpty(filter.Name))
         {
-            queryable = queryable.Where(r => r.Type == request.Filter.RecipeType);
+            queryable = queryable.Where(r => r.Name.Value.ToLower().Contains(filter.Name.ToLower()));
         }
 
-        if (request.Filter.MinimalDuration.HasValue)
+        if (filter.RecipeType is not null)
         {
-            var min = RecipeDuration.CreateObject(request.Filter.MinimalDuration.Value).Value;
+            queryable = queryable.Where(r => r.Type == filter.RecipeType);
+        }
+
+        if (filter.MinimalDuration.HasValue)
+        {
+            var min = RecipeDuration.CreateObject(filter.MinimalDuration.Value).Value;
             queryable = queryable.Where(r => r.Duration >= min);
         }
 
-        if (request.Filter.MaximalDuration.HasValue)
+        if (filter.MaximalDuration.HasValue)
         {
-            var max = RecipeDuration.CreateObject(request.Filter.MaximalDuration.Value).Value;
+            var max = RecipeDuration.CreateObject(filter.MaximalDuration.Value).Value;
             queryable = queryable.Where(r => r.Duration <= max);
         }
         
-        queryable = request.Filter.SortParameter switch
+        queryable = filter.SortParameter switch
         {
-            RecipeSortParameter.Name => request.Filter.IsSortAscending 
+            RecipeSortParameter.Name => filter.IsSortAscending 
                 ? queryable.OrderBy(r => r.Name)
                 : queryable.OrderByDescending(r => r.Name),
             
-            RecipeSortParameter.Type => request.Filter.IsSortAscending
+            RecipeSortParameter.Type => filter.IsSortAscending
                 ? queryable.OrderBy(r => r.Type)
                 : queryable.OrderByDescending(r => r.Type),
             
-            RecipeSortParameter.Duration => request.Filter.IsSortAscending
+            RecipeSortParameter.Duration => filter.IsSortAscending
                 ? queryable.OrderBy(r => r.Duration)
                 : queryable.OrderByDescending(r => r.Duration),
             
-            RecipeSortParameter.CreatedAt => request.Filter.IsSortAscending
+            RecipeSortParameter.CreatedAt => filter.IsSortAscending
                 ? queryable.OrderBy(r => r.CreatedAt)
                 : queryable.OrderByDescending(r => r.CreatedAt),
             
-            RecipeSortParameter.ModifiedAt => request.Filter.IsSortAscending
+            RecipeSortParameter.ModifiedAt => filter.IsSortAscending
                 ? queryable.OrderBy(r => r.ModifiedAt)
                 : queryable.OrderByDescending(r => r.ModifiedAt),
             
             _ => queryable.OrderBy(r => r.Name)
         };
-        
-        if (request.PagingOptions is not null)
-        {
-            queryable = queryable
-                .Skip(request.PagingOptions.PageSize * request.PagingOptions.PageIndex)
-                .Take(request.PagingOptions.PageSize);
-        }
-        
-        var result = await queryable.Select(i => new RecipeGetListResponse(i.Id, i.Name, i.ImageUrl)).ToListAsync(cancellationToken);
-        
-        return Result.Ok(result);
+        return queryable;
     }
 }

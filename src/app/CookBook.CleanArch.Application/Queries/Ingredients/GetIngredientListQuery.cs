@@ -3,6 +3,7 @@ using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Domain;
+using CookBook.CleanArch.Domain.Ingredient;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Queries.Ingredients;
@@ -15,42 +16,55 @@ internal class GetIngredientListQueryHandler (ICookBookDbContext dbContext) : IQ
     {
         var queryable = dbContext.Ingredients.AsQueryable();
         
-        if (request.Filter.Name is not null)
+        queryable = ApplyFilter(request.Filter, queryable);
+        queryable = ApplyPaging(request.PagingOptions, queryable);
+        
+        var result = await queryable.Select(i => new IngredientGetListResponse(i.Id, i.Name, i.ImageUrl)).ToListAsync(cancellationToken);
+        
+        return Result.Ok(result);
+    }
+
+    private static IQueryable<Ingredient> ApplyFilter(IngredientFilter filter, IQueryable<Ingredient> queryable)
+    {
+        if (filter.Name is not null)
         {
-            queryable = queryable.Where(i => i.Name.ToLower().Contains(request.Filter.Name.ToLower()));
+            queryable = queryable.Where(i => i.Name.ToLower().Contains(filter.Name.ToLower()));
         }
 
-        if (request.Filter.HasDescription is not null)
+        if (filter.HasDescription is not null)
         {
-            queryable = request.Filter.HasDescription.Value
+            queryable = filter.HasDescription.Value
                 ? queryable.Where(i => i.Description != null)
                 : queryable.Where(i => i.Description == null);
         }
 
-        if (request.Filter.HasImage is not null)
+        if (filter.HasImage is not null)
         {
-            queryable = request.Filter.HasImage.Value
+            queryable = filter.HasImage.Value
                 ? queryable.Where(i => i.ImageUrl != null)
                 : queryable.Where(i => i.ImageUrl == null);
         }
         
-        queryable = request.Filter.SortParameter switch
+        queryable = filter.SortParameter switch
         {
-            IngredientsSortParameter.Name => request.Filter.IsSortAscending
+            IngredientsSortParameter.Name => filter.IsSortAscending
                 ? queryable.OrderBy(r => r.Name)
                 : queryable.OrderByDescending(r => r.Name),
             
             _ => queryable.OrderBy(r => r.Name)
         };
-        
-        if (request.PagingOptions is not null)
+        return queryable;
+    }
+
+    private static IQueryable<Ingredient> ApplyPaging(PagingOptions? pagingOptions, IQueryable<Ingredient> queryable)
+    {
+        if (pagingOptions is not null)
         {
             queryable = queryable
-                .Skip(request.PagingOptions.PageSize * request.PagingOptions.PageIndex)
-                .Take(request.PagingOptions.PageSize);
+                .Skip(pagingOptions.PageSize * pagingOptions.PageIndex)
+                .Take(pagingOptions.PageSize);
         }
-        var result = await queryable.Select(i => new IngredientGetListResponse(i.Id, i.Name, i.ImageUrl)).ToListAsync(cancellationToken);
-        
-        return Result.Ok(result);
+
+        return queryable;
     }
 }
