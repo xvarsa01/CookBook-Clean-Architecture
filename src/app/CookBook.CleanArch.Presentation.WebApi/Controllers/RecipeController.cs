@@ -47,7 +47,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet(Name = "GetRecipeList")]
-    public async Task<ActionResult<IEnumerable<RecipeGetListResponse>>> GetList(
+    public async Task<ActionResult<IEnumerable<RecipeListResponse>>> GetList(
         [FromQuery] RecipeFilter filter,
         [FromQuery] PagingOptions paging)
     {
@@ -61,7 +61,7 @@ public class RecipeController : ControllerBase
     }
     
     [HttpGet("ingredient/{id:guid}", Name = "GetRecipeListByIngredientId")]
-    public async Task<ActionResult<IEnumerable<RecipeGetListResponse>>> GetListByIngredient(Guid id)
+    public async Task<ActionResult<IEnumerable<RecipeListResponse>>> GetListByIngredient(Guid id)
     {
         var ingredientId = new IngredientId(id);
         var result = await _mediator.Send(new GetRecipeListByContainingIngredientIdQuery(ingredientId));
@@ -74,7 +74,7 @@ public class RecipeController : ControllerBase
     }
     
     [HttpGet("ingredient", Name = "GetRecipeListByIngredientName")]
-    public async Task<ActionResult<IEnumerable<RecipeGetListResponse>>> GetListByIngredientName(
+    public async Task<ActionResult<IEnumerable<RecipeListResponse>>> GetListByIngredientName(
         [FromQuery] string ingredientNameSubstring)
     {
         var result = await _mediator.Send(new GetRecipeListByContainingIngredientNameQuery(ingredientNameSubstring));
@@ -129,7 +129,7 @@ public class RecipeController : ControllerBase
     public async Task<ActionResult> RemoveIngredient(Guid id, Guid entryId)
     {
         var recipeId = new RecipeId(id);
-        var ingredientInRecipeId = new IngredientInRecipeId(entryId);
+        var ingredientInRecipeId = new RecipeIngredientId(entryId);
         
         var result = await _mediator.Send(new RemoveIngredientFromRecipeCommand(recipeId, ingredientInRecipeId));
         if (result.IsSuccess)

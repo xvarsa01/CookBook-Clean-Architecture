@@ -13,10 +13,10 @@ public class RecipeRootUpdateIngredientTests
         {
             // Arrange
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
-            var ingredientInRecipe = recipe.Ingredients.First();
+            var recipeIngredient = recipe.Ingredients.First();
         
             // Act
-        var result = recipe.UpdateIngredientEntry(ingredientInRecipe.Id, IngredientAmount.CreateObject(123456).Value, MeasurementUnit.Kg);
+        var result = recipe.UpdateIngredientEntry(recipeIngredient.Id, IngredientAmount.CreateObject(123456).Value, MeasurementUnit.Kg);
         
             // Assert
         Assert.True(result.IsSuccess);
@@ -59,7 +59,7 @@ public class RecipeRootUpdateIngredientTests
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
         
             // Act & Assert
-        var result = recipe.UpdateIngredientEntry(new IngredientInRecipeId(Guid.NewGuid()), IngredientAmount.CreateObject(123456).Value, MeasurementUnit.Kg);
+        var result = recipe.UpdateIngredientEntry(new RecipeIngredientId(Guid.NewGuid()), IngredientAmount.CreateObject(123456).Value, MeasurementUnit.Kg);
 
         Assert.True(result.IsFailure);
         }

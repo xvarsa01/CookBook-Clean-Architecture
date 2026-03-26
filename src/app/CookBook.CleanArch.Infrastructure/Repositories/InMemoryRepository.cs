@@ -32,7 +32,7 @@ public class InMemoryRepository<TEntity, TId> : IRepository<TEntity, TId>
 
     public Task<TId> InsertAsync(TEntity aggregate)
     {
-        _store[aggregate.Id.Id] = aggregate;
+        _store[aggregate.Id.Value] = aggregate;
         return Task.FromResult(aggregate.Id);
     }
 

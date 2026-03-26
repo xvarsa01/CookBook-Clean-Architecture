@@ -15,7 +15,7 @@ public record RecipeResponse(
 );
 
 public record RecipeIngredientResponse(
-    IngredientInRecipeId Id,
+    RecipeIngredientId Id,
     Guid IngredientId,
     IngredientAmount Amount,
     MeasurementUnit Unit,

@@ -116,7 +116,7 @@ public class RecipeRootRemoveIngredientTests
         {
             // Arrange
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
-            var wrongEntryId = new IngredientInRecipeId(Guid.NewGuid());
+            var wrongEntryId = new RecipeIngredientId(Guid.NewGuid());
             
             // Act & Assert
         var result = recipe.RemoveIngredientByEntryId(wrongEntryId);

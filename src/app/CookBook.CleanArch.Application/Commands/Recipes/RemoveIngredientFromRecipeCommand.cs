@@ -7,7 +7,7 @@ using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Recipes;
 
-public record RemoveIngredientFromRecipeCommand(RecipeId RecipeId, IngredientInRecipeId EntryId) : ICommand;
+public record RemoveIngredientFromRecipeCommand(RecipeId RecipeId, RecipeIngredientId EntryId) : ICommand;
 
 internal sealed class RemoveIngredientFromRecipeCommandHandler(IRepository<Recipe, RecipeId > recipeRepository)
     : ICommandHandler<RemoveIngredientFromRecipeCommand>

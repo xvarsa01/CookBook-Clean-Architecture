@@ -38,7 +38,7 @@
 
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={x:Reference RecipeListViewRoot}, Path=BindingContext.GoToDetailCommand}"
-                                                      CommandParameter="{Binding Id}" />
+                                                      CommandParameter="{Binding Value}" />
                             </Border.GestureRecognizers>
 
                             <Grid>

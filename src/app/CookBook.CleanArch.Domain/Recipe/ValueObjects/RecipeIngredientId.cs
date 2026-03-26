@@ -2,4 +2,4 @@
 
 namespace CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
-public record IngredientInRecipeId(Guid Id) : StronglyTypedId(Id);
+public record RecipeIngredientId(Guid Value) : StronglyTypedId(Value);

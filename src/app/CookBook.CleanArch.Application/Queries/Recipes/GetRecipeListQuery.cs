@@ -9,18 +9,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Queries.Recipes;
 
-public record GetRecipeListQuery(RecipeFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<RecipeGetListResponse>>;
+public record GetRecipeListQuery(RecipeFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<RecipeListResponse>>;
 
-internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryHandler<GetRecipeListQuery, List<RecipeGetListResponse>>
+internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryHandler<GetRecipeListQuery, List<RecipeListResponse>>
 {
-    public async Task<Result<List<RecipeGetListResponse>>> Handle(GetRecipeListQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<RecipeListResponse>>> Handle(GetRecipeListQuery request, CancellationToken cancellationToken)
     {
         var queryable = dbContext.Recipes.AsQueryable();
         
         queryable = ApplyFilter(request.Filter, queryable);
         queryable = ApplyPaging(request.PagingOptions, queryable);
         
-        var result = await queryable.Select(i => new RecipeGetListResponse(i.Id, i.Name, i.ImageUrl)).ToListAsync(cancellationToken);
+        var result = await queryable.Select(i => new RecipeListResponse(i.Id, i.Name, i.ImageUrl)).ToListAsync(cancellationToken);
         
         return Result.Ok(result);
     }

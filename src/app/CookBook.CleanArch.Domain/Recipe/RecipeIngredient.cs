@@ -5,7 +5,7 @@ using CookBook.CleanArch.Domain.Shared;
 
 namespace CookBook.CleanArch.Domain.Recipe;
 
-public record IngredientInRecipe : EntityBase<IngredientInRecipeId>
+public record RecipeIngredient : EntityBase<RecipeIngredientId>
 {
     public IngredientId IngredientId { get; init; }
     public RecipeId RecipeId { get; init; }
@@ -17,9 +17,9 @@ public record IngredientInRecipe : EntityBase<IngredientInRecipeId>
         private set => throw new InvalidOperationException();
     }
 
-    private IngredientInRecipe() { } // for EF
+    private RecipeIngredient() { } // for EF
 
-    private IngredientInRecipe(IngredientInRecipeId id,  IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit)
+    private RecipeIngredient(RecipeIngredientId id,  IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit)
     {
         Id = id;
         IngredientId = ingredientId;
@@ -28,10 +28,10 @@ public record IngredientInRecipe : EntityBase<IngredientInRecipeId>
         Unit = unit;
     }
 
-    internal static Result<IngredientInRecipe> Create(IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit) 
+    internal static Result<RecipeIngredient> Create(IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit) 
     {
-        var id = new IngredientInRecipeId(Guid.NewGuid());
-        return Result.Ok(new IngredientInRecipe(id, ingredientId, recipeId, amount, unit));
+        var id = new RecipeIngredientId(Guid.NewGuid());
+        return Result.Ok(new RecipeIngredient(id, ingredientId, recipeId, amount, unit));
     }
 
 

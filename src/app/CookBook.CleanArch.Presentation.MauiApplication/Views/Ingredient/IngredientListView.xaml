@@ -40,7 +40,7 @@
                             HeightRequest="200">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding Source={x:Reference IngredientListViewRoot}, Path=BindingContext.GoToDetailCommand}"
-                                                  CommandParameter="{Binding Id}" />
+                                                  CommandParameter="{Binding Value}" />
                         </Border.GestureRecognizers>
                         
                         <Grid RowDefinitions="*, *">

@@ -12,7 +12,7 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
 {
     public DbSet<Ingredient> Ingredients => Set<Ingredient>();
     public DbSet<Recipe> Recipes => Set<Recipe>();
-    public DbSet<IngredientInRecipe> IngredientInRecipe => Set<IngredientInRecipe>();
+    public DbSet<RecipeIngredient> IngredientInRecipe => Set<RecipeIngredient>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,7 +21,7 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
         modelBuilder.Entity<Ingredient>()
             .Property(x => x.Id)
             .HasConversion(
-                id => id.Id,
+                id => id.Value,
                 value => new IngredientId(value)
             );
 
@@ -35,7 +35,7 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
         modelBuilder.Entity<Recipe>()
             .Property(x => x.Id)
             .HasConversion(
-                id => id.Id,
+                id => id.Value,
                 value => new RecipeId(value)
             );
         
@@ -67,14 +67,14 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
             .OnDelete(DeleteBehavior.Cascade);
         
         
-        modelBuilder.Entity<IngredientInRecipe>()
+        modelBuilder.Entity<RecipeIngredient>()
             .Property(x => x.Id)
             .HasConversion(
-                id => id.Id,
-                value => new IngredientInRecipeId(value)
+                id => id.Value,
+                value => new RecipeIngredientId(value)
             );
         
-        modelBuilder.Entity<IngredientInRecipe>(b =>
+        modelBuilder.Entity<RecipeIngredient>(b =>
         {
             b.HasKey(i => new { i.RecipeId, i.Id });
             

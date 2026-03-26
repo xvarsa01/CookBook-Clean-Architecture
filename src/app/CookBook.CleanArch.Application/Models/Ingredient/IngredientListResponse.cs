@@ -3,7 +3,7 @@ using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Models.Ingredient;
 
-public record IngredientGetListResponse(
+public record IngredientListResponse(
     IngredientId Id,
     string Name,
     ImageUrl? ImageUrl

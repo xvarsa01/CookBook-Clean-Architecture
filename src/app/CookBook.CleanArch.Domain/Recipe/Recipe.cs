@@ -22,8 +22,8 @@ public record Recipe : AggregateRootBase<RecipeId>
     public RecipeDuration Duration { get; private set; }
     public RecipeType Type { get; private set; }
 
-    private readonly List<IngredientInRecipe> _ingredients = [];
-    public IReadOnlyCollection<IngredientInRecipe> Ingredients => _ingredients.AsReadOnly();
+    private readonly List<RecipeIngredient> _ingredients = [];
+    public IReadOnlyCollection<RecipeIngredient> Ingredients => _ingredients.AsReadOnly();
     
     private Recipe() { } // for EF
     private Recipe(RecipeId id, RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
@@ -42,15 +42,15 @@ public record Recipe : AggregateRootBase<RecipeId>
         return Result.Ok(new Recipe(id, name, description, imageUrl, duration, type));
     }
     
-    public Result<IngredientInRecipeId> AddIngredient(IngredientId ingredientId, IngredientAmount amount, MeasurementUnit unit)
+    public Result<RecipeIngredientId> AddIngredient(IngredientId ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
         if (_ingredients.Count == 10)
-            return Result.Invalid<IngredientInRecipeId>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
+            return Result.Invalid<RecipeIngredientId>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
         
-        var ingredientInRecipeResult = IngredientInRecipe.Create(ingredientId, Id, amount, unit);
+        var ingredientInRecipeResult = RecipeIngredient.Create(ingredientId, Id, amount, unit);
         
         if (ingredientInRecipeResult.IsFailure)
-            return Result.Invalid<IngredientInRecipeId>(ingredientInRecipeResult.Error);
+            return Result.Invalid<RecipeIngredientId>(ingredientInRecipeResult.Error);
         
         _ingredients.Add(ingredientInRecipeResult.Value);
         
@@ -67,7 +67,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         return Result.Ok();
     }
     
-    public Result RemoveIngredientByEntryId(IngredientInRecipeId entryId)
+    public Result RemoveIngredientByEntryId(RecipeIngredientId entryId)
     {
         var idx = _ingredients.FindIndex(i => i.Id == entryId);
 
@@ -87,7 +87,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         return Result.Ok();
     }
 
-    public Result UpdateIngredientEntry(IngredientInRecipeId entryId, IngredientAmount newAmount, MeasurementUnit newUnit)
+    public Result UpdateIngredientEntry(RecipeIngredientId entryId, IngredientAmount newAmount, MeasurementUnit newUnit)
     {
         var ingredient = _ingredients.FirstOrDefault(i => i.Id == entryId);
 

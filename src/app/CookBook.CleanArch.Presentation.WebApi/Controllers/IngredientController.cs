@@ -30,13 +30,13 @@ public class IngredientController : ControllerBase
         Result<IngredientId> result = await _mediator.Send(new CreateIngredientCommand(request));
         if (result.IsSuccess)
         {
-            return Ok(result.Value.Id);
+            return Ok(result.Value.Value);
         }
         return BadRequest(result.Error);
     }
         
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<IngredientGetDetailResponse>> GetById(Guid id)
+    public async Task<ActionResult<IngredientDetailResponse>> GetById(Guid id)
     {
         var ingredientId = new IngredientId(id);
         var result = await _mediator.Send(new GetIngredientDetailQuery(ingredientId));
@@ -48,7 +48,7 @@ public class IngredientController : ControllerBase
     }
     
     [HttpGet(Name = "GetList")]
-    public async Task<ActionResult<IEnumerable<IngredientGetListResponse>>> GetList(
+    public async Task<ActionResult<IEnumerable<IngredientListResponse>>> GetList(
         [FromQuery] IngredientFilter filter,
         [FromQuery] PagingOptions paging)
     {

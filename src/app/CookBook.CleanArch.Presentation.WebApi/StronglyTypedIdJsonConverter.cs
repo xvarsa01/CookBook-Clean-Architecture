@@ -29,7 +29,7 @@ public class StronglyTypedIdJsonConverter<TStronglyTypedId> : JsonConverter<TStr
             return;
         }
 
-        JsonSerializer.Serialize(writer, value.Id, options);
+        JsonSerializer.Serialize(writer, value.Value, options);
     }
 
     private static Func<Guid, TStronglyTypedId> CreateFactory()

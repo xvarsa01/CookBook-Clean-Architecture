@@ -10,7 +10,7 @@ namespace CookBook.CleanArch.Application.Commands.Recipes;
 
 public record UpdateIngredientInRecipeCommand(RecipeId RecipeId, RecipeUpdateIngredientRequest Request) : ICommand;
 
-internal sealed class UpdateIngredientInRecipeCommandHandler(IRepository<Recipe, RecipeId> recipeRepository) : ICommandHandler<UpdateIngredientInRecipeCommand>
+internal sealed class UpdateRecipeIngredientCommandHandler(IRepository<Recipe, RecipeId> recipeRepository) : ICommandHandler<UpdateIngredientInRecipeCommand>
 {
 
     public async Task<Result> Handle(UpdateIngredientInRecipeCommand request, CancellationToken cancellationToken)

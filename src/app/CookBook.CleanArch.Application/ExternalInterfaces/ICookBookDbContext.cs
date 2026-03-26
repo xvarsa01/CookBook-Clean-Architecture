@@ -8,5 +8,5 @@ public interface ICookBookDbContext
 {
     DbSet<Ingredient> Ingredients { get;}
     DbSet<Recipe> Recipes { get;}
-    DbSet<IngredientInRecipe> IngredientInRecipe { get;}
+    DbSet<RecipeIngredient> IngredientInRecipe { get;}
 }
