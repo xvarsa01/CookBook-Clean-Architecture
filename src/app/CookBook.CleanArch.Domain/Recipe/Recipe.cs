@@ -41,7 +41,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         return Result.Ok(new Recipe(name, description, imageUrl, duration, type));
     }
     
-    public Result<Guid> AddIngredient(Guid ingredientId, IngredientAmount amount, MeasurementUnit unit)
+    public Result<Guid> AddIngredient(IngredientId ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
         if (_ingredients.Count == 10)
             return Result.Invalid<Guid>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
@@ -56,22 +56,22 @@ public record Recipe : AggregateRootBase<RecipeId>
         return Result.Ok(ingredientInRecipeResult.Value.Id.Id);
     }
 
-    public Result RemoveIngredientsByIngredientId(Guid ingredientId)
+    public Result RemoveIngredientsByIngredientId(IngredientId ingredientId)
     {
         var removedCount = _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
 
         if (removedCount == 0)
-            return Result.Invalid(RecipeErrors.RecipeIngredientByIdNotFoundError(new IngredientId(ingredientId), Id));
+            return Result.Invalid(RecipeErrors.RecipeIngredientByIdNotFoundError(ingredientId, Id));
         
         return Result.Ok();
     }
     
-    public Result RemoveIngredientByEntryId(Guid entryId)
+    public Result RemoveIngredientByEntryId(IngredientInRecipeId entryId)
     {
         var idx = _ingredients.FindIndex(i => i.Id == entryId);
 
         if (idx < 0)
-            return Result.Invalid(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(new IngredientInRecipeId(entryId), Id));
+            return Result.Invalid(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(entryId, Id));
         
         _ingredients.RemoveAt(idx);
         return Result.Ok();
@@ -86,12 +86,12 @@ public record Recipe : AggregateRootBase<RecipeId>
         return Result.Ok();
     }
 
-    public Result UpdateIngredientEntry(Guid entryId, IngredientAmount newAmount, MeasurementUnit newUnit)
+    public Result UpdateIngredientEntry(IngredientInRecipeId entryId, IngredientAmount newAmount, MeasurementUnit newUnit)
     {
         var ingredient = _ingredients.FirstOrDefault(i => i.Id == entryId);
 
         if (ingredient is null)
-            return Result.Invalid(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(new IngredientInRecipeId(entryId), Id));
+            return Result.Invalid(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(entryId, Id));
 
         ingredient.Update(newAmount, newUnit);
         return Result.Ok();

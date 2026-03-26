@@ -8,9 +8,9 @@ public interface IRepository<TAggregate, TId>
     IQueryable<TAggregate> Query();
     Task<List<TAggregate>> GetAllAsync();
     // Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification);
-    Task<TAggregate?> GetByIdAsync(Guid id);
-    Task DeleteAsync(Guid entityId);
-    Task<Guid> InsertAsync(TAggregate aggregate);
-    Task<Guid?> UpdateAsync(TAggregate aggregate);
+    Task<TAggregate?> GetByIdAsync(TId id);
+    Task DeleteAsync(TId entityId);
+    Task<TId> InsertAsync(TAggregate aggregate);
+    Task<TId?> UpdateAsync(TAggregate aggregate);
     ValueTask<bool> ExistsAsync(TAggregate aggregate);
 }

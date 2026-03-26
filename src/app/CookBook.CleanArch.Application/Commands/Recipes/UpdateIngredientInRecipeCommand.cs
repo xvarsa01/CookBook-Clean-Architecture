@@ -8,7 +8,7 @@ using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Recipes;
 
-public record UpdateIngredientInRecipeCommand(Guid RecipeId, RecipeUpdateIngredientRequest Request) : ICommand;
+public record UpdateIngredientInRecipeCommand(RecipeId RecipeId, RecipeUpdateIngredientRequest Request) : ICommand;
 
 internal sealed class UpdateIngredientInRecipeCommandHandler(IRepository<Recipe, RecipeId> recipeRepository) : ICommandHandler<UpdateIngredientInRecipeCommand>
 {
@@ -18,7 +18,7 @@ internal sealed class UpdateIngredientInRecipeCommandHandler(IRepository<Recipe,
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return Result.NotFound(RecipeErrors.RecipeNotFoundError(new RecipeId(request.RecipeId)));
+            return Result.NotFound(RecipeErrors.RecipeNotFoundError(request.RecipeId));
         }
         
         var result = recipe.UpdateIngredientEntry(request.Request.EntryId, request.Request.NewAmount, request.Request.NewUnit);

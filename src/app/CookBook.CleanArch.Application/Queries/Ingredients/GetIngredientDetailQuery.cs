@@ -8,7 +8,7 @@ using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Queries.Ingredients;
 
-public record GetIngredientDetailQuery(Guid Id) : IQuery<IngredientGetDetailResponse>;
+public record GetIngredientDetailQuery(IngredientId Id) : IQuery<IngredientGetDetailResponse>;
 
 internal class GetIngredientDetailQueryHandler(IRepository<Ingredient, IngredientId> repository) : IQueryHandler<GetIngredientDetailQuery, IngredientGetDetailResponse>
 {
@@ -17,7 +17,7 @@ internal class GetIngredientDetailQueryHandler(IRepository<Ingredient, Ingredien
         var entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)
         {
-            return Result.NotFound<IngredientGetDetailResponse>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Id)));
+            return Result.NotFound<IngredientGetDetailResponse>(IngredientErrors.IngredientNotFoundError(request.Id));
         }
 
         var model = new IngredientGetDetailResponse(entity.Id, entity.Name, entity.Description, entity.ImageUrl);

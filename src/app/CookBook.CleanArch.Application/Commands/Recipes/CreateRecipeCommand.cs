@@ -7,11 +7,11 @@ using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Recipes;
 
-public record CreateRecipeCommand(RecipeCreateRequest Request) : ICommand<Guid>;
+public record CreateRecipeCommand(RecipeCreateRequest Request) : ICommand<RecipeId>;
 
-internal sealed class CreateRecipeCommandHandler(IRepository<Recipe, RecipeId> repository) : ICommandHandler<CreateRecipeCommand,Guid>
+internal sealed class CreateRecipeCommandHandler(IRepository<Recipe, RecipeId> repository) : ICommandHandler<CreateRecipeCommand,RecipeId>
 {
-    public async Task<Result<Guid>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RecipeId>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
         var result = Recipe.Create(
             request.Request.Name,
@@ -22,7 +22,7 @@ internal sealed class CreateRecipeCommandHandler(IRepository<Recipe, RecipeId> r
         );
         
         if (result.IsFailure)
-            return Result.Invalid<Guid>(result.Error);
+            return Result.Invalid<RecipeId>(result.Error);
         
         var createdRecipeId = await repository.InsertAsync(result.Value);
         return Result.Ok(createdRecipeId);

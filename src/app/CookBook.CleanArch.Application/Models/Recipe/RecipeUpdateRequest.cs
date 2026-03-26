@@ -5,7 +5,7 @@ using CookBook.CleanArch.Domain.Shared.ValueObjects;
 namespace CookBook.CleanArch.Application.Models.Recipe;
 
 public record RecipeUpdateRequest(
-    Guid Id,
+    RecipeId Id,
     RecipeName? Name,
     string? Description,
     ImageUrl? ImageUrl,

@@ -19,7 +19,7 @@ public class IngredientUnitTests
         // Arrange
         var repoMock = new Mock<IRepository<Ingredient, IngredientId>>();
         
-        var expectedId = Guid.NewGuid();
+        var expectedId = new IngredientId(Guid.NewGuid());
         repoMock.Setup(r => r.InsertAsync(It.IsAny<Ingredient>()))
             .ReturnsAsync(expectedId);
 
@@ -42,10 +42,10 @@ public class IngredientUnitTests
     public async Task GetIngredientHandler_ReturnsNotFound_WhenMissing()
     {
         var repoMock = new Mock<IRepository<Ingredient, IngredientId>>();
-        repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((Ingredient?)null);
+        repoMock.Setup(r => r.GetByIdAsync(It.IsAny<IngredientId>())).ReturnsAsync((Ingredient?)null);
 
         var handler = new GetIngredientDetailQueryHandler(repoMock.Object);
-        var useCase = new GetIngredientDetailQuery(Guid.NewGuid());
+        var useCase = new GetIngredientDetailQuery(new IngredientId(Guid.NewGuid()));
 
         var result = await handler.Handle(useCase, CancellationToken.None);
 
@@ -79,12 +79,12 @@ public class IngredientUnitTests
     public async Task UpdateIngredientHandler_ReturnsNotFound_WhenMissing()
     {
         var repoMock = new Mock<IRepository<Ingredient, IngredientId>>();
-        repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((Ingredient?)null);
+        repoMock.Setup(r => r.GetByIdAsync(It.IsAny<IngredientId>())).ReturnsAsync((Ingredient?)null);
 
         var publisherMock = new Mock<IPublisher>();
 
         var handler = new UpdateIngredientCommandHandler(repoMock.Object, publisherMock.Object);
-        var id = Guid.NewGuid();
+        var id = new IngredientId(Guid.NewGuid());
         var dto = new IngredientUpdateRequest(
             id,
             "New",

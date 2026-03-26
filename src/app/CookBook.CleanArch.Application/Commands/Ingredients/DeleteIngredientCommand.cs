@@ -10,7 +10,7 @@ using MediatR;
 
 namespace CookBook.CleanArch.Application.Commands.Ingredients;
 
-public record DeleteIngredientCommand(Guid Id) : ICommand;
+public record DeleteIngredientCommand(IngredientId Id) : ICommand;
 
 internal sealed class DeleteIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository, IPublisher publisher, IMediator mediator)
     : ICommandHandler<DeleteIngredientCommand>
@@ -20,7 +20,7 @@ internal sealed class DeleteIngredientCommandHandler(IRepository<Ingredient, Ing
         var entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)
         {
-            return Result.NotFound(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Id)));
+            return Result.NotFound(IngredientErrors.IngredientNotFoundError(request.Id));
         }
         
         var recipesContainingIngredient = await mediator.Send(new GetRecipeListByContainingIngredientIdQuery(request.Id), cancellationToken);

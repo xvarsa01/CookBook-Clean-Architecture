@@ -11,7 +11,7 @@ using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Recipes;
 
-public record AddIngredientToRecipeCommand(Guid RecipeId, RecipeAddIngredientRequest Request) : ICommand<Guid>;
+public record AddIngredientToRecipeCommand(RecipeId RecipeId, RecipeAddIngredientRequest Request) : ICommand<Guid>;
 
 internal sealed class AddIngredientToRecipeCommandHandler(
     IRepository<Recipe, RecipeId> recipeRepository,

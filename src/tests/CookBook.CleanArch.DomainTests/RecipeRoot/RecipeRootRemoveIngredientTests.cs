@@ -1,4 +1,5 @@
 ﻿using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.DomainTests.RecipeRoot;
 
@@ -115,10 +116,10 @@ public class RecipeRootRemoveIngredientTests
         {
             // Arrange
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
-            var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
+            var wrongEntryId = new IngredientInRecipeId(Guid.NewGuid());
             
             // Act & Assert
-        var result = recipe.RemoveIngredientByEntryId(ingredient.Id);
+        var result = recipe.RemoveIngredientByEntryId(wrongEntryId);
 
         Assert.True(result.IsFailure);
         }

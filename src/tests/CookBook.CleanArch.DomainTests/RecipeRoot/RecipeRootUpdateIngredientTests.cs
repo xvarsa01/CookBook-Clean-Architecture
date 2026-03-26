@@ -59,7 +59,7 @@ public class RecipeRootUpdateIngredientTests
             var recipe = RecipeTestSeeds.RecipeWithMultipleIngredients();
         
             // Act & Assert
-        var result = recipe.UpdateIngredientEntry(Guid.NewGuid(), IngredientAmount.CreateObject(123456).Value, MeasurementUnit.Kg);
+        var result = recipe.UpdateIngredientEntry(new IngredientInRecipeId(Guid.NewGuid()), IngredientAmount.CreateObject(123456).Value, MeasurementUnit.Kg);
 
         Assert.True(result.IsFailure);
         }

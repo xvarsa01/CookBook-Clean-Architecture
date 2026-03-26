@@ -7,11 +7,11 @@ using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Ingredients;
 
-public record CreateIngredientCommand(IngredientCreateRequest Request) : ICommand<Guid>;
+public record CreateIngredientCommand(IngredientCreateRequest Request) : ICommand<IngredientId>;
 
-internal sealed class CreateIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository) : ICommandHandler<CreateIngredientCommand, Guid>
+internal sealed class CreateIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository) : ICommandHandler<CreateIngredientCommand, IngredientId>
 {
-    public async Task<Result<Guid>> Handle(CreateIngredientCommand request, CancellationToken cancellationToken) 
+    public async Task<Result<IngredientId>> Handle(CreateIngredientCommand request, CancellationToken cancellationToken) 
     {
         var result = Ingredient.Create(
             request.Request.Name,
@@ -19,7 +19,7 @@ internal sealed class CreateIngredientCommandHandler(IRepository<Ingredient, Ing
             request.Request.ImageUrl);
         
         if (result.IsFailure)
-            return Result.Invalid<Guid>(result.Error);
+            return Result.Invalid<IngredientId>(result.Error);
         
         var createdIngredientId = await repository.InsertAsync(result.Value);
         return Result.Ok(createdIngredientId);

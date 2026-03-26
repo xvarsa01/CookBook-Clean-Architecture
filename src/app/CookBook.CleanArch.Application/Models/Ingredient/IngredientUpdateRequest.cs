@@ -1,5 +1,11 @@
-﻿using CookBook.CleanArch.Domain.Shared.ValueObjects;
+﻿using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Models.Ingredient;
 
-public record IngredientUpdateRequest(Guid Id, string? Name, string? Description, ImageUrl? ImageUrl);
+public record IngredientUpdateRequest(
+    IngredientId Id,
+    string? Name,
+    string? Description,
+    ImageUrl? ImageUrl
+);

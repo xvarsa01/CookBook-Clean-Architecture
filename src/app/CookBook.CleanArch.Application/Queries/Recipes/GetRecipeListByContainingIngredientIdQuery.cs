@@ -3,12 +3,13 @@ using CookBook.CleanArch.Application.Abstraction;
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Domain;
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Queries.Recipes;
 
-public record GetRecipeListByContainingIngredientIdQuery(Guid IngredientId) : IQuery<List<RecipeGetListResponse>>;
+public record GetRecipeListByContainingIngredientIdQuery(IngredientId IngredientId) : IQuery<List<RecipeGetListResponse>>;
 
 internal class GetRecipeListByContainingIngredientIdQueryHandler (IRepository<Recipe, RecipeId> repository) : IQueryHandler<GetRecipeListByContainingIngredientIdQuery, List<RecipeGetListResponse>>
 {

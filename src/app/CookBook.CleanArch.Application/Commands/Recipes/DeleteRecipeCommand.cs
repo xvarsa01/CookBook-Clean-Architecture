@@ -6,7 +6,7 @@ using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Recipes;
 
-public record DeleteRecipeCommand(Guid Id) : ICommand;
+public record DeleteRecipeCommand(RecipeId Id) : ICommand;
 
 internal sealed class DeleteRecipeCommandHandler(IRepository<Recipe, RecipeId> repository) : ICommandHandler<DeleteRecipeCommand>
 {

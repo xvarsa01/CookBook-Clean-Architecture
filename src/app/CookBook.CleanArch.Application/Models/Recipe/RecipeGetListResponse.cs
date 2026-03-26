@@ -5,7 +5,7 @@ namespace CookBook.CleanArch.Application.Models.Recipe;
 
 public record RecipeGetListResponse
 (
-    Guid Id,
+    RecipeId Id,
     RecipeName Name,
     ImageUrl? ImageUrl
 );

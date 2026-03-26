@@ -34,12 +34,12 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
     //     return await query.ToListAsync();
     // }
 
-    public virtual async Task<TEntity?> GetByIdAsync(Guid id)
+    public virtual async Task<TEntity?> GetByIdAsync(TId id)
     {
         return await _dbSet.SingleOrDefaultAsync(e => e.Id == id);
     }
 
-    public async Task DeleteAsync(Guid entityId)
+    public async Task DeleteAsync(TId entityId)
     {
         var entity = await GetByIdAsync(entityId);
         if (entity is null)
@@ -51,14 +51,14 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
         await SaveChangesAsync();
     }
 
-    public async Task<Guid> InsertAsync(TEntity aggregate)
+    public async Task<TId> InsertAsync(TEntity aggregate)
     {
         var entityId = _dbSet.Add(aggregate).Entity.Id;
         await SaveChangesAsync();
         return entityId;
     }
 
-    public async Task<Guid?> UpdateAsync(TEntity aggregate)
+    public async Task<TId?> UpdateAsync(TEntity aggregate)
     {
         // Assume entity is already tracked if it was loaded via this DbContext
         // Only attach if it's not tracked yet.

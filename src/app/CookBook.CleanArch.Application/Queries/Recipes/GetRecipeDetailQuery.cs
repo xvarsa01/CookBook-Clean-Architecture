@@ -11,7 +11,7 @@ using IngredientInRecipe = CookBook.CleanArch.Application.Models.Recipe.Ingredie
 
 namespace CookBook.CleanArch.Application.Queries.Recipes;
 
-public record GetRecipeDetailQuery(Guid Id) : IQuery<RecipeGetDetailResponse>;
+public record GetRecipeDetailQuery(RecipeId Id) : IQuery<RecipeGetDetailResponse>;
 
 internal class GetRecipeDetailQueryHandler(IRepository<Recipe, RecipeId> repository, IRepository<Ingredient, IngredientId> ingredientRepository) : IQueryHandler<GetRecipeDetailQuery, RecipeGetDetailResponse>
 {
@@ -20,7 +20,7 @@ internal class GetRecipeDetailQueryHandler(IRepository<Recipe, RecipeId> reposit
         Recipe? entity = await repository.GetByIdAsync(request.Id);
         if (entity is null)
         {
-            return Result.NotFound<RecipeGetDetailResponse>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.Id)));
+            return Result.NotFound<RecipeGetDetailResponse>(RecipeErrors.RecipeNotFoundError(request.Id));
         }
 
         var ingredientIds = entity.Ingredients.Select(i => i.IngredientId).ToList();

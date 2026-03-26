@@ -7,7 +7,7 @@ using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Recipes;
 
-public record RemoveIngredientFromRecipeCommand(Guid RecipeId, Guid EntryId) : ICommand;
+public record RemoveIngredientFromRecipeCommand(RecipeId RecipeId, IngredientInRecipeId EntryId) : ICommand;
 
 internal sealed class RemoveIngredientFromRecipeCommandHandler(IRepository<Recipe, RecipeId > recipeRepository)
     : ICommandHandler<RemoveIngredientFromRecipeCommand>
@@ -17,7 +17,7 @@ internal sealed class RemoveIngredientFromRecipeCommandHandler(IRepository<Recip
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return Result.NotFound(RecipeErrors.RecipeNotFoundError(new RecipeId(request.RecipeId)));
+            return Result.NotFound(RecipeErrors.RecipeNotFoundError(request.RecipeId));
         }
         
         var result = recipe.RemoveIngredientByEntryId(request.EntryId);

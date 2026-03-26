@@ -1,7 +1,10 @@
 ﻿// using CommunityToolkit.Mvvm.ComponentModel;
+
+using CookBook.CleanArch.Domain.Shared;
+
 namespace CookBook.CleanArch.Application.Models;
 
 public interface IModel
 {
-    Guid Id { get; }
+    StronglyTypedId Id { get; }
 }

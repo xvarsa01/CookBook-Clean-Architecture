@@ -18,31 +18,31 @@ public class InMemoryRepository<TEntity, TId> : IRepository<TEntity, TId>
     public Task<List<TEntity>> GetAllAsync()
         => Task.FromResult(_store.Values.ToList());
 
-    public Task<TEntity?> GetByIdAsync(Guid id)
+    public Task<TEntity?> GetByIdAsync(TId id)
     {
         _store.TryGetValue(id, out var entity);
         return Task.FromResult(entity);
     }
 
-    public Task DeleteAsync(Guid entityId)
+    public Task DeleteAsync(TId entityId)
     {
         _store.TryRemove(entityId, out _);
         return Task.CompletedTask;
     }
 
-    public Task<Guid> InsertAsync(TEntity aggregate)
+    public Task<TId> InsertAsync(TEntity aggregate)
     {
-        _store[aggregate.Id] = aggregate;
-        return Task.FromResult(aggregate.Id.Id);
+        _store[aggregate.Id.Id] = aggregate;
+        return Task.FromResult(aggregate.Id);
     }
 
-    public Task<Guid?> UpdateAsync(TEntity aggregate)
+    public Task<TId?> UpdateAsync(TEntity aggregate)
     {
         if (!_store.ContainsKey(aggregate.Id))
-            return Task.FromResult<Guid?>(null);
+            return Task.FromResult<TId?>(null);
 
         _store[aggregate.Id] = aggregate;
-        return Task.FromResult<Guid?>(aggregate.Id);
+        return Task.FromResult<TId?>(aggregate.Id);
     }
 
     public ValueTask<bool> ExistsAsync(TEntity aggregate)

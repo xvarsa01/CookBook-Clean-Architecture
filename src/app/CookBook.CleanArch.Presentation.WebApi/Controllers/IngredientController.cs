@@ -3,6 +3,7 @@ using CookBook.CleanArch.Application.Commands.Ingredients;
 using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Application.Queries.Ingredients;
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,7 @@ public class IngredientController : ControllerBase
     }
 
     [HttpPost(Name = "CreateIngredient")]
-    public async Task<ActionResult<Guid>> Create(IngredientCreateRequest request)
+    public async Task<ActionResult<IngredientId>> Create(IngredientCreateRequest request)
     {
         var result = await _mediator.Send(new CreateIngredientCommand(request));
         if (result.IsSuccess)
@@ -32,8 +33,8 @@ public class IngredientController : ControllerBase
         return BadRequest(result.Error);
     }
         
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<IngredientGetDetailResponse>> GetById(Guid id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<IngredientGetDetailResponse>> GetById(IngredientId id)
     {
         var result = await _mediator.Send(new GetIngredientDetailQuery(id));
         if (result.IsSuccess)
@@ -57,7 +58,7 @@ public class IngredientController : ControllerBase
     }
     
     [HttpPut(Name = "UpdateIngredient")]
-    public async Task<ActionResult<Guid>> Update(IngredientUpdateRequest request)
+    public async Task<ActionResult<IngredientId>> Update(IngredientUpdateRequest request)
     {
         var result = await _mediator.Send(new UpdateIngredientCommand(request));
         if (result.IsSuccess)
@@ -68,7 +69,7 @@ public class IngredientController : ControllerBase
     }
     
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteAsync(Guid id)
+    public async Task<ActionResult> DeleteAsync(IngredientId id)
     {
         var result = await _mediator.Send(new DeleteIngredientCommand(id));
         if (result.IsSuccess)

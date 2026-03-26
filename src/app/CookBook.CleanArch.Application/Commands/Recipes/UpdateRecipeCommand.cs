@@ -8,42 +8,42 @@ using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Recipes;
 
-public record UpdateRecipeCommand(RecipeUpdateRequest Request) : ICommand<Guid>;
+public record UpdateRecipeCommand(RecipeUpdateRequest Request) : ICommand<RecipeId>;
 
-internal sealed class UpdateRecipeCommandHandler(IRepository<Recipe, RecipeId> repository) : ICommandHandler<UpdateRecipeCommand,Guid>
+internal sealed class UpdateRecipeCommandHandler(IRepository<Recipe, RecipeId> repository) : ICommandHandler<UpdateRecipeCommand,RecipeId>
 {
-    public async Task<Result<Guid>> Handle(UpdateRecipeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RecipeId>> Handle(UpdateRecipeCommand request, CancellationToken cancellationToken)
     {
         var existing = await repository.GetByIdAsync(request.Request.Id);
         if (existing is null)
         {
-            return Result.NotFound<Guid>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.Request.Id)));
+            return Result.NotFound<RecipeId>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.Request.Id)));
         }
 
         if (request.Request.Name is not null)
         {
             var result = existing.UpdateName(request.Request.Name);
             if (result.IsFailure)
-                return Result.Invalid<Guid>(result.Error);
+                return Result.Invalid<RecipeId>(result.Error);
         }
         
         if (request.Request.Description is not null)
         {
             var result = existing.UpdateDescription(request.Request.Description);
             if (result.IsFailure)
-                return Result.Invalid<Guid>(result.Error);
+                return Result.Invalid<RecipeId>(result.Error);
         }
         
         var restResult = existing.UpdateRest(request.Request.ImageUrl, request.Request.Duration, request.Request.Type);
         if (restResult.IsFailure)
-            return Result.Invalid<Guid>(restResult.Error);
+            return Result.Invalid<RecipeId>(restResult.Error);
         
         var id = await repository.UpdateAsync(existing);
         if (id is null)
         {
-            return Result.Invalid<Guid>(RecipeErrors.RecipeUpdateFailedError(new RecipeId(request.Request.Id)));
+            return Result.Invalid<RecipeId>(RecipeErrors.RecipeUpdateFailedError(new RecipeId(request.Request.Id)));
         }
         
-        return Result.Ok(id.Value);
+        return Result.Ok(id);
     }
 }
