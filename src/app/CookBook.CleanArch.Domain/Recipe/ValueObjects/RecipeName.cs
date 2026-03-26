@@ -1,8 +1,9 @@
 ﻿using CookBook.CleanArch.Domain.Recipe.Errors;
+using CookBook.CleanArch.Domain.Shared;
 
 namespace CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
-public class RecipeName
+public class RecipeName : IValueObject<string>, IValueObjectFactory<RecipeName, string>
 {
     public string Value { get; }
 

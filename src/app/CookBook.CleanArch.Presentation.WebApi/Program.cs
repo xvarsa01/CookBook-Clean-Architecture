@@ -1,8 +1,8 @@
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using CookBook.Clean.Infrastructure;
 using CookBook.CleanArch.Application;
 using CookBook.CleanArch.Infrastructure;
+using CookBook.CleanArch.Presentation.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        options.JsonSerializerOptions.Converters.Add(new ValueObjectJsonConverterFactory());
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

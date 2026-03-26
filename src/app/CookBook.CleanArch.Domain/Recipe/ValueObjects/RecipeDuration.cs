@@ -1,8 +1,9 @@
 ﻿using CookBook.CleanArch.Domain.Recipe.Errors;
+using CookBook.CleanArch.Domain.Shared;
 
 namespace CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
-public class RecipeDuration
+public class RecipeDuration : IValueObject<TimeSpan>, IValueObjectFactory<RecipeDuration, TimeSpan>
 {
     public TimeSpan Value { get; }
 

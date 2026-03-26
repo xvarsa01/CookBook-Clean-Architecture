@@ -59,8 +59,9 @@ public class RecipeController : ControllerBase
         return BadRequest(result.Error);
     }
     
-    [HttpGet("ingredient/{ingredientId:guid}", Name = "GetRecipeListByIngredientId")]
-    public async Task<ActionResult<IEnumerable<RecipeGetListResponse>>> GetListByIngredient(IngredientId ingredientId)
+    [HttpGet("ingredient/{ingredientId}", Name = "GetRecipeListByIngredientId")]
+    public async Task<ActionResult<IEnumerable<RecipeGetListResponse>>> GetListByIngredient(
+        [FromRoute] IngredientId ingredientId)
     {
         var result = await _mediator.Send(new GetRecipeListByContainingIngredientIdQuery(ingredientId));
         if (result.IsSuccess)
@@ -71,8 +72,9 @@ public class RecipeController : ControllerBase
         return BadRequest(result.Error);
     }
     
-    [HttpGet("ingredient/{ingredientNameSubstring}", Name = "GetRecipeListByIngredientName")]
-    public async Task<ActionResult<IEnumerable<RecipeGetListResponse>>> GetListByIngredientName(string ingredientNameSubstring)
+    [HttpGet("ingredient", Name = "GetRecipeListByIngredientName")]
+    public async Task<ActionResult<IEnumerable<RecipeGetListResponse>>> GetListByIngredientName(
+        [FromQuery] string ingredientNameSubstring)
     {
         var result = await _mediator.Send(new GetRecipeListByContainingIngredientNameQuery(ingredientNameSubstring));
         if (!result.IsSuccess)
@@ -110,8 +112,10 @@ public class RecipeController : ControllerBase
         return NotFound(result.Error);
     }
 
-    [HttpPost("{recipeId:guid}/ingredient", Name = "AddIngredientToRecipe")]
-    public async Task<ActionResult<Guid>> AddIngredient(RecipeId recipeId, RecipeAddIngredientRequest request)
+    [HttpPost("{recipeId}/ingredient", Name = "AddIngredientToRecipe")]
+    public async Task<ActionResult<Guid>> AddIngredient(
+        [FromRoute] RecipeId recipeId,
+        RecipeAddIngredientRequest request)
     {
         var result = await _mediator.Send(new AddIngredientToRecipeCommand(recipeId, request));
         if (result.IsSuccess)
@@ -121,8 +125,10 @@ public class RecipeController : ControllerBase
         return BadRequest(result.Error);
     }
 
-    [HttpDelete("{recipeId:guid}/ingredient/{ingredientEntryId:guid}", Name = "RemoveIngredientFromRecipe")]
-    public async Task<ActionResult> RemoveIngredient(RecipeId recipeId, IngredientInRecipeId ingredientEntryId)
+    [HttpDelete("{recipeId}/ingredient/{ingredientEntryId}", Name = "RemoveIngredientFromRecipe")]
+    public async Task<ActionResult> RemoveIngredient(
+        [FromRoute] RecipeId recipeId,
+        IngredientInRecipeId ingredientEntryId)
     {
         var result = await _mediator.Send(new RemoveIngredientFromRecipeCommand(recipeId, ingredientEntryId));
         if (result.IsSuccess)
@@ -132,8 +138,10 @@ public class RecipeController : ControllerBase
         return BadRequest(result.Error);
     }
     
-    [HttpPut("{recipeId:guid}/ingredient", Name = "UpdateIngredientInRecipe")]
-    public async Task<ActionResult> Update(RecipeId recipeId, RecipeUpdateIngredientRequest request)
+    [HttpPut("{recipeId}/ingredient", Name = "UpdateIngredientInRecipe")]
+    public async Task<ActionResult> Update(
+        [FromRoute] RecipeId recipeId,
+        RecipeUpdateIngredientRequest request)
     {
         var result = await _mediator.Send(new UpdateIngredientInRecipeCommand(recipeId, request));
         if (result.IsSuccess)

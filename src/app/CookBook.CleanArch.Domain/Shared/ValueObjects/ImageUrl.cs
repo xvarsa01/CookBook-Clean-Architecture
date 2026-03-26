@@ -3,7 +3,7 @@ using CookBook.CleanArch.Domain.Shared.Errors;
 
 namespace CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-public class ImageUrl
+public class ImageUrl : IValueObject<string>, IValueObjectFactory<ImageUrl, string>
 {
     public string Value { get; }
 

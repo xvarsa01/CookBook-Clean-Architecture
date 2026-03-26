@@ -1,8 +1,9 @@
 ﻿using CookBook.CleanArch.Domain.Recipe.Errors;
+using CookBook.CleanArch.Domain.Shared;
 
 namespace CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
-public class IngredientAmount
+public class IngredientAmount : IValueObject<decimal>, IValueObjectFactory<IngredientAmount, decimal>
 {
     public decimal Value { get; }
     
