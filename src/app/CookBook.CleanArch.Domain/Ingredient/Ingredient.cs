@@ -28,7 +28,7 @@ public record Ingredient : AggregateRootBase<IngredientId>
         if (string.IsNullOrEmpty(name))
             return Result.Invalid<Ingredient>(IngredientErrors.IngredientNameEmptyError());
 
-        var id = IngredientId.CreateObject().Value;
+        var id = new IngredientId(Guid.NewGuid());
         var entity = new Ingredient(id, name, description, imageUrl);
         return Result.Ok(entity);
     }

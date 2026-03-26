@@ -38,7 +38,7 @@ public record Recipe : AggregateRootBase<RecipeId>
     
     public static Result<Recipe> Create(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
     {
-        var id = RecipeId.CreateObject().Value;
+        var id = new RecipeId(Guid.NewGuid());
         return Result.Ok(new Recipe(id, name, description, imageUrl, duration, type));
     }
     

@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        options.JsonSerializerOptions.Converters.Add(new StronglyTypedIdJsonConverterFactory());
         options.JsonSerializerOptions.Converters.Add(new ValueObjectJsonConverterFactory());
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
@@ -56,5 +57,3 @@ DbOptions GetDALOptions([CallerFilePath] string sourceFilePath = "")
     };
     return dalOptions;
 }
-
-
