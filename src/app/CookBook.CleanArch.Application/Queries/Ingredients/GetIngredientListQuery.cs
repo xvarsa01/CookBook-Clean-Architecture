@@ -3,18 +3,17 @@ using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.Ingredient;
-using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Queries.Ingredients;
 
 public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<IngredientGetListResponse>>;
 
-internal class GetIngredientListQueryHandler (IRepository<Ingredient, IngredientId> repository) : IQueryHandler<GetIngredientListQuery, List<IngredientGetListResponse>>
+internal class GetIngredientListQueryHandler (ICookBookDbContext dbContext) : IQueryHandler<GetIngredientListQuery, List<IngredientGetListResponse>>
 {
-    public Task<Result<List<IngredientGetListResponse>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<IngredientGetListResponse>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
     {
-        var queryable = repository.Query();
+        var queryable = dbContext.Ingredients.AsQueryable();
         
         if (request.Filter.Name is not null)
         {
@@ -50,8 +49,8 @@ internal class GetIngredientListQueryHandler (IRepository<Ingredient, Ingredient
                 .Skip(request.PagingOptions.PageSize * request.PagingOptions.PageIndex)
                 .Take(request.PagingOptions.PageSize);
         }
-        var result = queryable.Select(i => new IngredientGetListResponse(i.Id, i.Name, i.ImageUrl)).ToList();
+        var result = await queryable.Select(i => new IngredientGetListResponse(i.Id, i.Name, i.ImageUrl)).ToListAsync(cancellationToken);
         
-        return Task.FromResult(Result.Ok(result));
+        return Result.Ok(result);
     }
 }

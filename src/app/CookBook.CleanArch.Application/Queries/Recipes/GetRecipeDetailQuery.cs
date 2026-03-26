@@ -33,7 +33,7 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext) : IQuer
                     ir.Ingredient.Name,
                     ir.Ingredient.ImageUrl
                 )).ToList()))
-                .FirstOrDefaultAsync(cancellationToken);
+                .FirstOrDefaultAsync(r => r.Id == request.Id, cancellationToken);
 
         return recipe == null
             ? Result.NotFound<RecipeResponse>(RecipeErrors.RecipeNotFoundError(request.Id))

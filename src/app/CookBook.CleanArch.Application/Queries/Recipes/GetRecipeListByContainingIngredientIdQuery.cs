@@ -1,26 +1,25 @@
-﻿using CookBook.CleanArch.Application.Models;
-using CookBook.CleanArch.Application.Abstraction;
+﻿using CookBook.CleanArch.Application.Abstraction;
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
-using CookBook.CleanArch.Domain.Recipe;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Queries.Recipes;
 
 public record GetRecipeListByContainingIngredientIdQuery(IngredientId IngredientId) : IQuery<List<RecipeGetListResponse>>;
 
-internal class GetRecipeListByContainingIngredientIdQueryHandler (IRepository<Recipe, RecipeId> repository) : IQueryHandler<GetRecipeListByContainingIngredientIdQuery, List<RecipeGetListResponse>>
+internal class GetRecipeListByContainingIngredientIdQueryHandler (ICookBookDbContext dbContext) : IQueryHandler<GetRecipeListByContainingIngredientIdQuery, List<RecipeGetListResponse>>
 {
-    public Task<Result<List<RecipeGetListResponse>>> Handle(GetRecipeListByContainingIngredientIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<RecipeGetListResponse>>> Handle(GetRecipeListByContainingIngredientIdQuery request, CancellationToken cancellationToken)
     {
-        var queryable = repository.Query();
+        var list = await dbContext.Recipes.Where(recipe => recipe.Ingredients.Any(ri => ri.IngredientId == request.IngredientId))
+            .Select(r => new RecipeGetListResponse(
+                r.Id,
+                r.Name,
+                r.ImageUrl))
+            .ToListAsync(cancellationToken);
         
-        queryable = queryable.Where(r => r.Ingredients.Any(i => i.IngredientId == request.IngredientId));
-        
-        var result = queryable.Select(i => new RecipeGetListResponse(i.Id, i.Name, i.ImageUrl)).ToList();
-        
-        return Task.FromResult(Result.Ok(result));
+        return (Result.Ok(list));
     }
 }
