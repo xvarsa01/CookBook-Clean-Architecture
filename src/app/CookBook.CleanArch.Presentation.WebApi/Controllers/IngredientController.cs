@@ -35,10 +35,11 @@ public class IngredientController : ControllerBase
         return BadRequest(result.Error);
     }
         
-    [HttpGet("{id}")]
-    public async Task<ActionResult<IngredientGetDetailResponse>> GetById(IngredientId id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<IngredientGetDetailResponse>> GetById(Guid id)
     {
-        var result = await _mediator.Send(new GetIngredientDetailQuery(id));
+        var ingredientId = new IngredientId(id);
+        var result = await _mediator.Send(new GetIngredientDetailQuery(ingredientId));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
@@ -70,10 +71,11 @@ public class IngredientController : ControllerBase
         return BadRequest(result.Error);
     }
     
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteAsync(IngredientId id)
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeleteAsync(Guid id)
     {
-        var result = await _mediator.Send(new DeleteIngredientCommand(id));
+        var ingredientId = new IngredientId(id);
+        var result = await _mediator.Send(new DeleteIngredientCommand(ingredientId));
         if (result.IsSuccess)
         {
             return NoContent();
