@@ -101,8 +101,9 @@ public class RecipeController : ControllerBase
         return BadRequest(result.Error);
     }
 
-    [HttpDelete("{id:guid}")]
-    public async Task<ActionResult> DeleteAsync(RecipeId id)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteAsync(
+        [FromRoute] RecipeId id)
     {
         var result = await _mediator.Send(new DeleteRecipeCommand(id));
         if (result.IsSuccess)

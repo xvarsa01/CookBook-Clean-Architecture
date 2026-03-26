@@ -15,9 +15,9 @@ public record Ingredient : AggregateRootBase<IngredientId>
     public ImageUrl? ImageUrl { get; private set; }
 
     private Ingredient() { } // for EF
-    private Ingredient(string name, string? description, ImageUrl? imageUrl)
+    private Ingredient(IngredientId id, string name, string? description, ImageUrl? imageUrl)
     {
-        Id = new IngredientId(Guid.NewGuid());
+        Id = id;
         Name =  name;
         Description = description;
         ImageUrl = imageUrl;
@@ -28,7 +28,8 @@ public record Ingredient : AggregateRootBase<IngredientId>
         if (string.IsNullOrEmpty(name))
             return Result.Invalid<Ingredient>(IngredientErrors.IngredientNameEmptyError());
 
-        var entity = new Ingredient(name, description, imageUrl);
+        var id = IngredientId.CreateObject().Value;
+        var entity = new Ingredient(id, name, description, imageUrl);
         return Result.Ok(entity);
     }
 

@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CookBook.Clean.Infrastructure.Migrations
+namespace CookBook.CleanArch.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Reset : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,9 @@ namespace CookBook.Clean.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true)
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -33,7 +35,7 @@ namespace CookBook.Clean.Infrastructure.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    Duration = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Duration = table.Column<double>(type: "INTEGER", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
@@ -48,14 +50,16 @@ namespace CookBook.Clean.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    RecipeId = table.Column<Guid>(type: "TEXT", nullable: false),
                     IngredientId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Amount = table.Column<decimal>(type: "TEXT", nullable: false),
                     Unit = table.Column<int>(type: "INTEGER", nullable: false),
-                    RecipeId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IngredientInRecipe", x => x.Id);
+                    table.PrimaryKey("PK_IngredientInRecipe", x => new { x.RecipeId, x.Id });
                     table.ForeignKey(
                         name: "FK_IngredientInRecipe_Ingredients_IngredientId",
                         column: x => x.IngredientId,
@@ -74,11 +78,6 @@ namespace CookBook.Clean.Infrastructure.Migrations
                 name: "IX_IngredientInRecipe_IngredientId",
                 table: "IngredientInRecipe",
                 column: "IngredientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_IngredientInRecipe_RecipeId",
-                table: "IngredientInRecipe",
-                column: "RecipeId");
         }
 
         /// <inheritdoc />

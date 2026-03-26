@@ -3,6 +3,7 @@ using CookBook.CleanArch.Application.Commands.Ingredients;
 using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Application.Queries.Ingredients;
+using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,12 +24,13 @@ public class IngredientController : ControllerBase
     }
 
     [HttpPost(Name = "CreateIngredient")]
-    public async Task<ActionResult<IngredientId>> Create(IngredientCreateRequest request)
+    public async Task<ActionResult<Guid>> Create(
+        [FromBody] IngredientCreateRequest request)
     {
-        var result = await _mediator.Send(new CreateIngredientCommand(request));
+        Result<IngredientId> result = await _mediator.Send(new CreateIngredientCommand(request));
         if (result.IsSuccess)
         {
-            return Ok(result.Value);
+            return Ok(result.Value.Id);
         }
         return BadRequest(result.Error);
     }

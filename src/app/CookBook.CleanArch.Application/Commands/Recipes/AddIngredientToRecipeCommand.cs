@@ -11,31 +11,31 @@ using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Commands.Recipes;
 
-public record AddIngredientToRecipeCommand(RecipeId RecipeId, RecipeAddIngredientRequest Request) : ICommand<Guid>;
+public record AddIngredientToRecipeCommand(RecipeId RecipeId, RecipeAddIngredientRequest Request) : ICommand<IngredientInRecipeId>;
 
 internal sealed class AddIngredientToRecipeCommandHandler(
     IRepository<Recipe, RecipeId> recipeRepository,
     IRepository<Ingredient, IngredientId> ingredientRepository
-) : ICommandHandler<AddIngredientToRecipeCommand,Guid>
+) : ICommandHandler<AddIngredientToRecipeCommand,IngredientInRecipeId>
 {
-    public async Task<Result<Guid>> Handle(AddIngredientToRecipeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<IngredientInRecipeId>> Handle(AddIngredientToRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return Result.NotFound<Guid>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.RecipeId)));
+            return Result.NotFound<IngredientInRecipeId>(RecipeErrors.RecipeNotFoundError(request.RecipeId));
         }
 
         var ingredient = await ingredientRepository.GetByIdAsync(request.Request.IngredientId);
         if (ingredient is null)
         {
-            return Result.NotFound<Guid>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Request.IngredientId)));
+            return Result.NotFound<IngredientInRecipeId>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Request.IngredientId)));
         }
 
         var result = recipe.AddIngredient(request.Request.IngredientId, request.Request.Amount, request.Request.Unit);
         if (!result.IsSuccess)
         {
-            return Result.Invalid<Guid>(result.Error);
+            return Result.Invalid<IngredientInRecipeId>(result.Error);
         }
         
         await recipeRepository.UpdateAsync(recipe);

@@ -17,7 +17,7 @@ internal sealed class UpdateRecipeCommandHandler(IRepository<Recipe, RecipeId> r
         var existing = await repository.GetByIdAsync(request.Request.Id);
         if (existing is null)
         {
-            return Result.NotFound<RecipeId>(RecipeErrors.RecipeNotFoundError(new RecipeId(request.Request.Id)));
+            return Result.NotFound<RecipeId>(RecipeErrors.RecipeNotFoundError(request.Request.Id));
         }
 
         if (request.Request.Name is not null)
@@ -41,7 +41,7 @@ internal sealed class UpdateRecipeCommandHandler(IRepository<Recipe, RecipeId> r
         var id = await repository.UpdateAsync(existing);
         if (id is null)
         {
-            return Result.Invalid<RecipeId>(RecipeErrors.RecipeUpdateFailedError(new RecipeId(request.Request.Id)));
+            return Result.Invalid<RecipeId>(RecipeErrors.RecipeUpdateFailedError(request.Request.Id));
         }
         
         return Result.Ok(id);

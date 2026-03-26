@@ -26,9 +26,9 @@ public record Recipe : AggregateRootBase<RecipeId>
     public IReadOnlyCollection<IngredientInRecipe> Ingredients => _ingredients.AsReadOnly();
     
     private Recipe() { } // for EF
-    private Recipe(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
+    private Recipe(RecipeId id, RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
     {
-        Id = new RecipeId(Guid.NewGuid());
+        Id = id;
         Name = name;
         Description = description;
         ImageUrl = imageUrl;
@@ -38,22 +38,23 @@ public record Recipe : AggregateRootBase<RecipeId>
     
     public static Result<Recipe> Create(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
     {
-        return Result.Ok(new Recipe(name, description, imageUrl, duration, type));
+        var id = RecipeId.CreateObject().Value;
+        return Result.Ok(new Recipe(id, name, description, imageUrl, duration, type));
     }
     
-    public Result<Guid> AddIngredient(IngredientId ingredientId, IngredientAmount amount, MeasurementUnit unit)
+    public Result<IngredientInRecipeId> AddIngredient(IngredientId ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
         if (_ingredients.Count == 10)
-            return Result.Invalid<Guid>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
+            return Result.Invalid<IngredientInRecipeId>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
         
         var ingredientInRecipeResult = IngredientInRecipe.Create(ingredientId, Id, amount, unit);
         
         if (ingredientInRecipeResult.IsFailure)
-            return Result.Invalid<Guid>(ingredientInRecipeResult.Error);
+            return Result.Invalid<IngredientInRecipeId>(ingredientInRecipeResult.Error);
         
         _ingredients.Add(ingredientInRecipeResult.Value);
         
-        return Result.Ok(ingredientInRecipeResult.Value.Id.Id);
+        return Result.Ok(ingredientInRecipeResult.Value.Id);
     }
 
     public Result RemoveIngredientsByIngredientId(IngredientId ingredientId)

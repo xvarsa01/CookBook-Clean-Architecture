@@ -15,9 +15,9 @@ public record IngredientInRecipe : EntityBase<IngredientInRecipeId>
 
     private IngredientInRecipe() { } // for EF
 
-    private IngredientInRecipe(IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit)
+    private IngredientInRecipe(IngredientInRecipeId id,  IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit)
     {
-        Id = new IngredientInRecipeId(Guid.NewGuid());
+        Id = id;
         IngredientId = ingredientId;
         RecipeId = recipeId;
         Amount = amount;
@@ -26,7 +26,8 @@ public record IngredientInRecipe : EntityBase<IngredientInRecipeId>
 
     internal static Result<IngredientInRecipe> Create(IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit) 
     {
-        return Result.Ok(new IngredientInRecipe(ingredientId, recipeId, amount, unit));
+        var id = IngredientInRecipeId.CreateObject().Value;
+        return Result.Ok(new IngredientInRecipe(id, ingredientId, recipeId, amount, unit));
     }
 
 

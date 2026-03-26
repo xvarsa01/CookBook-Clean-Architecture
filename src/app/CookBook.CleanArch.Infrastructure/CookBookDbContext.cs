@@ -1,4 +1,5 @@
 ﻿using CookBook.CleanArch.Domain.Ingredient;
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
@@ -17,10 +18,24 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Ingredient>()
+            .Property(x => x.Id)
+            .HasConversion(
+                id => id.Id,
+                value => new IngredientId(value)
+            );
+
+        modelBuilder.Entity<Ingredient>()
             .Property(r => r.ImageUrl)
             .HasConversion(
                 v => v.Value,                     // string in DB
                 v => ImageUrl.CreateObject(v).Value  // convert back to VO
+            );
+        
+        modelBuilder.Entity<Recipe>()
+            .Property(x => x.Id)
+            .HasConversion(
+                id => id.Id,
+                value => new RecipeId(value)
             );
         
         modelBuilder.Entity<Recipe>()
@@ -45,11 +60,18 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
                 v => RecipeDuration.CreateObject(TimeSpan.FromSeconds(v)).Value  // convert back to VO
             );
         
-        
         modelBuilder.Entity<Recipe>()
             .HasMany(r => r.Ingredients)
             .WithOne()
             .OnDelete(DeleteBehavior.Cascade);
+        
+        
+        modelBuilder.Entity<IngredientInRecipe>()
+            .Property(x => x.Id)
+            .HasConversion(
+                id => id.Id,
+                value => new IngredientInRecipeId(value)
+            );
         
         modelBuilder.Entity<IngredientInRecipe>(b =>
         {
