@@ -35,7 +35,7 @@ public class RecipeController : ControllerBase
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<RecipeGetDetailResponse>> GetById(Guid id)
+    public async Task<ActionResult<RecipeResponse>> GetById(Guid id)
     {
         var recipeId = new RecipeId(id);
         var result = await _mediator.Send(new GetRecipeDetailQuery(recipeId));

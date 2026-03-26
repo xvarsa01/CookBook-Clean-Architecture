@@ -27,6 +27,8 @@ public static class Installer
             contextOptions.AddCreatedDateUpdatedDateInterceptor(sp);
         });
         
+                
+        services.AddScoped<ICookBookDbContext, CookBookDbContext>();
         services.AddScoped<DbContext>(provider => provider.GetRequiredService<CookBookDbContext>());
         services.AddSingleton<CreatedDateUpdatedDateInterceptor>();
         

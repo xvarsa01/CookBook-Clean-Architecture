@@ -1,4 +1,5 @@
-﻿using CookBook.CleanArch.Domain.Ingredient;
+﻿using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Domain.Ingredient;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
@@ -7,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Infrastructure;
 
-public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : DbContext(options)
+public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : DbContext(options), ICookBookDbContext
 {
-    public DbSet<Ingredient> Ingredients { get; set; } = null!;
-    public DbSet<Recipe> Recipes { get; set; } = null!;
-    public DbSet<IngredientInRecipe> IngredientInRecipe { get; set; } = null!;
+    public DbSet<Ingredient> Ingredients => Set<Ingredient>();
+    public DbSet<Recipe> Recipes => Set<Recipe>();
+    public DbSet<IngredientInRecipe> IngredientInRecipe => Set<IngredientInRecipe>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -84,7 +85,7 @@ public class CookBookDbContext(DbContextOptions<CookBookDbContext> options) : Db
                 )
                 .IsRequired();
 
-            b.HasOne<Ingredient>()
+            b.HasOne(x => x.Ingredient)
                 .WithMany()
                 .HasForeignKey(i => i.IngredientId);
         });

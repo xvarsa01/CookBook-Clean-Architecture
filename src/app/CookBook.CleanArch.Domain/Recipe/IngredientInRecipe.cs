@@ -13,6 +13,10 @@ public record IngredientInRecipe : EntityBase<IngredientInRecipeId>
     public IngredientAmount Amount { get; private set; }
     public MeasurementUnit Unit { get; private set; }
 
+    public Ingredient.Ingredient Ingredient { get => throw new InvalidOperationException();
+        private set => throw new InvalidOperationException();
+    }
+
     private IngredientInRecipe() { } // for EF
 
     private IngredientInRecipe(IngredientInRecipeId id,  IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit)
