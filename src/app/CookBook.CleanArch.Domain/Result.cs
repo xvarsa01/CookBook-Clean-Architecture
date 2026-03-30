@@ -36,4 +36,9 @@ public class Result
     public static Result<T> Ok<T>(T value) => new(true, value, null);
     public static Result<T> NotFound<T>(Error errorMessage) => new(false, default, errorMessage);
     public static Result<T> Invalid<T>(Error errorMessage) => new(false, default, errorMessage);
+
+    public static Result<TValue> Create<TValue>(TValue? value) =>
+        value is not null 
+            ? Ok(value)
+            : Invalid<TValue>(Error.NullValue);
 }
