@@ -7,9 +7,10 @@ public class ImageUrl : IValueObject<string>, IValueObjectFactory<ImageUrl, stri
 {
     public string Value { get; }
 
-    private static readonly Regex ImageUrlRegex = new(
-        @"^(https?:)?(\/\/[^""']*\.(png|jpg|jpeg|gif|svg))$",
-        RegexOptions.IgnoreCase | RegexOptions.Compiled
+    private static readonly Regex BaseUrlRegex = new(@"^(https?:)?\/\/[^""']+$", RegexOptions.IgnoreCase | RegexOptions.Compiled
+    );
+
+    private static readonly Regex ImageExtensionRegex = new(@"\.(png|jpg|jpeg|gif|svg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled
     );
     
     private ImageUrl(string value)
@@ -19,9 +20,11 @@ public class ImageUrl : IValueObject<string>, IValueObjectFactory<ImageUrl, stri
 
     public static Result<ImageUrl> CreateObject(string value)
     {
-        return (string.IsNullOrWhiteSpace(value) || !ImageUrlRegex.IsMatch(value))
-            ? Result.Invalid<ImageUrl>(SharedErrors.InvalidImageUrlFormatError(value))
-            : Result.Ok(new ImageUrl(value));
+        return Result.Create(value)
+            .Ensure(v => !string.IsNullOrWhiteSpace(v), SharedErrors.NullImageUrlError())
+            .Ensure(v => BaseUrlRegex.IsMatch(v), SharedErrors.InvalidImageUrlFormatError(value))
+            .Ensure(v => ImageExtensionRegex.IsMatch(v), SharedErrors.InvalidImageUrlExtensionError(value))
+            .Map(v => new ImageUrl(v));
     }
 
     public static implicit operator string(ImageUrl name) => name.Value;
