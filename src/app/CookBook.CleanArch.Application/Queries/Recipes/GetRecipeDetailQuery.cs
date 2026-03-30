@@ -16,6 +16,7 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext) : IQuer
     {
         var recipe = await dbContext
             .Recipes
+            .Where(r => r.Id == request.Id)
             .Include(r => r.Ingredients)
             .ThenInclude(i => i.Ingredient)
             .Select(recipe => new RecipeResponse(
@@ -33,7 +34,7 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext) : IQuer
                     ir.Ingredient.Name,
                     ir.Ingredient.ImageUrl
                 )).ToList()))
-                .FirstOrDefaultAsync(r => r.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(cancellationToken);
 
         return recipe == null
             ? Result.NotFound<RecipeResponse>(RecipeErrors.RecipeNotFoundError(request.Id))
