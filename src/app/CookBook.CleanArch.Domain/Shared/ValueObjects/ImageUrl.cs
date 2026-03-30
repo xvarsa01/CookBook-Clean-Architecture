@@ -7,11 +7,14 @@ public class ImageUrl : IValueObject<string>, IValueObjectFactory<ImageUrl, stri
 {
     public string Value { get; }
 
-    private static readonly Regex BaseUrlRegex = new(@"^(https?:)?\/\/[^""']+$", RegexOptions.IgnoreCase | RegexOptions.Compiled
-    );
-
     private static readonly Regex ImageExtensionRegex = new(@"\.(png|jpg|jpeg|gif|svg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled
     );
+    
+    private static readonly string[] AllowedHosts =
+    [
+        "images.unsplash.com",
+        "picsum.photos"
+    ];
     
     private ImageUrl(string value)
     {
@@ -21,9 +24,15 @@ public class ImageUrl : IValueObject<string>, IValueObjectFactory<ImageUrl, stri
     public static Result<ImageUrl> CreateObject(string value)
     {
         return Result.Create(value)
-            .Ensure(v => !string.IsNullOrWhiteSpace(v), SharedErrors.NullImageUrlError())
-            .Ensure(v => BaseUrlRegex.IsMatch(v), SharedErrors.InvalidImageUrlFormatError(value))
-            .Ensure(v => ImageExtensionRegex.IsMatch(v), SharedErrors.InvalidImageUrlExtensionError(value))
+            .Ensure(v => !string.IsNullOrWhiteSpace(v),
+                SharedErrors.NullImageUrlError())
+            
+            .Ensure(v => Uri.TryCreate(v, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps),
+                SharedErrors.InvalidImageUrlFormatError(value))
+            
+            .Ensure(IsCorrectExtension,
+                SharedErrors.InvalidImageUrlExtensionError(value))
+            
             .Map(v => new ImageUrl(v));
     }
 
@@ -32,5 +41,11 @@ public class ImageUrl : IValueObject<string>, IValueObjectFactory<ImageUrl, stri
     public override string ToString()
     {
         return Value;
+    }
+
+    private static bool IsCorrectExtension(string v)
+    {
+        var uri = new Uri(v);
+        return ImageExtensionRegex.IsMatch(uri.AbsolutePath) || AllowedHosts.Contains(uri.Host);
     }
 }

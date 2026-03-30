@@ -10,7 +10,7 @@ Content-Type: application/json
 {
   "Name": "Sugar",
   "Description": "fine white sugar commonly used as a sweetener",
-  "ImageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/87/Sugar_cubes.jpg"
+  "ImageUrl": "https://images.unsplash.com/photo-1709651808265-977ed7ef78c6?q=80&w=1738&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 > {% client.global.set("ing1", response.body); %}
 
@@ -30,7 +30,7 @@ Content-Type: application/json
 
 {
   "Name": "Lime",
-  "ImageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Lime-Whole-Split.jpg"
+  "ImageUrl": "https://images.unsplash.com/photo-1648437595604-f1794490053c?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 > {% client.global.set("ing3", response.body); %}
 
@@ -41,7 +41,7 @@ Content-Type: application/json
 {
   "Name": "Lemon",
   "Description": "sour yellow citrus fruit",
-  "ImageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Lemon.jpg"
+  "ImageUrl": "https://i.imgur.com/YYPzexp.png"
 }
 > {% client.global.set("ing4", response.body); %}
 
@@ -70,7 +70,7 @@ Content-Type: application/json
 
 {
   "Name": "Vodka",
-  "ImageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Vodka.jpg"
+  "ImageUrl": "https://images.unsplash.com/photo-1595430712287-744ad635e266?q=80&w=1354&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 > {% client.global.set("ing7", response.body); %}
 
@@ -81,7 +81,7 @@ Content-Type: application/json
 {
   "Name": "Orange Juice",
   "Description": "freshly squeezed orange juice",
-  "ImageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Orange_juice_1.jpg"
+  "ImageUrl": "https://images.unsplash.com/photo-1613478223719-2ab802602423?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 > {% client.global.set("ing8", response.body); %}
 
@@ -110,7 +110,7 @@ Content-Type: application/json
 
 {
   "Name": "Milk",
-  "ImageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Milk_glass.jpg"
+  "ImageUrl": "https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 > {% client.global.set("ing11", response.body); %}
 
@@ -121,7 +121,7 @@ Content-Type: application/json
 {
   "Name": "Chocolate",
   "Description": "sweet cocoa-based ingredient",
-  "ImageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/70/Chocolate_%28blue_background%29.jpg"
+  "ImageUrl": "https://images.unsplash.com/photo-1626697556651-67ebdcb8cbd6?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 > {% client.global.set("ing12", response.body); %}
 
@@ -141,7 +141,7 @@ Content-Type: application/json
 
 {
   "Name": "Strawberry",
-  "ImageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/29/PerfectStrawberry.jpg"
+  "ImageUrl": "https://images.unsplash.com/photo-1722803672529-5a7a85728479?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 > {% client.global.set("ing14", response.body); %}
 
@@ -164,7 +164,7 @@ Content-Type: application/json
 {
   "name": "Mojito",
   "description": "fresh mint cocktail",
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Mojito.JPG",
+  "imageUrl": "https://images.unsplash.com/photo-1659046842567-2787b5c9c2fe?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "duration": "00:05:00",
   "type": 1
 }
@@ -216,7 +216,7 @@ Content-Type: application/json
 {
   "name": "Chocolate Milkshake",
   "description": "sweet cold dessert drink",
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Chocolate_milkshake.jpg",
+  "imageUrl": "https://images.unsplash.com/photo-1571328003758-4a3921661729?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "duration": "00:06:00",
   "type": 2
 }
@@ -229,7 +229,7 @@ Content-Type: application/json
 
 {
   "name": "Strawberry Smoothie",
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/89/Strawberry_smoothie_%281%29.jpg",
+  "imageUrl": "https://images.unsplash.com/photo-1553530666-ba11a7da3888?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "duration": "00:05:00",
   "type": 4
 }
