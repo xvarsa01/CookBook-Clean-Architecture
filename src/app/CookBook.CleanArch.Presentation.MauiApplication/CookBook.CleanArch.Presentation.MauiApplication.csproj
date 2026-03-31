@@ -69,6 +69,7 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Maui" Version="14.0.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageReference Include="InputKit.Maui" Version="4.6.0" />
         <PackageReference Include="MediatR" Version="14.1.0" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.31"/>
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.41" />
@@ -99,6 +100,13 @@
     <ItemGroup>
       <ProjectReference Include="..\CookBook.CleanArch.Infrastructure\CookBook.CleanArch.Infrastructure.csproj" />
       <ProjectReference Include="..\CookBook.CleanArch.Application\CookBook.CleanArch.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="C:\Users\AdamV\.nuget\packages\inputkit.maui\4.6.0\contentFiles\any\net10.0-ios26.0\icon512.png" />
+      <None Remove="C:\Users\AdamV\.nuget\packages\inputkit.maui\4.6.0\contentFiles\any\net10.0-maccatalyst26.0\icon512.png" />
+      <None Remove="C:\Users\AdamV\.nuget\packages\inputkit.maui\4.6.0\contentFiles\any\net10.0-android36.0\icon512.png" />
+      <None Remove="C:\Users\AdamV\.nuget\packages\inputkit.maui\4.6.0\contentFiles\any\net10.0-windows10.0.19041\icon512.png" />
     </ItemGroup>
 
 </Project>

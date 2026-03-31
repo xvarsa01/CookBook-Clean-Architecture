@@ -3,6 +3,7 @@ using CommunityToolkit.Maui;
 using CookBook.CleanArch.Application;
 using CookBook.CleanArch.Infrastructure;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
+using InputKit.Handlers;
 using Microsoft.Extensions.Logging;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication;
@@ -19,6 +20,10 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            })
+            .ConfigureMauiHandlers(handlers =>
+            {
+                handlers.AddInputKitHandlers();
             });
 
 #if DEBUG

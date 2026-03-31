@@ -21,6 +21,7 @@
             <converters:RecipeIngredientsCountToStringConverter x:Key="RecipeIngredientsCountToStringConverter"/>
             <converters:UnitToStringConverter x:Key="UnitToStringConverter"/>
             <converters:NullableBoolToStringConverter x:Key="NullableBoolToStringConverter" />
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

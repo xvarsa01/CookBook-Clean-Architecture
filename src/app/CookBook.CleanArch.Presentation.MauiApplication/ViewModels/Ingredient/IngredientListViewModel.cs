@@ -26,7 +26,10 @@ public partial class IngredientListViewModel(
     public partial IEnumerable<IngredientListModel> Ingredients { get; set; } = [];
 
     [ObservableProperty]
-    public partial ObservableCollection<PageNumberModel> PageNumbers { get; set; } = [];
+    public partial ObservableCollection<PageItem> PageNumbers { get; set; } = [];
+
+    private int CurrentPage => PagingOptions.PageIndex + 1;
+    
     public IngredientFilter Filter { get; set; } = new ();
     public PagingOptions PagingOptions { get; set; } = new ()
     {
@@ -142,18 +145,22 @@ public partial class IngredientListViewModel(
 
     private void UpdatePageNumbers()
     {
-        if (TotalPages <= 0)
-        {
-            PageNumbers = [];
-            return;
-        }
+        PageNumbers.Clear();
 
-        PageNumbers = new ObservableCollection<PageNumberModel>(
-            Enumerable.Range(1, TotalPages)
-                .Select(page => new PageNumberModel(page, page - 1 == PagingOptions.PageIndex)));
+        if (TotalPages <= 0)
+            return;
+
+        foreach (var i in Enumerable.Range(1, TotalPages))
+        {
+            var model = new PageItem
+                {
+                    Number = i,
+                    IsCurrent = i == CurrentPage
+                };
+            PageNumbers.Add(model);
+        }
     }
-    
-    
+
     public void Receive(IngredientEditMessage message)
     {
         ForceDataRefreshOnNextAppearing();

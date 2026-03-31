@@ -104,6 +104,6 @@
     <value>CookBook</value>
   </data>
   <data name="Add_Button_Text" xml:space="preserve">
-    <value>Add Ingredient</value>
+    <value>Create new Ingredient</value>
   </data>
 </root>
