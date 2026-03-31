@@ -8,6 +8,7 @@ using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Application.Queries.Ingredients;
 using CookBook.CleanArch.Domain;
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;
@@ -69,7 +70,7 @@ public partial class IngredientListViewModel(
         await navigationService.GoToAsync(NavigationService.IngredientDetailRouteRelative,
             new Dictionary<string, object?>
             {
-                [nameof(IngredientDetailViewModel.Id)] = id
+                [nameof(IngredientDetailViewModel.Id)] = new IngredientId(id)
             }
         );
     }

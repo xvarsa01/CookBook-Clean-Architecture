@@ -29,7 +29,7 @@ public partial class IngredientEditViewModel(
     {
         await base.LoadDataAsync();
 
-        if (Id == Guid.Empty)
+        if (Id.Value == Guid.Empty)
         {
             return;
         }
@@ -44,9 +44,19 @@ public partial class IngredientEditViewModel(
     [RelayCommand]
     private async Task SaveAsync()
     {
-        var imageUrl = Ingredient.ImageUrl is null ? null : ImageUrl.CreateObject(Ingredient.ImageUrl);
+        var imageUrl = Ingredient.ImageUrl is null
+            ? null
+            : ImageUrl.CreateObject(Ingredient.ImageUrl);
+        
         if (imageUrl != null && imageUrl.IsFailure)
         {
+            // show UI error
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Ingredient.Name))
+        {
+            // show UI error
             return;
         }
         

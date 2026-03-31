@@ -27,6 +27,6 @@ public partial class IngredientDetailModel : ObservableObject
         {
             Name = string.Empty,
             Description = string.Empty,
-            ImageUrl = string.Empty
+            ImageUrl = null
         };
 }
