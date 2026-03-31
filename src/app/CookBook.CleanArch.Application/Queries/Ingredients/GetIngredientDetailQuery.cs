@@ -16,12 +16,13 @@ internal class GetIngredientDetailQueryHandler(ICookBookDbContext dbContext) : I
     {
         var ingredient = await dbContext
             .Ingredients
+            .Where(i => i.Id == request.Id)
             .Select(ingredient => new IngredientDetailResponse(
                 ingredient.Id,
                 ingredient.Name,
                 ingredient.Description,
                 ingredient.ImageUrl))
-            .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
         
         return ingredient == null
             ? Result.NotFound<IngredientDetailResponse>(IngredientErrors.IngredientNotFoundError(request.Id))
