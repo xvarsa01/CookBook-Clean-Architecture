@@ -4,7 +4,9 @@ using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Commands.Ingredients;
 using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Queries.Ingredients;
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
+using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
@@ -20,7 +22,7 @@ public partial class IngredientDetailViewModel(
     IAlertService alertService)
     : ViewModelBase(messengerService), IRecipient<IngredientEditMessage>
 {
-    public Guid Id { get; set; }
+    public IngredientId Id { get; set; }
 
     [ObservableProperty]
     public partial IngredientDetailModel? Ingredient { get; set; }
@@ -30,9 +32,9 @@ public partial class IngredientDetailViewModel(
         await base.LoadDataAsync();
 
         var result = (await _mediator.Send(new GetIngredientDetailQuery(Id)));
-        if (result.IsSuccess && result.Value is not null)
+        if (result.IsSuccess)
         {
-            Ingredient = result.Value;
+            Ingredient = IngredientDetailModel.MapFromResponse(result.Value);
         }
     }
 
@@ -41,7 +43,7 @@ public partial class IngredientDetailViewModel(
     {
         if (Ingredient is not null)
         {
-            var result = await _mediator.Send(new DeleteIngredientCommand(Ingredient.Id));
+            var result = await _mediator.Send(new DeleteIngredientCommand(Id));
             if (!result.IsSuccess)
             {
                 await alertService.DisplayAsync(IngredientDetailViewModelTexts.DeleteError_Alert_Title, IngredientDetailViewModelTexts.DeleteError_Alert_Message);
@@ -55,16 +57,13 @@ public partial class IngredientDetailViewModel(
     [RelayCommand]
     private async Task GoToEditAsync()
     {
-        if(Ingredient?.Id is not null)
-        {
-            await navigationService.GoToAsync(NavigationService.IngredientEditRouteRelative,
-                new Dictionary<string, object?> { [nameof(IngredientEditViewModel.Id)] = Ingredient.Id });
-        }
+        await navigationService.GoToAsync(NavigationService.IngredientEditRouteRelative,
+            new Dictionary<string, object?> { [nameof(IngredientEditViewModel.Id)] = Id });
     }
 
     public void Receive(IngredientEditMessage message)
     {
-        if (message.IngredientId == Ingredient?.Id)
+        if (message.IngredientId == Id)
         {
             ForceDataRefreshOnNextAppearing();
         }

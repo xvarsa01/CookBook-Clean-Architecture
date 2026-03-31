@@ -5,26 +5,87 @@
                        xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
                        xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
-                       xmlns:models="clr-namespace:CookBook.CleanArch.Application.Models;assembly=CookBook.CleanArch.Application"
+                       xmlns:models="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Models"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Ingredient.IngredientListView"
                        Title="{xaml:Static texts:IngredientListViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
                        x:Name="IngredientListViewRoot"
                        x:DataType="viewModels:IngredientListViewModel">
-    <Grid HorizontalOptions="Fill" RowDefinitions="Auto, *"
+    <Grid HorizontalOptions="Fill" RowDefinitions="Auto, *, Auto, Auto"
           RowSpacing="20">
-        <Label Grid.Row="0"
-               FontSize="24"
-               Text="{x:Static texts:IngredientListViewTexts.Title_Label}" />
+        
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto"
+              RowDefinitions="Auto,Auto"
+              ColumnSpacing="10"
+              RowSpacing="6">
 
-        <Button Grid.Row="0"
-                Padding="12, 6"
-                HorizontalOptions="End" VerticalOptions="Start"
-                Text="{x:Static texts:IngredientListViewTexts.Add_Button_Text}"
-                Command="{Binding GoToCreateCommand}"
-                CornerRadius="5" FontFamily="MontserratMedium"
-                FontSize="14"
-                Style="{StaticResource PrimaryButtonStyle}" />
+            <!-- Title -->
+            <Label Grid.Row="0" Grid.Column="0"
+                   Text="{x:Static texts:IngredientListViewTexts.Title_Label}"
+                   FontSize="24"
+                   VerticalOptions="Center" />
+
+            <!-- Search -->
+            <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                <Label Text="Name" FontSize="12" />
+                <SearchBar Text="{Binding Filter.Name}"
+                           Placeholder="Search ingredient..." />
+            </VerticalStackLayout>
+            
+            <VerticalStackLayout Grid.Row="0" Grid.Column="2"
+                                 HorizontalOptions="Center">
+                <Label Text="Image" FontSize="12" HorizontalOptions="Center"/>
+                <Picker SelectedItem="{Binding Filter.HasImage, Converter={StaticResource NullableBoolToStringConverter}}">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>-</x:String>
+                            <x:String>Yes</x:String>
+                            <x:String>No</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Row="0" Grid.Column="3"
+                                 HorizontalOptions="Center">
+                <Label Text="Description" FontSize="12" HorizontalOptions="Center"/>
+                <Picker SelectedItem="{Binding Filter.HasDescription, Converter={StaticResource NullableBoolToStringConverter}}">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>-</x:String>
+                            <x:String>Yes</x:String>
+                            <x:String>No</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </VerticalStackLayout>
+            
+
+            <!-- ~1~ Sorting @1@ -->
+            <!-- <VerticalStackLayout Grid.Row="0" Grid.Column="4"> -->
+            <!--     <Label Text="Sort by" FontSize="12"/> -->
+            <!--     <Picker ItemsSource="{Binding SortOptions}" -->
+            <!--             SelectedItem="{Binding Filter.SortParameter}" /> -->
+            <!-- </VerticalStackLayout> -->
+
+            <!-- Sort direction -->
+            <VerticalStackLayout Grid.Row="0" Grid.Column="5"
+                                 HorizontalOptions="Center">
+                <Label Text="Asc" FontSize="12" HorizontalOptions="Center"/>
+                <Switch IsToggled="{Binding Filter.IsSortAscending}" />
+            </VerticalStackLayout>
+
+            <!-- Buttons row -->
+            <HorizontalStackLayout Grid.Row="1" Grid.ColumnSpan="6"
+                                   Spacing="10"
+                                   HorizontalOptions="End">
+
+                <Button Text="Apply"
+                        Command="{Binding ApplyFilterCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}" />
+            </HorizontalStackLayout>
+        </Grid>
 
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Ingredients}">
@@ -40,7 +101,7 @@
                             HeightRequest="200">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding Source={x:Reference IngredientListViewRoot}, Path=BindingContext.GoToDetailCommand}"
-                                                  CommandParameter="{Binding Value}" />
+                                                  CommandParameter="{Binding Id }" />
                         </Border.GestureRecognizers>
                         
                         <Grid RowDefinitions="*, *">
@@ -63,5 +124,43 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        
+        <VerticalStackLayout Grid.Row="2" Spacing="10">
+            <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                <Button Command="{Binding ToFirstPageCommand}"
+                        Text="⏮" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <Button Command="{Binding ToPreviousPageCommand}"
+                        Text="◀" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center"/>
+        
+                <!-- Page numbers -->
+                <CollectionView ItemsSource="{Binding PageNumbers}"
+                                SelectionMode="None"
+                                VerticalOptions="Center">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:PageNumberModel">
+                            <Button Text="{Binding Number}"
+                                    Command="{Binding Source={x:Reference IngredientListViewRoot}, Path=BindingContext.GoToPageCommand}"
+                                    CommandParameter="{Binding Number}"
+                                    BackgroundColor="{Binding IsCurrent, Converter={StaticResource BoolToColorConverter}}" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Command="{Binding ToNextPageCommand}"
+                        Text="▶" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <Button Command="{Binding ToLastPageCommand}"
+                        Text="⏭" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <Button Grid.Row="3"
+                Text="{x:Static texts:IngredientListViewTexts.Add_Button_Text}"
+                Command="{Binding GoToCreateCommand}"
+                Style="{StaticResource PrimaryButtonStyle}" />
     </Grid>
 </views:ContentPageBase>

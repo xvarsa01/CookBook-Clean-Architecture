@@ -2,8 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Commands.Ingredients;
 using CookBook.CleanArch.Application.Models;
+using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Application.Queries.Ingredients;
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
+using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using MediatR;
 
@@ -16,7 +20,7 @@ public partial class IngredientEditViewModel(
     IMessengerService messengerService)
     : ViewModelBase(messengerService)
 {
-    public Guid Id { get; set; } = Guid.Empty;
+    public IngredientId Id { get; set; } = new(Guid.Empty);
 
     [ObservableProperty]
     public partial IngredientDetailModel Ingredient { get; set; } = IngredientDetailModel.Empty;
@@ -31,29 +35,33 @@ public partial class IngredientEditViewModel(
         }
         
         var result = (await _mediator.Send(new GetIngredientDetailQuery(Id)));
-        if (result.IsSuccess && result.Value is not null)
+        if (result.IsSuccess)
         {
-            Ingredient = result.Value;
-        }
-        else
-        {
-            Ingredient = IngredientDetailModel.Empty;
+            Ingredient = IngredientDetailModel.MapFromResponse(result.Value);
         }
     }
 
     [RelayCommand]
     private async Task SaveAsync()
     {
-        if (Ingredient.Id == Guid.Empty)
+        var imageUrl = Ingredient.ImageUrl is null ? null : ImageUrl.CreateObject(Ingredient.ImageUrl);
+        if (imageUrl != null && imageUrl.IsFailure)
         {
-            await _mediator.Send(new CreateIngredientCommand(Ingredient.Name, Ingredient.Description, Ingredient.ImageUrl));
+            return;
+        }
+        
+        if (Id.Value == Guid.Empty)
+        {
+            var createRequest = new IngredientCreateRequest(Ingredient.Name, Ingredient.Description, imageUrl?.Value);
+            await _mediator.Send(new CreateIngredientCommand(createRequest));
         }
         else
         {
-            await _mediator.Send(new UpdateIngredientCommand(Ingredient.Id, Ingredient.Name, Ingredient.Description, Ingredient.ImageUrl));
+            var updateRequest = new IngredientUpdateRequest(Id, Ingredient.Name, Ingredient.Description, imageUrl?.Value);
+            await _mediator.Send(new UpdateIngredientCommand(updateRequest));
         }
 
-        MessengerService.Send(new IngredientEditMessage { IngredientId = Ingredient.Id });
+        MessengerService.Send(new IngredientEditMessage { IngredientId = Id });
 
         navigationService.SendBackButtonPressed();
     }

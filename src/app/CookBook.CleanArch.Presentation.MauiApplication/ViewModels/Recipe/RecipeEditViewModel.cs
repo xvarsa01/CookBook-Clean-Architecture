@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using CookBook.CleanArch.Application.Commands.Recipes;
-using CookBook.Clean.Core.RecipeRoot;
-using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Queries.Recipes;
-using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.CleanArch.Domain.Recipe.Enums;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
+using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using MediatR;
@@ -21,7 +20,7 @@ public partial class RecipeEditViewModel(
     : ViewModelBase(messengerService), IRecipient<RecipeIngredientEditMessage>, IRecipient<RecipeIngredientAddMessage>,
         IRecipient<RecipeIngredientDeleteMessage>
 {
-    public Guid Id { get; set; }
+    public RecipeId Id { get; set; }
 
     [ObservableProperty]
     public partial RecipeDetailModel Recipe { get; set; } = RecipeDetailModel.Empty;
@@ -33,9 +32,9 @@ public partial class RecipeEditViewModel(
         await base.LoadDataAsync();
 
         var result = (await _mediator.Send(new GetRecipeDetailQuery(Id)));
-        if (result.IsSuccess && result.Value is not null)
+        if (result.IsSuccess)
         {
-            Recipe = result.Value;
+            Recipe = RecipeDetailModel.MapFromResponse(result.Value);
         }
     }
 
@@ -54,11 +53,12 @@ public partial class RecipeEditViewModel(
     {
         if (Recipe.Id == Guid.Empty)
         {
-            await _mediator.Send(new CreateRecipeCommand(Recipe.Name, Recipe.Description, Recipe.ImageUrl, Recipe.Duration, Recipe.Type));
+            // await _mediator.Send(new CreateRecipeCommand(Recipe.Name, Recipe.Description, Recipe.ImageUrl, Recipe.Duration, Recipe.RecipeType));
         }
         else
         {
-            await _mediator.Send(new UpdateRecipeCommand(Recipe.Id, Recipe.Name, Recipe.Description, Recipe.ImageUrl, Recipe.Duration, Recipe.Type));
+            // var request = new RecipeUpdateRequest(new RecipeId(Recipe.Id), RecipeName.CreateObject(Recipe.Name).Value, Recipe.Description, ImageUrl.CreateObject(Recipe.ImageUrl).Value, Recipe.Duration, Recipe.RecipeType);
+            // await _mediator.Send(new UpdateRecipeCommand(request));
         }
 
         MessengerService.Send(new RecipeEditMessage { RecipeId = Recipe.Id});

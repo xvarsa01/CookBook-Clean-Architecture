@@ -7,6 +7,6 @@ public partial class IngredientEditView : ContentPageBase
     public IngredientEditView(IngredientEditViewModel viewModel)
         : base(viewModel)
     {
-        base.InitializeComponent();
+        InitializeComponent();
     }
 }

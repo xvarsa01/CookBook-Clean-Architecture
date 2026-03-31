@@ -2,14 +2,18 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Commands.Recipes;
-using CookBook.Clean.Core.RecipeRoot;
 using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Application.Models;
+using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Application.Queries.Ingredients;
 using CookBook.CleanArch.Application.Queries.Recipes;
-using CookBook.Clean.Core.RecipeRoot.Enums;
+using CookBook.CleanArch.Domain;
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Recipe.Enums;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
+using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using MediatR;
 
@@ -21,7 +25,7 @@ public partial class RecipeIngredientsEditViewModel(
     IMessengerService messengerService)
     : ViewModelBase(messengerService)
 {
-    public Guid Id { get; set; }
+    public RecipeId Id { get; set; }
 
     public List<MeasurementUnit> Units { get; set; } = [.. Enum.GetValues<MeasurementUnit>()];
 
@@ -32,31 +36,30 @@ public partial class RecipeIngredientsEditViewModel(
     public partial ObservableCollection<IngredientListModel> Ingredients { get; set; } = [];
 
     [ObservableProperty]
-    public partial IngredientListModel? IngredientSelected { get; set; }
+    public partial RecipeIngredientListModel? IngredientSelected { get; set; }
 
     [ObservableProperty]
-    public partial IngredientInRecipe? IngredientAmountNew { get; set; }
+    public partial RecipeIngredientListModel? IngredientAmountNew { get; set; }
 
     protected override async Task LoadDataAsync()
     {
         await base.LoadDataAsync();
 
         var recipeResult = (await _mediator.Send(new GetRecipeDetailQuery(Id)));
-        if (recipeResult.IsSuccess && recipeResult.Value is not null)
+        if (recipeResult.IsSuccess)
         {
-            Recipe = recipeResult.Value;
+            Recipe = RecipeDetailModel.MapFromResponse(recipeResult.Value);
         }
 
         Ingredients.Clear();
         
         var filter = new IngredientFilter();
-        var ingredientsResult = (await _mediator.Send(new GetIngredientListQuery(filter)));
-        if (ingredientsResult.IsSuccess && ingredientsResult.Value is not null)
+        Result<PagedResult<IngredientListResponse>> ingredientsResult = (await _mediator.Send(new GetIngredientListQuery(filter)));
+        if (ingredientsResult.IsSuccess)
         {
-            foreach (var ingredient in ingredientsResult.Value)
+            foreach (var ingredient in ingredientsResult.Value.Items)
             {
-                Ingredients.Add(ingredient);
-                IngredientAmountNew = GetIngredientAmountNew();
+                Ingredients.Add(IngredientListModel.MapFromResponse(ingredient));
             }
         }
     }
@@ -66,62 +69,51 @@ public partial class RecipeIngredientsEditViewModel(
     {
         if (IngredientAmountNew is not null
             && IngredientSelected is not null
-            && Recipe.Id != Guid.Empty
+            && Id.Value != Guid.Empty
             && IngredientAmountNew.Amount > 0)
         {
-            IngredientAmountNew.IngredientId = IngredientSelected.Id;
-            IngredientAmountNew.Name = IngredientSelected.Name;
-            IngredientAmountNew.ImageUrl = IngredientSelected.ImageUrl;
+            IngredientAmountNew.IngredientId = IngredientSelected.IngredientId;
+            IngredientAmountNew.IngredientName = IngredientSelected.IngredientName;
+            IngredientAmountNew.IngredientImageUrl = IngredientSelected.IngredientImageUrl;
 
-            var result = await _mediator.Send(new AddIngredientToRecipeCommand(Recipe.Id, IngredientAmountNew.IngredientId, IngredientAmountNew.Amount, IngredientAmountNew.Unit));
+            var ingredientId = new IngredientId(IngredientAmountNew.IngredientId);
+            var request = new RecipeAddIngredientRequest(ingredientId, IngredientAmount.CreateObject(IngredientAmountNew.Amount).Value, IngredientAmountNew.Unit);
+            var result = await _mediator.Send(new AddIngredientToRecipeCommand(new RecipeId(Recipe.Id), request));
             if (result.IsSuccess)
             {
-                IngredientAmountNew.Id =  result.Value;
+                IngredientAmountNew.RecipeIngredientId =  result.Value.Value;
                 Recipe.Ingredients.Add(IngredientAmountNew);
 
-                IngredientAmountNew = GetIngredientAmountNew();
+                // IngredientAmountNew = GetIngredientAmountNew();
 
                 MessengerService.Send(new RecipeIngredientAddMessage());
             }
         }
     }
+    //
+    // [RelayCommand]
+    // private async Task UpdateIngredientAsync(IngredientInRecipe? model)
+    // {
+    //     if (Id != Guid.Empty
+    //         && model is not null
+    //         && model.Amount > 0
+    //         && Recipe.Ingredients.Any(i => i.RecipeIngredientId == model.Id))
+    //     {
+    //         await _mediator.Send(new UpdateIngredientInRecipeCommand(Recipe.Id, model.Id, model.Amount, model.Unit));
+    //         MessengerService.Send(new RecipeIngredientEditMessage());
+    //     }
+    // }
+    //
+    // [RelayCommand]
+    // private async Task RemoveIngredientAsync(RecipeIngredientListModel model)
+    // {
+    //     if (Recipe. != Guid.Empty)
+    //     {
+    //         await _mediator.Send(new RemoveIngredientFromRecipeCommand(Recipe.Id, model.Id));
+    //         Recipe.Ingredients.Remove(model);
+    //
+    //         MessengerService.Send(new RecipeIngredientDeleteMessage());
+    //     }
+    // }
 
-    [RelayCommand]
-    private async Task UpdateIngredientAsync(IngredientInRecipe? model)
-    {
-        if (Recipe.Id != Guid.Empty
-            && model is not null
-            && model.Amount > 0
-            && Recipe.Ingredients.Any(i => i.Id == model.Id))
-        {
-            await _mediator.Send(new UpdateIngredientInRecipeCommand(Recipe.Id, model.Id, model.Amount, model.Unit));
-            MessengerService.Send(new RecipeIngredientEditMessage());
-        }
-    }
-
-    [RelayCommand]
-    private async Task RemoveIngredientAsync(IngredientInRecipe model)
-    {
-        if (Recipe.Id != Guid.Empty)
-        {
-            await _mediator.Send(new RemoveIngredientFromRecipeCommand(Recipe.Id, model.Id));
-            Recipe.Ingredients.Remove(model);
-
-            MessengerService.Send(new RecipeIngredientDeleteMessage());
-        }
-    }
-
-    private IngredientInRecipe GetIngredientAmountNew()
-    {
-        var ingredientFirst = Ingredients.First();
-        return new()
-        {
-            Id = Guid.Empty,
-            IngredientId = ingredientFirst.Id,
-            Name = ingredientFirst.Name,
-            ImageUrl = ingredientFirst.ImageUrl,
-            Amount = 0,
-            Unit = MeasurementUnit.Unit,
-        };
-    }
 }

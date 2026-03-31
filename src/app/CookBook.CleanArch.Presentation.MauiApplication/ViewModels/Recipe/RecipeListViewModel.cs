@@ -1,10 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Queries.Recipes;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
+using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using MediatR;
@@ -18,17 +20,21 @@ public partial class RecipeListViewModel(
     : ViewModelBase(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeDeleteMessage>
 {
     [ObservableProperty]
-    public partial IEnumerable<RecipeListModel> Recipes { get; set; } = [];
+    public partial ObservableCollection<RecipeListModel> Recipes { get; set; } = [];
+
+    private RecipeFilter Filter { get; set; } = new();
 
     protected override async Task LoadDataAsync()
     {
         await base.LoadDataAsync();
 
-        var filter = new RecipeFilter();
-        var result = (await _mediator.Send(new GetRecipeListQuery(filter))).Value;
-        if (result is not null)
+        var result = (await _mediator.Send(new GetRecipeListQuery(Filter)));
+        if (result.IsSuccess)
         {
-            Recipes = result;
+            foreach (var item in result.Value)
+            {
+                Recipes.Add(RecipeListModel.MapFromResponse(item));
+            }
         }
     }
 

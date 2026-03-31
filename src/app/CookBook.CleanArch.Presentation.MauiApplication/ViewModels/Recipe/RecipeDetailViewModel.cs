@@ -4,7 +4,9 @@ using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Commands.Recipes;
 using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Queries.Recipes;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
+using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using MediatR;
@@ -12,14 +14,14 @@ using MediatR;
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 [QueryProperty(nameof(Id), nameof(Id))]
-public partial class RecipeDetailViewModel(
+public partial class  RecipeDetailViewModel(
     IMediator _mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
     : ViewModelBase(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeIngredientAddMessage>,
         IRecipient<RecipeIngredientDeleteMessage>
 {
-    public Guid Id { get; set; }
+    public RecipeId Id { get; set; }
 
     [ObservableProperty]
     public partial RecipeDetailModel? Recipe { get; set; }
@@ -29,9 +31,9 @@ public partial class RecipeDetailViewModel(
         await base.LoadDataAsync();
 
         var result = (await _mediator.Send(new GetRecipeDetailQuery(Id)));
-        if (result.IsSuccess && result.Value is not null)
+        if (result.IsSuccess)
         {
-            Recipe = result.Value;
+            Recipe = RecipeDetailModel.MapFromResponse(result.Value);
             // converted with color not called
         }
     }
@@ -41,7 +43,7 @@ public partial class RecipeDetailViewModel(
     {
         if (Recipe is not null)
         {
-            var result = (await _mediator.Send(new DeleteRecipeCommand(Recipe.Id)));
+            var result = (await _mediator.Send(new DeleteRecipeCommand(Id)));
 
             MessengerService.Send(new RecipeDeleteMessage());
 
@@ -50,23 +52,23 @@ public partial class RecipeDetailViewModel(
     }
 
 
-    [RelayCommand]
-    private async Task GoToEditAsync()
-    {
-        if (Recipe is not null)
-        {
-            await navigationService.GoToAsync(NavigationService.RecipeEditRouteRelative,
-                new Dictionary<string, object?>
-                {
-                    [nameof(RecipeEditViewModel.Id)] = Recipe.Id
-                }
-            );
-        }
-    }
+    // [RelayCommand]
+    // private async Task GoToEditAsync()
+    // {
+    //     if (Recipe is not null)
+    //     {
+    //         await navigationService.GoToAsync(NavigationService.RecipeEditRouteRelative,
+    //             new Dictionary<string, object?>
+    //             {
+    //                 [nameof(RecipeEditViewModel.Id)] = Id
+    //             }
+    //         );
+    //     }
+    // }
 
     public void Receive(RecipeEditMessage message)
     {
-        if (message.RecipeId == Recipe?.Id)
+        if (message.RecipeId == Id)
         {
             ForceDataRefreshOnNextAppearing();
         }

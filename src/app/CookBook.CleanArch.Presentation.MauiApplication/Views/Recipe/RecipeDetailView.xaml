@@ -5,7 +5,7 @@
                        xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
                        xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
-                       xmlns:models="clr-namespace:CookBook.CleanArch.Application.Models;assembly=CookBook.CleanArch.Application"
+                       xmlns:models="using:CookBook.CleanArch.Presentation.MauiApplication.Models"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe.RecipeDetailView"
                        Title="{xaml:Static texts:RecipeDetailViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
@@ -24,13 +24,13 @@
                     BackgroundColor="{StaticResource ErrorColor}"
                     Command="{Binding DeleteCommand}" />
 
-            <Button Grid.Row="0"
-                    HorizontalOptions="End" VerticalOptions="Start"
-                    HeightRequest="30"
-                    Text="{x:Static texts:RecipeDetailViewTexts.Edit_Button_Text}"
-                    CornerRadius="5"
-                    Command="{Binding GoToEditCommand}"
-                    Style="{StaticResource PrimaryButtonStyle}" />
+            <!-- <Button Grid.Row="0" -->
+            <!--         HorizontalOptions="End" VerticalOptions="Start" -->
+            <!--         HeightRequest="30" -->
+            <!--         Text="{x:Static texts:RecipeDetailViewTexts.Edit_Button_Text}" -->
+            <!--         CornerRadius="5" -->
+            <!--         Command="{Binding GoToEditCommand}" -->
+            <!--         Style="{StaticResource PrimaryButtonStyle}" /> -->
         </Grid>
 
         <Grid Grid.Row="1"
@@ -57,7 +57,7 @@
 
                             <Label Grid.Row="1" Grid.Column="0"
                                    HorizontalOptions="Center" VerticalOptions="Start"
-                                   Text="{Binding Recipe.Type, Converter={StaticResource FoodTypeToStringConverter}}"
+                                   Text="{Binding Recipe.RecipeType, Converter={StaticResource FoodTypeToStringConverter}}"
                                    FontSize="11"
                                    TextColor="White" />
 
@@ -90,11 +90,11 @@
                     <CollectionView Grid.Row="5"
                                     ItemsSource="{Binding Recipe.Ingredients}">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:IngredientInRecipeModel">
+                            <DataTemplate x:DataType="models:RecipeIngredientListModel">
                                 <HorizontalStackLayout>
                                     <Border Margin="5, 5, 20, 5"
                                             Style="{StaticResource ImageBorderStyle}">
-                                        <Image Source="{Binding ImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
+                                        <Image Source="{Binding IngredientImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
                                                WidthRequest="60" HeightRequest="60"
                                                Aspect="AspectFill" />
                                     </Border>
@@ -106,7 +106,7 @@
                                                 <Span Text=" " />
                                                 <Span Text="{Binding Unit, Converter={StaticResource UnitToStringConverter}}" />
                                                 <Span Text=" " />
-                                                <Span Text="{Binding Name}" />
+                                                <Span Text="{Binding IngredientName}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
