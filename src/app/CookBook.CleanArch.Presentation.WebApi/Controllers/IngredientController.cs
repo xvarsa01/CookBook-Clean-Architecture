@@ -1,6 +1,7 @@
 using CookBook.CleanArch.Application;
 using CookBook.CleanArch.Application.Commands.Ingredients;
 using CookBook.CleanArch.Application.Filters;
+using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Application.Queries.Ingredients;
 using CookBook.CleanArch.Domain;
@@ -48,7 +49,7 @@ public class IngredientController : ControllerBase
     }
     
     [HttpGet(Name = "GetList")]
-    public async Task<ActionResult<IEnumerable<IngredientListResponse>>> GetList(
+    public async Task<ActionResult<PagedResult<IngredientListResponse>>> GetList(
         [FromQuery] IngredientFilter filter,
         [FromQuery] PagingOptions paging)
     {

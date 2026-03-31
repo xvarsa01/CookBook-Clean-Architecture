@@ -1,6 +1,7 @@
 ﻿using CookBook.CleanArch.Application.Abstraction;
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Filters;
+using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredient;
@@ -8,18 +9,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Queries.Ingredients;
 
-public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions? PagingOptions = null) : IQuery<List<IngredientListResponse>>;
+public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions? PagingOptions = null) : IQuery<PagedResult<IngredientListResponse>>;
 
-internal class GetIngredientListQueryHandler (ICookBookDbContext dbContext) : IQueryHandler<GetIngredientListQuery, List<IngredientListResponse>>
+internal class GetIngredientListQueryHandler (ICookBookDbContext dbContext) : IQueryHandler<GetIngredientListQuery, PagedResult<IngredientListResponse>>
 {
-    public async Task<Result<List<IngredientListResponse>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
+    public async Task<Result<PagedResult<IngredientListResponse>>> Handle(GetIngredientListQuery request, CancellationToken cancellationToken)
     {
         var queryable = dbContext.Ingredients.AsQueryable();
         
         queryable = ApplyFilter(request.Filter, queryable);
+        
+        var totalItemsCount = await queryable.CountAsync(cancellationToken);
+        
         queryable = ApplyPaging(request.PagingOptions, queryable);
         
-        var result = await queryable.Select(i => new IngredientListResponse(i.Id, i.Name, i.ImageUrl)).ToListAsync(cancellationToken);
+        var items = await queryable
+            .Select(i => new IngredientListResponse(i.Id, i.Name, i.ImageUrl))
+            .ToListAsync(cancellationToken);
+        
+        var result = new PagedResult<IngredientListResponse>
+        {
+            Items = items,
+            TotalItemsCount = totalItemsCount,
+            PageIndex = request.PagingOptions?.PageIndex ?? 0,
+            PageSize = request.PagingOptions?.PageSize ?? items.Count
+        };
         
         return Result.Ok(result);
     }
