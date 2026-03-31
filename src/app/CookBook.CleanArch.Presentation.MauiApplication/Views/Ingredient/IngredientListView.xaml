@@ -43,7 +43,8 @@
                     <Label FontSize="12"
                            HorizontalOptions="Center"
                            Text="Image" />
-                    <Picker SelectedItem="{Binding Filter.HasImage, Converter={StaticResource NullableBoolToStringConverter}}">
+                    <Picker
+                        SelectedItem="{Binding Filter.HasImage, Converter={StaticResource NullableBoolToStringConverter}}">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>-</x:String>
@@ -90,22 +91,23 @@
             </Grid>
         </Grid>
 
-        <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Ingredients}">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout HorizontalItemSpacing="10"
-                                 Orientation="Horizontal"
-                                 Span="2"
-                                 VerticalItemSpacing="10" />
-            </CollectionView.ItemsLayout>
+        <ScrollView Grid.Row="1">
+        <FlexLayout 
+                    Wrap="Wrap"
+                    Direction="Row"
+                    JustifyContent="Start"
+                    BindableLayout.ItemsSource="{Binding Ingredients}">
 
-            <CollectionView.ItemTemplate>
+            <BindableLayout.ItemTemplate>
                 <DataTemplate x:DataType="models:IngredientListModel">
                     <Border HeightRequest="200"
+                            WidthRequest="200"
+                            Margin="5"
                             Style="{StaticResource ImageBorderStyle}">
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={x:Reference IngredientListViewRoot}, Path=BindingContext.GoToDetailCommand}"
-                                                  CommandParameter="{Binding Id}" />
+                            <TapGestureRecognizer
+                                Command="{Binding Source={x:Reference IngredientListViewRoot}, Path=BindingContext.GoToDetailCommand}"
+                                CommandParameter="{Binding Id}" />
                         </Border.GestureRecognizers>
 
                         <Grid RowDefinitions="*, *">
@@ -131,8 +133,9 @@
                         </Grid>
                     </Border>
                 </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            </BindableLayout.ItemTemplate>
+        </FlexLayout>
+        </ScrollView>
 
         <Grid Grid.Row="3">
             <Button Margin="10,0"
@@ -145,7 +148,7 @@
                     Style="{StaticResource PrimaryButtonStyle}"
                     Text="{x:Static texts:IngredientListViewTexts.Add_Button_Text}"
                     WidthRequest="200" />
-            
+
             <HorizontalStackLayout Spacing="5"
                                    HorizontalOptions="Center">
                 <Button Command="{Binding ToFirstPageCommand}"
@@ -169,9 +172,10 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:PageItem">
-                            <Button Command="{Binding Source={x:Reference IngredientListViewRoot}, Path=BindingContext.GoToPageCommand}"
-                                    CommandParameter="{Binding Number}"
-                                    Text="{Binding Number}">
+                            <Button
+                                Command="{Binding Source={x:Reference IngredientListViewRoot}, Path=BindingContext.GoToPageCommand}"
+                                CommandParameter="{Binding Number}"
+                                Text="{Binding Number}">
                                 <Button.Triggers>
                                     <DataTrigger Binding="{Binding IsCurrent}"
                                                  TargetType="Button"
