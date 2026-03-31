@@ -98,7 +98,7 @@
                             <HorizontalStackLayout>
                                 <Border Margin="5, 5, 20, 5"
                                         Style="{StaticResource ImageBorderStyle}">
-                                    <Image Source="{Binding ImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
+                                    <Image Source="{Binding IngredientImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
                                            WidthRequest="60" HeightRequest="60"
                                            Aspect="AspectFill" />
                                 </Border>
@@ -110,7 +110,7 @@
                                             <Span Text=" " />
                                             <Span Text="{Binding Unit, Converter={StaticResource UnitToStringConverter}}" />
                                             <Span Text=" " />
-                                            <Span Text="{Binding Name}" />
+                                            <Span Text="{Binding IngredientName}" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>

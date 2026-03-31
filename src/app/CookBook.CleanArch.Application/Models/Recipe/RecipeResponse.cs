@@ -1,3 +1,4 @@
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Domain.Recipe.Enums;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
@@ -16,9 +17,9 @@ public record RecipeResponse(
 
 public record RecipeIngredientResponse(
     RecipeIngredientId Id,
-    Guid IngredientId,
+    IngredientId IngredientId,
     IngredientAmount Amount,
     MeasurementUnit Unit,
-    string Name,
-    ImageUrl? ImageUrl
+    string IngredientName,
+    ImageUrl? IngredientImageUrl
 );

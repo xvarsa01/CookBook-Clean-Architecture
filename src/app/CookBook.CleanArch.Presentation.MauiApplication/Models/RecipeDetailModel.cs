@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Domain.Recipe.Enums;
@@ -38,7 +39,16 @@ public partial class RecipeDetailModel : ObservableObject
             Description = response.Description,
             Duration = response.Duration.Value,
             RecipeType = response.Type,
-            ImageUrl = response.ImageUrl?.Value
+            ImageUrl = response.ImageUrl?.Value,
+            Ingredients = response.Ingredients.Select(i => new RecipeIngredientListModel
+            {
+                RecipeIngredientId = i.Id.Value,
+                IngredientId = i.IngredientId.Value,
+                IngredientName = i.IngredientName,
+                IngredientImageUrl = i.IngredientImageUrl?.Value,
+                Amount = i.Amount.Value,
+                Unit = i.Unit
+            }).ToObservableCollection()
         };
     }
     

@@ -55,7 +55,7 @@
 
             <Picker Grid.Row="1" Grid.Column="2"
                     ItemsSource="{Binding Ingredients}"
-                    ItemDisplayBinding="{Binding Name}"
+                    ItemDisplayBinding="{Binding IngredientName}"
                     SelectedItem="{Binding IngredientSelected}" />
 
             <Button Grid.Row="1" Grid.Column="3"
@@ -74,7 +74,7 @@
                         <Border Grid.Column="0"
                                 Margin="5, 5, 20, 5"
                                 Style="{StaticResource ImageBorderStyle}">
-                            <Image Source="{Binding ImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
+                            <Image Source="{Binding IngredientImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
                                    WidthRequest="60" HeightRequest="60"
                                    Aspect="AspectFill" />
                         </Border>
@@ -105,7 +105,7 @@
 
                         <Label Grid.Column="3"
                                VerticalOptions="Center"
-                               Text="{Binding Name}" />
+                               Text="{Binding IngredientName}" />
 
                         <Button Grid.Column="4"
                                 HorizontalOptions="Start" VerticalOptions="Center"

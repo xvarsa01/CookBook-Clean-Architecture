@@ -50,21 +50,20 @@ public partial class  RecipeDetailViewModel(
             navigationService.SendBackButtonPressed();
         }
     }
-
-
-    // [RelayCommand]
-    // private async Task GoToEditAsync()
-    // {
-    //     if (Recipe is not null)
-    //     {
-    //         await navigationService.GoToAsync(NavigationService.RecipeEditRouteRelative,
-    //             new Dictionary<string, object?>
-    //             {
-    //                 [nameof(RecipeEditViewModel.Id)] = Id
-    //             }
-    //         );
-    //     }
-    // }
+    
+    [RelayCommand]
+    private async Task GoToEditAsync()
+    {
+        if (Recipe is not null)
+        {
+            await navigationService.GoToAsync(NavigationService.RecipeEditRouteRelative,
+                new Dictionary<string, object?>
+                {
+                    [nameof(RecipeEditViewModel.Id)] = Id
+                }
+            );
+        }
+    }
 
     public void Receive(RecipeEditMessage message)
     {

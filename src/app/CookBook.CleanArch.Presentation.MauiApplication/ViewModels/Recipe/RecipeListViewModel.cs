@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Queries.Recipes;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;
@@ -43,7 +44,7 @@ public partial class RecipeListViewModel(
         => await navigationService.GoToAsync(NavigationService.RecipeDetailRouteRelative,
             new Dictionary<string, object?>
             {
-                [nameof(RecipeDetailViewModel.Id)] = id
+                [nameof(RecipeDetailViewModel.Id)] = new RecipeId(id)
             }
         );
 

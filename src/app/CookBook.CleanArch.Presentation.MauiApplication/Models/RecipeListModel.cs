@@ -7,6 +7,9 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Models;
 public partial class RecipeListModel : ObservableObject
 {
     [ObservableProperty]
+    public required partial Guid Id { get; set; }
+    
+    [ObservableProperty]
     public required partial string Name { get; set; }
 
     // [ObservableProperty]
@@ -22,6 +25,7 @@ public partial class RecipeListModel : ObservableObject
     {
         return new RecipeListModel
         {
+            Id = response.Id.Value,
             Name = response.Name.Value,
             ImageUrl = response.ImageUrl?.Value
         };

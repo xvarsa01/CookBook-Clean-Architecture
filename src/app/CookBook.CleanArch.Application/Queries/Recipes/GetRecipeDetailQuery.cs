@@ -28,7 +28,7 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext) : IQuer
                 recipe.Type,
                 recipe.Ingredients.Select(ir => new RecipeIngredientResponse(
                     ir.Id,
-                    ir.IngredientId.Value,
+                    ir.IngredientId,
                     ir.Amount,
                     ir.Unit,
                     ir.Ingredient.Name,
