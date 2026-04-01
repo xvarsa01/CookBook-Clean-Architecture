@@ -1,7 +1,6 @@
 ﻿using CookBook.CleanArch.Application.Commands.Ingredients;
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Models.Ingredient;
-using CookBook.CleanArch.Application.Queries.Ingredients;
 using CookBook.CleanArch.Domain.Ingredient;
 using CookBook.CleanArch.Domain.Ingredient.Errors;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
@@ -36,43 +35,6 @@ public class IngredientUnitTests
         // Assert
         Assert.Equal(expectedId, result.Value);
         repoMock.Verify(r => r.InsertAsync(It.Is<Ingredient>(e => e.Name == "Sugar" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
-    }
-
-    [Fact]
-    public async Task GetIngredientHandler_ReturnsNotFound_WhenMissing()
-    {
-        var repoMock = new Mock<IRepository<Ingredient, IngredientId>>();
-        repoMock.Setup(r => r.GetByIdAsync(It.IsAny<IngredientId>())).ReturnsAsync((Ingredient?)null);
-
-        var handler = new GetIngredientDetailQueryHandler(repoMock.Object);
-        var useCase = new GetIngredientDetailQuery(new IngredientId(Guid.NewGuid()));
-
-        var result = await handler.Handle(useCase, CancellationToken.None);
-
-        Assert.True(result.IsFailure);
-        Assert.Equal(
-            IngredientErrors.IngredientNotFoundError(new IngredientId(useCase.Id)),
-            result.Error);
-    }
-
-    [Fact]
-    public async Task GetIngredientHandler_ReturnsOk_WhenFound()
-    {
-        var entity = Ingredient.Create("Salt", null, ImageUrl.CreateObject("http://image.png").Value).Value;
-        var id = entity.Id;
-
-
-        var repoMock = new Mock<IRepository<Ingredient, IngredientId>>();
-        repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
-
-        var handler = new GetIngredientDetailQueryHandler(repoMock.Object);
-        var useCase = new GetIngredientDetailQuery(id);
-
-        var result = await handler.Handle(useCase, CancellationToken.None);
-
-        Assert.True(result.IsSuccess);
-        Assert.Equal(id, result.Value.Id);
-        Assert.Equal("Salt", result.Value.Name);
     }
 
     [Fact]

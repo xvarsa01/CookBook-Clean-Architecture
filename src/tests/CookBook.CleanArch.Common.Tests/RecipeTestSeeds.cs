@@ -111,6 +111,33 @@ public static class RecipeTestSeeds
         return recipe;
     }
     
+    public static Recipe RecipeForTestOfSearch1(){
+        var recipe = Recipe.Create(name: RecipeName.CreateObject("abcd").Value,
+            description: null,
+            imageUrl: null,
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
+        return recipe;
+    }
+    
+    public static Recipe RecipeForTestOfSearch2(){
+        var recipe = Recipe.Create(name: RecipeName.CreateObject("ABCD").Value,
+            description: null,
+            imageUrl: null,
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
+        return recipe;
+    }
+    
+    public static Recipe RecipeForTestOfSearch3(){
+        var recipe = Recipe.Create(name: RecipeName.CreateObject("BCD EFGH").Value,
+            description: null,
+            imageUrl: null,
+            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
+            type: RecipeType.None).Value;
+        return recipe;
+    }
+    
     public static List<Recipe> SeededRecipes() =>
     [
         EmptyRecipe(),
@@ -119,6 +146,9 @@ public static class RecipeTestSeeds
         RecipeWithMultipleIngredients(),
         RecipeForTestOfDeleteWithoutIngredient(),
         RecipeForTestOfDeleteWithIngredient(),
-        RecipeForTestOfUpdate()
+        RecipeForTestOfUpdate(),
+        RecipeForTestOfSearch1(),
+        RecipeForTestOfSearch2(),
+        RecipeForTestOfSearch3()
     ];
 }

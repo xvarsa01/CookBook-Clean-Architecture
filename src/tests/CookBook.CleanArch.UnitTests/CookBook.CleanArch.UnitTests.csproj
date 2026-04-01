@@ -10,22 +10,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="coverlet.collector" Version="6.0.0"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
-        <PackageReference Include="xunit" Version="2.5.3"/>
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.11"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.11"/>
-        <PackageReference Include="Moq" Version="4.20.72"/>
+        <PackageReference Include="coverlet.collector" Version="6.0.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+        <PackageReference Include="xunit" Version="2.5.3" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.11" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.11" />
+        <PackageReference Include="Moq" Version="4.20.72" />
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Xunit"/>
+        <Using Include="Xunit" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\app\CookBook.CleanArch.Application\CookBook.CleanArch.Application.csproj" />
       <ProjectReference Include="..\..\app\CookBook.CleanArch.Infrastructure\CookBook.CleanArch.Infrastructure.csproj" />
+      <ProjectReference Include="..\CookBook.CleanArch.Common.Tests\CookBook.CleanArch.Common.Tests.csproj" />
     </ItemGroup>
 
     <ItemGroup>

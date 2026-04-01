@@ -32,6 +32,7 @@ public class IngredientTestSeeds
     public static List<Ingredient> SeededIngredients() =>
     [
         Water,
+        Lemon,
         MinimalisticIngredient,
         IngredientForTestOfDelete,
         IngredientForTestOfUpdate,
