@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Commands.Ingredients;
-using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Application.Queries.Ingredients;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
@@ -10,6 +9,7 @@ using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using CookBook.CleanArch.Presentation.MauiApplication.Validations;
+using FluentValidation.Results;
 using MediatR;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
@@ -32,7 +32,6 @@ public partial class IngredientEditViewModel(
 
         if (Id.Value == Guid.Empty)
         {
-            AddValidations();
             return;
         }
 
@@ -40,36 +39,32 @@ public partial class IngredientEditViewModel(
         if (result.IsSuccess)
         {
             Ingredient = IngredientDetailModel.MapFromResponse(result.Value);
-            AddValidations();
         }
     }
 
     [RelayCommand]
     private async Task SaveAsync()
     {
+        var validator = new IngredientDetailModelValidator();
+        Ingredient.ValidationResults = await validator.ValidateAsync(Ingredient);
+        if (!Ingredient.ValidationResults.IsValid)
+        {
+            // If there are errors, do not continue
+            return;
+        }
+        
         var imageUrl = string.IsNullOrEmpty(Ingredient.ImageUrl)
             ? null
             : ImageUrl.CreateObject(Ingredient.ImageUrl);
         
-        if (imageUrl != null && imageUrl.IsFailure)
-        {
-            // show UI error
-            return;
-        }
-
-        if (!Ingredient.Name.Validate())
-        {
-            return;
-        }
-        
         if (Id.Value == Guid.Empty)
         {
-            var createRequest = new IngredientCreateRequest(Ingredient.Name.Value, Ingredient.Description, imageUrl?.Value);
+            var createRequest = new IngredientCreateRequest(Ingredient.Name, Ingredient.Description, imageUrl?.Value);
             await _mediator.Send(new CreateIngredientCommand(createRequest));
         }
         else
         {
-            var updateRequest = new IngredientUpdateRequest(Id, Ingredient.Name.Value, Ingredient.Description, imageUrl?.Value);
+            var updateRequest = new IngredientUpdateRequest(Id, Ingredient.Name, Ingredient.Description, imageUrl?.Value);
             await _mediator.Send(new UpdateIngredientCommand(updateRequest));
         }
 
@@ -78,18 +73,21 @@ public partial class IngredientEditViewModel(
         navigationService.SendBackButtonPressed();
     }
     
-    private void AddValidations()
-    {
-        if (Ingredient.Name.Validations.Count == 0)
-        {
-            Ingredient.Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Name can not be empty" });
-        }
-    }
-    
     [RelayCommand]
-    private void Validate()
+    private void ValidateProperty(string propertyName)
     {
-        Ingredient.Name.Validate();
+        var validator = new IngredientDetailModelValidator();
+
+        ValidationResult result = validator.Validate(Ingredient);
+
+        Ingredient.ValidationResults = result;
+        
+        // Remove the previous error message for this property
+        Ingredient.ValidationResults.Errors.Remove(Ingredient.ValidationResults.Errors.FirstOrDefault(x => x.PropertyName == propertyName));
+        Ingredient.ValidationResults.Errors.AddRange(result.Errors);
+
+        // Notify the UI that the property has changed
+        OnPropertyChanged(nameof(Ingredient.ValidationResults));
     }
 
 }

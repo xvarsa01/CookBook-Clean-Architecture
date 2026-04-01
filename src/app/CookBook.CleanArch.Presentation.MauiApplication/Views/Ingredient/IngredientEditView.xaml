@@ -6,6 +6,7 @@
                        xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                       xmlns:validations="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Validations"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Ingredient.IngredientEditView"
                        Title="{xaml:Static texts:IngredientEditViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
@@ -45,28 +46,38 @@
                 <Label Text="{x:Static texts:IngredientEditViewTexts.Name_Label_Text}"
                        TextColor="{StaticResource PrimaryLabelTextColor}" />
                 <Entry HorizontalOptions="Fill"
-                       Text="{Binding Ingredient.Name.Value, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}">
+                       Text="{Binding Ingredient.Name}">
                     <Entry.Behaviors>
-                        <toolkit:EventToCommandBehavior
-                            EventName="TextChanged"
-                            Command="{Binding ValidateCommand}" />
+                        <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                        Command="{Binding Source={x:Reference IngredientEditViewRoot}, Path=BindingContext.ValidatePropertyCommand}"
+                                                        CommandParameter="{x:Static validations:IngredientDetailModelValidator.IngredientNameProperty}" />
                     </Entry.Behaviors>
-                    <Entry.Triggers>
-                        <DataTrigger
-                            TargetType="Entry"
-                            Binding="{Binding Ingredient.Name.IsValid}"
-                            Value="False">
-                            <Setter Property="BackgroundColor" Value="{StaticResource ErrorColor}" />
-                        </DataTrigger>
-                    </Entry.Triggers>
                 </Entry>
-                <Label Text="{Binding Ingredient.Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
-                       Style="{StaticResource ValidationErrorLabelStyle}" />
+                <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                       Text="{Binding Ingredient.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                    ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientNameProperty}}"
+                       IsVisible="{Binding Ingredient.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                    ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientNameProperty}}" />
 
                 <Label Text="{x:Static texts:IngredientEditViewTexts.ImageUrl_Label_Text}"
                        TextColor="{StaticResource PrimaryLabelTextColor}" />
                 <Entry HorizontalOptions="Fill"
-                       Text="{Binding Ingredient.ImageUrl}" />
+                       Text="{Binding Ingredient.ImageUrl}">
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                        Command="{Binding Source={x:Reference IngredientEditViewRoot}, Path=BindingContext.ValidatePropertyCommand}"
+                                                        CommandParameter="{x:Static validations:IngredientDetailModelValidator.IngredientImageUrlProperty}" />
+                    </Entry.Behaviors>
+                </Entry>
+                <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                       Text="{Binding Ingredient.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                    ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientImageUrlProperty}}"
+                       IsVisible="{Binding Ingredient.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToHasErrorConverter},
+                                                    ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientImageUrlProperty}}" />
 
                 <Label Text="{x:Static texts:IngredientEditViewTexts.Description_Label_Text}"
                        TextColor="{StaticResource PrimaryLabelTextColor}" />

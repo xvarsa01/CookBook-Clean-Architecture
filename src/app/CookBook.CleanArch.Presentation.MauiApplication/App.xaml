@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Resources/Styles/ButtonStyle.xaml" />
                 <ResourceDictionary Source="Resources/Styles/ContentPageStyle.xaml" />
                 <ResourceDictionary Source="Resources/Styles/LabelStyle.xaml" />
+                <ResourceDictionary Source="Resources/Styles/EntryStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <converters:FoodTypeToColorConverter x:Key="FoodTypeToColorConverter" />
@@ -22,7 +23,8 @@
             <converters:UnitToStringConverter x:Key="UnitToStringConverter"/>
             <converters:NullableBoolToStringConverter x:Key="NullableBoolToStringConverter" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-            <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+            <converters:ValidationResultToErrorMessagesConverter x:Key="ValidationResultToErrorMessagesConverter" />
+            <converters:ValidationResultToHasErrorConverter x:Key="ValidationResultToHasErrorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

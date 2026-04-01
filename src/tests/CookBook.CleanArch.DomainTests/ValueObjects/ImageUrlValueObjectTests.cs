@@ -8,17 +8,17 @@ public class ImageUrlValueObjectTests
     [Fact]
     public void Creating_ImageUrl_With_Valid_Http_Url_Should_Succeed()
     {
-        var url = ImageUrl.CreateObject("http://a.png");
+        var url = ImageUrl.CreateObject("http://example.com/a.png");
         Assert.True(url.IsSuccess);
-        Assert.Equal("http://a.png", url.Value.Value);
+        Assert.Equal("http://example.com/a.png", url.Value.Value);
     }
 
     [Fact]
     public void Creating_ImageUrl_With_Valid_Https_Url_Should_Succeed()
     {
-        var url = ImageUrl.CreateObject("https://a.jpg");
+        var url = ImageUrl.CreateObject("https://example.com/a.jpg");
         Assert.True(url.IsSuccess);
-        Assert.Equal("https://a.jpg", url.Value.Value);
+        Assert.Equal("https://example.com/a.jpg", url.Value.Value);
     }
 
     [Fact]

@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Domain.Recipe.Enums;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using FluentValidation.Results;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Models;
 
@@ -29,6 +30,10 @@ public partial class RecipeDetailModel : ObservableObject
 
     [ObservableProperty]
     public partial ObservableCollection<RecipeIngredientListModel> Ingredients { get; set; } = [];
+    
+    
+    [ObservableProperty]
+    public partial ValidationResult? ValidationResults {get; set; } = new();
     
     public static RecipeDetailModel MapFromResponse(RecipeResponse response)
     {

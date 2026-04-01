@@ -1,0 +1,57 @@
+﻿using CookBook.CleanArch.Domain.Recipe.Enums;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Shared.ValueObjects;
+using CookBook.CleanArch.Presentation.MauiApplication.Models;
+using FluentValidation;
+
+namespace CookBook.CleanArch.Presentation.MauiApplication.Validations;
+
+public class RecipeDetailModelValidator : AbstractValidator<RecipeDetailModel>
+{
+    public static string RecipeNameProperty => nameof(RecipeDetailModel.Name);
+    public static string RecipeDurationProperty => nameof(RecipeDetailModel.Duration);
+    public static string RecipeImageUrlProperty => nameof(RecipeDetailModel.ImageUrl);
+    public static string RecipeRecipeTypeProperty => nameof(RecipeDetailModel.RecipeType);
+
+    public RecipeDetailModelValidator()
+    {
+        RuleFor(x => x.Name)
+            .Custom((value, context) =>
+            {
+                var result = RecipeName.CreateObject(value);
+                if (result.IsFailure)
+                {
+                    context.AddFailure(RecipeNameProperty, result.Error.Message);
+                }
+            });
+
+        RuleFor(x => x.Duration)
+            .Custom((value, context) =>
+            {
+                var result = RecipeDuration.CreateObject(value);
+                if (result.IsFailure)
+                {
+                    context.AddFailure(RecipeDurationProperty, result.Error.Message);
+                }
+            });
+
+        RuleFor(x => x.RecipeType)
+            .NotEqual(RecipeType.None)
+            .WithMessage("The recipe type must be selected");
+
+        RuleFor(x => x.ImageUrl)
+            .Custom((value, context) =>
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    return;     // this is valid state, so stop evaluating further rules
+                }
+
+                var result = ImageUrl.CreateObject(value);
+                if (result.IsFailure)
+                {
+                    context.AddFailure(RecipeImageUrlProperty, result.Error.Message);
+                }
+            });
+    }
+}
