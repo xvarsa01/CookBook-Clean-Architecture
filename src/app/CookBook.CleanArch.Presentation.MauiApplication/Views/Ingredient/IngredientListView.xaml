@@ -25,21 +25,17 @@
                    Text="{x:Static texts:IngredientListViewTexts.Title_Label}"
                    VerticalOptions="Start" />
 
-            <Grid Grid.Column="2"
-                  ColumnDefinitions="Auto, Auto, Auto, Auto, Auto"
-                  ColumnSpacing="20">
+            <HorizontalStackLayout Grid.Column="2" Spacing="20">
 
                 <!--  Search  -->
-                <VerticalStackLayout Grid.Column="0"
-                                     WidthRequest="250">
+                <VerticalStackLayout WidthRequest="250">
                     <Label FontSize="12"
                            Text="Name" />
                     <SearchBar Placeholder="Search ingredient..."
                                Text="{Binding Filter.Name}" />
                 </VerticalStackLayout>
 
-                <VerticalStackLayout Grid.Column="1"
-                                     HorizontalOptions="Center">
+                <VerticalStackLayout HorizontalOptions="Center">
                     <Label FontSize="12"
                            HorizontalOptions="Center"
                            Text="Image" />
@@ -55,7 +51,7 @@
                     </Picker>
                 </VerticalStackLayout>
 
-                <VerticalStackLayout Grid.Column="2">
+                <VerticalStackLayout>
                     <Label FontSize="12"
                            Text="Sort direction" />
                     <controls:RadioButtonGroupView>
@@ -67,7 +63,7 @@
                     </controls:RadioButtonGroupView>
                 </VerticalStackLayout>
 
-                <VerticalStackLayout Grid.Column="3">
+                <VerticalStackLayout>
                     <Label Text="Page size" />
                     <controls:RadioButtonGroupView SelectedItem="{Binding PagingOptions.PageSize, Mode=TwoWay}">
                         <controls:RadioButton Text="5"
@@ -79,8 +75,7 @@
                     </controls:RadioButtonGroupView>
                 </VerticalStackLayout>
 
-                <Button Grid.Column="4"
-                        Margin="10,0"
+                <Button Margin="10,0"
                         Padding="12,6"
                         Command="{Binding ApplyFilterCommand}"
                         CornerRadius="5"
@@ -88,7 +83,7 @@
                         Style="{StaticResource PrimaryButtonStyle}"
                         Text="Apply filters"
                         VerticalOptions="Start" />
-            </Grid>
+            </HorizontalStackLayout>
         </Grid>
 
         <ScrollView Grid.Row="1">
@@ -137,7 +132,7 @@
         </FlexLayout>
         </ScrollView>
 
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="2">
             <Button Margin="10,0"
                     Padding="12,6"
                     Command="{Binding GoToCreateCommand}"

@@ -18,27 +18,39 @@ public partial class RecipeListViewModel(
     IMediator _mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
-    : ViewModelBase(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeDeleteMessage>
+    : ViewModelWithPager<RecipeFilter, RecipeSortParameter>(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeDeleteMessage>
 {
     [ObservableProperty]
     public partial ObservableCollection<RecipeListModel> Recipes { get; set; } = [];
 
-    private RecipeFilter Filter { get; set; } = new();
+    public override RecipeFilter Filter { get; set; } = new();
 
     protected override async Task LoadDataAsync()
     {
         await base.LoadDataAsync();
 
-        var result = (await _mediator.Send(new GetRecipeListQuery(Filter)));
-        if (result.IsSuccess)
-        {
-            foreach (var item in result.Value)
-            {
-                Recipes.Add(RecipeListModel.MapFromResponse(item));
-            }
-        }
+        await LoadPageAsync();
     }
 
+    protected override async Task LoadPageAsync()
+    {
+        var result = (await _mediator.Send(new GetRecipeListQuery(Filter, PagingOptions)));
+        if (result.IsFailure)
+        {
+            return;
+        }
+
+        Recipes.Clear();
+        foreach (var item in result.Value.Items)
+        {
+            Recipes.Add(RecipeListModel.MapFromResponse(item));
+        }
+
+        TotalItemsCount = result.Value.TotalItemsCount;
+        TotalPages = (int)Math.Ceiling((double)result.Value.TotalItemsCount / PagingOptions.PageSize);
+        UpdatePageNumbers();
+    }
+    
     [RelayCommand]
     private async Task GoToDetailAsync(Guid id)
         => await navigationService.GoToAsync(NavigationService.RecipeDetailRouteRelative,
