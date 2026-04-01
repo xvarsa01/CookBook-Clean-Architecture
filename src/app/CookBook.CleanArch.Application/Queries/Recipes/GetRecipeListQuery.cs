@@ -50,10 +50,10 @@ internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryH
 
     private static IQueryable<Recipe> ApplyFilter(RecipeFilter filter, IQueryable<Recipe> queryable)
     {
-        GetRecipeListQuery request;
         if (!string.IsNullOrEmpty(filter.Name))
         {
-            queryable = queryable.Where(r => r.Name.Value.ToLower().Contains(filter.Name.ToLower()));
+            var nameFilter = $"%{filter.Name}%";
+            queryable = queryable.Where(r => EF.Functions.Like((string)r.Name, nameFilter));
         }
 
         if (filter.RecipeType is not null)
