@@ -42,7 +42,7 @@
                                  Grid.Column="2"
                                  Spacing="20">
                 <Label FontSize="24" 
-                       Text="{Binding Ingredient.Name}" />
+                       Text="{Binding Ingredient.Name.Value}" />
 
                 <Label FontSize="14" 
                        Text="{Binding Ingredient.Description}"/>

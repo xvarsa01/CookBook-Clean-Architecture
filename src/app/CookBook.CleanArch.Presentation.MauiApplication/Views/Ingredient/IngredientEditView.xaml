@@ -5,6 +5,7 @@
                        xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
                        xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
+                       xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Ingredient.IngredientEditView"
                        Title="{xaml:Static texts:IngredientEditViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
@@ -44,7 +45,23 @@
                 <Label Text="{x:Static texts:IngredientEditViewTexts.Name_Label_Text}"
                        TextColor="{StaticResource PrimaryLabelTextColor}" />
                 <Entry HorizontalOptions="Fill"
-                       Text="{Binding Ingredient.Name}" />
+                       Text="{Binding Ingredient.Name.Value, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}">
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="TextChanged"
+                            Command="{Binding ValidateCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger
+                            TargetType="Entry"
+                            Binding="{Binding Ingredient.Name.IsValid}"
+                            Value="False">
+                            <Setter Property="BackgroundColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label Text="{Binding Ingredient.Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                       Style="{StaticResource ValidationErrorLabelStyle}" />
 
                 <Label Text="{x:Static texts:IngredientEditViewTexts.ImageUrl_Label_Text}"
                        TextColor="{StaticResource PrimaryLabelTextColor}" />

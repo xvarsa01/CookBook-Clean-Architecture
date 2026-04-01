@@ -1,12 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CookBook.CleanArch.Application.Models.Ingredient;
+using CookBook.CleanArch.Presentation.MauiApplication.Validations;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Models;
 
 public partial class IngredientDetailModel : ObservableObject
 {
     [ObservableProperty]
-    public required partial string Name { get; set; }
+    public required partial ValidatableObject<string> Name { get; set; }
     [ObservableProperty]
     public partial string? Description { get; set; }
     [ObservableProperty]
@@ -16,7 +18,7 @@ public partial class IngredientDetailModel : ObservableObject
     {
         return new IngredientDetailModel
         {
-            Name = response.Name,
+            Name = new ValidatableObject<string> { Value = response.Name },
             Description = response.Description,
             ImageUrl = response.ImageUrl?.Value
         };
@@ -25,7 +27,7 @@ public partial class IngredientDetailModel : ObservableObject
     public static IngredientDetailModel Empty
         => new()
         {
-            Name = string.Empty,
+            Name = new ValidatableObject<string> { Value = string.Empty },
             Description = string.Empty,
             ImageUrl = null
         };

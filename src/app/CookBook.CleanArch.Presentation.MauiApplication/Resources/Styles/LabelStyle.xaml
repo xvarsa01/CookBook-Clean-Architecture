@@ -5,4 +5,9 @@
     <Style TargetType="Label" ApplyToDerivedTypes="True">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryLabelTextColor}"/>
     </Style>
+    
+    <Style TargetType="Label" x:Key="ValidationErrorLabelStyle" >
+        <Setter Property="TextColor" Value="{StaticResource ErrorColor}" />
+        <Setter Property="FontSize" Value="10" />
+    </Style>
 </ResourceDictionary>

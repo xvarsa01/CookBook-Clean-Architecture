@@ -9,6 +9,7 @@ using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
+using CookBook.CleanArch.Presentation.MauiApplication.Validations;
 using MediatR;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
@@ -31,20 +32,22 @@ public partial class IngredientEditViewModel(
 
         if (Id.Value == Guid.Empty)
         {
+            AddValidations();
             return;
         }
-        
+
         var result = (await _mediator.Send(new GetIngredientDetailQuery(Id)));
         if (result.IsSuccess)
         {
             Ingredient = IngredientDetailModel.MapFromResponse(result.Value);
+            AddValidations();
         }
     }
 
     [RelayCommand]
     private async Task SaveAsync()
     {
-        var imageUrl = Ingredient.ImageUrl is null
+        var imageUrl = string.IsNullOrEmpty(Ingredient.ImageUrl)
             ? null
             : ImageUrl.CreateObject(Ingredient.ImageUrl);
         
@@ -54,20 +57,19 @@ public partial class IngredientEditViewModel(
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(Ingredient.Name))
+        if (!Ingredient.Name.Validate())
         {
-            // show UI error
             return;
         }
         
         if (Id.Value == Guid.Empty)
         {
-            var createRequest = new IngredientCreateRequest(Ingredient.Name, Ingredient.Description, imageUrl?.Value);
+            var createRequest = new IngredientCreateRequest(Ingredient.Name.Value, Ingredient.Description, imageUrl?.Value);
             await _mediator.Send(new CreateIngredientCommand(createRequest));
         }
         else
         {
-            var updateRequest = new IngredientUpdateRequest(Id, Ingredient.Name, Ingredient.Description, imageUrl?.Value);
+            var updateRequest = new IngredientUpdateRequest(Id, Ingredient.Name.Value, Ingredient.Description, imageUrl?.Value);
             await _mediator.Send(new UpdateIngredientCommand(updateRequest));
         }
 
@@ -75,4 +77,19 @@ public partial class IngredientEditViewModel(
 
         navigationService.SendBackButtonPressed();
     }
+    
+    private void AddValidations()
+    {
+        if (Ingredient.Name.Validations.Count == 0)
+        {
+            Ingredient.Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Name can not be empty" });
+        }
+    }
+    
+    [RelayCommand]
+    private void Validate()
+    {
+        Ingredient.Name.Validate();
+    }
+
 }
