@@ -49,7 +49,7 @@ public partial class RecipeEditViewModel(
         await navigationService.GoToAsync(NavigationService.RecipeIngredientsEditRouteRelative,
             new Dictionary<string, object?>
             {
-                [nameof(RecipeIngredientsEditViewModel.Id)] = Recipe.Id
+                [nameof(RecipeIngredientsEditViewModel.Id)] = Id
                 });
     }
 
