@@ -2,12 +2,13 @@
 <views:ContentPageBase x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Ingredient.IngredientListView"
                        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                       xmlns:controls="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+                       xmlns:inputKit="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
                        xmlns:models="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Models"
                        xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
                        xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
+                       xmlns:controls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls"
                        x:Name="IngredientListViewRoot"
                        x:DataType="viewModels:IngredientListViewModel"
                        Title="{xaml:Static texts:IngredientListViewTexts.Page_Title}"
@@ -54,25 +55,25 @@
                 <VerticalStackLayout>
                     <Label FontSize="12"
                            Text="Sort direction" />
-                    <controls:RadioButtonGroupView>
-                        <controls:RadioButton IsChecked="{Binding Filter.IsSortAscending}"
+                    <inputKit:RadioButtonGroupView>
+                        <inputKit:RadioButton IsChecked="{Binding Filter.IsSortAscending}"
                                               Text="Ascending" />
-                        <controls:RadioButton IsChecked="{Binding Filter.IsSortAscending, Converter={StaticResource InverseBooleanConverter}}"
+                        <inputKit:RadioButton IsChecked="{Binding Filter.IsSortAscending, Converter={StaticResource InverseBooleanConverter}}"
                                               Text="Descending"
                                               TextColor="{DynamicResource PrimaryLabelTextColor}" />
-                    </controls:RadioButtonGroupView>
+                    </inputKit:RadioButtonGroupView>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout>
                     <Label Text="Page size" />
-                    <controls:RadioButtonGroupView SelectedItem="{Binding PagingOptions.PageSize, Mode=TwoWay}">
-                        <controls:RadioButton Text="5"
+                    <inputKit:RadioButtonGroupView SelectedItem="{Binding PagingOptions.PageSize, Mode=TwoWay}">
+                        <inputKit:RadioButton Text="5"
                                               Value="{x:Int32 5}" />
-                        <controls:RadioButton Text="10"
+                        <inputKit:RadioButton Text="10"
                                               Value="{x:Int32 10}" />
-                        <controls:RadioButton Text="15"
+                        <inputKit:RadioButton Text="15"
                                               Value="{x:Int32 15}" />
-                    </controls:RadioButtonGroupView>
+                    </inputKit:RadioButtonGroupView>
                 </VerticalStackLayout>
 
                 <Button Margin="10,0"
@@ -144,57 +145,12 @@
                     Text="{x:Static texts:IngredientListViewTexts.Add_Button_Text}"
                     WidthRequest="200" />
 
-            <HorizontalStackLayout Spacing="5"
-                                   HorizontalOptions="Center">
-                <Button Command="{Binding ToFirstPageCommand}"
-                        FontSize="18"
-                        HorizontalOptions="Center"
-                        Text="⏮"
-                        VerticalOptions="Center" />
-
-                <Button Command="{Binding ToPreviousPageCommand}"
-                        FontSize="18"
-                        HorizontalOptions="Center"
-                        Text="◀"
-                        VerticalOptions="Center" />
-
-                <!--  Page numbers  -->
-                <CollectionView ItemsSource="{Binding PageNumbers}"
-                                SelectionMode="None"
-                                VerticalOptions="Center">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Horizontal" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:PageItem">
-                            <Button
-                                Command="{Binding Source={x:Reference IngredientListViewRoot}, Path=BindingContext.GoToPageCommand}"
-                                CommandParameter="{Binding Number}"
-                                Text="{Binding Number}">
-                                <Button.Triggers>
-                                    <DataTrigger Binding="{Binding IsCurrent}"
-                                                 TargetType="Button"
-                                                 Value="True">
-                                        <Setter Property="BackgroundColor" Value="LightGray" />
-                                    </DataTrigger>
-                                </Button.Triggers>
-                            </Button>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-
-                <Button Command="{Binding ToNextPageCommand}"
-                        FontSize="18"
-                        HorizontalOptions="Center"
-                        Text="▶"
-                        VerticalOptions="Center" />
-
-                <Button Command="{Binding ToLastPageCommand}"
-                        FontSize="18"
-                        HorizontalOptions="Center"
-                        Text="⏭"
-                        VerticalOptions="Center" />
-            </HorizontalStackLayout>
+            <controls:PagerControl ToFirstCommand="{Binding ToFirstPageCommand}"
+                                   ToNextCommandCommand="{Binding ToNextPageCommand}"
+                                   ToPreviousCommand="{Binding ToPreviousPageCommand}"
+                                   ToLastCommandCommand="{Binding ToLastPageCommand}"
+                                   PageNumbers="{Binding PageNumbers}"
+                                   GoToPageCommand="{Binding GoToPageCommand}" />        
         </Grid>
     </Grid>
 </views:ContentPageBase>
