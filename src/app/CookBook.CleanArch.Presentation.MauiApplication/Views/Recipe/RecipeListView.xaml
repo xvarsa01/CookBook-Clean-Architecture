@@ -41,10 +41,11 @@
                     <Label FontSize="12"
                            HorizontalOptions="Center"
                            Text="Type" />
-                    <Picker SelectedItem="{Binding Filter.RecipeType}">
+                    <Picker SelectedItem="{Binding Filter.RecipeType}"
+                            ItemDisplayBinding="{Binding Converter={StaticResource FoodTypeToStringConverter}}">
                         <Picker.ItemsSource>
-                            <x:Array Type="{x:Type recipeEnums:RecipeType}">
-                                <recipeEnums:RecipeType>None</recipeEnums:RecipeType>
+                            <x:Array Type="{x:Type x:Object}">
+                                <x:Null />
                                 <recipeEnums:RecipeType>MainDish</recipeEnums:RecipeType>
                                 <recipeEnums:RecipeType>Soup</recipeEnums:RecipeType>
                                 <recipeEnums:RecipeType>Dessert</recipeEnums:RecipeType>
