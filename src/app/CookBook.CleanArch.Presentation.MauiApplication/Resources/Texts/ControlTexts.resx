@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,37 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Title_Label" xml:space="preserve">
-    <value>Ingredience</value>
-  </data>
-  <data name="Page_Title" xml:space="preserve">
-    <value>CookBook</value>
-  </data>
-  <data name="Add_Button_Text" xml:space="preserve">
-    <value>Přidat ingredienci</value>
-  </data>
   <data name="ApplyFilter_Button_Text" xml:space="preserve">
-    <value>Použít filtry</value>
-  </data>
-  <data name="Search_Placeholder_Text" xml:space="preserve">
-    <value>Hledat ingredienci…</value>
-  </data>
-  <data name="Search_Title_Text" xml:space="preserve">
-    <value>Název</value>
-  </data>
-  <data name="Image_Title_Text" xml:space="preserve">
-    <value>Obsahuje obrázek</value>
+    <value>Apply filters</value>
   </data>
   <data name="SortDirection_Title_Text" xml:space="preserve">
-    <value>Směr řazení</value>
+    <value>Sort direction</value>
   </data>
   <data name="PageSize_Title_Text" xml:space="preserve">
-    <value>Velikost stránky</value>
+    <value>Page size</value>
   </data>
   <data name="Sort_AscOption_Text" xml:space="preserve">
-    <value>Název</value>
+      <value>Ascending</value>
   </data>
   <data name="Sort_DescOption_Text" xml:space="preserve">
-    <value>Název</value>
+      <value>Descending</value>
   </data>
 </root>

@@ -22,14 +22,14 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class IngredientListViewTexts {
+    internal class ControlTexts {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal IngredientListViewTexts() {
+        internal ControlTexts() {
         }
         
         /// <summary>
@@ -39,8 +39,7 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts.IngredientListVie" +
-                            "wTexts", typeof(IngredientListViewTexts).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts.ControlTexts", typeof(ControlTexts).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,15 +61,6 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create new Ingredient.
-        /// </summary>
-        internal static string Add_Button_Text {
-            get {
-                return ResourceManager.GetString("Add_Button_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Apply filters.
         /// </summary>
         internal static string ApplyFilter_Button_Text {
@@ -80,47 +70,11 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Has Image.
-        /// </summary>
-        internal static string Image_Title_Text {
-            get {
-                return ResourceManager.GetString("Image_Title_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CookBook.
-        /// </summary>
-        internal static string Page_Title {
-            get {
-                return ResourceManager.GetString("Page_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Page size.
         /// </summary>
         internal static string PageSize_Title_Text {
             get {
                 return ResourceManager.GetString("PageSize_Title_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search ingredient....
-        /// </summary>
-        internal static string Search_Placeholder_Text {
-            get {
-                return ResourceManager.GetString("Search_Placeholder_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Search_Title_Text {
-            get {
-                return ResourceManager.GetString("Search_Title_Text", resourceCulture);
             }
         }
         
@@ -148,15 +102,6 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         internal static string SortDirection_Title_Text {
             get {
                 return ResourceManager.GetString("SortDirection_Title_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ingredients.
-        /// </summary>
-        internal static string Title_Label {
-            get {
-                return ResourceManager.GetString("Title_Label", resourceCulture);
             }
         }
     }

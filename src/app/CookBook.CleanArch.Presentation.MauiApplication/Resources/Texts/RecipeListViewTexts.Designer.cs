@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -16,7 +19,7 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class RecipeListViewTexts {
@@ -36,7 +39,8 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts.RecipeListViewTexts", typeof(RecipeListViewTexts).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts.RecipeListViewTex" +
+                            "ts", typeof(RecipeListViewTexts).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -72,6 +76,33 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         internal static string Page_Title {
             get {
                 return ResourceManager.GetString("Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string RecipeType_Title_Text {
+            get {
+                return ResourceManager.GetString("RecipeType_Title_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search recipe....
+        /// </summary>
+        internal static string Search_Placeholder_Text {
+            get {
+                return ResourceManager.GetString("Search_Placeholder_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Search_Title_Text {
+            get {
+                return ResourceManager.GetString("Search_Title_Text", resourceCulture);
             }
         }
         

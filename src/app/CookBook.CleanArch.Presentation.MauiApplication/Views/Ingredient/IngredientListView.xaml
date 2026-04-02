@@ -29,17 +29,17 @@
             <HorizontalStackLayout Grid.Column="2" Spacing="20">
 
                 <!--  Search  -->
-                <VerticalStackLayout WidthRequest="250">
+                <VerticalStackLayout Spacing="10"
+                                     WidthRequest="250">
                     <Label FontSize="12"
-                           Text="Name" />
+                           Text="{x:Static texts:IngredientListViewTexts.Search_Title_Text}" />
                     <SearchBar Placeholder="Search ingredient..."
                                Text="{Binding Filter.Name}" />
                 </VerticalStackLayout>
 
-                <VerticalStackLayout HorizontalOptions="Center">
+                <VerticalStackLayout Spacing="10">
                     <Label FontSize="12"
-                           HorizontalOptions="Center"
-                           Text="Image" />
+                           Text="{x:Static texts:IngredientListViewTexts.Image_Title_Text}" />
                     <Picker
                         SelectedItem="{Binding Filter.HasImage, Converter={StaticResource NullableBoolToStringConverter}}">
                         <Picker.ItemsSource>
@@ -51,45 +51,17 @@
                         </Picker.ItemsSource>
                     </Picker>
                 </VerticalStackLayout>
-
-                <VerticalStackLayout>
-                    <Label FontSize="12"
-                           Text="Sort direction" />
-                    <inputKit:RadioButtonGroupView>
-                        <inputKit:RadioButton IsChecked="{Binding Filter.IsSortAscending}"
-                                              Text="Ascending" />
-                        <inputKit:RadioButton IsChecked="{Binding Filter.IsSortAscending, Converter={StaticResource InverseBooleanConverter}}"
-                                              Text="Descending"
-                                              TextColor="{DynamicResource PrimaryLabelTextColor}" />
-                    </inputKit:RadioButtonGroupView>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout>
-                    <Label Text="Page size" />
-                    <inputKit:RadioButtonGroupView SelectedItem="{Binding PagingOptions.PageSize, Mode=TwoWay}">
-                        <inputKit:RadioButton Text="5"
-                                              Value="{x:Int32 5}" />
-                        <inputKit:RadioButton Text="10"
-                                              Value="{x:Int32 10}" />
-                        <inputKit:RadioButton Text="15"
-                                              Value="{x:Int32 15}" />
-                    </inputKit:RadioButtonGroupView>
-                </VerticalStackLayout>
-
-                <Button Margin="10,0"
-                        Padding="12,6"
-                        Command="{Binding ApplyFilterCommand}"
-                        CornerRadius="5"
-                        FontFamily="MontserratMedium"
-                        Style="{StaticResource PrimaryButtonStyle}"
-                        Text="Apply filters"
-                        VerticalOptions="Start" />
+                
+                <controls:SortDirectionControl IsSortAscending="{Binding Filter.IsSortAscending, Mode=TwoWay}" />
+                
+                <controls:PageSizeSelectorControl SelectedPageSize="{Binding PagingOptions.PageSize, Mode=TwoWay}"/>
+                
+                <controls:ApplyFilterButton ApplyCommand="{Binding ApplyFilterCommand}" />
             </HorizontalStackLayout>
         </Grid>
 
         <ScrollView Grid.Row="1">
-        <FlexLayout 
-                    Wrap="Wrap"
+        <FlexLayout Wrap="Wrap"
                     Direction="Row"
                     JustifyContent="Start"
                     BindableLayout.ItemsSource="{Binding Ingredients}">

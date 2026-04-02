@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
+             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.ApplyFilterButton"
+             x:Name="Root">
+    
+    <Button Margin="10,0"
+            Padding="12,6"
+            Command="{Binding Source={x:Reference Root}, Path=ApplyCommand}"
+            CornerRadius="5"
+            FontFamily="MontserratMedium"
+            Style="{StaticResource PrimaryButtonStyle}"
+            Text="{x:Static texts:ControlTexts.ApplyFilter_Button_Text}"
+            VerticalOptions="Start" />
+</ContentView>

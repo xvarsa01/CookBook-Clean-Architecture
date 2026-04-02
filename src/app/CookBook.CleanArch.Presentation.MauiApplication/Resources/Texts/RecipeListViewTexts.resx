@@ -106,4 +106,13 @@
   <data name="Add_Button_Text" xml:space="preserve">
     <value>Add Recipe</value>
   </data>
+    <data name="Search_Placeholder_Text" xml:space="preserve">
+    <value>Search recipe...</value>
+  </data>
+    <data name="Search_Title_Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+    <data name="RecipeType_Title_Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
 </root>
