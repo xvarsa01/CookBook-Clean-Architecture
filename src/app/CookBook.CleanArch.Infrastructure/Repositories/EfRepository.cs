@@ -8,7 +8,7 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
     where TEntity : AggregateRootBase<TId>
     where TId : StronglyTypedId
 {
-    private readonly DbSet<TEntity> _dbSet;
+    protected readonly DbSet<TEntity> _dbSet;
     private readonly DbContext _dbContext;
 
     public EfRepository(DbContext dbContext)

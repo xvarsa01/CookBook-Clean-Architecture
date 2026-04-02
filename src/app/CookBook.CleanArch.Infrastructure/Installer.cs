@@ -1,4 +1,6 @@
 ﻿using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Domain.Recipe;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Infrastructure.Factories;
 using CookBook.CleanArch.Infrastructure.Interceptors;
 using CookBook.CleanArch.Infrastructure.Repositories;
@@ -18,6 +20,7 @@ public static class Installer
         }
         
         services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
+        services.AddScoped(typeof(IRepository<Recipe, RecipeId>), typeof(EfRecipeRepository));
         
         services.AddSingleton<IDbContextFactory<CookBookDbContext>>(_ =>
             new DbContextSqLiteFactory(options.DatabaseFilePath, options.SeedDemoData));
