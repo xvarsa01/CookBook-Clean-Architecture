@@ -31,7 +31,8 @@ public class ValidationResultToErrorMessagesConverter : IValueConverter
         // Get all error messages for the specified property
         IEnumerable<string> errorMessages = validationResult.Errors
             .Where(x => x.PropertyName == property)
-            .Select(x => x.ErrorMessage);
+            .Select(x => x.ErrorMessage)
+            .Distinct();
 
         // Return all error messages as a single string
         return string.Join(Environment.NewLine, errorMessages);
