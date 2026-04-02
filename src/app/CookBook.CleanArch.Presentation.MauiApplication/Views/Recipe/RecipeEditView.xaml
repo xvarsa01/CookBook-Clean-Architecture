@@ -14,15 +14,21 @@
                        Style="{StaticResource ContentPageStyle}"
                        x:Name="RecipeEditViewRoot"
                        x:DataType="viewModels:RecipeEditViewModel">
-    <Grid RowDefinitions="Auto, *, Auto"
+    <Grid RowDefinitions="*, Auto"
           RowSpacing="40">
         <Grid Grid.Row="0"
-              ColumnDefinitions="*, 320"
-              ColumnSpacing="56">
+              ColumnDefinitions="2*, *"
+              ColumnSpacing="40"
+              RowDefinitions="Auto, *">
+
             <Grid Grid.Column="0"
+                  Grid.Row="0"
                   RowDefinitions="Auto, Auto, Auto"
-                  RowSpacing="20">
+                  ColumnDefinitions="*, Auto"
+                  RowSpacing="20"
+                  ColumnSpacing="20">
                 <VerticalStackLayout Grid.Row="0"
+                                     Grid.Column="0"
                                      Spacing="10">
                     <Label Text="{x:Static t:RecipeEditViewTexts.Name_Label_Text}" />
 
@@ -44,6 +50,7 @@
                 </VerticalStackLayout>
 
                 <Grid Grid.Row="1"
+                      Grid.Column="0"
                       RowDefinitions="Auto, Auto,Auto"
                       ColumnDefinitions="Auto, *"
                       RowSpacing="10" ColumnSpacing="17">
@@ -93,6 +100,7 @@
                 </Grid>
 
                 <StackLayout Grid.Row="2"
+                             Grid.Column="0"
                              Orientation="Vertical"
                              Spacing="10">
                     <Label Text="{x:Static t:RecipeEditViewTexts.ImageUrl_Label_Text}" />
@@ -112,22 +120,19 @@
                                                     Converter={StaticResource ValidationResultToHasErrorConverter},
                                                     ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeImageUrlProperty}}" />
                 </StackLayout>
+                
+                <Border Grid.Row="0"
+                        Grid.Column="1"
+                        Grid.RowSpan="3"
+                        HorizontalOptions="Fill" VerticalOptions="Fill"
+                        Style="{StaticResource ImageBorderStyle}">
+                    <Image Source="{Binding Recipe.ImageUrl, TargetNullValue='recipe_placeholder.jpg'}"
+                           WidthRequest="320" HeightRequest="240"
+                           Aspect="AspectFill" />
+                </Border>
             </Grid>
-
-            <Border Grid.Column="1"
-                    HorizontalOptions="Fill" VerticalOptions="Fill"
-                    Style="{StaticResource ImageBorderStyle}">
-                <Image Source="{Binding Recipe.ImageUrl, TargetNullValue='recipe_placeholder.jpg'}"
-                       WidthRequest="320" HeightRequest="240"
-                       Aspect="AspectFill" />
-            </Border>
-        </Grid>
-
-        <Grid Grid.Row="1"
-              ColumnDefinitions="*, *"
-              ColumnSpacing="40">
-
             <Grid Grid.Column="0"
+                  Grid.Row="1"
                   RowDefinitions="Auto, *"
                   RowSpacing="30">
                 <Label Grid.Row="0"
@@ -139,17 +144,22 @@
                         VerticalOptions="Fill" />
             </Grid>
 
-            <VerticalStackLayout Grid.Row="0" Grid.Column="1"
-                                 Spacing="30">
-                <Button Text="{x:Static t:RecipeEditViewTexts.EditIngredients_Button_Text}"
+            <Grid Grid.Row="0" Grid.Column="1"
+                  RowSpan="2"
+                  RowDefinitions="Auto, Auto, *"
+                  RowSpacing="30">
+                <Button Grid.Row="0"
+                        Text="{x:Static t:RecipeEditViewTexts.EditIngredients_Button_Text}"
                         Command="{Binding GoToRecipeIngredientEditCommand}"
                         IsVisible="{Binding Recipe, Converter={StaticResource ModelIsNewToIsVisibleInvertedConverter}}"
                         Style="{StaticResource PrimaryButtonStyle}" />
-                <Label Text="{x:Static t:RecipeEditViewTexts.ErrorUnsavedRecipe_Label_Text}"
+                <Label Grid.Row="1"
+                       Text="{x:Static t:RecipeEditViewTexts.ErrorUnsavedRecipe_Label_Text}"
                        HorizontalOptions="End"
                        IsVisible="{Binding Recipe, Converter={StaticResource ModelIsNewToIsVisibleConverter}}" />
 
-                <CollectionView ItemsSource="{Binding Recipe.Ingredients}"
+                <CollectionView Grid.Row="2"
+                                ItemsSource="{Binding Recipe.Ingredients}"
                                 HorizontalOptions="End">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:RecipeIngredientListModel">
@@ -176,10 +186,10 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-            </VerticalStackLayout>
+            </Grid>
         </Grid>
 
-        <Button Grid.Row="2"
+        <Button Grid.Row="1"
                 HorizontalOptions="End"
                 Text="{x:Static t:RecipeEditViewTexts.Save_Button_Text}"
                 Command="{Binding SaveCommand}"
