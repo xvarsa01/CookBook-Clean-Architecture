@@ -133,7 +133,7 @@
     <value>Image URL</value>
   </data>
   <data name="Description_Label_Text" xml:space="preserve">
-    <value>Description</value>
+      <value>Amount</value>
   </data>
   <data name="EditIngredients_Button_Text" xml:space="preserve">
     <value>Edit Ingredients</value>
@@ -143,5 +143,20 @@
   </data>
   <data name="Save_Button_Text" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="RemoveIngredient_Button_Text" xml:space="preserve">
+      <value>Remove</value>
+  </data>
+  <data name="IngredientName_Label_Text" xml:space="preserve">
+      <value>Name</value>
+  </data>
+  <data name="AddIngredient_Button_Text" xml:space="preserve">
+      <value>Add</value>
+  </data>
+  <data name="Unit_Label_Text" xml:space="preserve">
+      <value>Unit</value>
+  </data>
+  <data name="Amount_Label_Text" xml:space="preserve">
+      <value>Unit</value>
   </data>
 </root>

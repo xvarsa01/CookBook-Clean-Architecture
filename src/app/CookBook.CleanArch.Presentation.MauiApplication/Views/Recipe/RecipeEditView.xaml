@@ -146,19 +146,92 @@
 
             <Grid Grid.Row="0" Grid.Column="1"
                   RowSpan="2"
-                  RowDefinitions="Auto, Auto, *"
+                  RowDefinitions="Auto, Auto, Auto, *"
                   RowSpacing="30">
-                <Button Grid.Row="0"
-                        Text="{x:Static t:RecipeEditViewTexts.EditIngredients_Button_Text}"
-                        Command="{Binding GoToRecipeIngredientEditCommand}"
-                        IsVisible="{Binding Recipe, Converter={StaticResource ModelIsNewToIsVisibleInvertedConverter}}"
+                <Button x:Name="ToggleEditIngredientButton"
+                        Grid.Row="0"
+                        Text="{Binding ToggleEditIngredientButtonText}"
+                        Command="{Binding ToggleEditingOfRecipeIngredientCommand}"
+                        IsEnabled="{Binding IsExistingRecipe}"
                         Style="{StaticResource PrimaryButtonStyle}" />
+                
                 <Label Grid.Row="1"
                        Text="{x:Static t:RecipeEditViewTexts.ErrorUnsavedRecipe_Label_Text}"
                        HorizontalOptions="End"
-                       IsVisible="{Binding Recipe, Converter={StaticResource ModelIsNewToIsVisibleConverter}}" />
+                       IsVisible="{Binding IsExistingRecipe, Converter={StaticResource InverseBooleanConverter}}" />
 
-                <CollectionView Grid.Row="2"
+                <HorizontalStackLayout x:Name="AddNewIngredientLayout"
+                                       Grid.Row="2"
+                                       Spacing="10"
+                                       IsVisible="{Binding Source={x:Reference RecipeEditViewRoot}, Path=BindingContext.IngredientsEditingIsActive}">
+                    
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{x:Static t:RecipeEditViewTexts.Amount_Label_Text}" />
+                        <Entry Text="{Binding IngredientAmountNew.Amount}">
+                            <Entry.Behaviors>
+                                <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                                Command="{Binding Source={x:Reference RecipeEditViewRoot}, Path=BindingContext.ValidateIngredientAmountNewPropertyCommand}"
+                                                                CommandParameter="{x:Static validations:RecipeIngredientListModelValidator.IngredientAmountProperty}" />
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                               Text="{Binding IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientAmountProperty}}"
+                               IsVisible="{Binding IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientAmountProperty}}" />
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{x:Static t:RecipeEditViewTexts.Unit_Label_Text}" />
+                        <Picker ItemsSource="{Binding Units}"
+                                ItemDisplayBinding="{Binding ., Converter={StaticResource UnitToStringConverter}}"
+                                SelectedItem="{Binding IngredientAmountNew.Unit}">
+                            <Picker.Behaviors>
+                                <toolkit:EventToCommandBehavior EventName="PropertyChanged"
+                                                                Command="{Binding Source={x:Reference RecipeEditViewRoot}, Path=BindingContext.ValidateIngredientAmountNewPropertyCommand}"
+                                                                CommandParameter="{x:Static validations:RecipeIngredientListModelValidator.IngredientUnitProperty}" />
+                            </Picker.Behaviors>
+                        </Picker>
+                        <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                               Text="{Binding IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientUnitProperty}}"
+                               IsVisible="{Binding IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientUnitProperty}}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{x:Static t:RecipeEditViewTexts.Name_Label_Text}" />
+                        <Picker x:Name="NewIngredientPicker"
+                                ItemsSource="{Binding Ingredients}"
+                                ItemDisplayBinding="{Binding Name}"
+                                SelectedItem="{Binding SelectedNewIngredient}">
+                            <Picker.Behaviors>
+                                <toolkit:EventToCommandBehavior EventName="PropertyChanged"
+                                                                Command="{Binding Source={x:Reference RecipeEditViewRoot}, Path=BindingContext.ValidateIngredientAmountNewPropertyCommand}"
+                                                                CommandParameter="{x:Static validations:RecipeIngredientListModelValidator.IngredientIdProperty}" />
+                            </Picker.Behaviors>
+                        </Picker>
+                        <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                               Text="{Binding IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientIdProperty}}"
+                               IsVisible="{Binding IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientIdProperty}}" />
+                    </VerticalStackLayout>
+                    
+                    <Button Text="{x:Static t:RecipeEditViewTexts.AddIngredient_Button_Text}"
+                            HorizontalOptions="Start"
+                            Command="{Binding AddNewIngredientToRecipeCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <CollectionView Grid.Row="3"
                                 ItemsSource="{Binding Recipe.Ingredients}"
                                 HorizontalOptions="End">
                     <CollectionView.ItemTemplate>
@@ -171,7 +244,9 @@
                                            Aspect="AspectFill" />
                                 </Border>
 
-                                <Label VerticalOptions="Center">
+                                <Label VerticalOptions="Center"
+                                       IsVisible="{Binding Source={x:Reference RecipeEditViewRoot}, Path=BindingContext.IngredientsEditingIsActive,
+                                       Converter={StaticResource InverseBooleanConverter}}">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <Span Text="{Binding Amount}" />
@@ -182,6 +257,41 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
+                                
+                                <HorizontalStackLayout x:Name="IngredientsEditingLayout"
+                                                       IsVisible="{Binding Source={x:Reference RecipeEditViewRoot}, Path=BindingContext.IngredientsEditingIsActive}"
+                                                       VerticalOptions="Center"
+                                                       Spacing="10">
+                                    <Entry Text="{Binding Amount}"
+                                           x:Name="AmountEntry">
+                                        <Entry.Behaviors>
+                                            <toolkit:EventToCommandBehavior EventName="Unfocused"
+                                                                            Command="{Binding Source={x:Reference RecipeEditViewRoot}, Path=BindingContext.UpdateIngredientCommand}"
+                                                                            CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
+                                        </Entry.Behaviors>
+                                    </Entry>
+                                    <Picker x:Name="UnitPicker"
+                                            ItemsSource="{Binding Source={x:Reference RecipeEditViewRoot}, Path=BindingContext.Units}"
+                                            ItemDisplayBinding="{Binding ., Converter={StaticResource UnitToStringConverter}}"
+                                            SelectedItem="{Binding Unit}">
+                                        <Picker.Behaviors>
+                                            <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged"
+                                                                            Command="{Binding Source={x:Reference RecipeEditViewRoot}, Path=BindingContext.UpdateIngredientCommand}"
+                                                                            CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
+                                        </Picker.Behaviors>
+                                    </Picker>
+                                    
+                                    <Label Text="{Binding IngredientName}"
+                                           VerticalOptions="Center"
+                                           MinimumWidthRequest="100" />
+                                    
+                                    <Button HorizontalOptions="Start" VerticalOptions="Center"
+                                            Text="{x:Static t:RecipeEditViewTexts.RemoveIngredient_Button_Text}"
+                                            Command="{Binding Source={x:Reference RecipeEditViewRoot}, Path=BindingContext.RemoveIngredientCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource ErrorButtonStyle}" />
+                                </HorizontalStackLayout>
+                                
                             </HorizontalStackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -192,7 +302,7 @@
         <Button Grid.Row="1"
                 HorizontalOptions="End"
                 Text="{x:Static t:RecipeEditViewTexts.Save_Button_Text}"
-                Command="{Binding SaveCommand}"
+                Command="{Binding SaveRecipeCommand}"
                 Style="{StaticResource PrimaryButtonStyle}" />
     </Grid>
 </views:ContentPageBase>

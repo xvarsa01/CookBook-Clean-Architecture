@@ -31,4 +31,7 @@
 
     <Color x:Key="ErrorColor">#FF0000</Color>
     <Color x:Key="SuccessColor">#00AE4B</Color>
+    
+    <Color x:Key="DisabledColor">#007744</Color>
+    <Color x:Key="DisabledTextColor">#777777</Color>
 </ResourceDictionary>

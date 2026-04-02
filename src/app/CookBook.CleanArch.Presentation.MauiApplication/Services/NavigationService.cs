@@ -10,7 +10,6 @@ public class NavigationService : INavigationService
     public const string RecipeListRouteAbsolute = "//recipes";
     public const string RecipeDetailRouteRelative = "/detail";
     public const string RecipeEditRouteRelative = "/edit";
-    public const string RecipeIngredientsEditRouteRelative = "/ingredients";
 
     public const string IngredientListRouteAbsolute = "//ingredients";
     public const string IngredientDetailRouteRelative = "/detail";
@@ -29,8 +28,6 @@ public class NavigationService : INavigationService
 
         new(RecipeListRouteAbsolute + RecipeEditRouteRelative, typeof(RecipeEditView)),
         new(RecipeListRouteAbsolute + RecipeDetailRouteRelative + RecipeEditRouteRelative, typeof(RecipeEditView)),
-
-        new(RecipeListRouteAbsolute + RecipeDetailRouteRelative + RecipeEditRouteRelative + RecipeIngredientsEditRouteRelative, typeof(RecipeIngredientsEditView)),
     };
 
     public async Task GoToAsync(string route)

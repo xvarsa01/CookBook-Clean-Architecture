@@ -135,13 +135,31 @@
   <data name="Description_Label_Text" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="EditIngredients_Button_Text" xml:space="preserve">
+  <data name="EditIngredients_StartEdit_Button_Text" xml:space="preserve">
     <value>Edit Ingredients</value>
+  </data>
+  <data name="EditIngredients_StopEdit_Button_Text" xml:space="preserve">
+    <value>Stop editing</value>
   </data>
   <data name="ErrorUnsavedRecipe_Label_Text" xml:space="preserve">
     <value>Ingredients can only be edited for recipe that is already saved</value>
   </data>
   <data name="Save_Button_Text" xml:space="preserve">
     <value>Save</value>
+  </data>
+    <data name="Amount_Label_Text" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+    <data name="Unit_Label_Text" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+    <data name="IngredientName_Label_Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+    <data name="AddIngredient_Button_Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="RemoveIngredient_Button_Text" xml:space="preserve">
+    <value>Remove</value>
   </data>
 </root>

@@ -54,16 +54,16 @@
 
     <ItemGroup>
         <!-- App Icon -->
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4"/>
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
         <!-- Images -->
-        <MauiImage Include="Resources\Images\*"/>
+        <MauiImage Include="Resources\Images\*" />
 
         <!-- Custom Fonts -->
-        <MauiFont Include="Resources\Fonts\*"/>
+        <MauiFont Include="Resources\Fonts\*" />
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)"/>
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
     </ItemGroup>
 
     <ItemGroup>
@@ -72,9 +72,9 @@
         <PackageReference Include="FluentValidation" Version="12.1.1" />
         <PackageReference Include="InputKit.Maui" Version="4.6.0" />
         <PackageReference Include="MediatR" Version="14.1.0" />
-        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.31"/>
+        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.31" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.41" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -108,6 +108,21 @@
       <None Remove="C:\Users\AdamV\.nuget\packages\inputkit.maui\4.6.0\contentFiles\any\net10.0-maccatalyst26.0\icon512.png" />
       <None Remove="C:\Users\AdamV\.nuget\packages\inputkit.maui\4.6.0\contentFiles\any\net10.0-android36.0\icon512.png" />
       <None Remove="C:\Users\AdamV\.nuget\packages\inputkit.maui\4.6.0\contentFiles\any\net10.0-windows10.0.19041\icon512.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Texts\RecipeEditViewTexts.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>RecipeEditViewTexts.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Texts\RecipeEditViewTexts.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>RecipeEditViewTexts.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

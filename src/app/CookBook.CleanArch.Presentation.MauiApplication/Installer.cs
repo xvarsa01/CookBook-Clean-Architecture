@@ -24,7 +24,6 @@ public static class Installer
         
         services.AddTransient<RecipeDetailViewModel>();
         services.AddTransient<RecipeEditViewModel>();
-        services.AddTransient<RecipeIngredientsEditViewModel>();
         services.AddTransient<RecipeListViewModel>();
 
         return services;

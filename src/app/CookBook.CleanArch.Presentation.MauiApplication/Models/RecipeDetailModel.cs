@@ -86,4 +86,18 @@ public partial class RecipeIngredientListModel : ObservableObject
 
     [ObservableProperty]
     public required partial MeasurementUnit Unit { get; set; }
+    
+    [ObservableProperty]
+    public partial ValidationResult? ValidationResults {get; set; } = new();
+    
+    public static RecipeIngredientListModel Empty
+        => new()
+        {
+            RecipeIngredientId = Guid.Empty,
+            IngredientId = Guid.Empty,
+            IngredientName = string.Empty,
+            IngredientImageUrl = string.Empty,
+            Amount = 0,
+            Unit = MeasurementUnit.Unit
+        };
 }

@@ -135,13 +135,31 @@
   <data name="Description_Label_Text" xml:space="preserve">
     <value>Popis</value>
   </data>
-  <data name="EditIngredients_Button_Text" xml:space="preserve">
-    <value>Upravit ingredience</value>
-  </data>
   <data name="ErrorUnsavedRecipe_Label_Text" xml:space="preserve">
     <value>Ingredience lze upravovat jenom u receptu, který je již vytvořen a uložen</value>
   </data>
   <data name="Save_Button_Text" xml:space="preserve">
     <value>Uložit</value>
+  </data>
+  <data name="RemoveIngredient_Button_Text" xml:space="preserve">
+      <value>Odstranit</value>
+  </data>
+  <data name="AddIngredient_Button_Text" xml:space="preserve">
+      <value>Přidat</value>
+  </data>
+  <data name="Unit_Label_Text" xml:space="preserve">
+      <value>Jednotka</value>
+  </data>
+  <data name="IngredientName_Label_Text" xml:space="preserve">
+      <value>Název</value>
+  </data>
+  <data name="Amount_Label_Text" xml:space="preserve">
+      <value>Možství</value>
+  </data>
+  <data name="EditIngredients_StartEdit_Button_Text" xml:space="preserve">
+      <value>Upravit ingredience</value>
+  </data>
+  <data name="EditIngredients_StopEdit_Button_Text" xml:space="preserve">
+      <value>Ukončit úpravy</value>
   </data>
 </root>
