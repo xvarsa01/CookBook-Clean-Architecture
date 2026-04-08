@@ -23,7 +23,7 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 [QueryProperty(nameof(Id), nameof(Id))]
 public partial class RecipeEditViewModel(
-    IMediator _mediator,
+    IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
     : ViewModelBase(messengerService), IRecipient<RecipeIngredientEditMessage>, IRecipient<RecipeIngredientAddMessage>,
@@ -73,7 +73,7 @@ public partial class RecipeEditViewModel(
 
         if (Id.Value != Guid.Empty)
         {
-            var result = (await _mediator.Send(new GetRecipeDetailQuery(Id)));
+            var result = (await mediator.Send(new GetRecipeDetailQuery(Id)));
             if (result.IsSuccess)
             {
                 Recipe = RecipeDetailModel.MapFromResponse(result.Value);
@@ -86,7 +86,7 @@ public partial class RecipeEditViewModel(
     private async Task LoadIngredients()
     {
         IngredientFilter filter = new();
-        var result = await _mediator.Send(new GetIngredientListQuery(filter));
+        var result = await mediator.Send(new GetIngredientListQuery(filter));
         if (!result.IsSuccess)
         {
             return;
@@ -119,7 +119,7 @@ public partial class RecipeEditViewModel(
 
         var ingredientId = new IngredientId(IngredientAmountNew.IngredientId);
         var request = new RecipeAddIngredientRequest(ingredientId, IngredientAmount.CreateObject(IngredientAmountNew.Amount).Value, IngredientAmountNew.Unit);
-        var result = await _mediator.Send(new AddIngredientToRecipeCommand(new RecipeId(Recipe.Id), request));
+        var result = await mediator.Send(new AddIngredientToRecipeCommand(new RecipeId(Recipe.Id), request));
         if (result.IsSuccess)
         {
             IngredientAmountNew.RecipeIngredientId =  result.Value.Value;
@@ -139,7 +139,7 @@ public partial class RecipeEditViewModel(
         if (model is not null)
         {
             var updateRequest = new RecipeUpdateIngredientRequest(new RecipeIngredientId(model.RecipeIngredientId), IngredientAmount.CreateObject(model.Amount).Value, model.Unit);
-            await _mediator.Send(new UpdateIngredientInRecipeCommand(Id, updateRequest));
+            await mediator.Send(new UpdateIngredientInRecipeCommand(Id, updateRequest));
             MessengerService.Send(new RecipeIngredientEditMessage());
         }
     }
@@ -147,7 +147,7 @@ public partial class RecipeEditViewModel(
     [RelayCommand]
     private async Task RemoveIngredientAsync(RecipeIngredientListModel model)
     {
-        await _mediator.Send(new RemoveIngredientFromRecipeCommand(Id, new RecipeIngredientId(model.RecipeIngredientId)));
+        await mediator.Send(new RemoveIngredientFromRecipeCommand(Id, new RecipeIngredientId(model.RecipeIngredientId)));
         Recipe.Ingredients.Remove(model);
 
         MessengerService.Send(new RecipeIngredientDeleteMessage());
@@ -171,12 +171,12 @@ public partial class RecipeEditViewModel(
         if (Recipe.Id == Guid.Empty)
         {
             var request = new RecipeCreateRequest(RecipeName.CreateObject(Recipe.Name).Value, Recipe.Description, imageUrl, RecipeDuration.CreateObject(Recipe.Duration).Value, Recipe.RecipeType);
-            await _mediator.Send(new CreateRecipeCommand(request));
+            await mediator.Send(new CreateRecipeCommand(request));
         }
         else
         {
             var request = new RecipeUpdateRequest(new RecipeId(Recipe.Id), RecipeName.CreateObject(Recipe.Name).Value, Recipe.Description, imageUrl, RecipeDuration.CreateObject(Recipe.Duration).Value, Recipe.RecipeType);
-            await _mediator.Send(new UpdateRecipeCommand(request));
+            await mediator.Send(new UpdateRecipeCommand(request));
         }
 
         MessengerService.Send(new RecipeEditMessage { RecipeId = Recipe.Id});

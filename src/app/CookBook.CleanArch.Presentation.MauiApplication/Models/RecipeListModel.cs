@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CookBook.CleanArch.Application.Models.Recipe;
-using CookBook.CleanArch.Domain.Recipe.Enums;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Models;
 

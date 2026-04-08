@@ -3,7 +3,6 @@ using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Domain.Recipe.Enums;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using FluentValidation.Results;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Models;

@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Filters;
-using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Queries.Recipes;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
@@ -15,7 +14,7 @@ using MediatR;
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 public partial class RecipeListViewModel(
-    IMediator _mediator,
+    IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
     : ViewModelWithPager<RecipeFilter, RecipeSortParameter>(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeDeleteMessage>
@@ -34,7 +33,7 @@ public partial class RecipeListViewModel(
 
     protected override async Task LoadPageAsync()
     {
-        var result = (await _mediator.Send(new GetRecipeListQuery(Filter, PagingOptions)));
+        var result = (await mediator.Send(new GetRecipeListQuery(Filter, PagingOptions)));
         if (result.IsFailure)
         {
             return;

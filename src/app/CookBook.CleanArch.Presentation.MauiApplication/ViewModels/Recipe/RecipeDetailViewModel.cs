@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Commands.Recipes;
-using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Queries.Recipes;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
@@ -15,7 +14,7 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 [QueryProperty(nameof(Id), nameof(Id))]
 public partial class  RecipeDetailViewModel(
-    IMediator _mediator,
+    IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
     : ViewModelBase(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeIngredientAddMessage>,
@@ -30,7 +29,7 @@ public partial class  RecipeDetailViewModel(
     {
         await base.LoadDataAsync();
 
-        var result = (await _mediator.Send(new GetRecipeDetailQuery(Id)));
+        var result = (await mediator.Send(new GetRecipeDetailQuery(Id)));
         if (result.IsSuccess)
         {
             Recipe = RecipeDetailModel.MapFromResponse(result.Value);
@@ -43,11 +42,13 @@ public partial class  RecipeDetailViewModel(
     {
         if (Recipe is not null)
         {
-            var result = (await _mediator.Send(new DeleteRecipeCommand(Id)));
+            var result = (await mediator.Send(new DeleteRecipeCommand(Id)));
+            if (result.IsSuccess)
+            {
+                MessengerService.Send(new RecipeDeleteMessage());
 
-            MessengerService.Send(new RecipeDeleteMessage());
-
-            navigationService.SendBackButtonPressed();
+                navigationService.SendBackButtonPressed();
+            }
         }
     }
     

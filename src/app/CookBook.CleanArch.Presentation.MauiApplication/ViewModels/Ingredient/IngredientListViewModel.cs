@@ -3,10 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Filters;
-using CookBook.CleanArch.Application.Models;
-using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Application.Queries.Ingredients;
-using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
@@ -17,7 +14,7 @@ using MediatR;
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 public partial class IngredientListViewModel(
-    IMediator _mediator,
+    IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
     : ViewModelWithPager<IngredientFilter, IngredientsSortParameter>(messengerService), IRecipient<IngredientEditMessage>, IRecipient<IngredientDeleteMessage>
@@ -36,7 +33,7 @@ public partial class IngredientListViewModel(
     
     protected override async Task LoadPageAsync()
     {
-        var result = await _mediator.Send(new GetIngredientListQuery(Filter, PagingOptions));
+        var result = await mediator.Send(new GetIngredientListQuery(Filter, PagingOptions));
         if (!result.IsSuccess)
         {
             return;

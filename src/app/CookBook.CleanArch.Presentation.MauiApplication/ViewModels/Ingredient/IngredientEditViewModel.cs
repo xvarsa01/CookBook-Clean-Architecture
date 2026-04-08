@@ -16,7 +16,7 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 [QueryProperty(nameof(Id), nameof(Id))]
 public partial class IngredientEditViewModel(
-    IMediator _mediator,
+    IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
     : ViewModelBase(messengerService)
@@ -35,7 +35,7 @@ public partial class IngredientEditViewModel(
             return;
         }
 
-        var result = (await _mediator.Send(new GetIngredientDetailQuery(Id)));
+        var result = (await mediator.Send(new GetIngredientDetailQuery(Id)));
         if (result.IsSuccess)
         {
             Ingredient = IngredientDetailModel.MapFromResponse(result.Value);
@@ -60,12 +60,12 @@ public partial class IngredientEditViewModel(
         if (Id.Value == Guid.Empty)
         {
             var createRequest = new IngredientCreateRequest(Ingredient.Name, Ingredient.Description, imageUrl?.Value);
-            await _mediator.Send(new CreateIngredientCommand(createRequest));
+            await mediator.Send(new CreateIngredientCommand(createRequest));
         }
         else
         {
             var updateRequest = new IngredientUpdateRequest(Id, Ingredient.Name, Ingredient.Description, imageUrl?.Value);
-            await _mediator.Send(new UpdateIngredientCommand(updateRequest));
+            await mediator.Send(new UpdateIngredientCommand(updateRequest));
         }
 
         MessengerService.Send(new IngredientEditMessage { IngredientId = Id });

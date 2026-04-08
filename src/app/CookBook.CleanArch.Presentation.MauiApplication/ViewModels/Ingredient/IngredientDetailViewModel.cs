@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Commands.Ingredients;
-using CookBook.CleanArch.Application.Models;
 using CookBook.CleanArch.Application.Queries.Ingredients;
 using CookBook.CleanArch.Application.Queries.Recipes;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
@@ -19,7 +18,7 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 [QueryProperty(nameof(Id), nameof(Id))]
 public partial class IngredientDetailViewModel(
-    IMediator _mediator,
+    IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService,
     IAlertService alertService)
@@ -37,7 +36,7 @@ public partial class IngredientDetailViewModel(
     {
         await base.LoadDataAsync();
 
-        var result = (await _mediator.Send(new GetIngredientDetailQuery(Id)));
+        var result = (await mediator.Send(new GetIngredientDetailQuery(Id)));
         if (!result.IsSuccess)
         {
             return;
@@ -45,7 +44,7 @@ public partial class IngredientDetailViewModel(
 
         Ingredient = IngredientDetailModel.MapFromResponse(result.Value);
         
-        var recipeResult = await _mediator.Send(new GetRecipeListByContainingIngredientIdQuery(Id));
+        var recipeResult = await mediator.Send(new GetRecipeListByContainingIngredientIdQuery(Id));
         if (recipeResult.IsSuccess)
         {
             foreach (var item in recipeResult.Value)
@@ -60,7 +59,7 @@ public partial class IngredientDetailViewModel(
     {
         if (Ingredient is not null)
         {
-            var result = await _mediator.Send(new DeleteIngredientCommand(Id));
+            var result = await mediator.Send(new DeleteIngredientCommand(Id));
             if (!result.IsSuccess)
             {
                 await alertService.DisplayAsync(IngredientDetailViewModelTexts.DeleteError_Alert_Title, IngredientDetailViewModelTexts.DeleteError_Alert_Message);

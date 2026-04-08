@@ -1,5 +1,4 @@
-﻿using ObjCRuntime;
-using UIKit;
+﻿using UIKit;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication;
 
