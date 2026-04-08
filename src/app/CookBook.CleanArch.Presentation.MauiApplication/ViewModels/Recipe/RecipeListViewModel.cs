@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Filters;
+using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Application.Queries.Recipes;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
@@ -20,7 +21,7 @@ public partial class RecipeListViewModel(
     : ViewModelWithPager<RecipeFilter, RecipeSortParameter>(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeDeleteMessage>
 {
     [ObservableProperty]
-    public partial ObservableCollection<RecipeListModel> Recipes { get; set; } = [];
+    public partial ObservableCollection<RecipeListResponse> Recipes { get; set; } = [];
 
     public override RecipeFilter Filter { get; set; } = new();
 
@@ -42,7 +43,7 @@ public partial class RecipeListViewModel(
         Recipes.Clear();
         foreach (var item in result.Value.Items)
         {
-            Recipes.Add(RecipeListModel.MapFromResponse(item));
+            Recipes.Add(item);
         }
 
         TotalItemsCount = result.Value.TotalItemsCount;

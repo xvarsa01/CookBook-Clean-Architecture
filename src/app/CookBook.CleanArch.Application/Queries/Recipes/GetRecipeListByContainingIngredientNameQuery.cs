@@ -15,12 +15,12 @@ internal class GetRecipeListByContainingIngredientNameQueryHandler (ICookBookDbC
     {
         var list = await dbContext
             .Recipes
-            .Where(r  => r.Ingredients.Any(ri => ri.Ingredient.Name.ToLower().Contains(request.IngredientNameSubstring.ToLower())))
-            .Select(i => new RecipeListResponse(
-                i.Id,
-                i.Name,
-                i.ImageUrl,
-                i.Type))
+            .Where(r  => r.Ingredients.Any(recipeIngredient => recipeIngredient.Ingredient.Name.ToLower().Contains(request.IngredientNameSubstring.ToLower())))
+            .Select(r => new RecipeListResponse(
+                r.Id,
+                r.Name,
+                r.ImageUrl,
+                r.Type))
             .ToListAsync(cancellationToken);
         
         return Result.Ok(list);

@@ -11,6 +11,7 @@ public record CreateRecipeCommand(RecipeCreateRequest Request) : ICommand<Recipe
 
 internal sealed class CreateRecipeCommandHandler(IRepository<Recipe, RecipeId> repository) : ICommandHandler<CreateRecipeCommand,RecipeId>
 {
+    // TODO unit of work on all commands
     public async Task<Result<RecipeId>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
         var result = Recipe.Create(

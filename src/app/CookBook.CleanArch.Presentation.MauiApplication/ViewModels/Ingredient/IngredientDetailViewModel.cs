@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Commands.Ingredients;
+using CookBook.CleanArch.Application.Models.Ingredient;
+using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Application.Queries.Ingredients;
 using CookBook.CleanArch.Application.Queries.Recipes;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
@@ -27,10 +29,10 @@ public partial class IngredientDetailViewModel(
     public IngredientId Id { get; set; }
 
     [ObservableProperty]
-    public partial IngredientDetailModel? Ingredient { get; set; }
+    public partial IngredientDetailResponse? Ingredient { get; set; }
     
     [ObservableProperty]
-    public partial ObservableCollection<RecipeListModel> RecipesUsingIngredient { get; set; } = [];
+    public partial ObservableCollection<RecipeListResponse> RecipesUsingIngredient { get; set; } = [];
 
     protected override async Task LoadDataAsync()
     {
@@ -42,14 +44,14 @@ public partial class IngredientDetailViewModel(
             return;
         }
 
-        Ingredient = IngredientDetailModel.MapFromResponse(result.Value);
+        Ingredient = result.Value;
         
         var recipeResult = await mediator.Send(new GetRecipeListByContainingIngredientIdQuery(Id));
         if (recipeResult.IsSuccess)
         {
             foreach (var item in recipeResult.Value)
             {
-                RecipesUsingIngredient.Add(RecipeListModel.MapFromResponse(item));
+                RecipesUsingIngredient.Add(item);
             }
         }
     }

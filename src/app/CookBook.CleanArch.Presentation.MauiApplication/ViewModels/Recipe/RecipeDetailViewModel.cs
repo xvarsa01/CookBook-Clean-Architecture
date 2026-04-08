@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Commands.Recipes;
+using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Application.Queries.Recipes;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
@@ -23,7 +24,7 @@ public partial class  RecipeDetailViewModel(
     public RecipeId Id { get; set; }
 
     [ObservableProperty]
-    public partial RecipeDetailModel? Recipe { get; set; }
+    public partial RecipeResponse? Recipe { get; set; }
 
     protected override async Task LoadDataAsync()
     {
@@ -32,7 +33,7 @@ public partial class  RecipeDetailViewModel(
         var result = (await mediator.Send(new GetRecipeDetailQuery(Id)));
         if (result.IsSuccess)
         {
-            Recipe = RecipeDetailModel.MapFromResponse(result.Value);
+            Recipe = result.Value;
             // converted with color not called
         }
     }

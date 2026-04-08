@@ -2,8 +2,7 @@
 <views:ContentPageBase x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Ingredient.IngredientListView"
                        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                       xmlns:inputKit="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-                       xmlns:models="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Models"
+                       xmlns:models="clr-namespace:CookBook.CleanArch.Application.Models.Ingredient;assembly=CookBook.CleanArch.Application"
                        xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
@@ -28,7 +27,8 @@
 
             <HorizontalStackLayout Grid.Column="2" Spacing="20">
 
-                <!--  Search  -->
+                <!--  Search  to x:name???-->
+                <!-- TODO to component -->
                 <VerticalStackLayout Spacing="10"
                                      WidthRequest="250">
                     <Label FontSize="12"
@@ -37,6 +37,7 @@
                                Text="{Binding Filter.Name}" />
                 </VerticalStackLayout>
 
+                <!-- TODO to component -->
                 <VerticalStackLayout Spacing="10">
                     <Label FontSize="12"
                            Text="{x:Static texts:IngredientListViewTexts.Image_Title_Text}" />
@@ -67,7 +68,7 @@
                     BindableLayout.ItemsSource="{Binding Ingredients}">
 
             <BindableLayout.ItemTemplate>
-                <DataTemplate x:DataType="models:IngredientListModel">
+                <DataTemplate x:DataType="models:IngredientListResponse">
                     <Border HeightRequest="200"
                             WidthRequest="200"
                             Margin="5"
@@ -83,7 +84,7 @@
                                    Grid.RowSpan="2"
                                    Aspect="AspectFill"
                                    HeightRequest="200"
-                                   Source="{Binding ImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
+                                   Source="{Binding ImageUrl.Value, TargetNullValue='ingredient_placeholder.jpg'}"
                                    WidthRequest="200" />
 
                             <BoxView Grid.Row="0"

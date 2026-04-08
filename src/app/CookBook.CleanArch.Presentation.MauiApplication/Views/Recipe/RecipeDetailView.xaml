@@ -40,7 +40,7 @@
                 <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, *"
                       RowSpacing="20">
                     <Label Grid.Row="0"
-                           Text="{Binding Recipe.Name}"
+                           Text="{Binding Recipe.Name.Value}"
                            TextColor="{StaticResource PrimaryLabelTextColor}"
                            FontSize="20" />
 
@@ -57,13 +57,13 @@
 
                             <Label Grid.Row="1" Grid.Column="0"
                                    HorizontalOptions="Center" VerticalOptions="Start"
-                                   Text="{Binding Recipe.RecipeType, Converter={StaticResource FoodTypeToStringConverter}}"
+                                   Text="{Binding Recipe.Type, Converter={StaticResource FoodTypeToStringConverter}}"
                                    FontSize="11"
                                    TextColor="White" />
 
                             <Label Grid.Row="1" Grid.Column="1"
                                    HorizontalOptions="Center" VerticalOptions="Start"
-                                   Text="{Binding Recipe.Duration, StringFormat='{0} min'}"
+                                   Text="{Binding Recipe.Duration.Value, StringFormat='{0} min'}"
                                    FontSize="11"
                                    TextColor="White" />
 
@@ -122,7 +122,7 @@
                   RowSpacing="20">
                 <Border Grid.Row="0"
                         Style="{StaticResource ImageBorderStyle}">
-                    <Image Source="{Binding Recipe.ImageUrl, TargetNullValue='recipe_placeholder.jpg'}"
+                    <Image Source="{Binding Recipe.ImageUrl.Value, TargetNullValue='recipe_placeholder.jpg'}"
                            WidthRequest="320" HeightRequest="240"
                            Aspect="AspectFill" />
                 </Border>

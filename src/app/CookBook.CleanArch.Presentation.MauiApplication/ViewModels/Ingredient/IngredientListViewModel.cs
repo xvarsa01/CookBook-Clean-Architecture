@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Filters;
+using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Application.Queries.Ingredients;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
@@ -20,7 +21,7 @@ public partial class IngredientListViewModel(
     : ViewModelWithPager<IngredientFilter, IngredientsSortParameter>(messengerService), IRecipient<IngredientEditMessage>, IRecipient<IngredientDeleteMessage>
 {
     [ObservableProperty]
-    public partial ObservableCollection<IngredientListModel> Ingredients { get; set; } = [];
+    public partial ObservableCollection<IngredientListResponse> Ingredients { get; set; } = [];
     
     public override IngredientFilter Filter { get; set; } = new();
 
@@ -42,7 +43,7 @@ public partial class IngredientListViewModel(
         Ingredients.Clear();
         foreach (var item in result.Value.Items)
         {
-            Ingredients.Add(IngredientListModel.MapFromResponse(item));
+            Ingredients.Add(item);
         }
         
         TotalItemsCount = result.Value.TotalItemsCount;
@@ -57,12 +58,12 @@ public partial class IngredientListViewModel(
     }
 
     [RelayCommand]
-    private async Task GoToDetailAsync(Guid id)
+    private async Task GoToDetailAsync(IngredientId id)
     {
         await navigationService.GoToAsync(NavigationService.IngredientDetailRouteRelative,
             new Dictionary<string, object?>
             {
-                [nameof(IngredientDetailViewModel.Id)] = new IngredientId(id)
+                [nameof(IngredientDetailViewModel.Id)] = id
             }
         );
     }

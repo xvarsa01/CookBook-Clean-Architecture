@@ -4,10 +4,17 @@ using FluentValidation.Results;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Models;
 
-public partial class IngredientDetailModel : ObservableObject
+public partial class IngredientDetailModel() : ObservableObject
 {
+    public IngredientDetailModel(IngredientDetailResponse response) : this()
+    {
+        Name = response.Name;
+        Description = response.Description;
+        ImageUrl = response.ImageUrl?.Value;
+    }
+    
     [ObservableProperty]
-    public required partial string Name { get; set; }
+    public partial string Name { get; set; }
     [ObservableProperty]
     public partial string? Description { get; set; }
     [ObservableProperty]
@@ -16,16 +23,7 @@ public partial class IngredientDetailModel : ObservableObject
     [ObservableProperty]
     public partial ValidationResult? ValidationResults {get; set; } = new();
     
-    public static IngredientDetailModel MapFromResponse(IngredientDetailResponse response)
-    {
-        return new IngredientDetailModel
-        {
-            Name = response.Name,
-            Description = response.Description,
-            ImageUrl = response.ImageUrl?.Value
-        };
-    }
-    
+
     public static IngredientDetailModel Empty
         => new()
         {

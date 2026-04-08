@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Commands.Recipes;
 using CookBook.CleanArch.Application.Filters;
+using CookBook.CleanArch.Application.Models.Ingredient;
 using CookBook.CleanArch.Application.Models.Recipe;
 using CookBook.CleanArch.Application.Queries.Ingredients;
 using CookBook.CleanArch.Application.Queries.Recipes;
@@ -51,7 +52,7 @@ public partial class RecipeEditViewModel(
     public partial RecipeIngredientListModel IngredientAmountNew { get; set; } = RecipeIngredientListModel.Empty;
 
     [ObservableProperty]
-    public partial ObservableCollection<IngredientListModel> Ingredients { get; set; } = [];
+    public partial ObservableCollection<IngredientListResponse> Ingredients { get; set; } = [];
 
     public IngredientListModel? SelectedNewIngredient
     {
@@ -79,7 +80,7 @@ public partial class RecipeEditViewModel(
             var result = (await mediator.Send(new GetRecipeDetailQuery(Id)));
             if (result.IsSuccess)
             {
-                Recipe = RecipeDetailModel.MapFromResponse(result.Value);
+                Recipe = new RecipeDetailModel(result.Value);
             }
         }
 
@@ -98,7 +99,7 @@ public partial class RecipeEditViewModel(
         Ingredients.Clear();
         foreach (var item in result.Value.Items)
         {
-            Ingredients.Add(IngredientListModel.MapFromResponse(item));
+            Ingredients.Add(item);
         }
     }
 

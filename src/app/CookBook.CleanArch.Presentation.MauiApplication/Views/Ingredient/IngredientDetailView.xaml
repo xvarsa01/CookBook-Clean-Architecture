@@ -5,7 +5,7 @@
                        xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
                        xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
-                       xmlns:models="using:CookBook.CleanArch.Presentation.MauiApplication.Models"
+                       xmlns:models="clr-namespace:CookBook.CleanArch.Application.Models.Recipe;assembly=CookBook.CleanArch.Application"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Ingredient.IngredientDetailView"
                        Title="{xaml:Static texts:IngredientDetailViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
@@ -35,14 +35,14 @@
                     Style="{StaticResource ImageBorderStyle}">
                 <Image Aspect="AspectFill"
                        WidthRequest="170" HeightRequest="170"
-                       Source="{Binding Ingredient.ImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"/>
+                       Source="{Binding Ingredient.ImageUrl.Value, TargetNullValue='ingredient_placeholder.jpg'}"/>
             </Border>
 
             <VerticalStackLayout Grid.Row="0" Grid.RowSpan="2"
                                  Grid.Column="2"
                                  Spacing="20">
                 <Label FontSize="24" 
-                       Text="{Binding Ingredient.Name.Value}" />
+                       Text="{Binding Ingredient.Name}" />
 
                 <Label FontSize="14" 
                        Text="{Binding Ingredient.Description}"/>
@@ -55,7 +55,7 @@
                         ItemsLayout="HorizontalList">
 
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:RecipeListModel">
+                <DataTemplate x:DataType="models:RecipeListResponse">
                         <Border Padding="0"
                                 WidthRequest="300" HeightRequest="200">
                             <Border.StrokeShape>
@@ -72,7 +72,7 @@
                                        HorizontalOptions="Fill" VerticalOptions="Fill"
                                        Aspect="AspectFill"
                                        WidthRequest="320" HeightRequest="240"
-                                       Source="{Binding ImageUrl, TargetNullValue='recipe_placeholder.jpg'}" />
+                                       Source="{Binding ImageUrl.Value, TargetNullValue='recipe_placeholder.jpg'}" />
 
                                 <BoxView Grid.Row="0"
                                          Opacity="0.25"
@@ -81,7 +81,7 @@
                                 <Label Grid.Row="0"
                                        Margin="22,12"
                                        FontSize="20" LineBreakMode="WordWrap"
-                                       Text="{Binding Name}"
+                                       Text="{Binding Name.Value}"
                                        TextColor="White" VerticalOptions="End" />
                             </Grid>
                         </Border>
