@@ -25,10 +25,8 @@ public record Recipe : AggregateRootBase<RecipeId>
     private readonly List<RecipeIngredient> _ingredients = [];
     public IReadOnlyCollection<RecipeIngredient> Ingredients => _ingredients.AsReadOnly();
     
-    private Recipe() { } // for EF
-    private Recipe(RecipeId id, RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
+    private Recipe(RecipeId id, RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type) : base(id)
     {
-        Id = id;
         Name = name;
         Description = description;
         ImageUrl = imageUrl;

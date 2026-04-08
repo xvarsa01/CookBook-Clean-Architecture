@@ -60,15 +60,6 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
 
     public async Task<TId?> UpdateAsync(TEntity aggregate)
     {
-        // Assume entity is already tracked if it was loaded via this DbContext
-        // Only attach if it's not tracked yet.
-        var entry = _dbContext.Entry(aggregate);
-        if (entry.State == EntityState.Detached)
-        {
-            // Attach but do NOT immediately mark as Modified; let individual properties/collections be tracked.
-            _dbContext.Set<TEntity>().Attach(aggregate);
-        }
-
         await SaveChangesAsync();
         return aggregate.Id;
     }

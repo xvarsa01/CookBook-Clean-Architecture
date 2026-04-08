@@ -15,15 +15,12 @@ public record RecipeIngredient : EntityBase<RecipeIngredientId>
 
     public Ingredient.Ingredient Ingredient
     {
-        get; // => throw new InvalidOperationException(); // update would throw here 
+        get => throw new InvalidOperationException();
         private set => throw new InvalidOperationException();
     }
 
-    private RecipeIngredient() { } // for EF
-
-    private RecipeIngredient(RecipeIngredientId id,  IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit)
+    private RecipeIngredient(RecipeIngredientId id,  IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit) : base(id)
     {
-        Id = id;
         IngredientId = ingredientId;
         RecipeId = recipeId;
         Amount = amount;

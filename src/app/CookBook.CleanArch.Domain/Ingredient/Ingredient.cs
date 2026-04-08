@@ -14,10 +14,8 @@ public record Ingredient : AggregateRootBase<IngredientId>
     public string? Description { get; private set; }
     public ImageUrl? ImageUrl { get; private set; }
 
-    private Ingredient() { } // for EF
-    private Ingredient(IngredientId id, string name, string? description, ImageUrl? imageUrl)
+    private Ingredient(IngredientId id, string name, string? description, ImageUrl? imageUrl) : base(id)
     {
-        Id = id;
         Name =  name;
         Description = description;
         ImageUrl = imageUrl;
