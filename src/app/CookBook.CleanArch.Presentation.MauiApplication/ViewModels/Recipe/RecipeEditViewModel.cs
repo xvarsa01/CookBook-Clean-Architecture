@@ -29,6 +29,9 @@ public partial class RecipeEditViewModel(
     : ViewModelBase(messengerService), IRecipient<RecipeIngredientEditMessage>, IRecipient<RecipeIngredientAddMessage>,
         IRecipient<RecipeIngredientDeleteMessage>
 {
+    private readonly RecipeDetailModelValidator _recipeValidator = new();
+    private readonly RecipeIngredientListModelValidator _recipeIngredientValidator = new();
+    
     public RecipeId Id { get; set; } = new(Guid.Empty);
 
     [ObservableProperty]
@@ -92,7 +95,6 @@ public partial class RecipeEditViewModel(
             return;
         }
 
-        Ingredients ??= [];
         Ingredients.Clear();
         foreach (var item in result.Value.Items)
         {
@@ -109,8 +111,7 @@ public partial class RecipeEditViewModel(
         if (IngredientAmountNew.IngredientId == Guid.Empty)
             return;
         
-        var validator = new RecipeIngredientListModelValidator();
-        IngredientAmountNew.ValidationResults = await validator.ValidateAsync(IngredientAmountNew);
+        IngredientAmountNew.ValidationResults = await _recipeIngredientValidator.ValidateAsync(IngredientAmountNew);
         if (!IngredientAmountNew.ValidationResults.IsValid)
         {
             // If there are errors, do not continue
@@ -156,17 +157,23 @@ public partial class RecipeEditViewModel(
     [RelayCommand]
     private async Task SaveRecipeAsync()
     {
-        var validator = new RecipeDetailModelValidator();
-        Recipe.ValidationResults = await validator.ValidateAsync(Recipe);
+        Recipe.ValidationResults = await _recipeValidator.ValidateAsync(Recipe);
         if (!Recipe.ValidationResults.IsValid)
         {
-            // If there are errors, do not continue
             return;
         }
         
-        var imageUrl = string.IsNullOrEmpty(Recipe.ImageUrl)
-            ? null
-            : ImageUrl.CreateObject(Recipe.ImageUrl).Value;
+        ImageUrl? imageUrl = null;
+        if (!string.IsNullOrEmpty(Recipe.ImageUrl))
+        {
+            var result = ImageUrl.CreateObject(Recipe.ImageUrl);
+            if (result.IsFailure)
+            {
+                return;     // This should never happen if validation ran, but just to be sure, we check it again here before saving.
+            }
+            
+            imageUrl = result.Value;
+        };
             
         if (Recipe.Id == Guid.Empty)
         {
@@ -185,12 +192,9 @@ public partial class RecipeEditViewModel(
     }
     
     [RelayCommand]
-    private void ValidateProperty(string propertyName)
+    private async Task ValidateProperty(string propertyName)
     {
-        var validator = new RecipeDetailModelValidator();
-
-        ValidationResult result = validator.Validate(Recipe);
-
+        ValidationResult result = await _recipeValidator.ValidateAsync(Recipe);
         Recipe.ValidationResults = result;
         
         // Remove the previous error message for this property
@@ -202,12 +206,9 @@ public partial class RecipeEditViewModel(
     }
     
     [RelayCommand]
-    private void ValidateIngredientAmountNewProperty(string propertyName)
+    private async Task ValidateIngredientAmountNewProperty(string propertyName)
     {
-        var validator = new RecipeIngredientListModelValidator();
-
-        ValidationResult result = validator.Validate(IngredientAmountNew);
-
+        ValidationResult result = await _recipeIngredientValidator.ValidateAsync(IngredientAmountNew);
         IngredientAmountNew.ValidationResults = result;
         
         // Remove the previous error message for this property

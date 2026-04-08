@@ -21,6 +21,8 @@ public partial class IngredientEditViewModel(
     IMessengerService messengerService)
     : ViewModelBase(messengerService)
 {
+    private readonly IngredientDetailModelValidator _ingredientValidator = new();
+    
     public IngredientId Id { get; set; } = new(Guid.Empty);
 
     [ObservableProperty]
@@ -49,22 +51,29 @@ public partial class IngredientEditViewModel(
         Ingredient.ValidationResults = await validator.ValidateAsync(Ingredient);
         if (!Ingredient.ValidationResults.IsValid)
         {
-            // If there are errors, do not continue
             return;
         }
         
-        var imageUrl = string.IsNullOrEmpty(Ingredient.ImageUrl)
-            ? null
-            : ImageUrl.CreateObject(Ingredient.ImageUrl);
+        ImageUrl? imageUrl = null;
+        if (!string.IsNullOrEmpty(Ingredient.ImageUrl))
+        {
+            var result = ImageUrl.CreateObject(Ingredient.ImageUrl);
+            if (result.IsFailure)
+            {
+                return;     // This should never happen if validation ran, but just to be sure, we check it again here before saving.
+            }
+            
+            imageUrl = result.Value;
+        };
         
         if (Id.Value == Guid.Empty)
         {
-            var createRequest = new IngredientCreateRequest(Ingredient.Name, Ingredient.Description, imageUrl?.Value);
+            var createRequest = new IngredientCreateRequest(Ingredient.Name, Ingredient.Description, imageUrl);
             await mediator.Send(new CreateIngredientCommand(createRequest));
         }
         else
         {
-            var updateRequest = new IngredientUpdateRequest(Id, Ingredient.Name, Ingredient.Description, imageUrl?.Value);
+            var updateRequest = new IngredientUpdateRequest(Id, Ingredient.Name, Ingredient.Description, imageUrl);
             await mediator.Send(new UpdateIngredientCommand(updateRequest));
         }
 
@@ -74,12 +83,9 @@ public partial class IngredientEditViewModel(
     }
     
     [RelayCommand]
-    private void ValidateProperty(string propertyName)
+    private async Task ValidateProperty(string propertyName)
     {
-        var validator = new IngredientDetailModelValidator();
-
-        ValidationResult result = validator.Validate(Ingredient);
-
+        ValidationResult result = await _ingredientValidator.ValidateAsync(Ingredient);
         Ingredient.ValidationResults = result;
         
         // Remove the previous error message for this property
