@@ -3,7 +3,7 @@ using CookBook.CleanArch.Domain.Shared;
 
 namespace CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
-public class RecipeName : IValueObject<string>, IValueObjectFactory<RecipeName, string>
+public record RecipeName : IValueObject<string>, IValueObjectFactory<RecipeName, string>
 {
     public string Value { get; }
 

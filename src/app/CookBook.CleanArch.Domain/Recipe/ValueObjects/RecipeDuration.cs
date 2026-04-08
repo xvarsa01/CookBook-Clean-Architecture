@@ -3,7 +3,7 @@ using CookBook.CleanArch.Domain.Shared;
 
 namespace CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
-public class RecipeDuration : IValueObject<TimeSpan>, IValueObjectFactory<RecipeDuration, TimeSpan>
+public record RecipeDuration : IValueObject<TimeSpan>, IValueObjectFactory<RecipeDuration, TimeSpan>
 {
     public TimeSpan Value { get; }
 
@@ -21,9 +21,6 @@ public class RecipeDuration : IValueObject<TimeSpan>, IValueObjectFactory<Recipe
     
     public static implicit operator TimeSpan(RecipeDuration duration) => duration.Value;
     
-    public int CompareTo(RecipeDuration? other)
-        => Value.CompareTo(other!.Value);
-
     public static bool operator >=(RecipeDuration a, RecipeDuration b)
         => a.Value >= b.Value;
 
