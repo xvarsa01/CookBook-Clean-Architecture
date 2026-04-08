@@ -18,24 +18,7 @@ public class RecipeIngredientListModelValidator : AbstractValidator<RecipeIngred
             .WithMessage("The ingredient must be selected");
         
         RuleFor(x => x.Amount)
-            .Custom((value, context) =>
-            {
-                var result = IngredientAmount.CreateObject(value);
-                if (result.IsFailure)
-                {
-                    context.AddFailure(IngredientAmountProperty, result.Error.Message);
-                }
-            });
-        
-        RuleFor(x => x.Amount)
-            .Custom((value, context) =>
-            {
-                var result = IngredientAmount.CreateObject(value);
-                if (result.IsFailure)
-                {
-                    context.AddFailure(IngredientAmountProperty, result.Error.Message);
-                }
-            });
+            .IsValidValueObject<RecipeIngredientListModel, IngredientAmount>();
         
         RuleFor(x => x.Unit)
             .NotEqual(MeasurementUnit.Unit)

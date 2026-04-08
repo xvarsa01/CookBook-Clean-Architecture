@@ -16,24 +16,10 @@ public class RecipeDetailModelValidator : AbstractValidator<RecipeDetailModel>
     public RecipeDetailModelValidator()
     {
         RuleFor(x => x.Name)
-            .Custom((value, context) =>
-            {
-                var result = RecipeName.CreateObject(value);
-                if (result.IsFailure)
-                {
-                    context.AddFailure(RecipeNameProperty, result.Error.Message);
-                }
-            });
+            .IsValidValueObject<RecipeDetailModel, RecipeName>();
 
         RuleFor(x => x.Duration)
-            .Custom((value, context) =>
-            {
-                var result = RecipeDuration.CreateObject(value);
-                if (result.IsFailure)
-                {
-                    context.AddFailure(RecipeDurationProperty, result.Error.Message);
-                }
-            });
+            .IsValidValueObject<RecipeDetailModel, RecipeDuration>();
 
         RuleFor(x => x.RecipeType)
             .NotEqual(RecipeType.None)
