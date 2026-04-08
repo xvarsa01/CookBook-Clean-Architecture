@@ -19,12 +19,13 @@ public static class Installer
         services.AddSingleton<IAlertService, AlertService>();
         
         services.AddTransient<IngredientDetailViewModel>();
-        services.AddTransient<IngredientEditViewModel>();
         services.AddTransient<IngredientListViewModel>();
+        services.AddTransient<IngredientCreateViewModel>();
+        services.AddTransient<IngredientEditViewModel>();
         
         services.AddTransient<RecipeDetailViewModel>();
-        services.AddTransient<RecipeEditViewModel>();
         services.AddTransient<RecipeListViewModel>();
+        services.AddTransient<RecipeEditViewModel>();
 
         return services;
     }

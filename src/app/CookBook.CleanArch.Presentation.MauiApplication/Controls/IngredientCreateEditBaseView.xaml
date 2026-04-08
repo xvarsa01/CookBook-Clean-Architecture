@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
+             xmlns:validations="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Validations"
+             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.IngredientCreateEditBaseView"
+             x:Name="Root">
+    
+    <Grid RowDefinitions="70, *">
+        <Grid Grid.Row="0"
+              ColumnDefinitions="*, Auto"
+              ColumnSpacing="15">
+
+            <Button Grid.Column="1"
+                    VerticalOptions="Start"
+                    HeightRequest="30"
+                    Text="{x:Static texts:IngredientEditViewTexts.Save_Button_Text}"
+                    CornerRadius="5"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    Command="{Binding Source={x:Reference Root}, Path=SaveCommand}" />
+        </Grid>
+
+        <Grid Grid.Row="1"
+              RowDefinitions="170, *"
+              ColumnDefinitions="Auto, *"
+              RowSpacing="20"
+              ColumnSpacing="20">
+
+            <Border Grid.Row="0" Grid.Column="0"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource ImageBorderStyle}">
+                <Image Source="{Binding Source={x:Reference Root}, Path=Ingredient.ImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
+                       WidthRequest="170"
+                       HeightRequest="170"
+                       Aspect="AspectFill" />
+            </Border>
+
+            <VerticalStackLayout Grid.Row="0"
+                                 Grid.RowSpan="2"
+                                 Grid.Column="1"
+                                 Spacing="10">
+
+                <!-- Name -->
+                <Label Text="{x:Static texts:IngredientEditViewTexts.Name_Label_Text}"
+                       TextColor="{StaticResource PrimaryLabelTextColor}" />
+
+                <Entry Text="{Binding Source={x:Reference Root}, Path=Ingredient.Name}">
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="TextChanged"
+                            Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
+                            CommandParameter="{x:Static validations:IngredientDetailModelValidator.IngredientNameProperty}" />
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                       Text="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
+                                      Converter={StaticResource ValidationResultToErrorMessagesConverter},
+                                      ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientNameProperty}}"
+                       IsVisible="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
+                                           Converter={StaticResource ValidationResultToHasErrorConverter},
+                                           ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientNameProperty}}" />
+
+                <!-- Image URL -->
+                <Label Text="{x:Static texts:IngredientEditViewTexts.ImageUrl_Label_Text}"
+                       TextColor="{StaticResource PrimaryLabelTextColor}" />
+
+                <Entry Text="{Binding Source={x:Reference Root}, Path=Ingredient.ImageUrl}">
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="TextChanged"
+                            Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
+                            CommandParameter="{x:Static validations:IngredientDetailModelValidator.IngredientImageUrlProperty}" />
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                       Text="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
+                                      Converter={StaticResource ValidationResultToErrorMessagesConverter},
+                                      ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientImageUrlProperty}}"
+                       IsVisible="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
+                                           Converter={StaticResource ValidationResultToHasErrorConverter},
+                                           ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientImageUrlProperty}}" />
+
+                <!-- Description -->
+                <Label Text="{x:Static texts:IngredientEditViewTexts.Description_Label_Text}"
+                       TextColor="{StaticResource PrimaryLabelTextColor}" />
+
+                <Editor Text="{Binding Source={x:Reference Root}, Path=Ingredient.Description}"
+                        AutoSize="TextChanges"
+                        TextColor="{StaticResource FormEntryTextColor}"
+                        BackgroundColor="{StaticResource FormEntryBackgroundColor}" />
+
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentView>

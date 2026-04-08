@@ -10,7 +10,6 @@ using CookBook.CleanArch.Application.Queries.Recipes;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
-using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
@@ -49,6 +48,7 @@ public partial class IngredientDetailViewModel(
         var recipeResult = await mediator.Send(new GetRecipeListByContainingIngredientIdQuery(Id));
         if (recipeResult.IsSuccess)
         {
+            RecipesUsingIngredient.Clear();
             foreach (var item in recipeResult.Value)
             {
                 RecipesUsingIngredient.Add(item);

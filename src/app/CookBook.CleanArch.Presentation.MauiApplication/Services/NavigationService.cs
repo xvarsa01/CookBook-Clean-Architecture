@@ -14,13 +14,14 @@ public class NavigationService : INavigationService
     public const string IngredientListRouteAbsolute = "//ingredients";
     public const string IngredientDetailRouteRelative = "/detail";
     public const string IngredientEditRouteRelative = "/edit";
+    public const string IngredientCreateRouteRelative = "/create";
 
     public IEnumerable<RouteModel> Routes { get; } = new List<RouteModel>
     {
         new(IngredientListRouteAbsolute, typeof(IngredientListView)),
         new(IngredientListRouteAbsolute + IngredientDetailRouteRelative, typeof(IngredientDetailView)),
         
-        new(IngredientListRouteAbsolute + IngredientEditRouteRelative, typeof(IngredientEditView)),
+        new(IngredientListRouteAbsolute + IngredientCreateRouteRelative, typeof(IngredientCreateView)),
         new(IngredientListRouteAbsolute + IngredientDetailRouteRelative + IngredientEditRouteRelative, typeof(IngredientEditView)),
 
         new(RecipeListRouteAbsolute, typeof(RecipeListView)),

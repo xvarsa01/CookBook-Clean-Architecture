@@ -54,7 +54,7 @@ public partial class IngredientListViewModel(
     [RelayCommand]
     private async Task GoToCreateAsync()
     {
-        await navigationService.GoToAsync(NavigationService.IngredientEditRouteRelative);
+        await navigationService.GoToAsync(NavigationService.IngredientCreateRouteRelative);
     }
 
     [RelayCommand]
