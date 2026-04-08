@@ -17,7 +17,8 @@ internal class GetRecipeListByContainingIngredientIdQueryHandler (ICookBookDbCon
             .Select(r => new RecipeListResponse(
                 r.Id,
                 r.Name,
-                r.ImageUrl))
+                r.ImageUrl,
+                r.Type))
             .ToListAsync(cancellationToken);
         
         return (Result.Ok(list));

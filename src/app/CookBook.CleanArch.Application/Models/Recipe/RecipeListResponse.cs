@@ -1,3 +1,4 @@
+using CookBook.CleanArch.Domain.Recipe.Enums;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
@@ -7,5 +8,6 @@ public record RecipeListResponse
 (
     RecipeId Id,
     RecipeName Name,
-    ImageUrl? ImageUrl
+    ImageUrl? ImageUrl,
+    RecipeType RecipeType
 );

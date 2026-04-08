@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CookBook.CleanArch.Application.Models.Recipe;
+using CookBook.CleanArch.Domain.Recipe.Enums;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Models;
 
@@ -11,11 +12,8 @@ public partial class RecipeListModel : ObservableObject
     [ObservableProperty]
     public required partial string Name { get; set; }
 
-    // [ObservableProperty]
-    // public required partial TimeSpan Duration { get; set; }
-    //
-    // [ObservableProperty]
-    // public partial RecipeType RecipeType { get; set; }
+    [ObservableProperty]
+    public partial RecipeType RecipeType { get; set; }
 
     [ObservableProperty]
     public partial string? ImageUrl { get; set; }
@@ -26,7 +24,8 @@ public partial class RecipeListModel : ObservableObject
         {
             Id = response.Id.Value,
             Name = response.Name.Value,
-            ImageUrl = response.ImageUrl?.Value
+            ImageUrl = response.ImageUrl?.Value,
+            RecipeType = response.RecipeType
         };
     }
 }

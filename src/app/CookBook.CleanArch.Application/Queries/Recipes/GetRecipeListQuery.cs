@@ -24,7 +24,7 @@ internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryH
         
         queryable = ApplyPaging(request.PagingOptions, queryable);
         
-        var items = await queryable.Select(i => new RecipeListResponse(i.Id, i.Name, i.ImageUrl)).ToListAsync(cancellationToken);
+        var items = await queryable.Select(i => new RecipeListResponse(i.Id, i.Name, i.ImageUrl, i.Type)).ToListAsync(cancellationToken);
         
         var result = new PagedResult<RecipeListResponse>
         {
