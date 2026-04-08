@@ -19,6 +19,8 @@
     <Color x:Key="SoupFoodTypeColor">#ED7500</Color>
     <Color x:Key="DessertFoodTypeColor">#F868AB</Color>
     <Color x:Key="DrinkFoodTypeColor">#0000AA</Color>
+    <Color x:Key="CaffeFoodTypeColor">#75511A</Color>
+    <Color x:Key="OtherFoodTypeColor">#000</Color>
 
     <Color x:Key="ImageBorderColor">#707070</Color>
 

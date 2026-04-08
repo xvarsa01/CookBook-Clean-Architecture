@@ -9,7 +9,7 @@ public class FoodTypeToStringConverter : BaseConverterOneWay<RecipeType?, string
 {
     public override string ConvertFrom(RecipeType? value, CultureInfo? culture)
         => value is null
-            ? FoodTypeTexts.None
+            ? "-"
             : FoodTypeTexts.ResourceManager.GetString(value.Value.ToString(), culture)
               ?? FoodTypeTexts.None;
 

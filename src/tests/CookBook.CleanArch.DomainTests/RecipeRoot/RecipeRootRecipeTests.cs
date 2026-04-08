@@ -111,7 +111,7 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeDescription_Should_Update_Description()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, null, null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.None).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, null, null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Caffe).Value;
 
         recipe.UpdateDescription("New");
 
@@ -121,7 +121,7 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeDescription_To_Same_Value_Should_Not_Change()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "Same", null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.None).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "Same", null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Caffe).Value;
 
         recipe.UpdateDescription("Same");
 

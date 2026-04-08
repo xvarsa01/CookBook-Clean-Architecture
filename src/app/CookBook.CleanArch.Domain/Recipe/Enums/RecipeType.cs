@@ -6,5 +6,7 @@ public enum RecipeType
     MainDish,
     Soup,
     Dessert,
-    Drink
+    Drink,
+    Caffe,
+    Other
 }

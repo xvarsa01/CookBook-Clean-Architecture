@@ -13,7 +13,7 @@ public static class RecipeTestSeeds
             description: "no ingredients",
             imageUrl: ImageUrl.CreateObject("http://a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
     }
 
     public static Recipe MinimalisticRecipe()
@@ -22,7 +22,7 @@ public static class RecipeTestSeeds
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
     }
 
     public static Recipe RecipeWithSingleIngredient()
@@ -31,7 +31,7 @@ public static class RecipeTestSeeds
             description: "this will be added",
             imageUrl: ImageUrl.CreateObject("http://a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
         
         recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
         return recipe;
@@ -43,7 +43,7 @@ public static class RecipeTestSeeds
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
         
         recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
         recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value, MeasurementUnit.Unit);
@@ -56,7 +56,7 @@ public static class RecipeTestSeeds
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
         
         recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(500).Value, MeasurementUnit.Ml);
         recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
@@ -70,7 +70,7 @@ public static class RecipeTestSeeds
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
         
         for (int i = 0; i < 10; i++)
         {
@@ -85,7 +85,7 @@ public static class RecipeTestSeeds
             description: "i will be deleted simply, because i dont contain any ingredients",
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
     }
 
     public static Recipe RecipeForTestOfDeleteWithIngredient()
@@ -94,7 +94,7 @@ public static class RecipeTestSeeds
             description: "i will be deleted, but my ingredients should remain in DB",
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
         
         recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
         return recipe;
@@ -105,7 +105,7 @@ public static class RecipeTestSeeds
             description: "this will be updated",
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
 
         recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
         return recipe;
@@ -116,7 +116,7 @@ public static class RecipeTestSeeds
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
         return recipe;
     }
     
@@ -125,7 +125,7 @@ public static class RecipeTestSeeds
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
         return recipe;
     }
     
@@ -134,7 +134,7 @@ public static class RecipeTestSeeds
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.None).Value;
+            type: RecipeType.Other).Value;
         return recipe;
     }
     

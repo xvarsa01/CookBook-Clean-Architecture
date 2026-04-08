@@ -49,6 +49,8 @@
                                 <recipeEnums:RecipeType>Soup</recipeEnums:RecipeType>
                                 <recipeEnums:RecipeType>Dessert</recipeEnums:RecipeType>
                                 <recipeEnums:RecipeType>Drink</recipeEnums:RecipeType>
+                                <recipeEnums:RecipeType>Caffe</recipeEnums:RecipeType>
+                                <recipeEnums:RecipeType>Other</recipeEnums:RecipeType>
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>

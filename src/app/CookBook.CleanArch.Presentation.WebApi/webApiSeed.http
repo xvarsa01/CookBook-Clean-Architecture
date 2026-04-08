@@ -559,7 +559,7 @@ Content-Type: application/json
   "description": "fresh mint cocktail",
   "imageUrl": "https://images.unsplash.com/photo-1659046842567-2787b5c9c2fe?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "duration": "00:05:00",
-  "type": 1
+  "type": 4
 }
 > {% client.global.set("rec1", response.body); %}
 
@@ -572,7 +572,7 @@ Content-Type: application/json
   "name": "Lemonade",
   "description": "simple refreshing drink",
   "duration": "00:03:00",
-  "type": 0
+  "type": 4
 }
 > {% client.global.set("rec2", response.body); %}
 
@@ -584,7 +584,7 @@ Content-Type: application/json
 {
   "name": "Orange Drink",
   "duration": "00:02:00",
-  "type": 0
+  "type": 4
 }
 > {% client.global.set("rec3", response.body); %}
 
@@ -597,7 +597,7 @@ Content-Type: application/json
   "name": "Latte",
   "description": "coffee with steamed milk",
   "duration": "00:04:00",
-  "type": 3
+  "type": 5
 }
 > {% client.global.set("rec4", response.body); %}
 
@@ -611,7 +611,7 @@ Content-Type: application/json
   "description": "sweet cold dessert drink",
   "imageUrl": "https://images.unsplash.com/photo-1571328003758-4a3921661729?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "duration": "00:06:00",
-  "type": 2
+  "type": 3
 }
 > {% client.global.set("rec5", response.body); %}
 
@@ -638,7 +638,7 @@ Content-Type: application/json
   "description": "espresso coffee with milk foam",
   "duration": "00:04:00",
   "imageUrl": "https://images.unsplash.com/photo-1594261956806-3ad03785c9b4?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 3
+  "type": 5
 }
 > {% client.global.set("rec7", response.body); %}
 
@@ -651,7 +651,7 @@ Content-Type: application/json
   "description": "espresso with milk and caramel",
   "duration": "00:05:00",
   "imageUrl": "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 3
+  "type": 5
 }
 > {% client.global.set("rec8", response.body); %}
 
@@ -664,7 +664,7 @@ Content-Type: application/json
   "description": "cold espresso diluted with water",
   "duration": "00:03:00",
   "imageUrl": "https://images.unsplash.com/photo-1627898784518-b6ee18b7f22a?q=80&w=1026&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 3
+  "type": 5
 }
 > {% client.global.set("rec9", response.body); %}
 
@@ -677,7 +677,7 @@ Content-Type: application/json
   "description": "creamy green tea latte",
   "duration": "00:04:00",
   "imageUrl": "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 3
+  "type": 5
 }
 > {% client.global.set("rec10", response.body); %}
 
@@ -690,7 +690,7 @@ Content-Type: application/json
   "description": "spiced black tea with milk",
   "duration": "00:05:00",
   "imageUrl": "https://images.unsplash.com/photo-1561336526-2914f13ceb36?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 3
+  "type": 4
 }
 > {% client.global.set("rec11", response.body); %}
 
@@ -703,7 +703,7 @@ Content-Type: application/json
   "description": "classic gin and tonic cocktail",
   "duration": "00:03:00",
   "imageUrl": "https://images.unsplash.com/photo-1675370734208-120b43d3c7ac?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 1
+  "type": 4
 }
 > {% client.global.set("rec12", response.body); %}
 
@@ -716,7 +716,7 @@ Content-Type: application/json
   "description": "tequila citrus cocktail",
   "duration": "00:04:00",
   "imageUrl": "https://images.unsplash.com/photo-1655546837806-76a6dd54ee2b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 1
+  "type": 4
 }
 > {% client.global.set("rec13", response.body); %}
 
@@ -729,7 +729,7 @@ Content-Type: application/json
   "description": "vodka cocktail with cranberry and citrus",
   "duration": "00:04:00",
   "imageUrl": "https://images.unsplash.com/photo-1556855810-ac404aa91e85?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 1
+  "type": 4
 }
 > {% client.global.set("rec14", response.body); %}
 
@@ -742,7 +742,7 @@ Content-Type: application/json
   "description": "balanced sour whiskey cocktail",
   "duration": "00:04:00",
   "imageUrl": "https://images.unsplash.com/photo-1713720441159-466472b29b54?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 1
+  "type": 4
 }
 > {% client.global.set("rec15", response.body); %}
 
@@ -755,7 +755,7 @@ Content-Type: application/json
   "description": "tropical rum and coconut cocktail",
   "duration": "00:05:00",
   "imageUrl": "https://images.unsplash.com/photo-1607644536940-6c300b5784c5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 1
+  "type": 4
 }
 > {% client.global.set("rec16", response.body); %}
 
@@ -768,7 +768,7 @@ Content-Type: application/json
   "description": "nonalcoholic pineapple coconut drink",
   "imageUrl": "https://images.unsplash.com/photo-1607644536940-6c300b5784c5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "duration": "00:05:00",
-  "type": 0
+  "type": 4
 }
 > {% client.global.set("rec17", response.body); %}
 
@@ -781,7 +781,7 @@ Content-Type: application/json
   "description": "chilled black tea with lemon",
   "imageUrl": "https://images.unsplash.com/photo-1599390719613-912787a6e65a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "duration": "00:04:00",
-  "type": 0
+  "type": 4
 }
 > {% client.global.set("rec18", response.body); %}
 
@@ -807,7 +807,7 @@ Content-Type: application/json
   "description": "no-bake cream cheese dessert cup",
   "duration": "00:12:00",
   "imageUrl": "https://images.unsplash.com/photo-1561804558-fcfafc5a963e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 2
+  "type": 3
 }
 > {% client.global.set("rec20", response.body); %}
 
@@ -820,7 +820,7 @@ Content-Type: application/json
   "description": "coffee layered mascarpone dessert",
   "duration": "00:15:00",
   "imageUrl": "https://images.unsplash.com/photo-1766232333746-b0a2697d6d0d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 2
+  "type": 3
 }
 > {% client.global.set("rec21", response.body); %}
 
@@ -833,7 +833,7 @@ Content-Type: application/json
   "description": "classic sweet pancake base",
   "duration": "00:08:00",
   "imageUrl": "https://images.unsplash.com/photo-1583611177793-a31c8df1d67f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 2
+  "type": 3
 }
 > {% client.global.set("rec22", response.body); %}
 
@@ -859,7 +859,7 @@ Content-Type: application/json
   "description": "rich cocoa cake preparation",
   "duration": "00:12:00",
   "imageUrl": "https://images.unsplash.com/photo-1607662256021-751dc3939f2b?q=80&w=1174&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 2
+  "type": 3
 }
 > {% client.global.set("rec24", response.body); %}
 
@@ -872,10 +872,34 @@ Content-Type: application/json
   "description": "warming tea with ginger and honey",
   "duration": "00:04:00",
   "imageUrl": "https://images.unsplash.com/photo-1606695889004-f7850b9bfb81?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "type": 0
+  "type": 4
 }
 > {% client.global.set("rec25", response.body); %}
 
+### Create Soup
+POST {{host}}:{{port}}/recipe
+Content-Type: application/json
+
+{
+  "name": "Daily Soup",
+  "description": "soup from daily menu, can be vegetable, meat or fish based",
+  "duration": "00:20:00",
+  "type": 2
+}
+> {% client.global.set("rec26", response.body); %}
+
+### Create Fried Cheese
+POST {{host}}:{{port}}/recipe
+Content-Type: application/json
+
+{
+  "name": "Fried Cheese",
+  "description": "Biggest cheese slice in Brno, served with tartar sauce",
+  "duration": "00:15:00",
+  "imageUrl": "https://images.unsplash.com/photo-1728468314335-3f973a10e53d?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "type": 1
+}
+> {% client.global.set("rec27", response.body); %}
 
 ### Mojito Ingredients
 POST {{host}}:{{port}}/recipe/{{rec1}}/ingredient

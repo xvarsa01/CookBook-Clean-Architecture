@@ -112,4 +112,10 @@
   <data name="Drink" xml:space="preserve">
     <value>drink</value>
   </data>
+  <data name="Caffe" xml:space="preserve">
+      <value>caffe</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+      <value>other</value>
+  </data>
 </root>

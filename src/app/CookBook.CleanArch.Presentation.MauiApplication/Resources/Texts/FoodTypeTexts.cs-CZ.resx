@@ -112,4 +112,10 @@
   <data name="Drink" xml:space="preserve">
     <value>pití</value>
   </data>
+  <data name="Caffe" xml:space="preserve">
+      <value>káva</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+      <value>jiné</value>
+  </data>
 </root>
