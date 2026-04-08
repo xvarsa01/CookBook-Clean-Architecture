@@ -22,7 +22,7 @@ internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryH
         
         var totalItemsCount = await queryable.CountAsync(cancellationToken);
         
-        queryable = ApplyPaging(request.PagingOptions, queryable);
+        queryable = queryable.ApplyPaging(request.PagingOptions);
         
         var items = await queryable.Select(i => new RecipeListResponse(i.Id, i.Name, i.ImageUrl, i.Type)).ToListAsync(cancellationToken);
         
@@ -34,18 +34,6 @@ internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryH
             PageSize = request.PagingOptions?.PageSize ?? items.Count
         };
         return Result.Ok(result);
-    }
-
-    private static IQueryable<Recipe> ApplyPaging(PagingOptions? pagingOptions, IQueryable<Recipe> queryable)
-    {
-        if (pagingOptions is not null)
-        {
-            queryable = queryable
-                .Skip(pagingOptions.PageSize * pagingOptions.PageIndex)
-                .Take(pagingOptions.PageSize);
-        }
-
-        return queryable;
     }
 
     private static IQueryable<Recipe> ApplyFilter(RecipeFilter filter, IQueryable<Recipe> queryable)

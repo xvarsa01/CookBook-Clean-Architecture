@@ -21,7 +21,7 @@ internal class GetIngredientListQueryHandler (ICookBookDbContext dbContext) : IQ
         
         var totalItemsCount = await queryable.CountAsync(cancellationToken);
         
-        queryable = ApplyPaging(request.PagingOptions, queryable);
+        queryable = queryable.ApplyPaging(request.PagingOptions);
         
         var items = await queryable
             .Select(i => new IngredientListResponse(i.Id, i.Name, i.ImageUrl))
@@ -67,18 +67,6 @@ internal class GetIngredientListQueryHandler (ICookBookDbContext dbContext) : IQ
             
             _ => queryable.OrderBy(r => r.Name)
         };
-        return queryable;
-    }
-
-    private static IQueryable<Ingredient> ApplyPaging(PagingOptions? pagingOptions, IQueryable<Ingredient> queryable)
-    {
-        if (pagingOptions is not null)
-        {
-            queryable = queryable
-                .Skip(pagingOptions.PageSize * pagingOptions.PageIndex)
-                .Take(pagingOptions.PageSize);
-        }
-
         return queryable;
     }
 }
