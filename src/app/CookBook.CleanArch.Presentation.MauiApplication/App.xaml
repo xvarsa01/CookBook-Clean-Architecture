@@ -16,8 +16,6 @@
             
             <converters:FoodTypeToColorConverter x:Key="FoodTypeToColorConverter" />
             <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
-            <converters:ModelIsNewToIsVisibleConverter x:Key="ModelIsNewToIsVisibleConverter" />
-            <converters:ModelIsNewToIsVisibleInvertedConverter x:Key="ModelIsNewToIsVisibleInvertedConverter" />
             <converters:FoodTypeToStringConverter x:Key="FoodTypeToStringConverter" />
             <converters:RecipeIngredientsCountToStringConverter x:Key="RecipeIngredientsCountToStringConverter"/>
             <converters:UnitToStringConverter x:Key="UnitToStringConverter"/>
