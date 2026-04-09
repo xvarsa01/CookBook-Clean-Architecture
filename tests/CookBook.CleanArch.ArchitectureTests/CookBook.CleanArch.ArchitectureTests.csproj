@@ -21,10 +21,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\app\CookBook.CleanArch.Application\CookBook.CleanArch.Application.csproj" />
-      <ProjectReference Include="..\..\app\CookBook.CleanArch.Domain\CookBook.CleanArch.Domain.csproj" />
-      <ProjectReference Include="..\..\app\CookBook.CleanArch.Infrastructure\CookBook.CleanArch.Infrastructure.csproj" />
-      <ProjectReference Include="..\..\app\CookBook.CleanArch.Presentation.WebApi\CookBook.CleanArch.Presentation.WebApi.csproj" />
+      <ProjectReference Include="..\..\src\CookBook.CleanArch.Application\CookBook.CleanArch.Application.csproj" />
+      <ProjectReference Include="..\..\src\CookBook.CleanArch.Domain\CookBook.CleanArch.Domain.csproj" />
+      <ProjectReference Include="..\..\src\CookBook.CleanArch.Infrastructure\CookBook.CleanArch.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\CookBook.CleanArch.Presentation.WebApi\CookBook.CleanArch.Presentation.WebApi.csproj" />
     </ItemGroup>
 
 </Project>

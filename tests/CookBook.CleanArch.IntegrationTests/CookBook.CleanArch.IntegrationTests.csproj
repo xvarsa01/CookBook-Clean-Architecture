@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\app\CookBook.CleanArch.Infrastructure\CookBook.CleanArch.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\CookBook.CleanArch.Infrastructure\CookBook.CleanArch.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
