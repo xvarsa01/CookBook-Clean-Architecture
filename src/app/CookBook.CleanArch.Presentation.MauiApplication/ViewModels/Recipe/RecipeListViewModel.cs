@@ -2,9 +2,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using CookBook.CleanArch.Application.Filters;
-using CookBook.CleanArch.Application.Models.Recipe;
-using CookBook.CleanArch.Application.Queries.Recipes;
+using CookBook.CleanArch.Application.Recipes;
+using CookBook.CleanArch.Application.Recipes.Models;
+using CookBook.CleanArch.Application.Recipes.Queries;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;

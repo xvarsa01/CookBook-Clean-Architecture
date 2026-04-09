@@ -1,6 +1,6 @@
-﻿using CookBook.CleanArch.Application.Commands.Ingredients;
-using CookBook.CleanArch.Application.ExternalInterfaces;
-using CookBook.CleanArch.Application.Models.Ingredient;
+﻿using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Application.Ingredients.Models;
+using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Domain.Ingredient;
 using CookBook.CleanArch.Domain.Ingredient.Errors;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;

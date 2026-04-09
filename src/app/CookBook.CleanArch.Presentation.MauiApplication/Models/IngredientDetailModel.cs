@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CookBook.CleanArch.Application.Models.Ingredient;
+using CookBook.CleanArch.Application.Ingredients.Models;
 using FluentValidation.Results;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Models;

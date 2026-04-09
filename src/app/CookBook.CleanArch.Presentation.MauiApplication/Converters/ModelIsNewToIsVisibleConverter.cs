@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using CommunityToolkit.Maui.Converters;
-using CookBook.CleanArch.Application.Models;
+using CookBook.CleanArch.Application.Abstraction;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Converters;
 

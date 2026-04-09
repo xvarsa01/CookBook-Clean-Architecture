@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using CookBook.CleanArch.Application.Models.Ingredient;
+using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain.Recipe.Enums;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 

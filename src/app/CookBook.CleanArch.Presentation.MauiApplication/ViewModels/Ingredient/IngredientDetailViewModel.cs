@@ -2,11 +2,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using CookBook.CleanArch.Application.Commands.Ingredients;
-using CookBook.CleanArch.Application.Models.Ingredient;
-using CookBook.CleanArch.Application.Models.Recipe;
-using CookBook.CleanArch.Application.Queries.Ingredients;
-using CookBook.CleanArch.Application.Queries.Recipes;
+using CookBook.CleanArch.Application.Ingredients.Models;
+using CookBook.CleanArch.Application.Ingredients.Queries;
+using CookBook.CleanArch.Application.Recipes.Commands;
+using CookBook.CleanArch.Application.Recipes.Models;
+using CookBook.CleanArch.Application.Recipes.Queries;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;

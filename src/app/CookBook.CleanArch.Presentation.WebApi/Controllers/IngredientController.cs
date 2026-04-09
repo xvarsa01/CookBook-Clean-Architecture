@@ -1,9 +1,9 @@
 using CookBook.CleanArch.Application;
-using CookBook.CleanArch.Application.Commands.Ingredients;
-using CookBook.CleanArch.Application.Filters;
-using CookBook.CleanArch.Application.Models;
-using CookBook.CleanArch.Application.Models.Ingredient;
-using CookBook.CleanArch.Application.Queries.Ingredients;
+using CookBook.CleanArch.Application.Ingredients;
+using CookBook.CleanArch.Application.Ingredients.Models;
+using CookBook.CleanArch.Application.Ingredients.Queries;
+using CookBook.CleanArch.Application.Recipes.Commands;
+using CookBook.CleanArch.Application.Shared;
 using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using MediatR;

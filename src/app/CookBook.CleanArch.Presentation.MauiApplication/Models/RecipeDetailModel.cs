@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CookBook.CleanArch.Application.Models.Recipe;
+using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Domain.Recipe.Enums;
 using FluentValidation.Results;
 

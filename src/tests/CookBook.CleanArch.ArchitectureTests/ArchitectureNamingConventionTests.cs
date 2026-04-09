@@ -1,6 +1,5 @@
 ﻿using ArchUnitNET.xUnit;
 using CookBook.CleanArch.Application.Abstraction;
-using CookBook.CleanArch.Application.Filters;
 using CookBook.CleanArch.Domain.Shared;
 using MediatR;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;

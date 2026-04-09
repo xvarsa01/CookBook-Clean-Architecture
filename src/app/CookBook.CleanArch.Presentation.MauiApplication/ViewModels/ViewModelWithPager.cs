@@ -2,7 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application;
-using CookBook.CleanArch.Application.Filters;
+using CookBook.CleanArch.Application.Abstraction;
+using CookBook.CleanArch.Application.Shared;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 

@@ -7,7 +7,7 @@
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:recipeEnums="clr-namespace:CookBook.CleanArch.Domain.Recipe.Enums;assembly=CookBook.CleanArch.Domain"
                        xmlns:controls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls"
-                       xmlns:models="clr-namespace:CookBook.CleanArch.Application.Models.Recipe;assembly=CookBook.CleanArch.Application"
+                       xmlns:models="using:CookBook.CleanArch.Application.Recipes.Models"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe.RecipeListView"
                        Title="{xaml:Static t:RecipeListViewTexts.Page_Title}"
                        x:DataType="viewModels:RecipeListViewModel"
