@@ -26,18 +26,6 @@ public class RecipeDetailModelValidator : AbstractValidator<RecipeDetailModel>
             .WithMessage("The recipe type must be selected");
 
         RuleFor(x => x.ImageUrl)
-            .Custom((value, context) =>
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    return;     // this is valid state, so stop evaluating further rules
-                }
-
-                var result = ImageUrl.CreateObject(value);
-                if (result.IsFailure)
-                {
-                    context.AddFailure(RecipeImageUrlProperty, result.Error.Message);
-                }
-            });
+            .IsValidOptionalValueObject<RecipeDetailModel, ImageUrl>();
     }
 }

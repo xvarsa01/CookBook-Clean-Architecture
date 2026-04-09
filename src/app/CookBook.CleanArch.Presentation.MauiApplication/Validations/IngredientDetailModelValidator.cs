@@ -16,18 +16,6 @@ public class IngredientDetailModelValidator : AbstractValidator<IngredientDetail
             .NotEmpty().WithMessage("The ingredient name must not be empty");
 
         RuleFor(x => x.ImageUrl)
-            .Custom((value, context) =>
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    return;     // this is valid state, so stop evaluating further rules
-                }
-
-                var result = ImageUrl.CreateObject(value);
-                if (result.IsFailure)
-                {
-                    context.AddFailure(IngredientImageUrlProperty, result.Error.Message);
-                }
-            });
+            .IsValidOptionalValueObject<IngredientDetailModel, ImageUrl>();
     }
 }

@@ -32,5 +32,22 @@ public static class ValidationResultExtensions
             }
         });
     }
+    
+    public static IRuleBuilderOptionsConditions<T, string?> IsValidOptionalValueObject<T, TValueObject>(
+        this IRuleBuilderInitial<T, string?> ruleBuilder)
+        where TValueObject : IValueObject<string>, IValueObjectFactory<TValueObject, string>
+    {
+        return ruleBuilder.Custom((value, context) =>
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return;
+
+            var result = TValueObject.CreateObject(value);
+            if (result.IsFailure)
+            {
+                context.AddFailure(result.Error.Message);
+            }
+        });
+    }
   
 }
