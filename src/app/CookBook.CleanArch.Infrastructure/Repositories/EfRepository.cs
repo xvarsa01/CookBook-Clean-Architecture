@@ -26,13 +26,6 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
     {
         return await _dbSet.ToListAsync();
     }
-    
-    // public async Task<IReadOnlyList<TEntity>> GetListBySpecificationAsync(ISpecification<TEntity, TEntity> specification)
-    // {
-    //     IQueryable<TEntity> queryable = _dbSet.AsQueryable();
-    //     IQueryable<TEntity> query = specification.UseFilter(queryable);
-    //     return await query.ToListAsync();
-    // }
 
     public virtual async Task<TEntity?> GetByIdAsync(TId id)
     {
@@ -48,19 +41,17 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
         }
         
         _dbContext.Set<TEntity>().Remove(entity);
-        await SaveChangesAsync();
     }
 
     public async Task<TId> InsertAsync(TEntity aggregate)
     {
         var entityId = _dbSet.Add(aggregate).Entity.Id;
-        await SaveChangesAsync();
         return entityId;
     }
 
     public async Task<TId?> UpdateAsync(TEntity aggregate)
     {
-        await SaveChangesAsync();
+        // await SaveChangesAsync();
         return aggregate.Id;
     }
     

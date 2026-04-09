@@ -9,4 +9,6 @@ public interface ICookBookDbContext
     DbSet<Ingredient> Ingredients { get;}
     DbSet<Recipe> Recipes { get;}
     DbSet<RecipeIngredient> IngredientInRecipe { get;}
+    
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
