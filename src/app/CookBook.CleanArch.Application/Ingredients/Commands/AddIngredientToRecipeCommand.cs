@@ -38,8 +38,6 @@ internal sealed class AddIngredientToRecipeCommandHandler(
             return Result.Invalid<RecipeIngredientId>(result.Error);
         }
         
-        await recipeRepository.UpdateAsync(recipe);
-
         return Result.Ok(result.Value);
     }
 }

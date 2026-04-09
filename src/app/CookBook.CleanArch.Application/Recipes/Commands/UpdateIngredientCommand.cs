@@ -44,14 +44,8 @@ internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, Ing
                 return Result.Invalid<IngredientId>(result.Error);
         }
         
-        var id = await repository.UpdateAsync(existingIngredient);
-        if (id is null)
-        {
-            return Result.Invalid<IngredientId>(IngredientErrors.IngredientUpdateFailedError(new IngredientId(request.Request.Id)));
-        }
-
         await publisher.Publish(new IngredientUpdatedEvent(existingIngredient), cancellationToken);
 
-        return Result.Ok(id);
+        return Result.Ok(existingIngredient.Id);
     }
 }

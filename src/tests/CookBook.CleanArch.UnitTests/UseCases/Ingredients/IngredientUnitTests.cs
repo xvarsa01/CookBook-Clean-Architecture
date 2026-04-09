@@ -61,31 +61,4 @@ public class IngredientUnitTests
             IngredientErrors.IngredientNotFoundError(new IngredientId(id)),
             result.Error);
     }
-
-    [Fact]
-    public async Task UpdateIngredientHandler_UpdatesAndReturnsOk()
-    {
-        var entity = Ingredient.Create("Old", "d", null).Value;
-        var id = entity.Id;
-
-        var repoMock = new Mock<IRepository<Ingredient, IngredientId>>();
-        repoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
-        repoMock.Setup(r => r.UpdateAsync(It.IsAny<Ingredient>())).ReturnsAsync(id);
-
-        var publisherMock = new Mock<IPublisher>();
-
-        var handler = new UpdateIngredientCommandHandler(repoMock.Object, publisherMock.Object);
-        var dto = new IngredientUpdateRequest(
-            id,
-            "New",
-            "NewDesc",
-            ImageUrl.CreateObject("http://a.png").Value);
-        var useCase = new UpdateIngredientCommand(dto);
-
-        var result = await handler.Handle(useCase, CancellationToken.None);
-
-        Assert.True(result.IsSuccess);
-        repoMock.Verify(r => r.UpdateAsync(It.Is<Ingredient>(e => e.Name == "New" && e.Description == "NewDesc" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
-        publisherMock.Verify(p => p.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Once);
-    }
 }

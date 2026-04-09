@@ -36,15 +36,6 @@ public class InMemoryRepository<TEntity, TId> : IRepository<TEntity, TId>
         return Task.FromResult(aggregate.Id);
     }
 
-    public Task<TId?> UpdateAsync(TEntity aggregate)
-    {
-        if (!_store.ContainsKey(aggregate.Id))
-            return Task.FromResult<TId?>(null);
-
-        _store[aggregate.Id] = aggregate;
-        return Task.FromResult<TId?>(aggregate.Id);
-    }
-
     public ValueTask<bool> ExistsAsync(TEntity aggregate)
         => new(_store.ContainsKey(aggregate.Id));
 }

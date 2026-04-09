@@ -38,12 +38,6 @@ internal sealed class UpdateRecipeCommandHandler(IRepository<Recipe, RecipeId> r
         if (restResult.IsFailure)
             return Result.Invalid<RecipeId>(restResult.Error);
         
-        var id = await repository.UpdateAsync(existing);
-        if (id is null)
-        {
-            return Result.Invalid<RecipeId>(RecipeErrors.RecipeUpdateFailedError(request.Request.Id));
-        }
-        
-        return Result.Ok(id);
+        return Result.Ok(existing.Id);
     }
 }

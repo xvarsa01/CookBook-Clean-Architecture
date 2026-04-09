@@ -48,12 +48,6 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
         var entityId = _dbSet.Add(aggregate).Entity.Id;
         return entityId;
     }
-
-    public async Task<TId?> UpdateAsync(TEntity aggregate)
-    {
-        // await SaveChangesAsync();
-        return aggregate.Id;
-    }
     
     public async ValueTask<bool> ExistsAsync(TEntity aggregate)
     {

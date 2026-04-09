@@ -10,6 +10,5 @@ public interface IRepository<TAggregate, TId>
     Task<TAggregate?> GetByIdAsync(TId id);
     Task DeleteAsync(TId entityId);
     Task<TId> InsertAsync(TAggregate aggregate);
-    Task<TId?> UpdateAsync(TAggregate aggregate);
     ValueTask<bool> ExistsAsync(TAggregate aggregate);
 }

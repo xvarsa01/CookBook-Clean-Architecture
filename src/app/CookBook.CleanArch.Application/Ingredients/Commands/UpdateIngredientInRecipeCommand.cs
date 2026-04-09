@@ -25,8 +25,6 @@ internal sealed class UpdateRecipeIngredientCommandHandler(IRepository<Recipe, R
         if (result.IsFailure)
             return Result.Invalid(result.Error);
         
-        await recipeRepository.UpdateAsync(recipe);
-        
         return Result.Ok();
     }
 }
