@@ -80,11 +80,11 @@ public partial class IngredientDetailViewModel(
     }
 
     [RelayCommand]
-    private async Task GoToRecipeDetailAsync(Guid id)
+    private async Task GoToRecipeDetailAsync(RecipeId id)
         => await navigationService.GoToAsync($"{NavigationService.RecipeListRouteAbsolute}{NavigationService.RecipeDetailRouteRelative}",
             new Dictionary<string, object?>
             {
-                [nameof(RecipeDetailViewModel.Id)] = new RecipeId(id)
+                [nameof(RecipeDetailViewModel.Id)] = id
             }
         );
 
