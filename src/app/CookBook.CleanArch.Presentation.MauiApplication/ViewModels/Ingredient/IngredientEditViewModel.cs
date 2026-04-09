@@ -45,8 +45,6 @@ public partial class IngredientEditViewModel(
             return;
 
         var imageUrl = TryCreateImageUrl();
-        if (Ingredient.ImageUrl is not null && imageUrl is null)
-            return;
 
         var request = new IngredientUpdateRequest(
             Id,

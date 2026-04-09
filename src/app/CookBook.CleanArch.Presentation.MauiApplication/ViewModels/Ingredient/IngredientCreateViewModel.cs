@@ -19,8 +19,6 @@ public partial class IngredientCreateViewModel(
             return;
 
         var imageUrl = TryCreateImageUrl();
-        if (Ingredient.ImageUrl is not null && imageUrl is null)
-            return;
 
         var request = new IngredientCreateRequest(
             Ingredient.Name,
