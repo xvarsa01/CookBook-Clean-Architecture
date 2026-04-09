@@ -116,10 +116,19 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>RecipeEditViewTexts.resx</DependentUpon>
       </Compile>
+      <Compile Update="Resources\Texts\RecipeCreateViewTexts.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>RecipeCreateViewTexts.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Update="Resources\Texts\RecipeEditViewTexts.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>RecipeEditViewTexts.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Texts\RecipeCreateViewTexts.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>RecipeEditViewTexts.Designer.cs</LastGenOutput>
       </EmbeddedResource>

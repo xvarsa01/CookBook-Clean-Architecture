@@ -5,7 +5,7 @@
                        xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
                        xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
-                       xmlns:models="using:CookBook.CleanArch.Presentation.MauiApplication.Models"
+                       xmlns:models="using:CookBook.CleanArch.Application.Models.Recipe"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe.RecipeDetailView"
                        Title="{xaml:Static texts:RecipeDetailViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
@@ -90,11 +90,11 @@
                     <CollectionView Grid.Row="5"
                                     ItemsSource="{Binding Recipe.Ingredients}">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:RecipeIngredientListModel">
+                            <DataTemplate x:DataType="models:RecipeIngredientResponse">
                                 <HorizontalStackLayout>
                                     <Border Margin="5, 5, 20, 5"
                                             Style="{StaticResource ImageBorderStyle}">
-                                        <Image Source="{Binding IngredientImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
+                                        <Image Source="{Binding IngredientImageUrl.Value, TargetNullValue='ingredient_placeholder.jpg'}"
                                                WidthRequest="60" HeightRequest="60"
                                                Aspect="AspectFill" />
                                     </Border>
@@ -102,7 +102,7 @@
                                     <Label VerticalOptions="Center">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount}" />
+                                                <Span Text="{Binding Amount.Value}" />
                                                 <Span Text=" " />
                                                 <Span Text="{Binding Unit, Converter={StaticResource UnitToStringConverter}}" />
                                                 <Span Text=" " />

@@ -15,7 +15,7 @@ public record RecipeIngredient : EntityBase<RecipeIngredientId>
 
     public Ingredient.Ingredient Ingredient
     {
-        get => throw new InvalidOperationException();
+        get; // => throw new InvalidOperationException();
         private set => throw new InvalidOperationException();
     }
 

@@ -2,14 +2,14 @@
 
 <views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:views="using:CookBook.CleanArch.Presentation.MauiApplication.Views"
                        xmlns:controls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls"
-                       xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
-                       xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
-                       xmlns:t="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
-                       x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe.RecipeEditView"
-                       Title="{x:Static t:RecipeEditViewTexts.Page_Title}"
+                       xmlns:viewModels="using:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
+                       xmlns:t="using:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
+                       x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe.RecipeCreateView"
+                       Title="{x:Static t:RecipeCreateViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
-                       x:DataType="viewModels:RecipeEditViewModel">
+                       x:DataType="viewModels:RecipeCreateViewModel">
     
     <controls:RecipeCreateEditBaseView
         Recipe="{Binding Recipe}"
@@ -21,12 +21,9 @@
         FoodTypes="{Binding FoodTypes}"
         IngredientAmountNew="{Binding IngredientAmountNew}"
         SelectedNewIngredient="{Binding SelectedNewIngredient}"
-        AddIngredientCommand="{Binding AddNewIngredientToRecipeCommand}"
-        UpdateIngredientCommand="{Binding UpdateIngredientCommand}"
-        RemoveIngredientCommand="{Binding RemoveIngredientCommand}"
         ValidateIngredientCommand="{Binding ValidateIngredientAmountNewPropertyCommand}"
         IngredientsEditingIsActive="{Binding IngredientsEditingIsActive}"
         IsExistingRecipe="{Binding IsExistingRecipe}"
         ToggleEditIngredientButtonText="{Binding ToggleEditIngredientButtonText}" />
-
+    
 </views:ContentPageBase>

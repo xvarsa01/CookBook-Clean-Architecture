@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:t="using:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:validations="using:CookBook.CleanArch.Presentation.MauiApplication.Validations"
+             xmlns:models="using:CookBook.CleanArch.Presentation.MauiApplication.Models"
+             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.RecipeCreateEditBaseView"
+             x:Name="Root">
+    
+    <Grid RowDefinitions="*, Auto"
+          RowSpacing="40">
+        <Grid Grid.Row="0"
+              ColumnDefinitions="2*, *"
+              ColumnSpacing="40"
+              RowDefinitions="Auto, *">
+
+            <Grid Grid.Column="0"
+                  Grid.Row="0"
+                  RowDefinitions="Auto, Auto, Auto"
+                  ColumnDefinitions="*, Auto"
+                  RowSpacing="20"
+                  ColumnSpacing="20">
+                <VerticalStackLayout Grid.Row="0"
+                                     Grid.Column="0"
+                                     Spacing="10">
+                    <Label Text="{x:Static t:RecipeEditViewTexts.Name_Label_Text}" />
+
+                    <Entry HorizontalOptions="Fill"
+                           Text="{Binding Source={x:Reference Root}, Path=Recipe.Name}">
+                        <Entry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                            Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
+                                                            CommandParameter="{x:Static validations:RecipeDetailModelValidator.RecipeNameProperty}" />
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                           Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeNameProperty}}"
+                           IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeNameProperty}}" />
+                </VerticalStackLayout>
+
+                <Grid Grid.Row="1"
+                      Grid.Column="0"
+                      RowDefinitions="Auto, Auto,Auto"
+                      ColumnDefinitions="Auto, *"
+                      RowSpacing="10" ColumnSpacing="17">
+                    <Label Grid.Row="0" Grid.Column="0"
+                           Text="{x:Static t:RecipeEditViewTexts.FoodType_Label_Text}" />
+                    <Picker Grid.Row="1"
+                            Grid.Column="0"
+                            HorizontalOptions="Fill"
+                            ItemsSource="{Binding Source={x:Reference Root}, Path=FoodTypes}"
+                            ItemDisplayBinding="{Binding ., Converter={StaticResource FoodTypeToStringConverter}}"
+                            SelectedItem="{Binding Source={x:Reference Root}, Path=Recipe.RecipeType}">
+                        <Picker.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged"
+                                                            Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
+                                                            CommandParameter="{x:Static validations:RecipeDetailModelValidator.RecipeRecipeTypeProperty}" />
+                        </Picker.Behaviors>
+                    </Picker>
+                    <Label Grid.Row="2"
+                           Grid.Column="0"
+                           Style="{StaticResource ValidationErrorLabelStyle}"
+                           Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeRecipeTypeProperty}}"
+                           IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeRecipeTypeProperty}}" />
+
+                    <Label Grid.Row="0" Grid.Column="1"
+                           Text="{x:Static t:RecipeEditViewTexts.Duration_Label_Text}" />
+                    <TimePicker Grid.Row="1" Grid.Column="1"
+                                Time="{Binding Source={x:Reference Root}, Path=Recipe.Duration}"
+                                Format="HH:mm">
+                        <TimePicker.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="PropertyChanged"
+                                                            Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
+                                                            CommandParameter="{x:Static validations:RecipeDetailModelValidator.RecipeDurationProperty}" />
+                        </TimePicker.Behaviors>
+                    </TimePicker>
+                    <Label Grid.Row="2" Grid.Column="1"
+                           Style="{StaticResource ValidationErrorLabelStyle}"
+                           Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeDurationProperty}}"
+                           IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToHasErrorConverter},
+                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeDurationProperty}}" />
+                </Grid>
+
+                <StackLayout Grid.Row="2"
+                             Grid.Column="0"
+                             Orientation="Vertical"
+                             Spacing="10">
+                    <Label Text="{x:Static t:RecipeEditViewTexts.ImageUrl_Label_Text}" />
+
+                    <Entry Text="{Binding Source={x:Reference Root}, Path=Recipe.ImageUrl}">
+                        <Entry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                            Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
+                                                            CommandParameter="{x:Static validations:RecipeDetailModelValidator.RecipeImageUrlProperty}" />
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                           Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeImageUrlProperty}}"
+                           IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToHasErrorConverter},
+                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeImageUrlProperty}}" />
+                </StackLayout>
+                
+                <Border Grid.Row="0"
+                        Grid.Column="1"
+                        Grid.RowSpan="3"
+                        HorizontalOptions="Fill" VerticalOptions="Fill"
+                        Style="{StaticResource ImageBorderStyle}">
+                    <Image Source="{Binding Source={x:Reference Root}, Path=Recipe.ImageUrl, TargetNullValue='recipe_placeholder.jpg'}"
+                           WidthRequest="320" HeightRequest="240"
+                           Aspect="AspectFill" />
+                </Border>
+            </Grid>
+            <Grid Grid.Column="0"
+                  Grid.Row="1"
+                  RowDefinitions="Auto, *"
+                  RowSpacing="30">
+                <Label Grid.Row="0"
+                       Text="{x:Static t:RecipeEditViewTexts.Description_Label_Text}" />
+
+                <Editor Grid.Row="1"
+                        Text="{Binding Source={x:Reference Root}, Path=Recipe.Description}"
+                        AutoSize="TextChanges"
+                        VerticalOptions="Fill" />
+            </Grid>
+
+            <Grid Grid.Row="0" Grid.Column="1"
+                  RowSpan="2"
+                  RowDefinitions="Auto, Auto, Auto, *"
+                  RowSpacing="30">
+                <Button x:Name="ToggleEditIngredientButton"
+                        Grid.Row="0"
+                        Text="{Binding Source={x:Reference Root}, Path=ToggleEditIngredientButtonText}"
+                        Command="{Binding Source={x:Reference Root}, Path=ToggleEditingCommand}"
+                        IsEnabled="{Binding Source={x:Reference Root}, Path=IsExistingRecipe}"
+                        Style="{StaticResource PrimaryButtonStyle}" />
+                
+                <Label Grid.Row="1"
+                       Text="{x:Static t:RecipeEditViewTexts.ErrorUnsavedRecipe_Label_Text}"
+                       HorizontalOptions="End"
+                       IsVisible="{Binding Source={x:Reference Root}, Path=IsExistingRecipe, Converter={StaticResource InverseBooleanConverter}}" />
+
+                <HorizontalStackLayout x:Name="AddNewIngredientLayout"
+                                       Grid.Row="2"
+                                       Spacing="10"
+                                       IsVisible="{Binding Source={x:Reference Root}, Path=IngredientsEditingIsActive}">
+                    
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{x:Static t:RecipeEditViewTexts.Amount_Label_Text}" />
+                        <Entry Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.Amount}">
+                            <Entry.Behaviors>
+                                <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                                Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}"
+                                                                CommandParameter="{x:Static validations:RecipeIngredientListModelValidator.IngredientAmountProperty}" />
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                               Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientAmountProperty}}"
+                               IsVisible="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientAmountProperty}}" />
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{x:Static t:RecipeEditViewTexts.Unit_Label_Text}" />
+                        <Picker ItemsSource="{Binding Source={x:Reference Root}, Path=Units}"
+                                ItemDisplayBinding="{Binding ., Converter={StaticResource UnitToStringConverter}}"
+                                SelectedItem="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.Unit}">
+                            <Picker.Behaviors>
+                                <toolkit:EventToCommandBehavior EventName="PropertyChanged"
+                                                                Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}"
+                                                                CommandParameter="{x:Static validations:RecipeIngredientListModelValidator.IngredientUnitProperty}" />
+                            </Picker.Behaviors>
+                        </Picker>
+                        <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                               Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientUnitProperty}}"
+                               IsVisible="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientUnitProperty}}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{x:Static t:RecipeEditViewTexts.Name_Label_Text}" />
+                        <Picker x:Name="NewIngredientPicker"
+                                ItemsSource="{Binding Source={x:Reference Root}, Path=Ingredients}"
+                                ItemDisplayBinding="{Binding Name}"
+                                SelectedItem="{Binding Source={x:Reference Root}, Path=SelectedNewIngredient}">
+                            <Picker.Behaviors>
+                                <toolkit:EventToCommandBehavior EventName="PropertyChanged"
+                                                                Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}"
+                                                                CommandParameter="{x:Static validations:RecipeIngredientListModelValidator.IngredientIdProperty}" />
+                            </Picker.Behaviors>
+                        </Picker>
+                        <Label Style="{StaticResource ValidationErrorLabelStyle}"
+                               Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientIdProperty}}"
+                               IsVisible="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                        ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientIdProperty}}" />
+                    </VerticalStackLayout>
+                    
+                    <Button Text="{x:Static t:RecipeEditViewTexts.AddIngredient_Button_Text}"
+                            HorizontalOptions="Start"
+                            Command="{Binding Source={x:Reference Root}, Path=AddIngredientCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <CollectionView Grid.Row="3"
+                                ItemsSource="{Binding Source={x:Reference Root}, Path=Recipe.Ingredients}"
+                                HorizontalOptions="End">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:RecipeIngredientListModel">
+                            <HorizontalStackLayout>
+                                <Border Margin="5, 5, 20, 5"
+                                        Style="{StaticResource ImageBorderStyle}">
+                                    <Image Source="{Binding IngredientImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
+                                           WidthRequest="60" HeightRequest="60"
+                                           Aspect="AspectFill" />
+                                </Border>
+
+                                <Label VerticalOptions="Center"
+                                       IsVisible="{Binding Source={x:Reference Root}, Path=IngredientsEditingIsActive,
+                                       Converter={StaticResource InverseBooleanConverter}}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Amount}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding Unit, Converter={StaticResource UnitToStringConverter}}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding IngredientName}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                
+                                <HorizontalStackLayout x:Name="IngredientsEditingLayout"
+                                                       IsVisible="{Binding Source={x:Reference Root}, Path=IngredientsEditingIsActive}"
+                                                       VerticalOptions="Center"
+                                                       Spacing="10">
+                                    <Entry Text="{Binding Amount}"
+                                           x:Name="AmountEntry">
+                                        <Entry.Behaviors>
+                                            <toolkit:EventToCommandBehavior EventName="Unfocused"
+                                                                            Command="{Binding Source={x:Reference Root}, Path=UpdateIngredientCommand}"
+                                                                            CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
+                                        </Entry.Behaviors>
+                                    </Entry>
+                                    <Picker x:Name="UnitPicker"
+                                            ItemsSource="{Binding Source={x:Reference Root}, Path=Units}"
+                                            ItemDisplayBinding="{Binding ., Converter={StaticResource UnitToStringConverter}}"
+                                            SelectedItem="{Binding Unit}">
+                                        <Picker.Behaviors>
+                                            <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged"
+                                                                            Command="{Binding Source={x:Reference Root}, Path=UpdateIngredientCommand}"
+                                                                            CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
+                                        </Picker.Behaviors>
+                                    </Picker>
+                                    
+                                    <Label Text="{Binding IngredientName}"
+                                           VerticalOptions="Center"
+                                           MinimumWidthRequest="100" />
+                                    
+                                    <Button HorizontalOptions="Start" VerticalOptions="Center"
+                                            Text="{x:Static t:RecipeEditViewTexts.RemoveIngredient_Button_Text}"
+                                            Command="{Binding Source={x:Reference Root}, Path=RemoveIngredientCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource ErrorButtonStyle}" />
+                                </HorizontalStackLayout>
+                                
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+
+        <Button Grid.Row="1"
+                HorizontalOptions="End"
+                Text="{x:Static t:RecipeEditViewTexts.Save_Button_Text}"
+                Command="{Binding Source={x:Reference Root}, Path=SaveCommand}"
+                Style="{StaticResource PrimaryButtonStyle}" />
+    </Grid>
+
+</ContentView>

@@ -52,18 +52,18 @@ public partial class RecipeListViewModel(
     }
     
     [RelayCommand]
-    private async Task GoToDetailAsync(Guid id)
+    private async Task GoToDetailAsync(RecipeId id)
         => await navigationService.GoToAsync(NavigationService.RecipeDetailRouteRelative,
             new Dictionary<string, object?>
             {
-                [nameof(RecipeDetailViewModel.Id)] = new RecipeId(id)
+                [nameof(RecipeDetailViewModel.Id)] = id
             }
         );
 
     [RelayCommand]
     private async Task GoToCreateAsync()
     {
-        await navigationService.GoToAsync(NavigationService.RecipeEditRouteRelative);
+        await navigationService.GoToAsync(NavigationService.RecipeCreateRouteRelative);
     }
 
     public void Receive(RecipeEditMessage message)
