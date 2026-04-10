@@ -7,6 +7,7 @@
                        xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
                        xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
                        xmlns:controls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls"
+                       xmlns:ingredientControls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Ingredients"
                        xmlns:models="using:CookBook.CleanArch.Application.Ingredients.Models"
                        x:Name="IngredientListViewRoot"
                        x:DataType="viewModels:IngredientListViewModel"
@@ -27,31 +28,9 @@
 
             <HorizontalStackLayout Grid.Column="2" Spacing="20">
 
-                <!--  Search  to x:name???-->
-                <!-- TODO to component -->
-                <VerticalStackLayout Spacing="10"
-                                     WidthRequest="250">
-                    <Label FontSize="12"
-                           Text="{x:Static texts:IngredientListViewTexts.Search_Title_Text}" />
-                    <SearchBar Placeholder="Search ingredient..."
-                               Text="{Binding Filter.Name}" />
-                </VerticalStackLayout>
+                <ingredientControls:IngredientSearchControl SearchText="{Binding Filter.Name, Mode=TwoWay}" />
 
-                <!-- TODO to component -->
-                <VerticalStackLayout Spacing="10">
-                    <Label FontSize="12"
-                           Text="{x:Static texts:IngredientListViewTexts.Image_Title_Text}" />
-                    <Picker
-                        SelectedItem="{Binding Filter.HasImage, Converter={StaticResource NullableBoolToStringConverter}}">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>-</x:String>
-                                <x:String>Yes</x:String>
-                                <x:String>No</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
-                </VerticalStackLayout>
+                <ingredientControls:IngredientImageFilterControl HasImage="{Binding Filter.HasImage, Mode=TwoWay}" />
                 
                 <controls:SortDirectionControl IsSortAscending="{Binding Filter.IsSortAscending, Mode=TwoWay}" />
                 

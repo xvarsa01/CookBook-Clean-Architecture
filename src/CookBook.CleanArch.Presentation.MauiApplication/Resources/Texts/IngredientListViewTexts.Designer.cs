@@ -71,15 +71,6 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply filters.
-        /// </summary>
-        internal static string ApplyFilter_Button_Text {
-            get {
-                return ResourceManager.GetString("ApplyFilter_Button_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Has Image.
         /// </summary>
         internal static string Image_Title_Text {
@@ -98,15 +89,6 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Page size.
-        /// </summary>
-        internal static string PageSize_Title_Text {
-            get {
-                return ResourceManager.GetString("PageSize_Title_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Search ingredient....
         /// </summary>
         internal static string Search_Placeholder_Text {
@@ -121,33 +103,6 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         internal static string Search_Title_Text {
             get {
                 return ResourceManager.GetString("Search_Title_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Sort_AscOption_Text {
-            get {
-                return ResourceManager.GetString("Sort_AscOption_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Sort_DescOption_Text {
-            get {
-                return ResourceManager.GetString("Sort_DescOption_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sort direction.
-        /// </summary>
-        internal static string SortDirection_Title_Text {
-            get {
-                return ResourceManager.GetString("SortDirection_Title_Text", resourceCulture);
             }
         }
         
