@@ -10,11 +10,6 @@ public class InMemoryRepository<TEntity, TId> : IRepository<TEntity, TId>
 {
     private readonly ConcurrentDictionary<Guid, TEntity> _store = new();
 
-    public IQueryable<TEntity> Query()
-    {
-        return _store.Values.AsQueryable();
-    }
-
     public Task<List<TEntity>> GetAllAsync()
         => Task.FromResult(_store.Values.ToList());
 
@@ -30,10 +25,10 @@ public class InMemoryRepository<TEntity, TId> : IRepository<TEntity, TId>
         return Task.CompletedTask;
     }
 
-    public Task<TId> InsertAsync(TEntity aggregate)
+    public TId Add(TEntity aggregate)
     {
         _store[aggregate.Id.Value] = aggregate;
-        return Task.FromResult(aggregate.Id);
+        return aggregate.Id;
     }
 
     public ValueTask<bool> ExistsAsync(TEntity aggregate)

@@ -17,11 +17,6 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
         _dbSet = dbContext.Set<TEntity>();
     }
 
-    public IQueryable<TEntity> Query()
-    {
-        return _dbSet.AsQueryable();
-    }
-
     public async Task<List<TEntity>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
@@ -43,7 +38,7 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
         _dbContext.Set<TEntity>().Remove(entity);
     }
 
-    public async Task<TId> InsertAsync(TEntity aggregate)
+    public TId Add(TEntity aggregate)
     {
         var entityId = _dbSet.Add(aggregate).Entity.Id;
         return entityId;
@@ -52,10 +47,5 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
     public async ValueTask<bool> ExistsAsync(TEntity aggregate)
     {
         return aggregate.Id != Guid.Empty && await _dbSet.AnyAsync(e => e.Id == aggregate.Id);
-    }
-
-    protected virtual async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

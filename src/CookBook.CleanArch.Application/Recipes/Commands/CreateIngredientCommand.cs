@@ -21,7 +21,7 @@ internal sealed class CreateIngredientCommandHandler(IRepository<Ingredient, Ing
         if (result.IsFailure)
             return Result.Invalid<IngredientId>(result.Error);
         
-        var createdIngredientId = await repository.InsertAsync(result.Value);
+        var createdIngredientId = repository.Add(result.Value);
         return Result.Ok(createdIngredientId);
     }
 }

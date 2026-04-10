@@ -19,8 +19,8 @@ public class IngredientUnitTests
         var repoMock = new Mock<IRepository<Ingredient, IngredientId>>();
         
         var expectedId = new IngredientId(Guid.NewGuid());
-        repoMock.Setup(r => r.InsertAsync(It.IsAny<Ingredient>()))
-            .ReturnsAsync(expectedId);
+        repoMock.Setup(r => r.Add(It.IsAny<Ingredient>()))
+            .Returns(expectedId);
 
         var handler = new CreateIngredientCommandHandler(repoMock.Object);
         var dto = new IngredientCreateRequest(
@@ -34,7 +34,7 @@ public class IngredientUnitTests
 
         // Assert
         Assert.Equal(expectedId, result.Value);
-        repoMock.Verify(r => r.InsertAsync(It.Is<Ingredient>(e => e.Name == "Sugar" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
+        repoMock.Verify(r => r.Add(It.Is<Ingredient>(e => e.Name == "Sugar" && e.ImageUrl != null && e.ImageUrl.Value == "http://a.png")), Times.Once);
     }
 
     [Fact]
