@@ -2,6 +2,7 @@
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
+using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 
@@ -21,6 +22,15 @@ public partial class RecipeCreateViewModel(
     {
         await base.LoadDataAsync();
         await LoadIngredientsAsync();
+    }
+    
+    [RelayCommand]
+    private void AddNewIngredientToRecipeAsync()
+    {
+        Recipe.Ingredients.Add(IngredientAmountNew);
+        
+        IngredientAmountNew = RecipeIngredientListModel.Empty;
+        SelectedNewIngredient = null;
     }
 
     [RelayCommand]

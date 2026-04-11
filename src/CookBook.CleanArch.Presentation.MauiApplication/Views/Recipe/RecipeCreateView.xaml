@@ -6,24 +6,21 @@
                        xmlns:controls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls"
                        xmlns:viewModels="using:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:t="using:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
+                       xmlns:recipe="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe.RecipeCreateView"
                        Title="{x:Static t:RecipeCreateViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
                        x:DataType="viewModels:RecipeCreateViewModel">
     
-    <controls:RecipeCreateEditBaseView
+    <recipe:RecipeCreateEditBaseView
         Recipe="{Binding Recipe}"
         SaveCommand="{Binding SaveRecipeCommand}"
         ValidatePropertyCommand="{Binding ValidatePropertyCommand}"
-        ToggleEditingCommand="{Binding ToggleEditingOfRecipeIngredientCommand}"
         Ingredients="{Binding Ingredients}"
         Units="{Binding Units}"
         FoodTypes="{Binding FoodTypes}"
         IngredientAmountNew="{Binding IngredientAmountNew}"
         SelectedNewIngredient="{Binding SelectedNewIngredient}"
-        ValidateIngredientCommand="{Binding ValidateIngredientAmountNewPropertyCommand}"
-        IngredientsEditingIsActive="{Binding IngredientsEditingIsActive}"
-        IsExistingRecipe="{Binding IsExistingRecipe}"
-        ToggleEditIngredientButtonText="{Binding ToggleEditIngredientButtonText}" />
+        ValidateIngredientCommand="{Binding ValidateIngredientAmountNewPropertyCommand}" />
     
 </views:ContentPageBase>

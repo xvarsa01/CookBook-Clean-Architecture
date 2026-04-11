@@ -6,16 +6,16 @@
                        xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:t="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
+                       xmlns:recipe="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe.RecipeEditView"
                        Title="{x:Static t:RecipeEditViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
                        x:DataType="viewModels:RecipeEditViewModel">
     
-    <controls:RecipeCreateEditBaseView
+    <recipe:RecipeCreateEditBaseView
         Recipe="{Binding Recipe}"
         SaveCommand="{Binding SaveRecipeCommand}"
         ValidatePropertyCommand="{Binding ValidatePropertyCommand}"
-        ToggleEditingCommand="{Binding ToggleEditingOfRecipeIngredientCommand}"
         Ingredients="{Binding Ingredients}"
         Units="{Binding Units}"
         FoodTypes="{Binding FoodTypes}"
@@ -24,9 +24,6 @@
         AddIngredientCommand="{Binding AddNewIngredientToRecipeCommand}"
         UpdateIngredientCommand="{Binding UpdateIngredientCommand}"
         RemoveIngredientCommand="{Binding RemoveIngredientCommand}"
-        ValidateIngredientCommand="{Binding ValidateIngredientAmountNewPropertyCommand}"
-        IngredientsEditingIsActive="{Binding IngredientsEditingIsActive}"
-        IsExistingRecipe="{Binding IsExistingRecipe}"
-        ToggleEditIngredientButtonText="{Binding ToggleEditIngredientButtonText}" />
+        ValidateIngredientCommand="{Binding ValidateIngredientAmountNewPropertyCommand}" />
 
 </views:ContentPageBase>

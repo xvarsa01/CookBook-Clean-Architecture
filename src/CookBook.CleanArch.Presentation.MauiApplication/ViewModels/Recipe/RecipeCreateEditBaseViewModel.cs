@@ -3,9 +3,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Ingredients;
+using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Application.Ingredients.Queries;
+using CookBook.CleanArch.Application.Recipes.Models;
+using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Domain.Recipe.Enums;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
@@ -30,13 +34,6 @@ public abstract partial class RecipeCreateEditBaseViewModel(
 
     protected readonly RecipeDetailModelValidator RecipeValidator = new();
     protected readonly RecipeIngredientListModelValidator IngredientValidator = new();
-
-    [ObservableProperty]
-    public partial bool IngredientsEditingIsActive { get; set; }
-
-    public string ToggleEditIngredientButtonText => IngredientsEditingIsActive
-        ? RecipeEditViewTexts.EditIngredients_StopEdit_Button_Text
-        : RecipeEditViewTexts.EditIngredients_StartEdit_Button_Text;
 
     [ObservableProperty]
     public partial RecipeDetailModel Recipe { get; set; } = RecipeDetailModel.Empty;
@@ -97,10 +94,6 @@ public abstract partial class RecipeCreateEditBaseViewModel(
     }
 
     [RelayCommand]
-    private void ToggleEditingOfRecipeIngredient()
-        => IngredientsEditingIsActive = !IngredientsEditingIsActive;
-
-    [RelayCommand]
     private async Task ValidateProperty(string propertyName)
     {
         var result = await RecipeValidator.ValidateAsync(Recipe);
@@ -131,11 +124,4 @@ public abstract partial class RecipeCreateEditBaseViewModel(
     public void Receive(RecipeIngredientEditMessage message) => ForceDataRefreshOnNextAppearing();
     public void Receive(RecipeIngredientAddMessage message) => ForceDataRefreshOnNextAppearing();
     public void Receive(RecipeIngredientDeleteMessage message) => ForceDataRefreshOnNextAppearing();
-
-    partial void OnRecipeChanged(RecipeDetailModel value)
-    {
-        OnPropertyChanged(nameof(IsExistingRecipe));
-    }
-
-    public bool IsExistingRecipe => Recipe.Id != Guid.Empty;
 }

@@ -6,7 +6,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:validations="using:CookBook.CleanArch.Presentation.MauiApplication.Validations"
              xmlns:models="using:CookBook.CleanArch.Presentation.MauiApplication.Models"
-             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.RecipeCreateEditBaseView"
+             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe.RecipeCreateEditBaseView"
              x:Name="Root">
     
     <Grid RowDefinitions="*, Auto"
@@ -141,24 +141,12 @@
 
             <Grid Grid.Row="0" Grid.Column="1"
                   RowSpan="2"
-                  RowDefinitions="Auto, Auto, Auto, *"
+                  RowDefinitions="Auto, *"
                   RowSpacing="30">
-                <Button x:Name="ToggleEditIngredientButton"
-                        Grid.Row="0"
-                        Text="{Binding Source={x:Reference Root}, Path=ToggleEditIngredientButtonText}"
-                        Command="{Binding Source={x:Reference Root}, Path=ToggleEditingCommand}"
-                        IsEnabled="{Binding Source={x:Reference Root}, Path=IsExistingRecipe}"
-                        Style="{StaticResource PrimaryButtonStyle}" />
                 
-                <Label Grid.Row="1"
-                       Text="{x:Static t:RecipeEditViewTexts.ErrorUnsavedRecipe_Label_Text}"
-                       HorizontalOptions="End"
-                       IsVisible="{Binding Source={x:Reference Root}, Path=IsExistingRecipe, Converter={StaticResource InverseBooleanConverter}}" />
-
                 <HorizontalStackLayout x:Name="AddNewIngredientLayout"
-                                       Grid.Row="2"
-                                       Spacing="10"
-                                       IsVisible="{Binding Source={x:Reference Root}, Path=IngredientsEditingIsActive}">
+                                       Grid.Row="0"
+                                       Spacing="10">
                     
                     <VerticalStackLayout Spacing="10">
                         <Label Text="{x:Static t:RecipeEditViewTexts.Amount_Label_Text}" />
@@ -226,7 +214,7 @@
                             VerticalOptions="Center"/>
                 </HorizontalStackLayout>
 
-                <CollectionView Grid.Row="3"
+                <CollectionView Grid.Row="1"
                                 ItemsSource="{Binding Source={x:Reference Root}, Path=Recipe.Ingredients}"
                                 HorizontalOptions="End">
                     <CollectionView.ItemTemplate>
@@ -238,23 +226,8 @@
                                            WidthRequest="60" HeightRequest="60"
                                            Aspect="AspectFill" />
                                 </Border>
-
-                                <Label VerticalOptions="Center"
-                                       IsVisible="{Binding Source={x:Reference Root}, Path=IngredientsEditingIsActive,
-                                       Converter={StaticResource InverseBooleanConverter}}">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding Amount}" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding Unit, Converter={StaticResource UnitToStringConverter}}" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding IngredientName}" />
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
                                 
                                 <HorizontalStackLayout x:Name="IngredientsEditingLayout"
-                                                       IsVisible="{Binding Source={x:Reference Root}, Path=IngredientsEditingIsActive}"
                                                        VerticalOptions="Center"
                                                        Spacing="10">
                                     <Entry Text="{Binding Amount}"

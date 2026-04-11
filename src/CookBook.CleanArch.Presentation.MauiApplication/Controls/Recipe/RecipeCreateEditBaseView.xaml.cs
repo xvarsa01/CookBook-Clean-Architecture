@@ -4,7 +4,7 @@ using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain.Recipe.Enums;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 
-namespace CookBook.CleanArch.Presentation.MauiApplication.Controls;
+namespace CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe;
 
 public partial class RecipeCreateEditBaseView
 {
@@ -37,14 +37,6 @@ public partial class RecipeCreateEditBaseView
     {
         get => (ICommand)GetValue(ValidatePropertyCommandProperty);
         set => SetValue(ValidatePropertyCommandProperty, value);
-    }
-
-    public static readonly BindableProperty ToggleEditingCommandProperty =
-        BindableProperty.Create(nameof(ToggleEditingCommand), typeof(ICommand), typeof(RecipeCreateEditBaseView));
-    public ICommand ToggleEditingCommand
-    {
-        get => (ICommand)GetValue(ToggleEditingCommandProperty);
-        set => SetValue(ToggleEditingCommandProperty, value);
     }
 
     public static readonly BindableProperty AddIngredientCommandProperty =
@@ -117,30 +109,6 @@ public partial class RecipeCreateEditBaseView
     {
         get => (IngredientListResponse?)GetValue(SelectedNewIngredientProperty);
         set => SetValue(SelectedNewIngredientProperty, value);
-    }
-
-    public static readonly BindableProperty IngredientsEditingIsActiveProperty =
-        BindableProperty.Create(nameof(IngredientsEditingIsActive), typeof(bool), typeof(RecipeCreateEditBaseView));
-    public bool IngredientsEditingIsActive
-    {
-        get => (bool)GetValue(IngredientsEditingIsActiveProperty);
-        set => SetValue(IngredientsEditingIsActiveProperty, value);
-    }
-
-    public static readonly BindableProperty IsExistingRecipeProperty =
-        BindableProperty.Create(nameof(IsExistingRecipe), typeof(bool), typeof(RecipeCreateEditBaseView));
-    public bool IsExistingRecipe
-    {
-        get => (bool)GetValue(IsExistingRecipeProperty);
-        set => SetValue(IsExistingRecipeProperty, value);
-    }
-
-    public static readonly BindableProperty ToggleEditIngredientButtonTextProperty =
-        BindableProperty.Create(nameof(ToggleEditIngredientButtonText), typeof(string), typeof(RecipeCreateEditBaseView));
-    public string ToggleEditIngredientButtonText
-    {
-        get => (string)GetValue(ToggleEditIngredientButtonTextProperty);
-        set => SetValue(ToggleEditIngredientButtonTextProperty, value);
     }
 }
 
