@@ -9,7 +9,7 @@ using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Domain.Recipe.Errors;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
-namespace CookBook.CleanArch.Application.Ingredients.Commands;
+namespace CookBook.CleanArch.Application.Recipes.Commands;
 
 public record AddIngredientToRecipeCommand(RecipeId RecipeId, RecipeAddIngredientRequest Request) : ICommand<RecipeIngredientId>;
 

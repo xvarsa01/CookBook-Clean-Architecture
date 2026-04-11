@@ -8,7 +8,7 @@ using CookBook.CleanArch.Domain.Ingredient.Events;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using MediatR;
 
-namespace CookBook.CleanArch.Application.Recipes.Commands;
+namespace CookBook.CleanArch.Application.Ingredients.Commands;
 
 public record UpdateIngredientCommand(IngredientUpdateRequest Request) : ICommand<IngredientId>;
 

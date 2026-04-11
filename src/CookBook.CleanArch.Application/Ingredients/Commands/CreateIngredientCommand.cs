@@ -5,7 +5,7 @@ using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredient;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 
-namespace CookBook.CleanArch.Application.Recipes.Commands;
+namespace CookBook.CleanArch.Application.Ingredients.Commands;
 
 public record CreateIngredientCommand(IngredientCreateRequest Request) : ICommand<IngredientId>;
 

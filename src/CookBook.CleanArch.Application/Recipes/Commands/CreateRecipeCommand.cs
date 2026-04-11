@@ -8,7 +8,7 @@ using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 
-namespace CookBook.CleanArch.Application.Ingredients.Commands;
+namespace CookBook.CleanArch.Application.Recipes.Commands;
 
 public record CreateRecipeCommand(RecipeCreateRequest Request) : ICommand<RecipeId>;
 

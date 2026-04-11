@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Ingredients.Models;
-using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using MediatR;
 
