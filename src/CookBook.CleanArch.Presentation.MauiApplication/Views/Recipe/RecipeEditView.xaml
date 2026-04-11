@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:controls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls"
+                       xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
+                       xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
+                       xmlns:t="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
+                       xmlns:recipe="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe"
+                       x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe.RecipeEditView"
+                       Title="{x:Static t:RecipeEditViewTexts.Page_Title}"
+                       Style="{StaticResource ContentPageStyle}"
+                       x:DataType="viewModels:RecipeEditViewModel">
+    
+    <recipe:RecipeCreateEditBaseView
+        Recipe="{Binding Recipe}"
+        SaveCommand="{Binding SaveRecipeCommand}"
+        ValidatePropertyCommand="{Binding ValidatePropertyCommand}"
+        Ingredients="{Binding Ingredients}"
+        Units="{Binding Units}"
+        FoodTypes="{Binding FoodTypes}"
+        IngredientAmountNew="{Binding IngredientAmountNew}"
+        SelectedNewIngredient="{Binding SelectedNewIngredient}"
+        AddIngredientCommand="{Binding AddNewIngredientToRecipeCommand}"
+        UpdateIngredientCommand="{Binding UpdateIngredientCommand}"
+        RemoveIngredientCommand="{Binding RemoveIngredientCommand}"
+        ValidateIngredientCommand="{Binding ValidateIngredientAmountNewPropertyCommand}" />
+
+</views:ContentPageBase>

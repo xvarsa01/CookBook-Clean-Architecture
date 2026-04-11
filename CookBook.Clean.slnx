@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/App/">
+    <Project Path="src/CookBook.CleanArch.Application/CookBook.CleanArch.Application.csproj" />
+    <Project Path="src/CookBook.CleanArch.Domain/CookBook.CleanArch.Domain.csproj" />
+    <Project Path="src/CookBook.CleanArch.Infrastructure/CookBook.CleanArch.Infrastructure.csproj" />
+    <Project Path="src/CookBook.CleanArch.Presentation.MauiApplication/CookBook.CleanArch.Presentation.MauiApplication.csproj" />
+    <Project Path="src/CookBook.CleanArch.Presentation.WebApi/CookBook.CleanArch.Presentation.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="tests/CookBook.CleanArch.ArchitectureTests/CookBook.CleanArch.ArchitectureTests.csproj" />
+    <Project Path="tests/CookBook.CleanArch.Common.Tests/CookBook.CleanArch.Common.Tests.csproj" />
+    <Project Path="tests/CookBook.CleanArch.DomainTests/CookBook.CleanArch.DomainTests.csproj" />
+    <Project Path="tests/CookBook.CleanArch.IntegrationTests/CookBook.CleanArch.IntegrationTests.csproj" />
+    <Project Path="tests/CookBook.CleanArch.UnitTests/CookBook.CleanArch.UnitTests.csproj" />
+  </Folder>
+</Solution>

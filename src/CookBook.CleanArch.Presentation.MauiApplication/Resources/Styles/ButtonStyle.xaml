@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:controls="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui">
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+        <Setter Property="TextColor" Value="{StaticResource PrimaryButtonTextColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+        
+        <Style.Triggers>
+            <Trigger TargetType="Button"
+                     Property="IsEnabled"
+                     Value="False">
+                <Setter Property="BackgroundColor" Value="{StaticResource DisabledColor}" />
+                <Setter Property="TextColor" Value="{StaticResource DisabledTextColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ErrorButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource ErrorColor}" />
+    </Style>
+    
+    <Style TargetType="controls:RadioButton">
+        <Setter Property="TextColor" Value="{DynamicResource PrimaryLabelTextColor}" />
+        <Setter Property="Color" Value="{DynamicResource PrimaryLabelTextColor}" />
+        <Setter Property="CircleColor" Value="{DynamicResource PrimaryLabelTextColor}" />
+    </Style>
+</ResourceDictionary>

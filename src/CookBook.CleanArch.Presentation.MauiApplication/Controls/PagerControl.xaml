@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="using:CookBook.CleanArch.Presentation.MauiApplication.Models"
+             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.PagerControl"
+             x:Name="Root">
+    
+    <HorizontalStackLayout Spacing="5"
+                           HorizontalOptions="Center">
+        <Button Command="{Binding Source={x:Reference Root}, Path=ToFirstCommand}"
+                FontSize="18"
+                HorizontalOptions="Center"
+                Text="⏮"
+                VerticalOptions="Center" />
+
+        <Button Command="{Binding Source={x:Reference Root}, Path=ToPreviousCommand}"
+                FontSize="18"
+                HorizontalOptions="Center"
+                Text="◀"
+                VerticalOptions="Center" />
+
+        <!--  Page numbers  -->
+        <CollectionView ItemsSource="{Binding Source={x:Reference Root}, Path=PageNumbers}"
+                        SelectionMode="None"
+                        VerticalOptions="Center">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:PageItem">
+                    <Button
+                        Command="{Binding Source={x:Reference Root}, Path=GoToPageCommand}"
+                        CommandParameter="{Binding Number}"
+                        Text="{Binding Number}">
+                        <Button.Triggers>
+                            <DataTrigger Binding="{Binding IsCurrent}"
+                                         TargetType="Button"
+                                         Value="True">
+                                <Setter Property="BackgroundColor" Value="LightGray" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Command="{Binding Source={x:Reference Root}, Path=ToNextCommandCommand}"
+                FontSize="18"
+                HorizontalOptions="Center"
+                Text="▶"
+                VerticalOptions="Center" />
+
+        <Button Command="{Binding Source={x:Reference Root}, Path=ToLastCommandCommand}"
+                FontSize="18"
+                HorizontalOptions="Center"
+                Text="⏭"
+                VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+</ContentView>

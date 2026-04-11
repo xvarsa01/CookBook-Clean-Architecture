@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Ingredient.IngredientListView"
+                       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
+                       xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
+                       xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
+                       xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
+                       xmlns:controls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls"
+                       xmlns:ingredientControls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Ingredients"
+                       xmlns:models="using:CookBook.CleanArch.Application.Ingredients.Models"
+                       x:Name="IngredientListViewRoot"
+                       x:DataType="viewModels:IngredientListViewModel"
+                       Title="{xaml:Static texts:IngredientListViewTexts.Page_Title}"
+                       Style="{StaticResource ContentPageStyle}">
+    <Grid HorizontalOptions="Fill"
+          RowDefinitions="Auto, *, Auto"
+          RowSpacing="20">
+
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto, *, Auto">
+
+            <!--  Title  -->
+            <Label Grid.Column="0"
+                   FontSize="24"
+                   Text="{x:Static texts:IngredientListViewTexts.Title_Label}"
+                   VerticalOptions="Start" />
+
+            <HorizontalStackLayout Grid.Column="2" Spacing="20">
+
+                <ingredientControls:IngredientSearchControl SearchText="{Binding Filter.Name, Mode=TwoWay}" />
+
+                <ingredientControls:IngredientImageFilterControl HasImage="{Binding Filter.HasImage, Mode=TwoWay}" />
+                
+                <controls:SortDirectionControl IsSortAscending="{Binding Filter.IsSortAscending, Mode=TwoWay}" />
+                
+                <controls:PageSizeSelectorControl SelectedPageSize="{Binding PagingOptions.PageSize, Mode=TwoWay}"/>
+                
+                <controls:ApplyFilterButton ApplyCommand="{Binding ApplyFilterCommand}" />
+            </HorizontalStackLayout>
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+        <FlexLayout Wrap="Wrap"
+                    Direction="Row"
+                    JustifyContent="Start"
+                    BindableLayout.ItemsSource="{Binding Ingredients}">
+
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="models:IngredientListResponse">
+                    <Border HeightRequest="200"
+                            WidthRequest="200"
+                            Margin="5"
+                            Style="{StaticResource ImageBorderStyle}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={x:Reference IngredientListViewRoot}, Path=BindingContext.GoToDetailCommand}"
+                                CommandParameter="{Binding Id}" />
+                        </Border.GestureRecognizers>
+
+                        <Grid RowDefinitions="*, *">
+                            <Image Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Aspect="AspectFill"
+                                   HeightRequest="200"
+                                   Source="{Binding ImageUrl.Value, TargetNullValue='ingredient_placeholder.jpg'}"
+                                   WidthRequest="200" />
+
+                            <BoxView Grid.Row="0"
+                                     Grid.RowSpan="2"
+                                     Opacity="0.25"
+                                     Color="Black" />
+
+                            <Label Grid.Row="1"
+                                   Margin="22,12"
+                                   FontSize="20"
+                                   LineBreakMode="WordWrap"
+                                   Text="{Binding Name}"
+                                   TextColor="White"
+                                   VerticalOptions="End" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </FlexLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="2">
+            <Button Margin="10,0"
+                    Padding="12,6"
+                    Command="{Binding GoToCreateCommand}"
+                    CornerRadius="5"
+                    FontFamily="MontserratMedium"
+                    FontSize="14"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Text="{x:Static texts:IngredientListViewTexts.Add_Button_Text}"
+                    WidthRequest="200" />
+
+            <controls:PagerControl ToFirstCommand="{Binding ToFirstPageCommand}"
+                                   ToNextCommandCommand="{Binding ToNextPageCommand}"
+                                   ToPreviousCommand="{Binding ToPreviousPageCommand}"
+                                   ToLastCommandCommand="{Binding ToLastPageCommand}"
+                                   PageNumbers="{Binding PageNumbers}"
+                                   GoToPageCommand="{Binding GoToPageCommand}" />        
+        </Grid>
+    </Grid>
+</views:ContentPageBase>

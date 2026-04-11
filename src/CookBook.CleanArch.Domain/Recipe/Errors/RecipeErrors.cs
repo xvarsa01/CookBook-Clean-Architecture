@@ -1,0 +1,23 @@
+﻿using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+
+namespace CookBook.CleanArch.Domain.Recipe.Errors;
+
+public static class RecipeErrors
+{
+    public static Error RecipeNotFoundError(RecipeId recipeId) => new($"Recipe {recipeId} not found");
+    
+    public static Error RecipeHasNoIngredientsError(RecipeId recipeId) => new($"Recipe entity {recipeId} has no ingredients.");
+
+    public static Error RecipeIngredientByEntryIdNotFoundError(RecipeIngredientId recipeIngredientEntryId, RecipeId recipeId) =>
+        new($"Ingredient entry for {recipeIngredientEntryId.Value} not found in recipe {recipeId.Value}.");
+
+    public static Error RecipeIngredientByIdNotFoundError(IngredientId ingredientId, RecipeId recipeId) =>
+        new($"Ingredient {ingredientId} not found in recipe {recipeId}.");
+    
+    public static Error RecipeMaximumNumberOfIngredientsError(RecipeId recipeId) =>
+        new($"Recipe {recipeId} can not have more than 10 ingredients.");
+    
+    public static Error RecipeUpdateFailedError(RecipeId recipeId) => new($"Recipe {recipeId} update failed");
+}
+

@@ -1,0 +1,107 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework Condition="$([MSBuild]::IsOSPlatform('OSX'))">net10.0-maccatalyst</TargetFramework>
+        <TargetFramework Condition=" '$(OS)' == 'Windows_NT' ">net10.0-windows10.0.19041.0</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+
+        <!-- Enable XAML source generation for faster build times and improved performance.
+             This generates C# code from XAML at compile time instead of runtime inflation.
+             To disable, remove this line.
+             For individual files, you can override by setting Inflator metadata:
+               <MauiXaml Update="MyPage.xaml" Inflator="Default" /> (reverts to defaults: Runtime for Debug, XamlC for Release)
+               <MauiXaml Update="MyPage.xaml" Inflator="Runtime" /> (force runtime inflation) -->
+        <MauiXamlInflator>SourceGen</MauiXamlInflator>
+
+        <!-- Display name -->
+        <ApplicationTitle>CookBook.Clean.App</ApplicationTitle>
+
+        <!-- App Identifier -->
+        <ApplicationId>cz.vut.fit.cookbook</ApplicationId>
+
+        <!-- Versions -->
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>1</ApplicationVersion>
+
+        <!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
+        <WindowsPackageType>None</WindowsPackageType>
+
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">17.0</SupportedOSPlatformVersion>
+
+        <RootNamespace>CookBook.CleanArch.Presentation.MauiApplication</RootNamespace>
+        <AssemblyName>CookBook.CleanArch.Presentation.MauiApplication</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Maui" />
+        <PackageReference Include="CommunityToolkit.Mvvm" />
+        <PackageReference Include="FluentValidation" />
+        <PackageReference Include="InputKit.Maui" />
+        <PackageReference Include="MediatR" />
+        <PackageReference Include="Microsoft.Maui.Controls" />
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- App Icon -->
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+        <!-- Images -->
+        <MauiImage Include="Resources\Images\*" />
+
+        <!-- Custom Fonts -->
+        <MauiFont Include="Resources\Fonts\*" />
+
+        <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <MauiXaml Update="Resources\Styles\ContentPageStyle.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Resources\Styles\LabelStyle.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Resources\Styles\ButtonStyle.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Shells\AppShell.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Resources\Styles\BorderStyle.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Resources\Styles\Colors.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CookBook.CleanArch.Infrastructure\CookBook.CleanArch.Infrastructure.csproj" />
+      <ProjectReference Include="..\CookBook.CleanArch.Application\CookBook.CleanArch.Application.csproj" />
+    </ItemGroup>
+
+    <!-- Make all designer files auto-generated and dependent on their resx files -->
+    <ItemGroup>
+        <Compile Update="Resources\Texts\*.Designer.cs">
+            <DesignTime>true</DesignTime>
+            <AutoGen>true</AutoGen>
+            <DependentUpon>%(Filename).resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    
+    <!-- Make resources use ResXFileCodeGenerator -->
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Texts\*.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>%(Filename).Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+</Project>
