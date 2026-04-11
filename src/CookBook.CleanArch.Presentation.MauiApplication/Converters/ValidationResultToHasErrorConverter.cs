@@ -15,8 +15,7 @@ public class ValidationResultToHasErrorConverter : IValueConverter
     /// <returns>True if there is at least one error for the specified property, else false</returns>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        // If the value is not a ValidationResult or the parameter is null
-        if (value is not ValidationResult validationResult || parameter == null)
+        if (value is not ValidationResult validationResult)
         {
             return null;
         }
@@ -26,9 +25,14 @@ public class ValidationResultToHasErrorConverter : IValueConverter
             return false;
         }
 
+        // If no specific property is provided → check all errors
+        if (parameter is null)
+        {
+            return validationResult.Errors.Any();
+        }
+
         var property = parameter as string;
 
-        // Check if there is at least one error for the specified property
         return validationResult.Errors.Any(x => x.PropertyName == property);
     }
 

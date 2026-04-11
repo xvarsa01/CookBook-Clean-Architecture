@@ -22,6 +22,7 @@
             <converters:NullableBoolToStringConverter x:Key="NullableBoolToStringConverter" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <converters:ValidationResultToErrorMessagesConverter x:Key="ValidationResultToErrorMessagesConverter" />
+            <converters:ValidationResultToHasNoErrorConverter x:Key="ValidationResultToHasNoErrorConverter" />
             <converters:ValidationResultToHasErrorConverter x:Key="ValidationResultToHasErrorConverter" />
         </ResourceDictionary>
     </Application.Resources>

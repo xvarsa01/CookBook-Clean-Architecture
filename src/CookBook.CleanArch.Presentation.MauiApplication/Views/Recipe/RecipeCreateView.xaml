@@ -21,6 +21,7 @@
         FoodTypes="{Binding FoodTypes}"
         IngredientAmountNew="{Binding IngredientAmountNew}"
         SelectedNewIngredient="{Binding SelectedNewIngredient}"
+        AddIngredientCommand="{Binding AddNewIngredientToRecipeCommand}"
         ValidateIngredientCommand="{Binding ValidateIngredientAmountNewPropertyCommand}" />
     
 </views:ContentPageBase>
