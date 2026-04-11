@@ -1,9 +1,14 @@
 ﻿using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Application.Recipes.Commands;
+using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Domain.Ingredient;
 using CookBook.CleanArch.Domain.Ingredient.Errors;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Recipe;
+using CookBook.CleanArch.Domain.Recipe.Enums;
+using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using MediatR;
 using Moq;
@@ -60,5 +65,61 @@ public class IngredientUnitTests
         Assert.Equal(
             IngredientErrors.IngredientNotFoundError(new IngredientId(id)),
             result.Error);
+    }
+
+    [Fact]
+    public async Task CreateRecipeHandler_With_Initial_Ingredients_Should_Create_Recipe()
+    {
+        var recipeRepositoryMock = new Mock<IRepository<Recipe, RecipeId>>();
+        var ingredientRepositoryMock = new Mock<IRepository<Ingredient, IngredientId>>();
+
+        var expectedRecipeId = new RecipeId(Guid.NewGuid());
+        recipeRepositoryMock.Setup(r => r.Add(It.IsAny<Recipe>())).Returns(expectedRecipeId);
+
+        var existingIngredient = Ingredient.Create("Lemon", null, null).Value;
+        ingredientRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<IngredientId>())).ReturnsAsync(existingIngredient);
+
+        var handler = new CreateRecipeCommandHandler(recipeRepositoryMock.Object, ingredientRepositoryMock.Object);
+        var request = new RecipeCreateRequest(
+            RecipeName.CreateObject("Mojito").Value,
+            "fresh drink",
+            null,
+            RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value,
+            RecipeType.Drink,
+            [
+                new RecipeCreateIngredientRequest(new IngredientId(Guid.NewGuid()), IngredientAmount.CreateObject(2).Value, MeasurementUnit.Unit),
+                new RecipeCreateIngredientRequest(new IngredientId(Guid.NewGuid()), IngredientAmount.CreateObject(300).Value, MeasurementUnit.Ml)
+            ]);
+
+        var result = await handler.Handle(new CreateRecipeCommand(request), CancellationToken.None);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(expectedRecipeId, result.Value);
+        recipeRepositoryMock.Verify(r => r.Add(It.Is<Recipe>(x => x.Ingredients.Count == 2)), Times.Once);
+    }
+
+    [Fact]
+    public async Task CreateRecipeHandler_Should_Return_NotFound_When_Ingredient_Does_Not_Exist()
+    {
+        var recipeRepositoryMock = new Mock<IRepository<Recipe, RecipeId>>();
+        var ingredientRepositoryMock = new Mock<IRepository<Ingredient, IngredientId>>();
+
+        ingredientRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<IngredientId>())).ReturnsAsync((Ingredient?)null);
+
+        var handler = new CreateRecipeCommandHandler(recipeRepositoryMock.Object, ingredientRepositoryMock.Object);
+        var missingIngredientId = new IngredientId(Guid.NewGuid());
+        var request = new RecipeCreateRequest(
+            RecipeName.CreateObject("Mojito").Value,
+            "fresh drink",
+            null,
+            RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value,
+            RecipeType.Drink,
+            [new RecipeCreateIngredientRequest(missingIngredientId, IngredientAmount.CreateObject(2).Value, MeasurementUnit.Unit)]);
+
+        var result = await handler.Handle(new CreateRecipeCommand(request), CancellationToken.None);
+
+        Assert.True(result.IsFailure);
+        Assert.Equal(IngredientErrors.IngredientNotFoundError(missingIngredientId), result.Error);
+        recipeRepositoryMock.Verify(r => r.Add(It.IsAny<Recipe>()), Times.Never);
     }
 }

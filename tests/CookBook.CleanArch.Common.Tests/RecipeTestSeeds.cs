@@ -13,7 +13,8 @@ public static class RecipeTestSeeds
             description: "no ingredients",
             imageUrl: ImageUrl.CreateObject("http://a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
+            type: RecipeType.Other,
+            ingredients: null).Value;
     }
 
     public static Recipe MinimalisticRecipe()
@@ -22,61 +23,71 @@ public static class RecipeTestSeeds
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
+            type: RecipeType.Other,
+            ingredients: null).Value;
     }
 
     public static Recipe RecipeWithSingleIngredient()
     {
-        var recipe = Recipe.Create(name: RecipeName.CreateObject("recipe with 1 ingredient").Value,
+        return Recipe.Create(name: RecipeName.CreateObject("recipe with 1 ingredient").Value,
             description: "this will be added",
             imageUrl: ImageUrl.CreateObject("http://a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
-        
-        recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
-        return recipe;
+            type: RecipeType.Other,
+            ingredients:
+            [
+                new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
+                    MeasurementUnit.Ml)
+            ]).Value;
     }
 
     public static Recipe RecipeWithMultipleIngredients()
     {
-        var recipe = Recipe.Create(name: RecipeName.CreateObject("recipe with multiple ingredient").Value,
+        return Recipe.Create(name: RecipeName.CreateObject("recipe with multiple ingredient").Value,
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
-        
-        recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
-        recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value, MeasurementUnit.Unit);
-        return recipe;
+            type: RecipeType.Other,
+            ingredients:
+            [
+                new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
+                    MeasurementUnit.Ml),
+                new RecipeCreateIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value,
+                    MeasurementUnit.Unit)
+            ]).Value;
     }
     
     public static Recipe RecipeWithDuplicateIngredientEntries()
     {
-        var recipe = Recipe.Create(name: RecipeName.CreateObject("recipe with lemon used twice").Value,
+        return Recipe.Create(name: RecipeName.CreateObject("recipe with lemon used twice").Value,
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
-        
-        recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(500).Value, MeasurementUnit.Ml);
-        recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
-        recipe.AddIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value, MeasurementUnit.Unit);
-        return recipe;
+            type: RecipeType.Other,
+            ingredients:
+            [
+                new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(500).Value,
+                    MeasurementUnit.Ml),
+                new RecipeCreateIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(100).Value,
+                    MeasurementUnit.Ml),
+                new RecipeCreateIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value,
+                    MeasurementUnit.Unit)
+            ]).Value;
     }
     
     public static Recipe RecipeFullWith10Ingredients()
     {
-        var recipe = Recipe.Create(name: RecipeName.CreateObject("recipe with 10 ingredient").Value,
+        return Recipe.Create(name: RecipeName.CreateObject("recipe with 10 ingredient").Value,
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
-        
-        for (int i = 0; i < 10; i++)
-        {
-            recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
-        }
-        return recipe;
+            type: RecipeType.Other,
+            ingredients: Enumerable.Range(0, 10)
+                .Select(_ => new RecipeCreateIngredient(
+                    IngredientTestSeeds.Water.Id,
+                    IngredientAmount.CreateObject(100).Value,
+                    MeasurementUnit.Ml))
+                .ToList()).Value;
     }
 
     public static Recipe RecipeForTestOfDeleteWithoutIngredient()
@@ -85,57 +96,62 @@ public static class RecipeTestSeeds
             description: "i will be deleted simply, because i dont contain any ingredients",
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
+            type: RecipeType.Other,
+            ingredients: null).Value;
     }
 
     public static Recipe RecipeForTestOfDeleteWithIngredient()
     {
-        var recipe = Recipe.Create(name: RecipeName.CreateObject("delete me").Value,
+        return Recipe.Create(name: RecipeName.CreateObject("delete me").Value,
             description: "i will be deleted, but my ingredients should remain in DB",
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
-        
-        recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
-        return recipe;
+            type: RecipeType.Other,
+            ingredients:
+            [
+                new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
+                    MeasurementUnit.Ml)
+            ]).Value;
     }
     
     public static Recipe RecipeForTestOfUpdate(){
-        var recipe = Recipe.Create(name: RecipeName.CreateObject("update me").Value,
+        return Recipe.Create(name: RecipeName.CreateObject("update me").Value,
             description: "this will be updated",
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
-
-        recipe.AddIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml);
-        return recipe;
+            type: RecipeType.Other,
+            ingredients:
+            [
+                new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
+                    MeasurementUnit.Ml)
+            ]).Value;
     }
     
     public static Recipe RecipeForTestOfSearch1(){
-        var recipe = Recipe.Create(name: RecipeName.CreateObject("abcd").Value,
+        return Recipe.Create(name: RecipeName.CreateObject("abcd").Value,
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
-        return recipe;
+            type: RecipeType.Other,
+            ingredients: null).Value;
     }
     
     public static Recipe RecipeForTestOfSearch2(){
-        var recipe = Recipe.Create(name: RecipeName.CreateObject("ABCD").Value,
+        return Recipe.Create(name: RecipeName.CreateObject("ABCD").Value,
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
-        return recipe;
+            type: RecipeType.Other,
+            ingredients: null).Value;
     }
     
     public static Recipe RecipeForTestOfSearch3(){
-        var recipe = Recipe.Create(name: RecipeName.CreateObject("BCD EFGH").Value,
+        return Recipe.Create(name: RecipeName.CreateObject("BCD EFGH").Value,
             description: null,
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other).Value;
-        return recipe;
+            type: RecipeType.Other,
+            ingredients: null).Value;
     }
     
     public static List<Recipe> SeededRecipes() =>

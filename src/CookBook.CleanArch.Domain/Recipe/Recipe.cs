@@ -34,10 +34,27 @@ public record Recipe : AggregateRootBase<RecipeId>
         Type = type;
     }
     
-    public static Result<Recipe> Create(RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type)
+    public static Result<Recipe> Create(
+        RecipeName name,
+        string? description,
+        ImageUrl? imageUrl,
+        RecipeDuration duration,
+        RecipeType type,
+        IReadOnlyCollection<RecipeCreateIngredient>? ingredients)
     {
         var id = new RecipeId(Guid.NewGuid());
-        return Result.Ok(new Recipe(id, name, description, imageUrl, duration, type));
+        var recipe = new Recipe(id, name, description, imageUrl, duration, type);
+
+        foreach (var ingredient in ingredients ?? [])
+        {
+            var addResult = recipe.AddIngredient(ingredient.IngredientId, ingredient.Amount, ingredient.Unit);
+            if (addResult.IsFailure)
+            {
+                return Result.Invalid<Recipe>(addResult.Error);
+            }
+        }
+
+        return Result.Ok(recipe);
     }
     
     public Result<RecipeIngredientId> AddIngredient(IngredientId ingredientId, IngredientAmount amount, MeasurementUnit unit)
