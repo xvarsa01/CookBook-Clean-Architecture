@@ -1,6 +1,7 @@
 ﻿using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Infrastructure.Email;
 using CookBook.CleanArch.Infrastructure.Factories;
 using CookBook.CleanArch.Infrastructure.Interceptors;
 using CookBook.CleanArch.Infrastructure.Outbox;
@@ -38,6 +39,7 @@ public static class Installer
         services.AddHostedService<OutboxBackgroundService>();
         services.AddSingleton<CreatedDateUpdatedDateInterceptor>();
         services.AddSingleton<DomainEventsInterceptor>();
+        services.RegisterMailing();   
         
         return services;
     }
@@ -62,5 +64,15 @@ public static class Installer
         {
             dbContextOptionsBuilder.AddInterceptors(interceptor);
         }
+    }
+
+    private static void RegisterMailing(this IServiceCollection serviceCollection)
+    {
+        // Use a local test email server - configured in Aspire
+        // See: https://ardalis.com/configuring-a-local-test-email-server/
+        // serviceCollection.AddScoped<IEmailSender, MimeKitEmailSender>();
+
+        // Otherwise use this:
+        serviceCollection.AddScoped<IEmailSender, FakeEmailSender>();
     }
 }
