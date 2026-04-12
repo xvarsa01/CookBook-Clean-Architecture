@@ -43,36 +43,6 @@ namespace CookBook.CleanArch.Infrastructure.Migrations
                     b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipe.IngredientInRecipe", b =>
-                {
-                    b.Property<Guid>("RecipeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("IngredientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Unit")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("RecipeId", "Id");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("IngredientInRecipe");
-                });
-
             modelBuilder.Entity("CookBook.CleanArch.Domain.Recipe.Recipe", b =>
                 {
                     b.Property<Guid>("Id")
@@ -105,9 +75,64 @@ namespace CookBook.CleanArch.Infrastructure.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipe.IngredientInRecipe", b =>
+            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipe.RecipeIngredient", b =>
                 {
-                    b.HasOne("CookBook.CleanArch.Domain.Ingredient.Ingredient", null)
+                    b.Property<Guid>("RecipeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("RecipeId", "Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("IngredientInRecipe");
+                });
+
+            modelBuilder.Entity("CookBook.CleanArch.Infrastructure.Outbox.OutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DispatchedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxMessages");
+                });
+
+            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipe.RecipeIngredient", b =>
+                {
+                    b.HasOne("CookBook.CleanArch.Domain.Ingredient.Ingredient", "Ingredient")
                         .WithMany()
                         .HasForeignKey("IngredientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -118,6 +143,8 @@ namespace CookBook.CleanArch.Infrastructure.Migrations
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Ingredient");
                 });
 
             modelBuilder.Entity("CookBook.CleanArch.Domain.Recipe.Recipe", b =>

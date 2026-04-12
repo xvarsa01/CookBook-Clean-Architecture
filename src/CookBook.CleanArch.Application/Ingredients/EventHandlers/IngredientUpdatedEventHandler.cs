@@ -5,14 +5,11 @@ using Microsoft.Extensions.Logging;
 namespace CookBook.CleanArch.Application.Ingredients.EventHandlers;
 
 public sealed class IngredientUpdatedEventHandler(ILogger<IngredientUpdatedEventHandler> logger)
-    : INotificationHandler<IngredientUpdatedEvent>
+    : INotificationHandler<IngredientNameUpdatedEvent>
 {
-    public Task Handle(IngredientUpdatedEvent notification, CancellationToken cancellationToken)
+    public Task Handle(IngredientNameUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        logger.LogInformation(
-            "Ingredient updated. Id={IngredientId}, Name={IngredientName}",
-            notification.Ingredient.Id,
-            notification.Ingredient.Name);
+        logger.LogInformation($"Ingredient updated. Id={notification.IngredientId}, OldName={notification.OldName}, NewName={notification.NewName}");
 
         return Task.CompletedTask;
     }

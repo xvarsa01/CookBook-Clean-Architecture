@@ -3,6 +3,7 @@ using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Infrastructure.Factories;
 using CookBook.CleanArch.Infrastructure.Interceptors;
+using CookBook.CleanArch.Infrastructure.Outbox;
 using CookBook.CleanArch.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,11 +29,15 @@ public static class Installer
         {
             contextOptions.UseSqlite($"Data Source={options.DatabaseFilePath}");
             contextOptions.AddCreatedDateUpdatedDateInterceptor(sp);
+            contextOptions.AddDomainsEventInterceptor(sp);
         });
         
         services.AddScoped<ICookBookDbContext>(sp => sp.GetRequiredService<CookBookDbContext>());
         services.AddScoped<DbContext>(provider => provider.GetRequiredService<CookBookDbContext>());
+        services.AddScoped<OutboxProcessor>();
+        services.AddHostedService<OutboxBackgroundService>();
         services.AddSingleton<CreatedDateUpdatedDateInterceptor>();
+        services.AddSingleton<DomainEventsInterceptor>();
         
         return services;
     }
@@ -41,6 +46,17 @@ public static class Installer
         IServiceProvider serviceProvider)
     {
         var interceptor = serviceProvider.GetService<CreatedDateUpdatedDateInterceptor>();
+
+        if (interceptor != null)
+        {
+            dbContextOptionsBuilder.AddInterceptors(interceptor);
+        }
+    }
+    
+    private static void AddDomainsEventInterceptor(this DbContextOptionsBuilder dbContextOptionsBuilder,
+        IServiceProvider serviceProvider)
+    {
+        var interceptor = serviceProvider.GetService<DomainEventsInterceptor>();
 
         if (interceptor != null)
         {
