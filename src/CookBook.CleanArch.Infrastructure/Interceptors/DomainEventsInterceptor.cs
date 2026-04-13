@@ -37,7 +37,7 @@ public sealed class DomainEventsInterceptor() : SaveChangesInterceptor
               {
                   Id = Guid.NewGuid(),
                   Type = domainEvent.GetType().AssemblyQualifiedName!,
-                  Content = JsonSerializer.Serialize(domainEvent),
+                  Content = JsonSerializer.Serialize(domainEvent, domainEvent.GetType()),
                   CreatedAt = DateTime.UtcNow
               })
               .ToList();
