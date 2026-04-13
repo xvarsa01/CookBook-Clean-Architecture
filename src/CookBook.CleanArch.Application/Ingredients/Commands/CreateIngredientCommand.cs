@@ -11,17 +11,14 @@ public record CreateIngredientCommand(IngredientCreateRequest Request) : IComman
 
 internal sealed class CreateIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository) : ICommandHandler<CreateIngredientCommand, IngredientId>
 {
-    public async Task<Result<IngredientId>> Handle(CreateIngredientCommand request, CancellationToken cancellationToken) 
+    public Task<Result<IngredientId>> Handle(CreateIngredientCommand request, CancellationToken cancellationToken) 
     {
         var result = Ingredient.Create(
             request.Request.Name,
             request.Request.Description,
-            request.Request.ImageUrl);
-        
-        if (result.IsFailure)
-            return Result.Invalid<IngredientId>(result.Error);
-        
-        var createdIngredientId = repository.Add(result.Value);
-        return Result.Ok(createdIngredientId);
+            request.Request.ImageUrl)
+            .Map(repository.Add);
+
+        return Task.FromResult(result);
     }
 }

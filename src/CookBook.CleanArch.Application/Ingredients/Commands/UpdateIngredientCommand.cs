@@ -15,33 +15,18 @@ internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, Ing
 {
     public async Task<Result<IngredientId>> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)
     {
-        var existingIngredient = await repository.GetByIdAsync(request.Request.Id);
-        if (existingIngredient == null)
-        {
-            return Result.NotFound<IngredientId>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Request.Id)));
-        }
+        var result = await repository.GetByIdAsync(request.Request.Id)
+            .EnsureNotNullNotFound(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Request.Id)))
+            .Tap(ingredient => request.Request.Name is null
+                ? Result.Ok()
+                : ingredient.UpdateName(request.Request.Name))
+            .Tap(ingredient => request.Request.Description is null
+                ? Result.Ok()
+                : ingredient.UpdateDescription(request.Request.Description))
+            .Tap(ingredient => request.Request.ImageUrl is null
+                ? Result.Ok()
+                : ingredient.UpdateImageUrl(request.Request.ImageUrl));
 
-        if (request.Request.Name is not null)
-        {
-            var result = existingIngredient.UpdateName(request.Request.Name);
-            if (result.IsFailure)
-                return Result.Invalid<IngredientId>(result.Error);
-        }
-
-        if (request.Request.Description is not null)
-        {
-            var result = existingIngredient.UpdateDescription(request.Request.Description);
-            if (result.IsFailure)
-                return Result.Invalid<IngredientId>(result.Error);
-        }
-
-        if (request.Request.ImageUrl is not null)
-        {
-            var result = existingIngredient.UpdateImageUrl(request.Request.ImageUrl);
-            if (result.IsFailure)
-                return Result.Invalid<IngredientId>(result.Error);
-        }
-        
-        return Result.Ok(existingIngredient.Id);
+        return result.Map(ingredient => ingredient.Id);
     }
 }
