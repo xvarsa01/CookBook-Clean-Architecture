@@ -3,12 +3,12 @@ using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Application.Recipes.Models;
-using CookBook.CleanArch.Domain.Ingredient;
-using CookBook.CleanArch.Domain.Ingredient.Errors;
-using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
-using CookBook.CleanArch.Domain.Recipe;
-using CookBook.CleanArch.Domain.Recipe.Enums;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Ingredients.Errors;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes;
+using CookBook.CleanArch.Domain.Recipes.Enums;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using Moq;
 

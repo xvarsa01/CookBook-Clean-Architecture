@@ -1,6 +1,6 @@
 ﻿using CookBook.CleanArch.Common.Tests;
-using CookBook.CleanArch.Domain.Recipe.Enums;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes.Enums;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.DomainTests.RecipeRoot;
 

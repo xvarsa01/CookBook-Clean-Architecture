@@ -1,12 +1,12 @@
 ﻿using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Recipes.Models;
-using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Recipes.Commands;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using MediatR;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;

@@ -1,5 +1,5 @@
 ﻿using CookBook.CleanArch.Application.Abstraction;
-using CookBook.CleanArch.Domain.Recipe.Enums;
+using CookBook.CleanArch.Domain.Recipes.Enums;
 
 namespace CookBook.CleanArch.Application.Recipes;
 

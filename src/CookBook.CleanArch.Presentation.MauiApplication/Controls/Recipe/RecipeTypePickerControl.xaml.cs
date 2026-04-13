@@ -1,4 +1,4 @@
-using CookBook.CleanArch.Domain.Recipe.Enums;
+using CookBook.CleanArch.Domain.Recipes.Enums;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe;
 

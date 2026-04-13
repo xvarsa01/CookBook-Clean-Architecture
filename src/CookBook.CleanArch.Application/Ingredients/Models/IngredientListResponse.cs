@@ -1,4 +1,4 @@
-﻿using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+﻿using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Ingredients.Models;

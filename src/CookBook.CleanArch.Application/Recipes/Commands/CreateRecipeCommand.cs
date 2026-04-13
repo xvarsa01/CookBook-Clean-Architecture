@@ -2,11 +2,11 @@
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.Ingredient;
-using CookBook.CleanArch.Domain.Ingredient.Errors;
-using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
-using CookBook.CleanArch.Domain.Recipe;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Ingredients.Errors;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Recipes.Commands;
 

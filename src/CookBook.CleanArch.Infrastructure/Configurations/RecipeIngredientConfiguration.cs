@@ -1,5 +1,5 @@
-using CookBook.CleanArch.Domain.Recipe;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

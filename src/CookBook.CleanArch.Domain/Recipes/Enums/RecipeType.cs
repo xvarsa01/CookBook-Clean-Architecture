@@ -1,4 +1,4 @@
-﻿namespace CookBook.CleanArch.Domain.Recipe.Enums;
+﻿namespace CookBook.CleanArch.Domain.Recipes.Enums;
 
 public enum RecipeType
 {

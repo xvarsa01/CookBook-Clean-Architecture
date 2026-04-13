@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Recipes;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Recipes.Queries;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;

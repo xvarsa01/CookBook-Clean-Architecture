@@ -2,7 +2,7 @@
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Recipes.Queries;

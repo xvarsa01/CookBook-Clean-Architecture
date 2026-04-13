@@ -1,11 +1,11 @@
-﻿using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
-using CookBook.CleanArch.Domain.Recipe.Enums;
-using CookBook.CleanArch.Domain.Recipe.Errors;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+﻿using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes.Enums;
+using CookBook.CleanArch.Domain.Recipes.Errors;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.Domain.Recipe;
+namespace CookBook.CleanArch.Domain.Recipes;
 
 // business rules:
 // - recipe must have a name

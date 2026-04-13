@@ -2,8 +2,8 @@ using CookBook.CleanArch.Application.Abstraction;
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.Recipe.Errors;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes.Errors;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Recipes.Queries;

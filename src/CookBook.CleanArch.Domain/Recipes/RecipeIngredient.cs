@@ -1,9 +1,10 @@
-using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
-using CookBook.CleanArch.Domain.Recipe.Enums;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes.Enums;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared;
 
-namespace CookBook.CleanArch.Domain.Recipe;
+namespace CookBook.CleanArch.Domain.Recipes;
 
 public record RecipeIngredient : EntityBase<RecipeIngredientId>
 {
@@ -13,9 +14,9 @@ public record RecipeIngredient : EntityBase<RecipeIngredientId>
     public IngredientAmount Amount { get; private set; }
     public MeasurementUnit Unit { get; private set; }
 
-    public Ingredient.Ingredient Ingredient
+    public Ingredient Ingredient
     {
-        get; // => throw new InvalidOperationException();
+        get ;
         private set => throw new InvalidOperationException();
     }
 

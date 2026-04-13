@@ -2,10 +2,10 @@
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Recipes.Queries;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.Ingredient;
-using CookBook.CleanArch.Domain.Ingredient.Errors;
-using CookBook.CleanArch.Domain.Ingredient.Events;
-using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Ingredients.Errors;
+using CookBook.CleanArch.Domain.Ingredients.Events;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using MediatR;
 
 namespace CookBook.CleanArch.Application.Ingredients.Commands;
@@ -36,7 +36,7 @@ internal sealed class DeleteIngredientCommandHandler(IRepository<Ingredient, Ing
         
         await repository.DeleteAsync(request.Id);
 
-        var ingredientDeletedEvent = new IngredientDeletedEvent(request.Id);
+        var ingredientDeletedEvent = new IngredientDeletedEvent(request.Id.Value);
         await publisher.Publish(ingredientDeletedEvent, cancellationToken);
 
         return Result.Ok();

@@ -1,5 +1,5 @@
 using CookBook.CleanArch.Application.ExternalInterfaces;
-using CookBook.CleanArch.Domain.Ingredient.Events;
+using CookBook.CleanArch.Domain.Ingredients.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

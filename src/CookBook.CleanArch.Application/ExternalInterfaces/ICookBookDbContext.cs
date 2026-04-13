@@ -1,5 +1,5 @@
-﻿using CookBook.CleanArch.Domain.Ingredient;
-using CookBook.CleanArch.Domain.Recipe;
+﻿using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Recipes;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.ExternalInterfaces;

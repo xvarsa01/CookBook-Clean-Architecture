@@ -2,8 +2,8 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:recipeEnums="clr-namespace:CookBook.CleanArch.Domain.Recipe.Enums;assembly=CookBook.CleanArch.Domain"
              xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
+             xmlns:enums="using:CookBook.CleanArch.Domain.Recipes.Enums"
              x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe.RecipeTypePickerControl"
              x:Name="Root">
 
@@ -16,12 +16,12 @@
             <Picker.ItemsSource>
                 <x:Array Type="{x:Type x:Object}">
                     <x:Null />
-                    <recipeEnums:RecipeType>MainDish</recipeEnums:RecipeType>
-                    <recipeEnums:RecipeType>Soup</recipeEnums:RecipeType>
-                    <recipeEnums:RecipeType>Dessert</recipeEnums:RecipeType>
-                    <recipeEnums:RecipeType>Drink</recipeEnums:RecipeType>
-                    <recipeEnums:RecipeType>Caffe</recipeEnums:RecipeType>
-                    <recipeEnums:RecipeType>Other</recipeEnums:RecipeType>
+                    <enums:RecipeType>MainDish</enums:RecipeType>
+                    <enums:RecipeType>Soup</enums:RecipeType>
+                    <enums:RecipeType>Dessert</enums:RecipeType>
+                    <enums:RecipeType>Drink</enums:RecipeType>
+                    <enums:RecipeType>Caffe</enums:RecipeType>
+                    <enums:RecipeType>Other</enums:RecipeType>
                 </x:Array>
             </Picker.ItemsSource>
         </Picker>

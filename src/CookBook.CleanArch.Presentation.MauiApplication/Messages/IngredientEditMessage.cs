@@ -1,4 +1,4 @@
-﻿using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+﻿using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Messages;
 

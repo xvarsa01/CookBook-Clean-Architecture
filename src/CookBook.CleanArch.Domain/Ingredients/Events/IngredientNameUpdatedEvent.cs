@@ -1,7 +1,7 @@
-﻿using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+﻿using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Shared;
 
-namespace CookBook.CleanArch.Domain.Ingredient.Events;
+namespace CookBook.CleanArch.Domain.Ingredients.Events;
 
 public class IngredientNameUpdatedEvent : IDomainEvent
 {

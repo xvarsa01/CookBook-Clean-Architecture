@@ -1,10 +1,10 @@
-﻿using CookBook.CleanArch.Domain.Ingredient.Errors;
-using CookBook.CleanArch.Domain.Ingredient.Events;
-using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+﻿using CookBook.CleanArch.Domain.Ingredients.Errors;
+using CookBook.CleanArch.Domain.Ingredients.Events;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Shared;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.Domain.Ingredient;
+namespace CookBook.CleanArch.Domain.Ingredients;
 
 // business rules:
 // - name can not be empty string

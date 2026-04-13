@@ -5,8 +5,8 @@ using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Recipes.Queries;
 using CookBook.CleanArch.Application.Shared;
-using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

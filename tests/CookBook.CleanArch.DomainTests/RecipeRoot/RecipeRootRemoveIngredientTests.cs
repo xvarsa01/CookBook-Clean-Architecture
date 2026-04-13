@@ -1,5 +1,5 @@
 ﻿using CookBook.CleanArch.Common.Tests;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.DomainTests.RecipeRoot;
 

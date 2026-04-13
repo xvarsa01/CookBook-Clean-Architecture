@@ -3,7 +3,7 @@ using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Application.Shared;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.Ingredient;
+using CookBook.CleanArch.Domain.Ingredients;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Ingredients.Queries;

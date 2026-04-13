@@ -5,7 +5,7 @@ using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Recipes.Queries;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;

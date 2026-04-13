@@ -1,6 +1,6 @@
 ﻿using CookBook.CleanArch.Application.ExternalInterfaces;
-using CookBook.CleanArch.Domain.Recipe;
-using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 

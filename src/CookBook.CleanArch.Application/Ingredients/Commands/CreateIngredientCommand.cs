@@ -2,8 +2,8 @@
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain;
-using CookBook.CleanArch.Domain.Ingredient;
-using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Ingredients.Commands;
 

@@ -1,4 +1,4 @@
-﻿using CookBook.CleanArch.Domain.Ingredient;
+﻿using CookBook.CleanArch.Domain.Ingredients;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
 namespace CookBook.CleanArch.Common.Tests;

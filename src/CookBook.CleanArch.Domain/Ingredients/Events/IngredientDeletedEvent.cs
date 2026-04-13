@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace CookBook.CleanArch.Domain.Ingredient.Events;
+namespace CookBook.CleanArch.Domain.Ingredients.Events;
 
 public class IngredientDeletedEvent(Guid ingredientId) : INotification
 {

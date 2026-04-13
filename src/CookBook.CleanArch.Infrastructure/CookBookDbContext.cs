@@ -1,6 +1,6 @@
 ﻿using CookBook.CleanArch.Application.ExternalInterfaces;
-using CookBook.CleanArch.Domain.Ingredient;
-using CookBook.CleanArch.Domain.Recipe;
+using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 

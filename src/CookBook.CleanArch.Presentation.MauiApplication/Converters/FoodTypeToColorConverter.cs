@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using CommunityToolkit.Maui.Converters;
-using CookBook.CleanArch.Domain.Recipe.Enums;
+using CookBook.CleanArch.Domain.Recipes.Enums;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Converters;
 
