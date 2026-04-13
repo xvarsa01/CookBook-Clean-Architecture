@@ -27,7 +27,11 @@ public sealed class DbSeeder(CookBookDbContext dbContext) : IDbSeeder
 
         foreach (var item in IngredientSeedData.Items)
         {
-            var imageUrl = item.imageUrl is null ? null : ImageUrl.CreateObject(item.imageUrl).Value;
+            var imageUrl = item.imageUrl is null
+                ? null
+                : ImageUrl.CreateObject(item.imageUrl).IsSuccess
+                    ? ImageUrl.CreateObject(item.imageUrl).Value
+                    : throw new InvalidOperationException($"Unable to create ingredient seed '{item.name}'.");;
             var createResult = Ingredient.Create(item.name, item.description, imageUrl);
 
             if (createResult.IsFailure)
