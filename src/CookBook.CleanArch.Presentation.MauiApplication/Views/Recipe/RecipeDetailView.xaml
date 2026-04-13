@@ -45,7 +45,7 @@
                            FontSize="20" />
 
                     <Border Grid.Row="1"
-                            BackgroundColor="{Binding Recipe, Converter={StaticResource FoodTypeToColorConverter}}"
+                            BackgroundColor="{Binding Recipe.Type, Converter={StaticResource FoodTypeToColorConverter}}"
                             HeightRequest="100">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
