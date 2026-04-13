@@ -132,10 +132,37 @@
   <data name="Pieces" xml:space="preserve">
     <value>pieces</value>
   </data>
-  <data name="Spoons" xml:space="preserve">
-    <value>spoons</value>
-  </data>
   <data name="None" xml:space="preserve">
     <value>none</value>
+  </data>
+  <data name="Cup" xml:space="preserve">
+      <value>cup</value>
+  </data>
+  <data name="Tablespoon" xml:space="preserve">
+      <value>table spoon</value>
+  </data>
+  <data name="Teaspoon" xml:space="preserve">
+      <value>tea spoon</value>
+  </data>
+  <data name="Pinch" xml:space="preserve">
+      <value>pinch</value>
+  </data>
+  <data name="Dash" xml:space="preserve">
+      <value>dash</value>
+  </data>
+  <data name="Clove" xml:space="preserve">
+      <value>clove</value>
+  </data>
+  <data name="Slice" xml:space="preserve">
+      <value>slice</value>
+  </data>
+  <data name="Can" xml:space="preserve">
+      <value>can</value>
+  </data>
+  <data name="Bottle" xml:space="preserve">
+      <value>bottle</value>
+  </data>
+  <data name="Pack" xml:space="preserve">
+      <value>pack</value>
   </data>
 </root>

@@ -100,6 +100,6 @@ public partial class RecipeIngredientListModel : ObservableObject
             IngredientName = string.Empty,
             IngredientImageUrl = string.Empty,
             Amount = 0,
-            Unit = MeasurementUnit.Unit
+            Unit = MeasurementUnit.None
         };
 }

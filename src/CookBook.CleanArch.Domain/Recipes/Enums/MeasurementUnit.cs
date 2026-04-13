@@ -2,9 +2,19 @@ namespace CookBook.CleanArch.Domain.Recipes.Enums;
 
 public enum MeasurementUnit
 {
-    Unit,
+    Pieces,
     Ml,
     L,
     G,
     Kg,
+    Teaspoon,
+    Tablespoon,
+    Cup,
+    Pinch,
+    Dash,
+    Slice,
+    Can,
+    Bottle,
+    Pack,
+    None,
 }

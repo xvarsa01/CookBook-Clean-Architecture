@@ -21,7 +21,7 @@ public class RecipeIngredientListModelValidator : AbstractValidator<RecipeIngred
             .IsValidValueObject<RecipeIngredientListModel, IngredientAmount>();
         
         RuleFor(x => x.Unit)
-            .NotEqual(MeasurementUnit.Unit)
+            .NotEqual(MeasurementUnit.None)
             .WithMessage("The recipe type must be selected");
     }
 }

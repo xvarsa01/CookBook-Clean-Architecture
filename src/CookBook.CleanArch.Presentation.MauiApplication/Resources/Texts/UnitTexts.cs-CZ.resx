@@ -132,10 +132,37 @@
   <data name="Pieces" xml:space="preserve">
     <value>kusy</value>
   </data>
-  <data name="Spoons" xml:space="preserve">
-    <value>lžíce</value>
-  </data>
   <data name="None" xml:space="preserve">
     <value>žádné</value>
+  </data>
+  <data name="Tablespoon" xml:space="preserve">
+      <value>polévková lžíce</value>
+  </data>
+  <data name="Teaspoon" xml:space="preserve">
+      <value>lžička</value>
+  </data>
+  <data name="Cup" xml:space="preserve">
+      <value>hrnek</value>
+  </data>
+  <data name="Pinch" xml:space="preserve">
+      <value>špetka</value>
+  </data>
+  <data name="Dash" xml:space="preserve">
+      <value>kapka</value>
+  </data>
+  <data name="Clove" xml:space="preserve">
+      <value>stroužek</value>
+  </data>
+  <data name="Slice" xml:space="preserve">
+      <value>plátek</value>
+  </data>
+  <data name="Can" xml:space="preserve">
+      <value>plechovka</value>
+  </data>
+  <data name="Bottle" xml:space="preserve">
+      <value>láhev</value>
+  </data>
+  <data name="Pack" xml:space="preserve">
+      <value>balení</value>
   </data>
 </root>
