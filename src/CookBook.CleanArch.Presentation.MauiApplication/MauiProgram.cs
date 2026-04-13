@@ -1,9 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using CommunityToolkit.Maui;
 using CookBook.CleanArch.Application;
+using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Infrastructure;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using InputKit.Handlers;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication;
@@ -40,6 +42,9 @@ public static class MauiProgram
         var app = builder.Build();
         RegisterRouting(app.Services.GetRequiredService<INavigationService>());
         
+        MigrateDb(app.Services.GetRequiredService<IDbMigrator>());
+        SeedDb(app.Services.GetRequiredService<IDbSeeder>());
+        
         return app;
     }
     
@@ -61,4 +66,7 @@ public static class MauiProgram
         };
         return dalOptions;
     }
+    
+    private static void MigrateDb(IDbMigrator migrator) => migrator.Migrate();
+    private static void SeedDb(IDbSeeder dbSeeder) => dbSeeder.Seed();
 }
