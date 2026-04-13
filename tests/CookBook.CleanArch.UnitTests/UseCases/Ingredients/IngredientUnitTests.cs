@@ -84,7 +84,7 @@ public class IngredientUnitTests
             RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value,
             RecipeType.Drink,
             [
-                new RecipeCreateIngredientRequest(new IngredientId(Guid.NewGuid()), IngredientAmount.CreateObject(2).Value, MeasurementUnit.Unit),
+                new RecipeCreateIngredientRequest(new IngredientId(Guid.NewGuid()), IngredientAmount.CreateObject(2).Value, MeasurementUnit.Pieces),
                 new RecipeCreateIngredientRequest(new IngredientId(Guid.NewGuid()), IngredientAmount.CreateObject(300).Value, MeasurementUnit.Ml)
             ]);
 
@@ -111,7 +111,7 @@ public class IngredientUnitTests
             null,
             RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value,
             RecipeType.Drink,
-            [new RecipeCreateIngredientRequest(missingIngredientId, IngredientAmount.CreateObject(2).Value, MeasurementUnit.Unit)]);
+            [new RecipeCreateIngredientRequest(missingIngredientId, IngredientAmount.CreateObject(2).Value, MeasurementUnit.Pieces)]);
 
         var result = await handler.Handle(new CreateRecipeCommand(request), CancellationToken.None);
 

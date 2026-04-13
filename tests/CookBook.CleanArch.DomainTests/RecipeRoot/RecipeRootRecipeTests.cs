@@ -210,7 +210,7 @@ public class RecipeRootRecipeTests
             new(
                 new IngredientId(Guid.NewGuid()),
                 IngredientAmount.CreateObject(2).Value,
-                MeasurementUnit.Unit),
+                MeasurementUnit.Pieces),
             new(
                 new IngredientId(Guid.NewGuid()),
                 IngredientAmount.CreateObject(300).Value,
@@ -236,7 +236,7 @@ public class RecipeRootRecipeTests
             .Select(_ => new RecipeCreateIngredient(
                 new IngredientId(Guid.NewGuid()),
                 IngredientAmount.CreateObject(1).Value,
-                MeasurementUnit.Unit))
+                MeasurementUnit.Pieces))
             .ToList();
 
         var result = Recipe.Create(
