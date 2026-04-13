@@ -1,19 +1,17 @@
+using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Domain.Ingredient.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace CookBook.CleanArch.Application.Ingredients.EventHandlers;
 
-public sealed class IngredientUpdatedEventHandler(ILogger<IngredientUpdatedEventHandler> logger)
-    : INotificationHandler<IngredientUpdatedEvent>
+public sealed class IngredientUpdatedEventHandler(ILogger<IngredientUpdatedEventHandler> logger, IEmailSender emailSender)
+    : INotificationHandler<IngredientNameUpdatedEvent>
 {
-    public Task Handle(IngredientUpdatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(IngredientNameUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        logger.LogInformation(
-            "Ingredient updated. Id={IngredientId}, Name={IngredientName}",
-            notification.Ingredient.Id,
-            notification.Ingredient.Name);
-
-        return Task.CompletedTask;
+        await emailSender.SendEmailAsync("to@test.com", "from@test.com",
+            $"Ingredient {notification.IngredientId} Name Updated",
+            $"Ingredient with id {notification.IngredientId} has been updated from {notification.OldName} to {notification.NewName}. ");
     }
 }

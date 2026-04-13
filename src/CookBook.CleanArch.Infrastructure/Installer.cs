@@ -1,8 +1,10 @@
 ﻿using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
+using CookBook.CleanArch.Infrastructure.Email;
 using CookBook.CleanArch.Infrastructure.Factories;
 using CookBook.CleanArch.Infrastructure.Interceptors;
+using CookBook.CleanArch.Infrastructure.Outbox;
 using CookBook.CleanArch.Infrastructure.Migrator;
 using CookBook.CleanArch.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -34,11 +36,16 @@ public static class Installer
         {
             contextOptions.UseSqlite($"Data Source={options.DatabaseFilePath}");
             contextOptions.AddCreatedDateUpdatedDateInterceptor(sp);
+            contextOptions.AddDomainsEventInterceptor(sp);
         });
         
         services.AddScoped<ICookBookDbContext>(sp => sp.GetRequiredService<CookBookDbContext>());
         services.AddScoped<DbContext>(provider => provider.GetRequiredService<CookBookDbContext>());
+        services.AddScoped<OutboxProcessor>();
+        services.AddHostedService<OutboxBackgroundService>();
         services.AddSingleton<CreatedDateUpdatedDateInterceptor>();
+        services.AddSingleton<DomainEventsInterceptor>();
+        services.RegisterMailing();   
         
         return services;
     }
@@ -52,5 +59,26 @@ public static class Installer
         {
             dbContextOptionsBuilder.AddInterceptors(interceptor);
         }
+    }
+    
+    private static void AddDomainsEventInterceptor(this DbContextOptionsBuilder dbContextOptionsBuilder,
+        IServiceProvider serviceProvider)
+    {
+        var interceptor = serviceProvider.GetService<DomainEventsInterceptor>();
+
+        if (interceptor != null)
+        {
+            dbContextOptionsBuilder.AddInterceptors(interceptor);
+        }
+    }
+
+    private static void RegisterMailing(this IServiceCollection serviceCollection)
+    {
+        // Use a local test email server - configured in Aspire
+        // See: https://ardalis.com/configuring-a-local-test-email-server/
+        // serviceCollection.AddScoped<IEmailSender, MimeKitEmailSender>();
+
+        // Otherwise use this:
+        serviceCollection.AddScoped<IEmailSender, FakeEmailSender>();
     }
 }

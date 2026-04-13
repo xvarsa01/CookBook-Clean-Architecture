@@ -10,7 +10,6 @@ using CookBook.CleanArch.Domain.Recipe;
 using CookBook.CleanArch.Domain.Recipe.Enums;
 using CookBook.CleanArch.Domain.Recipe.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
-using MediatR;
 using Moq;
 
 namespace CookBook.CleanArch.UnitTests.UseCases.Ingredients;
@@ -48,9 +47,7 @@ public class IngredientUnitTests
         var repoMock = new Mock<IRepository<Ingredient, IngredientId>>();
         repoMock.Setup(r => r.GetByIdAsync(It.IsAny<IngredientId>())).ReturnsAsync((Ingredient?)null);
 
-        var publisherMock = new Mock<IPublisher>();
-
-        var handler = new UpdateIngredientCommandHandler(repoMock.Object, publisherMock.Object);
+        var handler = new UpdateIngredientCommandHandler(repoMock.Object);
         var id = new IngredientId(Guid.NewGuid());
         var dto = new IngredientUpdateRequest(
             id,

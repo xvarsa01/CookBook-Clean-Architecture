@@ -4,15 +4,13 @@ using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredient;
 using CookBook.CleanArch.Domain.Ingredient.Errors;
-using CookBook.CleanArch.Domain.Ingredient.Events;
 using CookBook.CleanArch.Domain.Ingredient.ValueObjects;
-using MediatR;
 
 namespace CookBook.CleanArch.Application.Ingredients.Commands;
 
 public record UpdateIngredientCommand(IngredientUpdateRequest Request) : ICommand<IngredientId>;
 
-internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository, IPublisher publisher)
+internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository)
     : ICommandHandler<UpdateIngredientCommand, IngredientId>
 {
     public async Task<Result<IngredientId>> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)
@@ -44,8 +42,6 @@ internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, Ing
                 return Result.Invalid<IngredientId>(result.Error);
         }
         
-        await publisher.Publish(new IngredientUpdatedEvent(existingIngredient), cancellationToken);
-
         return Result.Ok(existingIngredient.Id);
     }
 }
