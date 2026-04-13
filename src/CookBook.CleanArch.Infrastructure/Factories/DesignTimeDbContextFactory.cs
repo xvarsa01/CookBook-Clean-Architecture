@@ -7,7 +7,7 @@ namespace CookBook.CleanArch.Infrastructure.Factories;
 /// </summary>
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<CookBookDbContext>
 {
-    private readonly DbContextSqLiteFactory _dbContextSqLiteFactory = new("cookbook.db", true);
+    private readonly DbContextSqLiteFactory _dbContextSqLiteFactory = new("cookbook.db");
 
     public CookBookDbContext CreateDbContext(string[] args)
     {

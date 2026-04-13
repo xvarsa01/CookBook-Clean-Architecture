@@ -41,6 +41,7 @@
         <PackageReference Include="FluentValidation" />
         <PackageReference Include="InputKit.Maui" />
         <PackageReference Include="MediatR" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
         <PackageReference Include="Microsoft.Maui.Controls" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
@@ -85,6 +86,12 @@
     <ItemGroup>
       <ProjectReference Include="..\CookBook.CleanArch.Infrastructure\CookBook.CleanArch.Infrastructure.csproj" />
       <ProjectReference Include="..\CookBook.CleanArch.Application\CookBook.CleanArch.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <!-- Make all designer files auto-generated and dependent on their resx files -->

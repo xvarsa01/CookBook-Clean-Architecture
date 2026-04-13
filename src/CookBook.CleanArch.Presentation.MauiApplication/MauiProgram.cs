@@ -5,6 +5,7 @@ using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Infrastructure;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using InputKit.Handlers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -32,7 +33,10 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
-        var options = GetDALOptions();
+        var appSettingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+        builder.Configuration.AddJsonFile(appSettingsPath, optional: true, reloadOnChange: false);
+
+        var options = GetDALOptions(builder.Configuration);
         
         builder.Services
             .AddAppServices()
@@ -43,7 +47,11 @@ public static class MauiProgram
         RegisterRouting(app.Services.GetRequiredService<INavigationService>());
         
         MigrateDb(app.Services.GetRequiredService<IDbMigrator>());
-        SeedDb(app.Services.GetRequiredService<IDbSeeder>());
+
+        if (options.SeedDemoData)
+        {
+            SeedDb(app.Services.GetRequiredService<IDbSeeder>());
+        }
         
         return app;
     }
@@ -56,16 +64,22 @@ public static class MauiProgram
         }
     }
     
-    private static DbOptions GetDALOptions([CallerFilePath] string sourceFilePath = "")
+    private static DbOptions GetDALOptions(IConfiguration configuration, [CallerFilePath] string sourceFilePath = "")
     {
+        var dbSection = configuration.GetSection("CookBook:DB");
         var relativePath = Path.Combine(Path.GetDirectoryName(sourceFilePath)!,"../CookBook.CleanArch.Infrastructure");
         DbOptions dalOptions = new()
         {
             DatabaseDirectory = Path.GetFullPath(relativePath),
-            DatabaseName = "cookbook.db",
+            DatabaseName = dbSection["DatabaseName"] ?? "cookbook.db",
+            SeedDemoData = TryParseBool(dbSection["SeedDemoData"]),
+            RecreateDatabaseEachTime = TryParseBool(dbSection["RecreateDatabaseEachTime"]),
+            UseInMemoryDb = TryParseBool(dbSection["UseInMemoryDatabase"]),
         };
         return dalOptions;
     }
+
+    private static bool TryParseBool(string? value) => bool.TryParse(value, out var parsed) && parsed;
     
     private static void MigrateDb(IDbMigrator migrator) => migrator.Migrate();
     private static void SeedDb(IDbSeeder dbSeeder) => dbSeeder.Seed();

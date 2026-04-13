@@ -31,7 +31,7 @@ public static class Installer
         services.AddScoped(typeof(IRepository<Recipe, RecipeId>), typeof(EfRecipeRepository));
         
         services.AddSingleton<IDbContextFactory<CookBookDbContext>>(_ =>
-            new DbContextSqLiteFactory(options.DatabaseFilePath, options.SeedDemoData));
+            new DbContextSqLiteFactory(options.DatabaseFilePath));
         services.AddDbContext<CookBookDbContext>((sp, contextOptions) =>
         {
             contextOptions.UseSqlite($"Data Source={options.DatabaseFilePath}");
