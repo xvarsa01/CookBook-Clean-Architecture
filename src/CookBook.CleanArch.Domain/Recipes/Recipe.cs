@@ -1,6 +1,7 @@
 ﻿using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.Errors;
+using CookBook.CleanArch.Domain.Recipes.Events;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
@@ -117,7 +118,7 @@ public record Recipe : AggregateRootBase<RecipeId>
     {
         if (Name != newName)
         {
-            // fire some event?
+            RaiseEvent(new RecipeNameUpdatedEvent(Id, Name.Value, newName.Value));
             Name = newName;
         }
         
@@ -128,6 +129,7 @@ public record Recipe : AggregateRootBase<RecipeId>
     {
         if (Description != newDescription)
         {
+            RaiseEvent(new RecipeDescriptionUpdatedEvent(Id, Description, newDescription));
             Description = newDescription;
         }
         

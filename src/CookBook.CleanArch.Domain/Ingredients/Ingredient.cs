@@ -1,5 +1,4 @@
 ﻿using CookBook.CleanArch.Domain.Ingredients.Errors;
-using CookBook.CleanArch.Domain.Ingredients.Events;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Shared;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
@@ -39,7 +38,6 @@ public record Ingredient : AggregateRootBase<IngredientId>
         
         if (Name != newName)
         {
-            RaiseEvent(new IngredientNameUpdatedEvent(Id, Name, newName));
             Name = newName;
         }
         
