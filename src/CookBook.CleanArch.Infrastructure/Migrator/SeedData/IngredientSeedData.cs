@@ -34,6 +34,7 @@ internal static class IngredientSeedData
         new IngredientSeedItem(name: "Tequila", description: null, imageUrl: "https://images.unsplash.com/photo-1529671434436-8fbb37410056?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
         new IngredientSeedItem(name: "Triple Sec", description: null, imageUrl: "https://images.unsplash.com/photo-1774537642349-f84ae0f4e2f8?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
         new IngredientSeedItem(name: "Whiskey", description: null, imageUrl: null),
+        new IngredientSeedItem(name: "Cheese", description: "semi-hard cheese suitable for frying", imageUrl: null),
         new IngredientSeedItem(name: "Red Wine", description: null, imageUrl: null),
         new IngredientSeedItem(name: "Beer", description: null, imageUrl: null),
         new IngredientSeedItem(name: "Butter", description: null, imageUrl: null),

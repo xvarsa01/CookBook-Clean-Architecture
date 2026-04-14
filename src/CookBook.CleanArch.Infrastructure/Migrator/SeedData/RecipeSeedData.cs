@@ -361,6 +361,7 @@ internal static class RecipeSeedData
             type: (RecipeType)2,
             ingredients:
             [
+                new RecipeIngredientSeedItem(ingredientName: "Water", amount: 500.0, unit: (MeasurementUnit)1),
             ]),
 
         new RecipeSeedItem(
@@ -371,6 +372,7 @@ internal static class RecipeSeedData
             type: (RecipeType)1,
             ingredients:
             [
+                new RecipeIngredientSeedItem(ingredientName: "Cheese", amount: 200.0, unit: (MeasurementUnit)3),
             ]),
     ];
 }

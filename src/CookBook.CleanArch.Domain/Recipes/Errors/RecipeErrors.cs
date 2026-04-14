@@ -17,6 +17,9 @@ public static class RecipeErrors
     
     public static Error RecipeMaximumNumberOfIngredientsError(RecipeId recipeId) =>
         new($"Recipe {recipeId} can not have more than 10 ingredients.");
+
+    public static Error RecipeMinimumNumberOfIngredientsError(RecipeId recipeId) =>
+        new($"Recipe {recipeId} must contain at least 1 ingredient.");
     
     public static Error RecipeUpdateFailedError(RecipeId recipeId) => new($"Recipe {recipeId} update failed");
 }

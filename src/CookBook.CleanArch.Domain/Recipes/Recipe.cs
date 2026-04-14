@@ -12,7 +12,7 @@ namespace CookBook.CleanArch.Domain.Recipes;
 // - recipe must have a name
 //   - name must be minimal 3 characters long
 // - recipe duration must be positive
-// - recipe can have 0-10 ingredients
+// - recipe can have 1-10 ingredients
 //   - ingredient amount must be positive
 
 public record Recipe : AggregateRootBase<RecipeId>
@@ -46,6 +46,10 @@ public record Recipe : AggregateRootBase<RecipeId>
         IReadOnlyCollection<RecipeCreateIngredient> ingredients)
     {
         var id = new RecipeId(Guid.NewGuid());
+
+        if (ingredients.Count == 0)
+            return Result.Invalid<Recipe>(RecipeErrors.RecipeMinimumNumberOfIngredientsError(id));
+
         var recipe = new Recipe(id, name, description, imageUrl, duration, type);
 
         foreach (var ingredient in ingredients)
@@ -77,10 +81,15 @@ public record Recipe : AggregateRootBase<RecipeId>
 
     public Result RemoveIngredientsByIngredientId(IngredientId ingredientId)
     {
-        var removedCount = _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
+        var removedCount = _ingredients.Count(i => i.IngredientId == ingredientId);
 
         if (removedCount == 0)
             return Result.Invalid(RecipeErrors.RecipeIngredientByIdNotFoundError(ingredientId, Id));
+
+        if (_ingredients.Count - removedCount < 1)
+            return Result.Invalid(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
+
+        _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
         
         return Result.Ok();
     }
@@ -91,17 +100,11 @@ public record Recipe : AggregateRootBase<RecipeId>
 
         if (idx < 0)
             return Result.Invalid(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(entryId, Id));
+
+        if (_ingredients.Count == 1)
+            return Result.Invalid(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
         
         _ingredients.RemoveAt(idx);
-        return Result.Ok();
-    }
-    
-    public Result RemoveAllIngredients()
-    {
-        if (_ingredients.Count == 0)
-            return Result.Invalid(RecipeErrors.RecipeHasNoIngredientsError(Id));
-        
-        _ingredients.Clear();
         return Result.Ok();
     }
 

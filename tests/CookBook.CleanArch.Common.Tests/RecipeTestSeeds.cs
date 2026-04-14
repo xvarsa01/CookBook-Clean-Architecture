@@ -7,14 +7,22 @@ namespace CookBook.CleanArch.Common.Tests;
 
 public static class RecipeTestSeeds
 {
+    private static IReadOnlyCollection<RecipeCreateIngredient> SingleIngredient() =>
+    [
+        new RecipeCreateIngredient(
+            IngredientTestSeeds.Water.Id,
+            IngredientAmount.CreateObject(100).Value,
+            MeasurementUnit.Ml)
+    ];
+
     public static Recipe EmptyRecipe()
     {
         return Recipe.Create(name: RecipeName.CreateObject("empty recipe").Value,
-            description: "no ingredients",
+            description: "baseline recipe",
             imageUrl: ImageUrl.CreateObject("http://a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
-            ingredients: null).Value;
+            ingredients: SingleIngredient()).Value;
     }
 
     public static Recipe MinimalisticRecipe()
@@ -24,7 +32,7 @@ public static class RecipeTestSeeds
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
-            ingredients: null).Value;
+            ingredients: SingleIngredient()).Value;
     }
 
     public static Recipe RecipeWithSingleIngredient()
@@ -93,11 +101,11 @@ public static class RecipeTestSeeds
     public static Recipe RecipeForTestOfDeleteWithoutIngredient()
     {
         return Recipe.Create(name: RecipeName.CreateObject("delete me").Value,
-            description: "i will be deleted simply, because i dont contain any ingredients",
+            description: "i will be deleted simply",
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
-            ingredients: null).Value;
+            ingredients: SingleIngredient()).Value;
     }
 
     public static Recipe RecipeForTestOfDeleteWithIngredient()
@@ -133,7 +141,7 @@ public static class RecipeTestSeeds
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
-            ingredients: null).Value;
+            ingredients: SingleIngredient()).Value;
     }
     
     public static Recipe RecipeForTestOfSearch2(){
@@ -142,7 +150,7 @@ public static class RecipeTestSeeds
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
-            ingredients: null).Value;
+            ingredients: SingleIngredient()).Value;
     }
     
     public static Recipe RecipeForTestOfSearch3(){
@@ -151,7 +159,7 @@ public static class RecipeTestSeeds
             imageUrl: null,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
-            ingredients: null).Value;
+            ingredients: SingleIngredient()).Value;
     }
     
     public static List<Recipe> SeededRecipes() =>
