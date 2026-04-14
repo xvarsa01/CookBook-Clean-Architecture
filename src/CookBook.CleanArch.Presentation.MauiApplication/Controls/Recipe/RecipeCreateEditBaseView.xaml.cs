@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
+using CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe;
 
@@ -15,10 +16,10 @@ public partial class RecipeCreateEditBaseView
     
     // ===== MODEL =====
     public static readonly BindableProperty RecipeProperty =
-        BindableProperty.Create(nameof(Recipe), typeof(RecipeDetailModel), typeof(RecipeCreateEditBaseView));
-    public RecipeDetailModel Recipe
+        BindableProperty.Create(nameof(Recipe), typeof(RecipeFormModel), typeof(RecipeCreateEditBaseView));
+    public RecipeFormModel Recipe
     {
-        get => (RecipeDetailModel)GetValue(RecipeProperty);
+        get => (RecipeFormModel)GetValue(RecipeProperty);
         set => SetValue(RecipeProperty, value);
     }
 

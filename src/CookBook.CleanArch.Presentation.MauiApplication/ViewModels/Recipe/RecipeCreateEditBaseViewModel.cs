@@ -1,19 +1,21 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CookBook.CleanArch.Application.Ingredients;
-using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Application.Ingredients.Queries;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Domain.Recipes.Enums;
+using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
-using CookBook.CleanArch.Presentation.MauiApplication.Models;
-using CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using CookBook.CleanArch.Presentation.MauiApplication.Validations;
+using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
@@ -30,11 +32,11 @@ public abstract partial class RecipeCreateEditBaseViewModel(
     protected readonly IMediator Mediator = mediator;
     protected readonly INavigationService NavigationService = navigationService;
 
-    protected readonly RecipeDetailModelValidator RecipeValidator = new();
-    protected readonly RecipeIngredientListModelValidator IngredientValidator = new();
+    private readonly RecipeFormModelValidator _recipeValidator = new();
+    private readonly RecipeIngredientListModelValidator _ingredientValidator = new();
 
     [ObservableProperty]
-    public partial RecipeDetailModel Recipe { get; set; } = RecipeDetailModel.Empty;
+    public partial RecipeFormModel Recipe { get; set; } = RecipeFormModel.Empty;
 
     public List<RecipeType> FoodTypes { get; } = [.. Enum.GetValues<RecipeType>()];
     public List<MeasurementUnit> Units { get; } = [.. Enum.GetValues<MeasurementUnit>()];
@@ -72,13 +74,13 @@ public abstract partial class RecipeCreateEditBaseViewModel(
 
     protected async Task<bool> ValidateRecipeAsync()
     {
-        Recipe.ValidationResults = await RecipeValidator.ValidateAsync(Recipe);
+        Recipe.ValidationResults = await _recipeValidator.ValidateAsync(Recipe);
         return Recipe.ValidationResults.IsValid;
     }
 
     protected async Task<bool> ValidateNewIngredientAsync()
     {
-        IngredientAmountNew.ValidationResults = await IngredientValidator.ValidateAsync(IngredientAmountNew);
+        IngredientAmountNew.ValidationResults = await _ingredientValidator.ValidateAsync(IngredientAmountNew);
         return IngredientAmountNew.ValidationResults.IsValid;
     }
 
@@ -94,7 +96,7 @@ public abstract partial class RecipeCreateEditBaseViewModel(
     [RelayCommand]
     private async Task ValidateProperty(string propertyName)
     {
-        var result = await RecipeValidator.ValidateAsync(Recipe);
+        var result = await _recipeValidator.ValidateAsync(Recipe);
         Recipe.ValidationResults = result;
 
         Recipe.ValidationResults.Errors.Remove(
@@ -108,7 +110,7 @@ public abstract partial class RecipeCreateEditBaseViewModel(
     [RelayCommand]
     private async Task ValidateIngredientAmountNewProperty(string propertyName)
     {
-        var result = await IngredientValidator.ValidateAsync(IngredientAmountNew);
+        var result = await _ingredientValidator.ValidateAsync(IngredientAmountNew);
         IngredientAmountNew.ValidationResults = result;
 
         IngredientAmountNew.ValidationResults.Errors.Remove(
@@ -122,4 +124,145 @@ public abstract partial class RecipeCreateEditBaseViewModel(
     public void Receive(RecipeIngredientEditMessage message) => ForceDataRefreshOnNextAppearing();
     public void Receive(RecipeIngredientAddMessage message) => ForceDataRefreshOnNextAppearing();
     public void Receive(RecipeIngredientDeleteMessage message) => ForceDataRefreshOnNextAppearing();
+}
+
+public partial class RecipeFormModel : ObservableObject
+{
+    public RecipeFormModel() { }
+
+    [SetsRequiredMembers]
+    public RecipeFormModel(RecipeResponse response)
+    {
+        Id = response.Id.Value;
+        Name = response.Name.Value;
+        Description = response.Description;
+        Duration = response.Duration.Value;
+        RecipeType = response.Type;
+        ImageUrl = response.ImageUrl?.Value;
+        Ingredients = response.Ingredients
+            .Select(i => new RecipeIngredientListModel
+            {
+                RecipeIngredientId = i.Id.Value,
+                IngredientId = i.IngredientId.Value,
+                IngredientName = i.IngredientName,
+                IngredientImageUrl = i.IngredientImageUrl?.Value,
+                Amount = i.Amount.Value,
+                Unit = i.Unit
+            })
+            .ToObservableCollection();
+    }
+
+    [ObservableProperty]
+    public required partial Guid Id { get; set; }
+    
+    [ObservableProperty]
+    public required partial string Name { get; set; }
+
+    [ObservableProperty]
+    public required partial string? Description { get; set; }
+
+    [ObservableProperty]
+    public required partial TimeSpan Duration { get; set; }
+
+    [ObservableProperty]
+    public partial RecipeType RecipeType { get; set; }
+
+    [ObservableProperty]
+    public partial string? ImageUrl { get; set; }
+
+    [ObservableProperty]
+    public partial ObservableCollection<RecipeIngredientListModel> Ingredients { get; set; } = [];
+    
+    
+    [ObservableProperty]
+    public partial ValidationResult? ValidationResults {get; set; } = new();
+    
+    public static RecipeFormModel Empty
+        => new()
+        {
+            Id = Guid.Empty,
+            Name = string.Empty,
+            Description = string.Empty,
+            Duration = TimeSpan.Zero
+        };
+}
+
+public partial class RecipeIngredientListModel : ObservableObject
+{
+    [ObservableProperty]
+    public required partial Guid RecipeIngredientId { get; set; }
+    
+    [ObservableProperty]
+    public required partial Guid IngredientId { get; set; }
+
+    [ObservableProperty]
+    public required partial string IngredientName { get; set; }
+
+    [ObservableProperty]
+    public required partial string? IngredientImageUrl { get; set; }
+
+    [ObservableProperty]
+    public required partial decimal Amount { get; set; }
+
+    [ObservableProperty]
+    public required partial MeasurementUnit Unit { get; set; }
+    
+    [ObservableProperty]
+    public partial ValidationResult? ValidationResults {get; set; } = new();
+    
+    public static RecipeIngredientListModel Empty
+        => new()
+        {
+            RecipeIngredientId = Guid.Empty,
+            IngredientId = Guid.Empty,
+            IngredientName = string.Empty,
+            IngredientImageUrl = string.Empty,
+            Amount = 0,
+            Unit = MeasurementUnit.None
+        };
+}
+
+public class RecipeFormModelValidator : AbstractValidator<RecipeFormModel>
+{
+    public static string RecipeNameProperty => nameof(RecipeFormModel.Name);
+    public static string RecipeDurationProperty => nameof(RecipeFormModel.Duration);
+    public static string RecipeImageUrlProperty => nameof(RecipeFormModel.ImageUrl);
+    public static string RecipeRecipeTypeProperty => nameof(RecipeFormModel.RecipeType);
+
+    public RecipeFormModelValidator()
+    {
+        RuleFor(x => x.Name)
+            .IsValidValueObject<RecipeFormModel, RecipeName>();
+
+        RuleFor(x => x.Duration)
+            .IsValidValueObject<RecipeFormModel, RecipeDuration>();
+
+        RuleFor(x => x.RecipeType)
+            .NotEqual(RecipeType.None)
+            .WithMessage("The recipe type must be selected");
+
+        RuleFor(x => x.ImageUrl)
+            .IsValidOptionalValueObject<RecipeFormModel, ImageUrl>();
+    }
+}
+
+public class RecipeIngredientListModelValidator : AbstractValidator<RecipeIngredientListModel>
+{
+    public static string IngredientIdProperty => nameof(RecipeIngredientListModel.IngredientId);
+    public static string IngredientAmountProperty => nameof(RecipeIngredientListModel.Amount);
+    public static string IngredientUnitProperty => nameof(RecipeIngredientListModel.Unit);
+
+    public RecipeIngredientListModelValidator()
+    {
+        RuleFor(x => x.IngredientId)
+            .NotEqual(Guid.Empty)
+            .WithMessage("The ingredient must be selected");
+    
+        RuleFor(x => x.Amount)
+            .IsValidValueObject<RecipeIngredientListModel, IngredientAmount>();
+    
+        RuleFor(x => x.Unit)
+            .NotEqual(MeasurementUnit.None)
+            .WithMessage("The recipe type must be selected");
+    }
 }

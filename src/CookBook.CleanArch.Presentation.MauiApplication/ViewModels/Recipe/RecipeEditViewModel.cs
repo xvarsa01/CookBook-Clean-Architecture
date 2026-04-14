@@ -30,7 +30,7 @@ public partial class RecipeEditViewModel(
             var result = (await Mediator.Send(new GetRecipeDetailQuery(Id)));
             if (result.IsSuccess)
             {
-                Recipe = new RecipeDetailModel(result.Value);
+                Recipe = new RecipeFormModel(result.Value);
             }
         }
 

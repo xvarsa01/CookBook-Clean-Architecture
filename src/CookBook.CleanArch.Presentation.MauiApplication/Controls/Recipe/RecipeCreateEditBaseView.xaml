@@ -4,8 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:t="using:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:validations="using:CookBook.CleanArch.Presentation.MauiApplication.Validations"
-             xmlns:models="using:CookBook.CleanArch.Presentation.MauiApplication.Models"
+             xmlns:viewModels="using:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
              x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe.RecipeCreateEditBaseView"
              x:Name="Root">
     
@@ -32,16 +31,16 @@
                         <Entry.Behaviors>
                             <toolkit:EventToCommandBehavior EventName="TextChanged"
                                                             Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                                                            CommandParameter="{x:Static validations:RecipeDetailModelValidator.RecipeNameProperty}" />
+                                                            CommandParameter="{x:Static viewModels:RecipeFormModelValidator.RecipeNameProperty}" />
                         </Entry.Behaviors>
                     </Entry>
                     <Label Style="{StaticResource ValidationErrorLabelStyle}"
                            Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeNameProperty}}"
+                                                    ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeNameProperty}}"
                            IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeNameProperty}}" />
+                                                    ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeNameProperty}}" />
                 </VerticalStackLayout>
 
                 <Grid Grid.Row="1"
@@ -60,7 +59,7 @@
                         <Picker.Behaviors>
                             <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged"
                                                             Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                                                            CommandParameter="{x:Static validations:RecipeDetailModelValidator.RecipeRecipeTypeProperty}" />
+                                                            CommandParameter="{x:Static viewModels:RecipeFormModelValidator.RecipeRecipeTypeProperty}" />
                         </Picker.Behaviors>
                     </Picker>
                     <Label Grid.Row="2"
@@ -68,10 +67,10 @@
                            Style="{StaticResource ValidationErrorLabelStyle}"
                            Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeRecipeTypeProperty}}"
+                                                    ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeRecipeTypeProperty}}"
                            IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeRecipeTypeProperty}}" />
+                                                    ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeRecipeTypeProperty}}" />
 
                     <Label Grid.Row="0" Grid.Column="1"
                            Text="{x:Static t:RecipeEditViewTexts.Duration_Label_Text}" />
@@ -81,17 +80,17 @@
                         <TimePicker.Behaviors>
                             <toolkit:EventToCommandBehavior EventName="PropertyChanged"
                                                             Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                                                            CommandParameter="{x:Static validations:RecipeDetailModelValidator.RecipeDurationProperty}" />
+                                                            CommandParameter="{x:Static viewModels:RecipeFormModelValidator.RecipeDurationProperty}" />
                         </TimePicker.Behaviors>
                     </TimePicker>
                     <Label Grid.Row="2" Grid.Column="1"
                            Style="{StaticResource ValidationErrorLabelStyle}"
                            Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeDurationProperty}}"
+                                                    ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeDurationProperty}}"
                            IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToHasErrorConverter},
-                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeDurationProperty}}" />
+                                                    ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeDurationProperty}}" />
                 </Grid>
 
                 <StackLayout Grid.Row="2"
@@ -104,16 +103,16 @@
                         <Entry.Behaviors>
                             <toolkit:EventToCommandBehavior EventName="TextChanged"
                                                             Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                                                            CommandParameter="{x:Static validations:RecipeDetailModelValidator.RecipeImageUrlProperty}" />
+                                                            CommandParameter="{x:Static viewModels:RecipeFormModelValidator.RecipeImageUrlProperty}" />
                         </Entry.Behaviors>
                     </Entry>
                     <Label Style="{StaticResource ValidationErrorLabelStyle}"
                            Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeImageUrlProperty}}"
+                                                    ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeImageUrlProperty}}"
                            IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToHasErrorConverter},
-                                                    ConverterParameter={x:Static validations:RecipeDetailModelValidator.RecipeImageUrlProperty}}" />
+                                                    ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeImageUrlProperty}}" />
                 </StackLayout>
                 
                 <Border Grid.Row="0"
@@ -160,7 +159,7 @@
                         <Entry.Behaviors>
                             <toolkit:EventToCommandBehavior EventName="TextChanged"
                                                             Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}"
-                                                            CommandParameter="{x:Static validations:RecipeIngredientListModelValidator.IngredientAmountProperty}" />
+                                                            CommandParameter="{x:Static viewModels:RecipeIngredientListModelValidator.IngredientAmountProperty}" />
                         </Entry.Behaviors>
                     </Entry>
                     <Label Grid.Column="0"
@@ -168,10 +167,10 @@
                            Style="{StaticResource ValidationErrorLabelStyle}"
                            Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientAmountProperty}}"
+                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientAmountProperty}}"
                            IsVisible="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientAmountProperty}}" />
+                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientAmountProperty}}" />
                     
                     <Label Grid.Column="1"
                            Grid.Row="0"
@@ -184,7 +183,7 @@
                         <Picker.Behaviors>
                             <toolkit:EventToCommandBehavior EventName="PropertyChanged"
                                                             Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}"
-                                                            CommandParameter="{x:Static validations:RecipeIngredientListModelValidator.IngredientUnitProperty}" />
+                                                            CommandParameter="{x:Static viewModels:RecipeIngredientListModelValidator.IngredientUnitProperty}" />
                         </Picker.Behaviors>
                     </Picker>
                     <Label Grid.Column="1"
@@ -192,10 +191,10 @@
                            Style="{StaticResource ValidationErrorLabelStyle}"
                            Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientUnitProperty}}"
+                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientUnitProperty}}"
                            IsVisible="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientUnitProperty}}" />
+                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientUnitProperty}}" />
 
                     <Label Grid.Column="2"
                            Grid.Row="0"
@@ -208,7 +207,7 @@
                         <Picker.Behaviors>
                             <toolkit:EventToCommandBehavior EventName="PropertyChanged"
                                                             Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}"
-                                                            CommandParameter="{x:Static validations:RecipeIngredientListModelValidator.IngredientIdProperty}" />
+                                                            CommandParameter="{x:Static viewModels:RecipeIngredientListModelValidator.IngredientIdProperty}" />
                         </Picker.Behaviors>
                     </Picker>
                     <Label Grid.Column="2"
@@ -216,10 +215,10 @@
                            Style="{StaticResource ValidationErrorLabelStyle}"
                            Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientIdProperty}}"
+                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientIdProperty}}"
                            IsVisible="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                     Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                    ConverterParameter={x:Static validations:RecipeIngredientListModelValidator.IngredientIdProperty}}" />
+                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientIdProperty}}" />
                     
                     <Button Grid.Column="3"
                             Grid.Row="1"
@@ -234,7 +233,7 @@
                                 ItemsSource="{Binding Source={x:Reference Root}, Path=Recipe.Ingredients}"
                                 HorizontalOptions="End">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:RecipeIngredientListModel">
+                        <DataTemplate x:DataType="viewModels:RecipeIngredientListModel">
                             <HorizontalStackLayout>
                                 <Border Margin="5, 5, 20, 5"
                                         Style="{StaticResource ImageBorderStyle}">
