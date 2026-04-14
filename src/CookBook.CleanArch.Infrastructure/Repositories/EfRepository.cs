@@ -27,25 +27,14 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
         return await _dbSet.SingleOrDefaultAsync(e => e.Id == id);
     }
 
-    public async Task DeleteAsync(TId entityId)
+    public void Delete(TEntity aggregate)
     {
-        var entity = await GetByIdAsync(entityId);
-        if (entity is null)
-        {
-            return;
-        }
-        
-        _dbContext.Set<TEntity>().Remove(entity);
+        _dbContext.Set<TEntity>().Remove(aggregate);
     }
 
     public TId Add(TEntity aggregate)
     {
         var entityId = _dbSet.Add(aggregate).Entity.Id;
         return entityId;
-    }
-    
-    public async ValueTask<bool> ExistsAsync(TEntity aggregate)
-    {
-        return aggregate.Id != Guid.Empty && await _dbSet.AnyAsync(e => e.Id == aggregate.Id);
     }
 }

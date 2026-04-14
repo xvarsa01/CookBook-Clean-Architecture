@@ -60,7 +60,7 @@ public record Recipe : AggregateRootBase<RecipeId>
     
     public Result<RecipeIngredientId> AddIngredient(IngredientId ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
-        if (_ingredients.Count == 10)
+        if (_ingredients.Count >= 10)
             return Result.Invalid<RecipeIngredientId>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
         
         var ingredientInRecipeResult = RecipeIngredient.Create(ingredientId, Id, amount, unit);
@@ -153,6 +153,12 @@ public record Recipe : AggregateRootBase<RecipeId>
             Type = newType.Value;
         }
         
+        return Result.Ok();
+    }
+
+    public Result Delete()
+    {
+        RaiseEvent(new RecipeDeletedEvent(Id));
         return Result.Ok();
     }
 }

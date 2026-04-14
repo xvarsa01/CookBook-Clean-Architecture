@@ -32,8 +32,7 @@ public sealed class DomainEventsInterceptor() : SaveChangesInterceptor
 
                   return domainEvents;
               })
-              .
-              Select(domainEvent => new OutboxMessage
+              .Select(domainEvent => new OutboxMessage
               {
                   Id = Guid.NewGuid(),
                   Type = domainEvent.GetType().AssemblyQualifiedName!,

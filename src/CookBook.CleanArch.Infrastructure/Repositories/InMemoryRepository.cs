@@ -19,10 +19,9 @@ public class InMemoryRepository<TEntity, TId> : IRepository<TEntity, TId>
         return Task.FromResult(entity);
     }
 
-    public Task DeleteAsync(TId entityId)
+    public void Delete(TEntity aggregate)
     {
-        _store.TryRemove(entityId, out _);
-        return Task.CompletedTask;
+        _store.TryRemove(aggregate.Id, out _);
     }
 
     public TId Add(TEntity aggregate)
@@ -30,7 +29,4 @@ public class InMemoryRepository<TEntity, TId> : IRepository<TEntity, TId>
         _store[aggregate.Id.Value] = aggregate;
         return aggregate.Id;
     }
-
-    public ValueTask<bool> ExistsAsync(TEntity aggregate)
-        => new(_store.ContainsKey(aggregate.Id));
 }

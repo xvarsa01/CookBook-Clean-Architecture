@@ -7,7 +7,7 @@ public interface IRepository<TAggregate, TId>
 {
     Task<List<TAggregate>> GetAllAsync();
     Task<TAggregate?> GetByIdAsync(TId id);
-    Task DeleteAsync(TId entityId);
+    void Delete(TAggregate aggregate);
+    
     TId Add(TAggregate aggregate);
-    ValueTask<bool> ExistsAsync(TAggregate aggregate);
 }
