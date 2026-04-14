@@ -1,9 +1,0 @@
-﻿using Foundation;
-
-namespace CookBook.CleanArch.Presentation.MauiApplication;
-
-[Register("AppDelegate")]
-public class AppDelegate : MauiUIApplicationDelegate
-{
-    protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
-}
