@@ -4,9 +4,9 @@ using FluentValidation.Results;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Models;
 
-public partial class IngredientDetailModel() : ObservableObject
+public partial class IngredientFormModel() : ObservableObject
 {
-    public IngredientDetailModel(IngredientDetailResponse response) : this()
+    public IngredientFormModel(IngredientDetailResponse response) : this()
     {
         Name = response.Name;
         Description = response.Description;
@@ -24,7 +24,7 @@ public partial class IngredientDetailModel() : ObservableObject
     public partial ValidationResult? ValidationResults {get; set; } = new();
     
 
-    public static IngredientDetailModel Empty
+    public static IngredientFormModel Empty
         => new()
         {
             Name = string.Empty,
