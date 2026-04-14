@@ -5,13 +5,12 @@ using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredients;
 using CookBook.CleanArch.Domain.Ingredients.Errors;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
-using MediatR;
 
 namespace CookBook.CleanArch.Application.Ingredients.Commands;
 
 public record DeleteIngredientCommand(IngredientId Id) : ICommand;
 
-internal sealed class DeleteIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository, IRecipeRepository recipeRepository, IPublisher publisher, IMediator mediator)
+internal sealed class DeleteIngredientCommandHandler(IRepository<Ingredient, IngredientId> repository, IRecipeRepository recipeRepository)
     : ICommandHandler<DeleteIngredientCommand>
 {
     public async Task<Result> Handle(DeleteIngredientCommand request, CancellationToken cancellationToken)

@@ -22,7 +22,7 @@ public partial class  RecipeDetailViewModel(
     : ViewModelBase(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeIngredientAddMessage>,
         IRecipient<RecipeIngredientDeleteMessage>
 {
-    public RecipeId Id { get; set; }
+    public RecipeId Id { get; set; } = null!;
 
     [ObservableProperty]
     public partial RecipeResponse? Recipe { get; set; }

@@ -25,7 +25,7 @@ public partial class IngredientDetailViewModel(
     IAlertService alertService)
     : ViewModelBase(messengerService), IRecipient<IngredientEditMessage>
 {
-    public IngredientId Id { get; set; }
+    public IngredientId Id { get; set; } = null!;
 
     [ObservableProperty]
     public partial IngredientDetailResponse? Ingredient { get; set; }

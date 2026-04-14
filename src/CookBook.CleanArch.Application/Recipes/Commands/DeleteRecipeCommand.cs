@@ -5,13 +5,12 @@ using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.Events;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
-using MediatR;
 
 namespace CookBook.CleanArch.Application.Recipes.Commands;
 
 public record DeleteRecipeCommand(RecipeId Id) : ICommand;
 
-internal sealed class DeleteRecipeCommandHandler(IRepository<Recipe, RecipeId> repository, IPublisher publisher) : ICommandHandler<DeleteRecipeCommand>
+internal sealed class DeleteRecipeCommandHandler(IRepository<Recipe, RecipeId> repository) : ICommandHandler<DeleteRecipeCommand>
 {
     public async Task<Result> Handle(DeleteRecipeCommand request, CancellationToken cancellationToken)
     {

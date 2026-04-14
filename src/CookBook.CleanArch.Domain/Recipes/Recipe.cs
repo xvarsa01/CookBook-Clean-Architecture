@@ -26,6 +26,8 @@ public record Recipe : AggregateRootBase<RecipeId>
     private readonly List<RecipeIngredient> _ingredients = [];
     public IReadOnlyCollection<RecipeIngredient> Ingredients => _ingredients.AsReadOnly();
     
+    private const int MaxIngredients = 10;
+    
     private Recipe(RecipeId id, RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type) : base(id)
     {
         Name = name;
@@ -41,12 +43,12 @@ public record Recipe : AggregateRootBase<RecipeId>
         ImageUrl? imageUrl,
         RecipeDuration duration,
         RecipeType type,
-        IReadOnlyCollection<RecipeCreateIngredient>? ingredients)
+        IReadOnlyCollection<RecipeCreateIngredient> ingredients)
     {
         var id = new RecipeId(Guid.NewGuid());
         var recipe = new Recipe(id, name, description, imageUrl, duration, type);
 
-        foreach (var ingredient in ingredients ?? [])
+        foreach (var ingredient in ingredients)
         {
             var addResult = recipe.AddIngredient(ingredient.IngredientId, ingredient.Amount, ingredient.Unit);
             if (addResult.IsFailure)
@@ -60,7 +62,7 @@ public record Recipe : AggregateRootBase<RecipeId>
     
     public Result<RecipeIngredientId> AddIngredient(IngredientId ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
-        if (_ingredients.Count >= 10)
+        if (_ingredients.Count >= MaxIngredients)
             return Result.Invalid<RecipeIngredientId>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
         
         var ingredientInRecipeResult = RecipeIngredient.Create(ingredientId, Id, amount, unit);
