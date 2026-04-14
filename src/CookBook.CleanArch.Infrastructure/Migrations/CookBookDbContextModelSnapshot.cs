@@ -17,7 +17,7 @@ namespace CookBook.CleanArch.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.11");
 
-            modelBuilder.Entity("CookBook.CleanArch.Domain.Ingredient.Ingredient", b =>
+            modelBuilder.Entity("CookBook.CleanArch.Domain.Ingredients.Ingredient", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -43,7 +43,7 @@ namespace CookBook.CleanArch.Infrastructure.Migrations
                     b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipe.Recipe", b =>
+            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipes.Recipe", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
@@ -55,7 +55,7 @@ namespace CookBook.CleanArch.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Duration")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("REAL");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("TEXT");
@@ -75,7 +75,7 @@ namespace CookBook.CleanArch.Infrastructure.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipe.RecipeIngredient", b =>
+            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipes.RecipeIngredient", b =>
                 {
                     b.Property<Guid>("RecipeId")
                         .HasColumnType("TEXT");
@@ -130,15 +130,15 @@ namespace CookBook.CleanArch.Infrastructure.Migrations
                     b.ToTable("OutboxMessages");
                 });
 
-            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipe.RecipeIngredient", b =>
+            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipes.RecipeIngredient", b =>
                 {
-                    b.HasOne("CookBook.CleanArch.Domain.Ingredient.Ingredient", "Ingredient")
+                    b.HasOne("CookBook.CleanArch.Domain.Ingredients.Ingredient", "Ingredient")
                         .WithMany()
                         .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CookBook.CleanArch.Domain.Recipe.Recipe", null)
+                    b.HasOne("CookBook.CleanArch.Domain.Recipes.Recipe", null)
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -147,7 +147,7 @@ namespace CookBook.CleanArch.Infrastructure.Migrations
                     b.Navigation("Ingredient");
                 });
 
-            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipe.Recipe", b =>
+            modelBuilder.Entity("CookBook.CleanArch.Domain.Recipes.Recipe", b =>
                 {
                     b.Navigation("Ingredients");
                 });

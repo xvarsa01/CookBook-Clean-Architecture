@@ -29,7 +29,6 @@ public sealed class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
             );
 
         builder.Property(x => x.Duration)
-            .HasColumnType("INTEGER")
             .HasConversion(
                 value => value.Value.TotalSeconds,
                 value => RecipeDuration.CreateObject(TimeSpan.FromSeconds(value)).Value
@@ -37,6 +36,7 @@ public sealed class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
 
         builder.HasMany(x => x.Ingredients)
             .WithOne()
+            .HasForeignKey(x => x.RecipeId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -26,7 +26,8 @@ public sealed class RecipeIngredientConfiguration : IEntityTypeConfiguration<Rec
 
         builder.HasOne(x => x.Ingredient)
             .WithMany()
-            .HasForeignKey(x => x.IngredientId);
+            .HasForeignKey(x => x.IngredientId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 
