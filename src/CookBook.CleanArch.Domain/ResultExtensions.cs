@@ -75,6 +75,17 @@ public static class ResultExtensions
 
         return result;
     }
+    
+    public static async Task<Result<TIn>> Tap<TIn>(this Task<Result<TIn>> resultTask, Action<TIn> action)
+    {
+        var result = await resultTask;
+        if (result.IsSuccess)
+        {
+            action(result.Value);
+        }
+
+        return result;
+    }
 
     public static async Task<Result<TIn>> Tap<TIn>(this Task<Result<TIn>> resultTask, Func<Task> func)
     {

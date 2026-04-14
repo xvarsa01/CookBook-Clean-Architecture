@@ -22,6 +22,9 @@ public static class Installer
         if (options.UseInMemoryDb)
         {
             services.AddSingleton(typeof(IRepository<,>), typeof(InMemoryRepository<,>));
+            services.AddSingleton<InMemoryRecipeRepository>();
+            services.AddSingleton<IRecipeRepository>(sp => sp.GetRequiredService<InMemoryRecipeRepository>());
+            services.AddSingleton<IRepository<Recipe, RecipeId>>(sp => sp.GetRequiredService<InMemoryRecipeRepository>());
             return services;   
         }
         
@@ -29,6 +32,7 @@ public static class Installer
         services.AddScoped<IDbSeeder, DbSeeder>();
         services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
         services.AddScoped(typeof(IRepository<Recipe, RecipeId>), typeof(EfRecipeRepository));
+        services.AddScoped<IRecipeRepository, EfRecipeRepository>();
         
         services.AddSingleton<IDbContextFactory<CookBookDbContext>>(_ =>
             new DbContextSqLiteFactory(options.DatabaseFilePath));

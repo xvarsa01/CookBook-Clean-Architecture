@@ -15,10 +15,11 @@ public record RecipeIngredient : EntityBase<RecipeIngredientId>
     public IngredientAmount Amount { get; private set; }
     public MeasurementUnit Unit { get; private set; }
 
+    private Ingredient? _ingredient;
     public Ingredient Ingredient
     {
         get => GetIngredientForReadModelOnly();
-        private set => throw new InvalidOperationException();
+        private set => _ingredient = value;     // only for EF fixup/materialization
     }
 
     private RecipeIngredient(RecipeIngredientId id,  IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit) : base(id)
@@ -57,7 +58,7 @@ public record RecipeIngredient : EntityBase<RecipeIngredientId>
         Trace.TraceWarning(message);
 
 #if DEBUG
-        return null!;
+        return _ingredient ?? null!;
 #else
         throw new InvalidOperationException(message);
 #endif
