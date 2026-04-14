@@ -7,8 +7,11 @@ public static class QueryablePagingExtensions
         if (pagingOptions is null)
             return query;
 
+        var pageIndex = pagingOptions.PageIndex < 0 ? 0 : pagingOptions.PageIndex;
+        var pageSize = pagingOptions.PageSize <= 0 ? 10 : pagingOptions.PageSize;
+        
         return query
-            .Skip(pagingOptions.PageSize * pagingOptions.PageIndex)
-            .Take(pagingOptions.PageSize);
+            .Skip(pageSize * pageIndex)
+            .Take(pageSize);
     }
 }
