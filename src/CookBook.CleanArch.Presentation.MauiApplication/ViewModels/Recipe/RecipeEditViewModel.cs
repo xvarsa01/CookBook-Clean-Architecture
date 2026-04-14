@@ -17,7 +17,7 @@ public partial class RecipeEditViewModel(
     IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
-    : RecipeCreateEditBaseViewModel(mediator, navigationService, messengerService)
+    : RecipeFormBaseViewModel(mediator, navigationService, messengerService)
 {
     public RecipeId Id { get; set; } = new(Guid.Empty);
     

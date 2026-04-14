@@ -20,7 +20,7 @@ using MediatR;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
-public abstract partial class RecipeCreateEditBaseViewModel(
+public abstract partial class RecipeFormBaseViewModel(
     IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
@@ -172,7 +172,6 @@ public partial class RecipeFormModel : ObservableObject
 
     [ObservableProperty]
     public partial ObservableCollection<RecipeIngredientListModel> Ingredients { get; set; } = [];
-    
     
     [ObservableProperty]
     public partial ValidationResult? ValidationResults {get; set; } = new();

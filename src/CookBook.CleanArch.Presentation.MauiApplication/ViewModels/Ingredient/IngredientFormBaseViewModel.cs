@@ -10,7 +10,7 @@ using MediatR;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
-public abstract partial class IngredientCreateEditBaseViewModel(
+public abstract partial class IngredientFormBaseViewModel(
     IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)

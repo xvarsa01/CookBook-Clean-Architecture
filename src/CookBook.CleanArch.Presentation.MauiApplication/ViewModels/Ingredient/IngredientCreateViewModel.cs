@@ -10,7 +10,7 @@ public partial class IngredientCreateViewModel(
     IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
-    : IngredientCreateEditBaseViewModel(mediator, navigationService, messengerService)
+    : IngredientFormBaseViewModel(mediator, navigationService, messengerService)
 {
     [RelayCommand]
     private async Task SaveAsync()
