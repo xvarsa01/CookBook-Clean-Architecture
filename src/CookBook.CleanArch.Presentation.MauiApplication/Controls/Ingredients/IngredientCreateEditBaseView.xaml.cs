@@ -17,10 +17,10 @@ public partial class IngredientCreateEditBaseView
     
     // INGREDIENT MODEL
     public static readonly BindableProperty IngredientProperty =
-        BindableProperty.Create(nameof(Ingredient), typeof(IngredientDetailModel), typeof(IngredientCreateEditBaseView), default(IngredientDetailModel), BindingMode.TwoWay);
-    public IngredientDetailModel Ingredient
+        BindableProperty.Create(nameof(Ingredient), typeof(IngredientFormModel), typeof(IngredientCreateEditBaseView), default(IngredientFormModel), BindingMode.TwoWay);
+    public IngredientFormModel Ingredient
     {
-        get => (IngredientDetailModel)GetValue(IngredientProperty);
+        get => (IngredientFormModel)GetValue(IngredientProperty);
         set => SetValue(IngredientProperty, value);
     }
 

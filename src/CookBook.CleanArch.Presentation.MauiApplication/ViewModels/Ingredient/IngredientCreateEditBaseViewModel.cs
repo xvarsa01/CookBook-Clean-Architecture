@@ -21,7 +21,7 @@ public abstract partial class IngredientCreateEditBaseViewModel(
     private readonly IngredientDetailModelValidator IngredientValidator = new();
 
     [ObservableProperty]
-    public partial IngredientDetailModel Ingredient { get; set; } = IngredientDetailModel.Empty;
+    public partial IngredientFormModel Ingredient { get; set; } = IngredientFormModel.Empty;
 
     protected async Task<bool> ValidateAsync()
     {

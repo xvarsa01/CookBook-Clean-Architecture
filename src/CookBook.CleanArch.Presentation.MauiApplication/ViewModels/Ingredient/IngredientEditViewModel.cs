@@ -34,7 +34,7 @@ public partial class IngredientEditViewModel(
         var result = (await Mediator.Send(new GetIngredientDetailQuery(Id)));
         if (result.IsSuccess)
         {
-            Ingredient = new IngredientDetailModel(result.Value);
+            Ingredient = new IngredientFormModel(result.Value);
         }
     }
     

@@ -4,10 +4,10 @@ using FluentValidation;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Validations;
 
-public class IngredientDetailModelValidator : AbstractValidator<IngredientDetailModel>
+public class IngredientDetailModelValidator : AbstractValidator<IngredientFormModel>
 {
-    public static string IngredientNameProperty => nameof(IngredientDetailModel.Name);
-    public static string IngredientImageUrlProperty => nameof(IngredientDetailModel.ImageUrl);
+    public static string IngredientNameProperty => nameof(IngredientFormModel.Name);
+    public static string IngredientImageUrlProperty => nameof(IngredientFormModel.ImageUrl);
 
     public IngredientDetailModelValidator()
     {
@@ -16,6 +16,6 @@ public class IngredientDetailModelValidator : AbstractValidator<IngredientDetail
             .NotEmpty().WithMessage("The ingredient name must not be empty");
 
         RuleFor(x => x.ImageUrl)
-            .IsValidOptionalValueObject<IngredientDetailModel, ImageUrl>();
+            .IsValidOptionalValueObject<IngredientFormModel, ImageUrl>();
     }
 }

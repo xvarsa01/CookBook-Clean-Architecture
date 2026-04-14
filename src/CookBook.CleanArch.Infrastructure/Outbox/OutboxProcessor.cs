@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using CookBook.CleanArch.Domain.Shared;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -37,14 +38,14 @@ public class OutboxProcessor
                     continue;
                 }
 
-                var notification = System.Text.Json.JsonSerializer.Deserialize(message.Content, eventType) as INotification;
-                if (notification == null)
+                var domainEvent = System.Text.Json.JsonSerializer.Deserialize(message.Content, eventType) as IDomainEvent;
+                if (domainEvent == null)
                 {
-                    logger.LogWarning("Failed to deserialize outbox message {MessageId} as INotification", message.Id);
+                    logger.LogWarning("Failed to deserialize outbox message {MessageId} to {EventType}", message.Id, eventType.Name);
                     continue;
                 }
 
-                await publisher.Publish(notification, cancellationToken);
+                await publisher.Publish(domainEvent, cancellationToken);
 
                 message.DispatchedAt = DateTime.UtcNow;
             }
