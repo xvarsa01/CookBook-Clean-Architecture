@@ -4,21 +4,40 @@ using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using CookBook.CleanArch.Infrastructure.Migrator.SeedData;
+using Microsoft.Extensions.Logging;
 
 namespace CookBook.CleanArch.Infrastructure.Migrator;
 
-public sealed class DbSeeder(CookBookDbContext dbContext) : IDbSeeder
+public sealed class DbSeeder(CookBookDbContext dbContext, ILogger<DbSeeder> logger) : IDbSeeder
 {
     public void Seed()
     {
+        if (HasAnyData())
+        {
+            logger.LogInformation(
+                "Seeding skipped: database is not empty. " +
+                "If you want a clean database with demo seed data, set appsettings values: " +
+                "'CookBook:DB:RecreateDatabaseEachTime=true' and keep 'CookBook:DB:SeedDemoData=true'.");
+            return;
+        }
+        
         var ingredientByName = CreateIngredients();
         var recipes = CreateRecipes(ingredientByName);
 
         dbContext.AddRange(ingredientByName.Values);
         dbContext.SaveChanges();
+        dbContext.ChangeTracker.Clear();
 
         dbContext.AddRange(recipes);
         dbContext.SaveChanges();
+    }
+    
+    private bool HasAnyData()
+    {
+        // Any existing rows mean this DB has already been initialized/used.
+        return dbContext.Ingredients.Any()
+               || dbContext.Recipes.Any()
+               || dbContext.IngredientInRecipe.Any();
     }
 
     private static Dictionary<string, Ingredient> CreateIngredients()

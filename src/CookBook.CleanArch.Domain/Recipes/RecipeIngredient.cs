@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using CookBook.CleanArch.Domain.Ingredients;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes.Enums;
@@ -16,7 +17,7 @@ public record RecipeIngredient : EntityBase<RecipeIngredientId>
 
     public Ingredient Ingredient
     {
-        get ;
+        get => GetIngredientForReadModelOnly();
         private set => throw new InvalidOperationException();
     }
 
@@ -39,5 +40,26 @@ public record RecipeIngredient : EntityBase<RecipeIngredientId>
     {
         Amount = newAmount;
         Unit = newUnit;
+    }
+    
+    /// <summary>
+    /// EF navigation used for query translation only.
+    /// Accessing it in domain/business runtime code is invalid because it crosses aggregate boundaries.
+    /// In production this throws to fail fast; in debug it logs and returns null-forgiving value
+    /// to avoid blocking local debug/seeding flows.
+    /// </summary>
+    private Ingredient GetIngredientForReadModelOnly()
+    {
+        const string message =
+            "RecipeIngredient.Ingredient is an EF read-model navigation only. " +
+            "Use IngredientId in domain logic; load Ingredient explicitly in application queries.";
+
+        Trace.TraceWarning(message);
+
+#if DEBUG
+        return null!;
+#else
+        throw new InvalidOperationException(message);
+#endif
     }
 }
