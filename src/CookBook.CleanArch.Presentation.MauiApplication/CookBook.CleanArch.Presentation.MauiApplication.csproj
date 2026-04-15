@@ -63,34 +63,13 @@
 
 
     <ItemGroup>
-        <MauiXaml Update="Resources\Styles\ContentPageStyle.xaml">
+        <MauiXaml Update="Resources\Styles\*.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
-        <MauiXaml Update="Resources\Styles\LabelStyle.xaml">
+        <MauiXaml Update="Shells\*.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
-        <MauiXaml Update="Resources\Styles\ButtonStyle.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </MauiXaml>
-        <MauiXaml Update="Shells\AppShell.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </MauiXaml>
-        <MauiXaml Update="Resources\Styles\BorderStyle.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </MauiXaml>
-        <MauiXaml Update="Resources\Styles\Colors.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </MauiXaml>
-        <MauiXaml Update="Controls\Shared\ApplyFilterButton.xaml">
-          <SubType>Designer</SubType>
-        </MauiXaml>
-        <MauiXaml Update="Controls\Shared\PagerControl.xaml">
-          <SubType>Designer</SubType>
-        </MauiXaml>
-        <MauiXaml Update="Controls\Shared\PageSizeSelectorControl.xaml">
-          <SubType>Designer</SubType>
-        </MauiXaml>
-        <MauiXaml Update="Controls\Shared\SortDirectionControl.xaml">
+        <MauiXaml Update="Controls\Shared\*.xaml">
           <SubType>Designer</SubType>
         </MauiXaml>
     </ItemGroup>
@@ -113,20 +92,8 @@
             <AutoGen>true</AutoGen>
             <DependentUpon>%(Filename).resx</DependentUpon>
         </Compile>
-        <Compile Update="Controls\Shared\ApplyFilterButton.xaml.cs">
-          <DependentUpon>ApplyFilterButton.xaml</DependentUpon>
-          <SubType>Code</SubType>
-        </Compile>
-        <Compile Update="Controls\Shared\PagerControl.xaml.cs">
-          <DependentUpon>PagerControl.xaml</DependentUpon>
-          <SubType>Code</SubType>
-        </Compile>
-        <Compile Update="Controls\Shared\PageSizeSelectorControl.xaml.cs">
-          <DependentUpon>PageSizeSelectorControl.xaml</DependentUpon>
-          <SubType>Code</SubType>
-        </Compile>
-        <Compile Update="Controls\Shared\SortDirectionControl.xaml.cs">
-          <DependentUpon>SortDirectionControl.xaml</DependentUpon>
+        <Compile Update="Controls\Shared\*.xaml.cs">
+          <DependentUpon>%(Filename).xaml</DependentUpon>
           <SubType>Code</SubType>
         </Compile>
     </ItemGroup>
