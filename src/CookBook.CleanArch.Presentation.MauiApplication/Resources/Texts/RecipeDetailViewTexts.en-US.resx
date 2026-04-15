@@ -138,4 +138,10 @@
   <data name="IngredientsAmount_Label_StringFormat" xml:space="preserve">
     <value>{0} ingredients</value>
   </data>
+  <data name="Duration_MinutesOnly_StringFormat" xml:space="preserve">
+    <value>{0} min</value>
+  </data>
+  <data name="Duration_HoursAndMinutes_StringFormat" xml:space="preserve">
+    <value>{0} h {1} min</value>
+  </data>
 </root>
