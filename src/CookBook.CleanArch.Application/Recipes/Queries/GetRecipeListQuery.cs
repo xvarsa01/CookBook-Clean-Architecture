@@ -63,8 +63,8 @@ internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryH
         queryable = filter.SortParameter switch
         {
             RecipeSortParameter.Name => filter.IsSortAscending 
-                ? queryable.OrderBy(r => r.Name)
-                : queryable.OrderByDescending(r => r.Name),
+                ? queryable.OrderBy(r => ((string)r.Name).ToUpper()).ThenBy(r => r.Name)
+                : queryable.OrderByDescending(r => ((string)r.Name).ToUpper()).ThenByDescending(r => r.Name),
             
             RecipeSortParameter.Type => filter.IsSortAscending
                 ? queryable.OrderBy(r => r.Type)
@@ -82,7 +82,7 @@ internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryH
                 ? queryable.OrderBy(r => r.ModifiedAt)
                 : queryable.OrderByDescending(r => r.ModifiedAt),
             
-            _ => queryable.OrderBy(r => r.Name)
+            _ => queryable.OrderBy(r => ((string)r.Name).ToUpper()).ThenBy(r => r.Name)
         };
         return queryable;
     }
