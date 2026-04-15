@@ -21,7 +21,7 @@
             <VerticalStackLayout Grid.Row="0"
                                  Grid.Column="0"
                                  Spacing="10">
-                <Label Text="{x:Static t:RecipeEditViewTexts.Name_Label_Text}" />
+                <Label Text="{x:Static t:RecipeFormBaseControlTexts.Name_Label_Text}" />
 
                 <Entry HorizontalOptions="Fill"
                        Text="{Binding Source={x:Reference Root}, Path=Recipe.Name}">
@@ -46,7 +46,7 @@
                   ColumnDefinitions="Auto, *"
                   RowSpacing="10" ColumnSpacing="17">
                 <Label Grid.Row="0" Grid.Column="0"
-                       Text="{x:Static t:RecipeEditViewTexts.FoodType_Label_Text}" />
+                       Text="{x:Static t:RecipeFormBaseControlTexts.FoodType_Label_Text}" />
                 <Picker Grid.Row="1"
                         Grid.Column="0"
                         HorizontalOptions="Fill"
@@ -70,7 +70,7 @@
                                                 ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeRecipeTypeProperty}}" />
 
                 <Label Grid.Row="0" Grid.Column="1"
-                       Text="{x:Static t:RecipeEditViewTexts.Duration_Label_Text}" />
+                       Text="{x:Static t:RecipeFormBaseControlTexts.Duration_Label_Text}" />
                 <TimePicker Grid.Row="1" Grid.Column="1"
                             Time="{Binding Source={x:Reference Root}, Path=Recipe.Duration}"
                             Format="HH:mm">
@@ -94,7 +94,7 @@
                          Grid.Column="0"
                          Orientation="Vertical"
                          Spacing="10">
-                <Label Text="{x:Static t:RecipeEditViewTexts.ImageUrl_Label_Text}" />
+                <Label Text="{x:Static t:RecipeFormBaseControlTexts.ImageUrl_Label_Text}" />
 
                 <Entry Text="{Binding Source={x:Reference Root}, Path=Recipe.ImageUrl}">
                     <Entry.Behaviors>
@@ -127,7 +127,7 @@
               RowDefinitions="Auto, *"
               RowSpacing="30">
             <Label Grid.Row="0"
-                   Text="{x:Static t:RecipeEditViewTexts.Description_Label_Text}" />
+                   Text="{x:Static t:RecipeFormBaseControlTexts.Description_Label_Text}" />
 
             <Editor Grid.Row="1"
                     Text="{Binding Source={x:Reference Root}, Path=Recipe.Description}"
@@ -149,7 +149,7 @@
                 
                 <Label Grid.Column="0"
                        Grid.Row="0"
-                       Text="{x:Static t:RecipeEditViewTexts.Amount_Label_Text}" />
+                       Text="{x:Static t:RecipeFormBaseControlTexts.Amount_Label_Text}" />
                 <Entry Grid.Column="0"
                        Grid.Row="1"
                        Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.Amount}">
@@ -171,7 +171,7 @@
                 
                 <Label Grid.Column="1"
                        Grid.Row="0"
-                       Text="{x:Static t:RecipeEditViewTexts.Unit_Label_Text}" />
+                       Text="{x:Static t:RecipeFormBaseControlTexts.Unit_Label_Text}" />
                 <Picker Grid.Column="1"
                         Grid.Row="1"
                         ItemsSource="{Binding Source={x:Reference Root}, Path=Units}"
@@ -195,7 +195,7 @@
 
                 <Label Grid.Column="2"
                        Grid.Row="0"
-                       Text="{x:Static t:RecipeEditViewTexts.Name_Label_Text}" />
+                       Text="{x:Static t:RecipeFormBaseControlTexts.Name_Label_Text}" />
                 <Picker Grid.Column="2"
                         Grid.Row="1"
                         ItemsSource="{Binding Source={x:Reference Root}, Path=Ingredients}"
@@ -219,7 +219,7 @@
                 
                 <Button Grid.Column="3"
                         Grid.Row="1"
-                        Text="{x:Static t:RecipeEditViewTexts.AddIngredient_Button_Text}"
+                        Text="{x:Static t:RecipeFormBaseControlTexts.AddIngredient_Button_Text}"
                         Command="{Binding Source={x:Reference Root}, Path=AddIngredientCommand}"
                         Style="{StaticResource PrimaryButtonStyle}"
                         IsEnabled="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
@@ -266,7 +266,7 @@
                                        MinimumWidthRequest="100" />
                                 
                                 <Button HorizontalOptions="Start" VerticalOptions="Center"
-                                        Text="{x:Static t:RecipeEditViewTexts.RemoveIngredient_Button_Text}"
+                                        Text="{x:Static t:RecipeFormBaseControlTexts.RemoveIngredient_Button_Text}"
                                         Command="{Binding Source={x:Reference Root}, Path=RemoveIngredientCommand}"
                                         CommandParameter="{Binding .}"
                                         Style="{StaticResource ErrorButtonStyle}" />
@@ -284,12 +284,12 @@
                 <Label Grid.Column="0"
                        HorizontalOptions="End"
                        VerticalOptions="Center"
-                       Text="Add at least one ingredient to recipe" 
+                       Text="{x:Static t:RecipeFormBaseControlTexts.Save_Button_No_Ingredients_Warning_Text}" 
                        Style="{StaticResource ValidationErrorLabelStyle}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.Ingredients.Count, Converter={StaticResource RecipeContainsAtLeastOneIngredientConverter}}" />
 
                 <Button Grid.Column="1"
-                        Text="{x:Static t:RecipeEditViewTexts.Save_Button_Text}"
+                        Text="{x:Static t:RecipeFormBaseControlTexts.Save_Button_Text}"
                         Command="{Binding Source={x:Reference Root}, Path=SaveCommand}"
                         Style="{StaticResource PrimaryButtonStyle}"
                         IsEnabled="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, Converter={StaticResource ValidationResultToHasNoErrorConverter}}" />

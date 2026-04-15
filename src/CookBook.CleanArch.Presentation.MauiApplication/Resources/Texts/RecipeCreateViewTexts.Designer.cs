@@ -39,7 +39,7 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager(("CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts.RecipeEditViewTex" +
-                            "ts"), typeof(RecipeEditViewTexts).Assembly);
+                            "ts"), typeof(RecipeCreateViewTexts).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
