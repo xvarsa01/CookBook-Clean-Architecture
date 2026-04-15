@@ -104,15 +104,13 @@
         </CollectionView>
         
         <Grid Grid.Row="2">
-            <Button Grid.Row="0"
-                    Padding="12, 6"
+            <Button Margin="10,0"
+                    Padding="12,6"
                     HorizontalOptions="Start"
                     Text="{x:Static t:RecipeListViewTexts.Add_Button_Text}"
                     Command="{Binding GoToCreateCommand}"
-                    CornerRadius="5" FontFamily="MontserratMedium"
-                    FontSize="14"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    WidthRequest="200" />
+                    WidthRequest="300" />
 
             <controls:PagerControl ToFirstCommand="{Binding ToFirstPageCommand}"
                                    ToNextCommandCommand="{Binding ToNextPageCommand}"
