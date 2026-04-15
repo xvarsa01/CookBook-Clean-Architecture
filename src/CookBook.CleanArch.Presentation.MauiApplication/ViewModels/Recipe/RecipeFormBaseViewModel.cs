@@ -242,6 +242,16 @@ public class RecipeFormModelValidator : AbstractValidator<RecipeFormModel>
 
         RuleFor(x => x.ImageUrl)
             .IsValidOptionalValueObject<RecipeFormModel, ImageUrl>();
+        
+        RuleFor(x => x.Ingredients)
+            .Custom((ingredients, context) =>
+            {
+                if (ingredients.Count == 0)
+                {
+                    context.AddFailure("At least one ingredient must be added to the recipe");
+                }
+            });
+            
     }
 }
 

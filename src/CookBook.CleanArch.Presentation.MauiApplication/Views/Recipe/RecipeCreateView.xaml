@@ -22,6 +22,7 @@
         IngredientAmountNew="{Binding IngredientAmountNew}"
         SelectedNewIngredient="{Binding SelectedNewIngredient}"
         AddIngredientCommand="{Binding AddNewIngredientToRecipeCommand}"
+        RemoveIngredientCommand="{Binding RemoveIngredientCommand}"
         ValidateIngredientCommand="{Binding ValidateIngredientAmountNewPropertyCommand}" />
     
 </views:ContentPageBase>

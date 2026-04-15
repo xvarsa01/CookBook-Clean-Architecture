@@ -17,6 +17,7 @@
             <converters:FoodTypeToColorConverter x:Key="FoodTypeToColorConverter" />
             <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
             <converters:FoodTypeToStringConverter x:Key="FoodTypeToStringConverter" />
+            <converters:RecipeContainsAtLeastOneIngredientConverter x:Key="RecipeContainsAtLeastOneIngredientConverter" />
             <converters:RecipeIngredientsCountToStringConverter x:Key="RecipeIngredientsCountToStringConverter"/>
             <converters:UnitToStringConverter x:Key="UnitToStringConverter"/>
             <converters:NullableBoolToStringConverter x:Key="NullableBoolToStringConverter" />
