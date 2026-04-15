@@ -7,16 +7,16 @@ using CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe;
 
-public partial class RecipeCreateEditBaseView
+public partial class RecipeFormBaseControl
 {
-    public RecipeCreateEditBaseView()
+    public RecipeFormBaseControl()
     {
         InitializeComponent();
     }
     
     // ===== MODEL =====
     public static readonly BindableProperty RecipeProperty =
-        BindableProperty.Create(nameof(Recipe), typeof(RecipeFormModel), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(Recipe), typeof(RecipeFormModel), typeof(RecipeFormBaseControl));
     public RecipeFormModel Recipe
     {
         get => (RecipeFormModel)GetValue(RecipeProperty);
@@ -25,7 +25,7 @@ public partial class RecipeCreateEditBaseView
 
     // ===== COMMANDS =====
     public static readonly BindableProperty SaveCommandProperty =
-        BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
     public ICommand SaveCommand
     {
         get => (ICommand)GetValue(SaveCommandProperty);
@@ -33,7 +33,7 @@ public partial class RecipeCreateEditBaseView
     }
 
     public static readonly BindableProperty ValidatePropertyCommandProperty =
-        BindableProperty.Create(nameof(ValidatePropertyCommand), typeof(ICommand), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(ValidatePropertyCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
     public ICommand ValidatePropertyCommand
     {
         get => (ICommand)GetValue(ValidatePropertyCommandProperty);
@@ -41,7 +41,7 @@ public partial class RecipeCreateEditBaseView
     }
 
     public static readonly BindableProperty AddIngredientCommandProperty =
-        BindableProperty.Create(nameof(AddIngredientCommand), typeof(ICommand), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(AddIngredientCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
     public ICommand AddIngredientCommand
     {
         get => (ICommand)GetValue(AddIngredientCommandProperty);
@@ -49,7 +49,7 @@ public partial class RecipeCreateEditBaseView
     }
 
     public static readonly BindableProperty UpdateIngredientCommandProperty =
-        BindableProperty.Create(nameof(UpdateIngredientCommand), typeof(ICommand), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(UpdateIngredientCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
     public ICommand UpdateIngredientCommand
     {
         get => (ICommand)GetValue(UpdateIngredientCommandProperty);
@@ -57,7 +57,7 @@ public partial class RecipeCreateEditBaseView
     }
 
     public static readonly BindableProperty RemoveIngredientCommandProperty =
-        BindableProperty.Create(nameof(RemoveIngredientCommand), typeof(ICommand), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(RemoveIngredientCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
     public ICommand RemoveIngredientCommand
     {
         get => (ICommand)GetValue(RemoveIngredientCommandProperty);
@@ -65,7 +65,7 @@ public partial class RecipeCreateEditBaseView
     }
 
     public static readonly BindableProperty ValidateIngredientCommandProperty =
-        BindableProperty.Create(nameof(ValidateIngredientCommand), typeof(ICommand), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(ValidateIngredientCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
     public ICommand ValidateIngredientCommand
     {
         get => (ICommand)GetValue(ValidateIngredientCommandProperty);
@@ -74,7 +74,7 @@ public partial class RecipeCreateEditBaseView
 
     // ===== DATA =====
     public static readonly BindableProperty IngredientsProperty =
-        BindableProperty.Create(nameof(Ingredients), typeof(ObservableCollection<IngredientListResponse>), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(Ingredients), typeof(ObservableCollection<IngredientListResponse>), typeof(RecipeFormBaseControl));
     public ObservableCollection<IngredientListResponse> Ingredients
     {
         get => (ObservableCollection<IngredientListResponse>)GetValue(IngredientsProperty);
@@ -82,7 +82,7 @@ public partial class RecipeCreateEditBaseView
     }
     
     public static readonly BindableProperty UnitsProperty =
-        BindableProperty.Create(nameof(Units), typeof(List<MeasurementUnit>), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(Units), typeof(List<MeasurementUnit>), typeof(RecipeFormBaseControl));
     public List<MeasurementUnit> Units
     {
         get => (List<MeasurementUnit>)GetValue(UnitsProperty);
@@ -90,14 +90,14 @@ public partial class RecipeCreateEditBaseView
     }
 
     public static readonly BindableProperty FoodTypesProperty =
-        BindableProperty.Create(nameof(FoodTypes), typeof(List<RecipeType>), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(FoodTypes), typeof(List<RecipeType>), typeof(RecipeFormBaseControl));
     public List<RecipeType> FoodTypes
     {
         get => (List<RecipeType>)GetValue(FoodTypesProperty);
         set => SetValue(FoodTypesProperty, value);
     }
     public static readonly BindableProperty IngredientAmountNewProperty =
-        BindableProperty.Create(nameof(IngredientAmountNew), typeof(RecipeIngredientListModel), typeof(RecipeCreateEditBaseView));
+        BindableProperty.Create(nameof(IngredientAmountNew), typeof(RecipeIngredientListModel), typeof(RecipeFormBaseControl));
     public RecipeIngredientListModel IngredientAmountNew
     {
         get => (RecipeIngredientListModel)GetValue(IngredientAmountNewProperty);
@@ -105,7 +105,7 @@ public partial class RecipeCreateEditBaseView
     }
 
     public static readonly BindableProperty SelectedNewIngredientProperty =
-        BindableProperty.Create(nameof(SelectedNewIngredient), typeof(IngredientListResponse), typeof(RecipeCreateEditBaseView), null, BindingMode.TwoWay);
+        BindableProperty.Create(nameof(SelectedNewIngredient), typeof(IngredientListResponse), typeof(RecipeFormBaseControl), null, BindingMode.TwoWay);
     public IngredientListResponse? SelectedNewIngredient
     {
         get => (IngredientListResponse?)GetValue(SelectedNewIngredientProperty);

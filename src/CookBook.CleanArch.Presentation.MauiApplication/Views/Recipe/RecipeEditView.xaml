@@ -12,7 +12,7 @@
                        Style="{StaticResource ContentPageStyle}"
                        x:DataType="viewModels:RecipeEditViewModel">
     
-    <recipe:RecipeCreateEditBaseView
+    <recipe:RecipeFormBaseControl
         Recipe="{Binding Recipe}"
         SaveCommand="{Binding SaveRecipeCommand}"
         ValidatePropertyCommand="{Binding ValidatePropertyCommand}"
