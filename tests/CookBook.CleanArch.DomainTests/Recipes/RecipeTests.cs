@@ -4,14 +4,19 @@ using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.DomainTests.RecipeRoot;
+namespace CookBook.CleanArch.DomainTests.Recipes;
 
-public class RecipeRootRecipeTests
+public class RecipeTests
 {
+    
+    private const string ValidName = "Cappuccino";
+    private const string ValidDescription = "with oak mil";
+    private const string ValidImageUrl = "https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg";
+    private const string NewValidImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Cappuccino_in_original.jpg/1920px-Cappuccino_in_original.jpg";
+    
     private static IReadOnlyCollection<RecipeCreateIngredient> DefaultIngredients() =>
     [
-        new RecipeCreateIngredient(
-            new IngredientId(Guid.NewGuid()),
+        new(new IngredientId(Guid.NewGuid()),
             IngredientAmount.CreateObject(100).Value,
             MeasurementUnit.Ml)
     ];
@@ -20,13 +25,13 @@ public class RecipeRootRecipeTests
     public void Creating_Recipe_With_Valid_Initial_State_Should_Create()
     {
         // Act
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
         
         // Assert
         Assert.NotEqual(Guid.Empty, recipe.Id);
-        Assert.Equal("Cappuccino", recipe.Name.Value);
-        Assert.Equal("with oak mil", recipe.Description);
-        Assert.Equal("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg", recipe.ImageUrl?.Value);
+        Assert.Equal(ValidName, recipe.Name.Value);
+        Assert.Equal(ValidDescription, recipe.Description);
+        Assert.Equal(ValidImageUrl, recipe.ImageUrl?.Value);
         Assert.Single(recipe.Ingredients);
     }
     
@@ -34,11 +39,11 @@ public class RecipeRootRecipeTests
     public void Creating_Recipe_WithOut_DescriptionAndImage_Should_Create()
     {
         // Act
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, null, null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, null, null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
         
         // Assert
         Assert.NotEqual(Guid.Empty, recipe.Id);
-        Assert.Equal("Cappuccino", recipe.Name.Value);
+        Assert.Equal(ValidName, recipe.Name.Value);
         Assert.Null(recipe.Description);
         Assert.Null(recipe.ImageUrl);
         Assert.Single(recipe.Ingredients);
@@ -48,8 +53,8 @@ public class RecipeRootRecipeTests
     public void Creating_Recipe_Without_Ingredients_Should_ReturnFailure()
     {
         var result = Recipe.Create(
-            RecipeName.CreateObject("Cappuccino").Value,
-            "with oak mil",
+            RecipeName.CreateObject(ValidName).Value,
+            ValidDescription,
             null,
             RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value,
             RecipeType.Drink,
@@ -94,7 +99,7 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeName_Should_Update_Name()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         recipe.UpdateName(RecipeName.CreateObject("New").Value);
 
@@ -104,7 +109,7 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeName_ToEmpty_Should_ReturnFailure()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         var nameResult = RecipeName.CreateObject("");
 
@@ -114,7 +119,7 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeName_ToShort_Should_ReturnFailure()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         var nameResult = RecipeName.CreateObject("AB");
 
@@ -124,18 +129,18 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeName_To_Same_Value_Should_Not_Change()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
-        recipe.UpdateName(RecipeName.CreateObject("Cappuccino").Value);
+        recipe.UpdateName(RecipeName.CreateObject(ValidName).Value);
 
-        Assert.Equal("Cappuccino", recipe.Name.Value);
+        Assert.Equal(ValidName, recipe.Name.Value);
     }
     
     
     [Fact]
     public void Updating_RecipeDescription_Should_Update_Description()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, null, null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Caffe, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, null, null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Caffe, DefaultIngredients()).Value;
 
         recipe.UpdateDescription("New");
 
@@ -145,7 +150,7 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeDescription_To_Same_Value_Should_Not_Change()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "Same", null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Caffe, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, "Same", null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Caffe, DefaultIngredients()).Value;
 
         recipe.UpdateDescription("Same");
 
@@ -156,28 +161,28 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeImageUrl_Should_Update_ImageUrl()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
-        recipe.UpdateRest(ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Cappuccino_in_original.jpg/1920px-Cappuccino_in_original.jpg").Value, null, null);
+        recipe.UpdateRest(ImageUrl.CreateObject(NewValidImageUrl).Value, null, null);
 
-        Assert.Equal("https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Cappuccino_in_original.jpg/1920px-Cappuccino_in_original.jpg", recipe.ImageUrl?.Value);
+        Assert.Equal(NewValidImageUrl, recipe.ImageUrl?.Value);
     }
     
     [Fact]
     public void Updating_RecipeImageUrl_To_Same_Value_Should_Not_Change()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
-        recipe.UpdateRest(ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, null, null);
+        recipe.UpdateRest(ImageUrl.CreateObject(ValidImageUrl).Value, null, null);
 
-        Assert.Equal("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg", recipe.ImageUrl?.Value);
+        Assert.Equal(ValidImageUrl, recipe.ImageUrl?.Value);
     }
     
     
     [Fact]
     public void Updating_RecipeDuration_Should_Update_Duration()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         recipe.UpdateRest(null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value, null);
 
@@ -187,7 +192,7 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeDuration_To_Same_Value_Should_Not_Change()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         recipe.UpdateRest(null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, null);
 
@@ -197,7 +202,7 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeDuration_To_Negative_Value_Should_ReturnFailure()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         var durationResult = RecipeDuration.CreateObject(TimeSpan.FromMinutes(-1));
 
@@ -208,7 +213,7 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeType_Should_Update_Type()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         recipe.UpdateRest(null, null, RecipeType.Dessert);
 
@@ -218,7 +223,7 @@ public class RecipeRootRecipeTests
     [Fact]
     public void Updating_RecipeType_To_Same_Value_Should_Not_Change()
     {
-        var recipe = Recipe.Create(RecipeName.CreateObject("Cappuccino").Value, "with oak mil", ImageUrl.CreateObject("https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg").Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         recipe.UpdateRest(null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink);
 

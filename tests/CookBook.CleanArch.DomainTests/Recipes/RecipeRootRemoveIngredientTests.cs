@@ -2,9 +2,8 @@
 using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
-using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.DomainTests.RecipeRoot;
+namespace CookBook.CleanArch.DomainTests.Recipes;
 
 public class RecipeRootRemoveIngredientTests
 {

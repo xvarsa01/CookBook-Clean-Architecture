@@ -22,7 +22,7 @@ public static class RecipeTestSeeds
             imageUrl: ImageUrl.CreateObject("http://a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
-            ingredients: SingleIngredient()).Value;
+            ingredients: new List<RecipeCreateIngredient>()).Value;
     }
 
     public static Recipe MinimalisticRecipe()
@@ -48,8 +48,8 @@ public static class RecipeTestSeeds
                     MeasurementUnit.Ml)
             ]).Value;
     }
-
-    public static Recipe RecipeWithMultipleIngredients()
+    
+    public static Recipe RecipeWithTwoIngredients()
     {
         return Recipe.Create(name: RecipeName.CreateObject("recipe with multiple ingredient").Value,
             description: null,
@@ -83,7 +83,7 @@ public static class RecipeTestSeeds
             ]).Value;
     }
     
-    public static Recipe RecipeFullWith10Ingredients()
+    public static Recipe RecipeFullWithMaximumIngredients()
     {
         return Recipe.Create(name: RecipeName.CreateObject("recipe with 10 ingredient").Value,
             description: null,
@@ -167,7 +167,9 @@ public static class RecipeTestSeeds
         EmptyRecipe(),
         MinimalisticRecipe(),
         RecipeWithSingleIngredient(),
-        RecipeWithMultipleIngredients(),
+        RecipeWithTwoIngredients(),
+        RecipeWithDuplicateIngredientEntries(),
+        RecipeFullWithMaximumIngredients(),
         RecipeForTestOfDeleteWithoutIngredient(),
         RecipeForTestOfDeleteWithIngredient(),
         RecipeForTestOfUpdate(),

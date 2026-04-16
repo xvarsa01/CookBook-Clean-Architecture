@@ -1,12 +1,12 @@
-﻿using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+﻿using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
-using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.DomainTests.RecipeRoot;
+namespace CookBook.CleanArch.DomainTests.Recipes;
 
-public class RecipeRootAddIngredientTests
+public class RecipeIngredientTests
 {
     private static Recipe BuildRecipeWithOneIngredient()
     {
@@ -20,41 +20,6 @@ public class RecipeRootAddIngredientTests
 
         return Recipe.Create(
             RecipeName.CreateObject("Recipe one ingredient").Value,
-            null,
-            null,
-            RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            RecipeType.Other,
-            ingredients).Value;
-    }
-
-    private static Recipe BuildRecipeWithTwoIngredients()
-    {
-        var ingredients = new List<RecipeCreateIngredient>
-        {
-            new(new IngredientId(Guid.NewGuid()), IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml),
-            new(new IngredientId(Guid.NewGuid()), IngredientAmount.CreateObject(1).Value, MeasurementUnit.Pieces)
-        };
-
-        return Recipe.Create(
-            RecipeName.CreateObject("Recipe two ingredients").Value,
-            null,
-            null,
-            RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            RecipeType.Other,
-            ingredients).Value;
-    }
-
-    private static Recipe BuildRecipeWithTenIngredients()
-    {
-        var ingredients = Enumerable.Range(0, 10)
-            .Select(_ => new RecipeCreateIngredient(
-                new IngredientId(Guid.NewGuid()),
-                IngredientAmount.CreateObject(100).Value,
-                MeasurementUnit.Ml))
-            .ToList();
-
-        return Recipe.Create(
-            RecipeName.CreateObject("Recipe ten ingredients").Value,
             null,
             null,
             RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
@@ -105,7 +70,7 @@ public class RecipeRootAddIngredientTests
     public void AddingIngredients_With_Positive_Amount_To_NonEmpty_Recipe_Should_Add()
     {
         // Arrange
-        var recipe = BuildRecipeWithTwoIngredients();
+        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
         var ingredientId = new IngredientId(Guid.NewGuid());
         
         // Act
@@ -120,7 +85,7 @@ public class RecipeRootAddIngredientTests
     public void AddingIngredients_With_Positive_Amount_To_Full_Recipe_Should_ReturnFailure()
     {
         // Arrange
-        var recipe = BuildRecipeWithTenIngredients();
+        var recipe = RecipeTestSeeds.RecipeFullWithMaximumIngredients();
         var ingredientId = new IngredientId(Guid.NewGuid());
         
         // Act & Assert
