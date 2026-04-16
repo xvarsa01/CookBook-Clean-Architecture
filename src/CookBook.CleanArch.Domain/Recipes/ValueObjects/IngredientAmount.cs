@@ -15,8 +15,8 @@ public record IngredientAmount : IValueObject<decimal>, IValueObjectFactory<Ingr
     public static Result<IngredientAmount> CreateObject(decimal amount)
     {
         return amount <= 0
-            ? Result.Invalid<IngredientAmount>(ValueObjectsErrors.IngredientAmountNotPositiveError())
-            : Result.Ok(new IngredientAmount(amount));
+            ? Result.Failure<IngredientAmount>(ValueObjectsErrors.IngredientAmountNotPositiveError())
+            : Result.Success(new IngredientAmount(amount));
     }
     
     public static implicit operator decimal(IngredientAmount amount) => amount.Value;

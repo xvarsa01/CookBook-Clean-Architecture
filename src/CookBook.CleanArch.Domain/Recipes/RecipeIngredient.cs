@@ -33,7 +33,7 @@ public record RecipeIngredient : EntityBase<RecipeIngredientId>
     internal static Result<RecipeIngredient> Create(IngredientId ingredientId, RecipeId recipeId, IngredientAmount amount, MeasurementUnit unit) 
     {
         var id = new RecipeIngredientId(Guid.NewGuid());
-        return Result.Ok(new RecipeIngredient(id, ingredientId, recipeId, amount, unit));
+        return Result.Success(new RecipeIngredient(id, ingredientId, recipeId, amount, unit));
     }
 
 

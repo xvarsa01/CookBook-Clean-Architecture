@@ -18,13 +18,13 @@ internal sealed class UpdateRecipeIngredientCommandHandler(IRepository<Recipe, R
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return Result.NotFound(RecipeErrors.RecipeNotFoundError(request.RecipeId));
+            return Result.Failure(RecipeErrors.RecipeNotFoundError(request.RecipeId));
         }
         
         var result = recipe.UpdateIngredientEntry(request.Request.EntryId, request.Request.NewAmount, request.Request.NewUnit);
         if (result.IsFailure)
-            return Result.Invalid(result.Error);
+            return Result.Failure(result.Error);
         
-        return Result.Ok();
+        return Result.Success();
     }
 }

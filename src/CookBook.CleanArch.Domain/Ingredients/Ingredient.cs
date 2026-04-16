@@ -24,24 +24,24 @@ public record Ingredient : AggregateRootBase<IngredientId>
     public static Result<Ingredient> Create(string name, string? description, ImageUrl? imageUrl)
     {
         if (string.IsNullOrEmpty(name))
-            return Result.Invalid<Ingredient>(IngredientErrors.IngredientNameEmptyError());
+            return Result.Failure<Ingredient>(IngredientErrors.IngredientNameEmptyError());
 
         var id = new IngredientId(Guid.NewGuid());
         var entity = new Ingredient(id, name, description, imageUrl);
-        return Result.Ok(entity);
+        return Result.Success(entity);
     }
 
     public Result UpdateName(string newName)
     {
         if (string.IsNullOrEmpty(newName))
-            return Result.Invalid(IngredientErrors.IngredientNameEmptyError());
+            return Result.Failure(IngredientErrors.IngredientNameEmptyError());
         
         if (Name != newName)
         {
             Name = newName;
         }
         
-        return Result.Ok();
+        return Result.Success();
     }
     
     public Result UpdateDescription(string newDescription)
@@ -51,7 +51,7 @@ public record Ingredient : AggregateRootBase<IngredientId>
             Description = newDescription;
         }
         
-        return Result.Ok();
+        return Result.Success();
     }
     
     public Result UpdateImageUrl(ImageUrl newUrl)
@@ -60,6 +60,6 @@ public record Ingredient : AggregateRootBase<IngredientId>
         {
             ImageUrl = newUrl;
         }
-        return Result.Ok();
+        return Result.Success();
     }
 }

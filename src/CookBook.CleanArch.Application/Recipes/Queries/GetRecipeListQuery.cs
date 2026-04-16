@@ -32,7 +32,7 @@ internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryH
             PageIndex = request.PagingOptions?.PageIndex ?? 0,
             PageSize = request.PagingOptions?.PageSize ?? items.Count
         };
-        return Result.Ok(result);
+        return Result.Success(result);
     }
 
     private static IQueryable<Recipe> ApplyFilter(RecipeFilter filter, IQueryable<Recipe> queryable)

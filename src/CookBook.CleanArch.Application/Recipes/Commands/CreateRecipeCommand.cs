@@ -24,7 +24,7 @@ internal sealed class CreateRecipeCommandHandler(
             var ingredientExists = await ingredientRepository.GetByIdAsync(ingredientRequest.IngredientId);
             if (ingredientExists is null)
             {
-                return Result.NotFound<RecipeId>(IngredientErrors.IngredientNotFoundError(ingredientRequest.IngredientId));
+                return Result.Failure<RecipeId>(IngredientErrors.IngredientNotFoundError(ingredientRequest.IngredientId));
             }
 
             ingredients.Add(new RecipeCreateIngredient(
@@ -43,9 +43,9 @@ internal sealed class CreateRecipeCommandHandler(
         );
         
         if (result.IsFailure)
-            return Result.Invalid<RecipeId>(result.Error);
+            return Result.Failure<RecipeId>(result.Error);
         
         var createdRecipeId = repository.Add(result.Value);
-        return Result.Ok(createdRecipeId);
+        return Result.Success(createdRecipeId);
     }
 }

@@ -17,13 +17,13 @@ internal sealed class RemoveIngredientFromRecipeCommandHandler(IRepository<Recip
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return Result.NotFound(RecipeErrors.RecipeNotFoundError(request.RecipeId));
+            return Result.Failure(RecipeErrors.RecipeNotFoundError(request.RecipeId));
         }
         
         var result = recipe.RemoveIngredientByEntryId(request.EntryId);
         if (result.IsFailure)
-            return Result.Invalid(result.Error);
+            return Result.Failure(result.Error);
             
-        return Result.Ok();
+        return Result.Success();
     }
 }

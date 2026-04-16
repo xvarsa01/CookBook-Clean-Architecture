@@ -30,15 +30,13 @@ public class Result
         _error = error;
     }
 
-    public static Result Ok() => new(true, null);
-    public static Result NotFound(Error errorMessage) => new(false, errorMessage);
-    public static Result Invalid(Error errorMessage) => new(false, errorMessage);
-    public static Result<T> Ok<T>(T value) => new(true, value, null);
-    public static Result<T> NotFound<T>(Error errorMessage) => new(false, default, errorMessage);
-    public static Result<T> Invalid<T>(Error errorMessage) => new(false, default, errorMessage);
+    public static Result Success() => new(true, null);
+    public static Result Failure(Error errorMessage) => new(false, errorMessage);
+    public static Result<T> Success<T>(T value) => new(true, value, null);
+    public static Result<T> Failure<T>(Error errorMessage) => new(false, default, errorMessage);
 
     public static Result<TValue> Create<TValue>(TValue? value) =>
         value is not null 
-            ? Ok(value)
-            : Invalid<TValue>(Error.NullValue);
+            ? Success(value)
+            : Failure<TValue>(Error.NullValue);
 }

@@ -9,7 +9,7 @@ public static class ResultExtensions
 
         return predicate(result.Value)
             ? result
-            : Result.Invalid<T>(errorMessage);
+            : Result.Failure<T>(errorMessage);
     }
 
     public static Result<T> Ensure<T>(this Result<T> result, Func<T, bool> predicate, Func<T, Error> errorFactory)
@@ -19,7 +19,7 @@ public static class ResultExtensions
 
         return predicate(result.Value)
             ? result
-            : Result.Invalid<T>(errorFactory(result.Value));
+            : Result.Failure<T>(errorFactory(result.Value));
     }
 
     public static async Task<Result<T>> Ensure<T>(this Task<Result<T>> resultTask, Func<T, bool> predicate, Func<T, Error> errorFactory)
@@ -31,13 +31,13 @@ public static class ResultExtensions
     public static async Task<Result<TIn>> EnsureNotNull<TIn>(this Task<TIn?> objTask, Error? error = null)
     {
         var obj = await objTask;
-        return obj is null ? Result.Invalid<TIn>(error ?? Error.NullValue) : Result.Ok(obj);
+        return obj is null ? Result.Failure<TIn>(error ?? Error.NullValue) : Result.Success(obj);
     }
 
     public static async Task<Result<TIn>> EnsureNotNullNotFound<TIn>(this Task<TIn?> objTask, Error error)
     {
         var obj = await objTask;
-        return obj is null ? Result.NotFound<TIn>(error) : Result.Ok(obj);
+        return obj is null ? Result.Failure<TIn>(error) : Result.Success(obj);
     }
 
     public static Result<TIn> Tap<TIn>(this Result<TIn> result, Action<TIn> action)
@@ -69,7 +69,7 @@ public static class ResultExtensions
             var actionResult = action(result.Value);
             if (actionResult.IsFailure)
             {
-                return Result.Invalid<TIn>(actionResult.Error);
+                return Result.Failure<TIn>(actionResult.Error);
             }
         }
 
@@ -101,29 +101,29 @@ public static class ResultExtensions
     public static Result<TOut> Map<TIn, TOut>(this Result<TIn> result, Func<TIn, TOut> mappingFunc)
     {
         return result.IsSuccess
-            ? Result.Ok(mappingFunc(result.Value))
-            : Result.Invalid<TOut>(result.Error);
+            ? Result.Success(mappingFunc(result.Value))
+            : Result.Failure<TOut>(result.Error);
     }
     
     public static Result<TOut> Bind<TIn, TOut>(this Result<TIn> result, Func<TIn, Result<TOut>> func)
     {
         return result.IsSuccess
             ? func(result.Value)
-            : Result.Invalid<TOut>(result.Error);
+            : Result.Failure<TOut>(result.Error);
     }
 
     public static Result ToResult<TIn>(this Result<TIn> result)
     {
         return result.IsSuccess
-            ? Result.Ok()
-            : Result.Invalid(result.Error);
+            ? Result.Success()
+            : Result.Failure(result.Error);
     }
 
     public static async Task<Result<TOut>> Bind<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, Task<Result<TOut>>> func)
     {
         var result = await resultTask;
         if (result.IsFailure)
-            return Result.Invalid<TOut>(result.Error);
+            return Result.Failure<TOut>(result.Error);
 
         return await func(result.Value);
     }

@@ -15,8 +15,8 @@ public record RecipeName : IValueObject<string>, IValueObjectFactory<RecipeName,
     public static Result<RecipeName> CreateObject(string value)
     {
         return string.IsNullOrWhiteSpace(value) || value.Length < 3
-            ? Result.Invalid<RecipeName>(ValueObjectsErrors.RecipeNameNotInvalidError())
-            : Result.Ok(new RecipeName(value));
+            ? Result.Failure<RecipeName>(ValueObjectsErrors.RecipeNameNotInvalidError())
+            : Result.Success(new RecipeName(value));
     }
 
     public static implicit operator string(RecipeName name) => name.Value;

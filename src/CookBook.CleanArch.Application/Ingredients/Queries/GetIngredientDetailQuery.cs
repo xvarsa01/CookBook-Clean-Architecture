@@ -25,7 +25,7 @@ internal class GetIngredientDetailQueryHandler(ICookBookDbContext dbContext) : I
             .FirstOrDefaultAsync(cancellationToken);
         
         return ingredient == null
-            ? Result.NotFound<IngredientDetailResponse>(IngredientErrors.IngredientNotFoundError(request.Id))
-            : Result.Ok(ingredient);
+            ? Result.Failure<IngredientDetailResponse>(IngredientErrors.IngredientNotFoundError(request.Id))
+            : Result.Success(ingredient);
     }
 }

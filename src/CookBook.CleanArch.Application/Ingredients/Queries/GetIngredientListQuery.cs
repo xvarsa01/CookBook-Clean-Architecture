@@ -34,7 +34,7 @@ internal class GetIngredientListQueryHandler (ICookBookDbContext dbContext) : IQ
             PageSize = request.PagingOptions?.PageSize ?? items.Count
         };
         
-        return Result.Ok(result);
+        return Result.Success(result);
     }
 
     private static IQueryable<Ingredient> ApplyFilter(IngredientFilter filter, IQueryable<Ingredient> queryable)

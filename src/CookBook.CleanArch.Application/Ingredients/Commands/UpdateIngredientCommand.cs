@@ -18,13 +18,13 @@ internal sealed class UpdateIngredientCommandHandler(IRepository<Ingredient, Ing
         var result = await repository.GetByIdAsync(request.Request.Id)
             .EnsureNotNullNotFound(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Request.Id)))
             .Tap(ingredient => request.Request.Name is null
-                ? Result.Ok()
+                ? Result.Success()
                 : ingredient.UpdateName(request.Request.Name))
             .Tap(ingredient => request.Request.Description is null
-                ? Result.Ok()
+                ? Result.Success()
                 : ingredient.UpdateDescription(request.Request.Description))
             .Tap(ingredient => request.Request.ImageUrl is null
-                ? Result.Ok()
+                ? Result.Success()
                 : ingredient.UpdateImageUrl(request.Request.ImageUrl));
 
         return result.Map(ingredient => ingredient.Id);

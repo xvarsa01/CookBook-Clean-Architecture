@@ -48,7 +48,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         var id = new RecipeId(Guid.NewGuid());
 
         if (ingredients.Count == 0)
-            return Result.Invalid<Recipe>(RecipeErrors.RecipeMinimumNumberOfIngredientsError(id));
+            return Result.Failure<Recipe>(RecipeErrors.RecipeMinimumNumberOfIngredientsError(id));
 
         var recipe = new Recipe(id, name, description, imageUrl, duration, type);
 
@@ -57,26 +57,26 @@ public record Recipe : AggregateRootBase<RecipeId>
             var addResult = recipe.AddIngredient(ingredient.IngredientId, ingredient.Amount, ingredient.Unit);
             if (addResult.IsFailure)
             {
-                return Result.Invalid<Recipe>(addResult.Error);
+                return Result.Failure<Recipe>(addResult.Error);
             }
         }
 
-        return Result.Ok(recipe);
+        return Result.Success(recipe);
     }
     
     public Result<RecipeIngredientId> AddIngredient(IngredientId ingredientId, IngredientAmount amount, MeasurementUnit unit)
     {
         if (_ingredients.Count >= MaxIngredients)
-            return Result.Invalid<RecipeIngredientId>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
+            return Result.Failure<RecipeIngredientId>(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
         
         var ingredientInRecipeResult = RecipeIngredient.Create(ingredientId, Id, amount, unit);
         
         if (ingredientInRecipeResult.IsFailure)
-            return Result.Invalid<RecipeIngredientId>(ingredientInRecipeResult.Error);
+            return Result.Failure<RecipeIngredientId>(ingredientInRecipeResult.Error);
         
         _ingredients.Add(ingredientInRecipeResult.Value);
         
-        return Result.Ok(ingredientInRecipeResult.Value.Id);
+        return Result.Success(ingredientInRecipeResult.Value.Id);
     }
 
     public Result RemoveIngredientsByIngredientId(IngredientId ingredientId)
@@ -84,14 +84,14 @@ public record Recipe : AggregateRootBase<RecipeId>
         var removedCount = _ingredients.Count(i => i.IngredientId == ingredientId);
 
         if (removedCount == 0)
-            return Result.Invalid(RecipeErrors.RecipeIngredientByIdNotFoundError(ingredientId, Id));
+            return Result.Failure(RecipeErrors.RecipeIngredientByIdNotFoundError(ingredientId, Id));
 
         if (_ingredients.Count - removedCount < 1)
-            return Result.Invalid(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
+            return Result.Failure(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
 
         _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
         
-        return Result.Ok();
+        return Result.Success();
     }
     
     public Result RemoveIngredientByEntryId(RecipeIngredientId entryId)
@@ -99,13 +99,13 @@ public record Recipe : AggregateRootBase<RecipeId>
         var idx = _ingredients.FindIndex(i => i.Id == entryId);
 
         if (idx < 0)
-            return Result.Invalid(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(entryId, Id));
+            return Result.Failure(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(entryId, Id));
 
         if (_ingredients.Count == 1)
-            return Result.Invalid(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
+            return Result.Failure(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
         
         _ingredients.RemoveAt(idx);
-        return Result.Ok();
+        return Result.Success();
     }
 
     public Result UpdateIngredientEntry(RecipeIngredientId entryId, IngredientAmount newAmount, MeasurementUnit newUnit)
@@ -113,10 +113,10 @@ public record Recipe : AggregateRootBase<RecipeId>
         var ingredient = _ingredients.FirstOrDefault(i => i.Id == entryId);
 
         if (ingredient is null)
-            return Result.Invalid(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(entryId, Id));
+            return Result.Failure(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(entryId, Id));
 
         ingredient.Update(newAmount, newUnit);
-        return Result.Ok();
+        return Result.Success();
     }
 
     public Result UpdateName(RecipeName newName)
@@ -127,7 +127,7 @@ public record Recipe : AggregateRootBase<RecipeId>
             Name = newName;
         }
         
-        return Result.Ok();
+        return Result.Success();
     }
     
     public Result UpdateDescription(string newDescription)
@@ -138,7 +138,7 @@ public record Recipe : AggregateRootBase<RecipeId>
             Description = newDescription;
         }
         
-        return Result.Ok();
+        return Result.Success();
     }
     
     public Result UpdateRest(ImageUrl? newUrl, RecipeDuration? newDuration, RecipeType? newType)
@@ -158,12 +158,12 @@ public record Recipe : AggregateRootBase<RecipeId>
             Type = newType.Value;
         }
         
-        return Result.Ok();
+        return Result.Success();
     }
 
     public Result Delete()
     {
         RaiseEvent(new RecipeDeletedEvent(Id));
-        return Result.Ok();
+        return Result.Success();
     }
 }

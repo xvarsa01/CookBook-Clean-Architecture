@@ -17,7 +17,7 @@ internal sealed class DeleteIngredientCommandHandler(IRepository<Ingredient, Ing
     {
         return (await repository.GetByIdAsync(request.Id)
             .EnsureNotNullNotFound(IngredientErrors.IngredientNotFoundError(request.Id))
-            .Bind(ingredient => Task.FromResult(Result.Ok(new
+            .Bind(ingredient => Task.FromResult(Result.Success(new
             {
                 Ingredient = ingredient,
                 RecipesContainingThisIngredientCount = recipeRepository.GetRecipeCountByContainingIngredientId(request.Id)

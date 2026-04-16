@@ -37,7 +37,7 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext) : IQuer
                 .FirstOrDefaultAsync(cancellationToken);
 
         return recipe == null
-            ? Result.NotFound<RecipeResponse>(RecipeErrors.RecipeNotFoundError(request.Id))
-            : Result.Ok(recipe);
+            ? Result.Failure<RecipeResponse>(RecipeErrors.RecipeNotFoundError(request.Id))
+            : Result.Success(recipe);
     }
 }

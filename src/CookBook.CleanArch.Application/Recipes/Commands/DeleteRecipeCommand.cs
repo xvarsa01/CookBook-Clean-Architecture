@@ -17,7 +17,7 @@ internal sealed class DeleteRecipeCommandHandler(IRepository<Recipe, RecipeId> r
         var recipe = await repository.GetByIdAsync(request.Id);
         if (recipe is null)
         {
-            return Result.NotFound(RecipeErrors.RecipeNotFoundError(request.Id));
+            return Result.Failure(RecipeErrors.RecipeNotFoundError(request.Id));
         }
         
         var deleteResult = recipe.Delete();
@@ -28,6 +28,6 @@ internal sealed class DeleteRecipeCommandHandler(IRepository<Recipe, RecipeId> r
            
         repository.Delete(recipe);
 
-        return Result.Ok();
+        return Result.Success();
     }
 }

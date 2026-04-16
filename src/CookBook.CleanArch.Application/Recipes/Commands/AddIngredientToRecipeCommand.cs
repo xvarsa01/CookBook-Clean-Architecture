@@ -23,21 +23,21 @@ internal sealed class AddIngredientToRecipeCommandHandler(
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
-            return Result.NotFound<RecipeIngredientId>(RecipeErrors.RecipeNotFoundError(request.RecipeId));
+            return Result.Failure<RecipeIngredientId>(RecipeErrors.RecipeNotFoundError(request.RecipeId));
         }
 
         var ingredient = await ingredientRepository.GetByIdAsync(request.Request.IngredientId);
         if (ingredient is null)
         {
-            return Result.NotFound<RecipeIngredientId>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Request.IngredientId)));
+            return Result.Failure<RecipeIngredientId>(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Request.IngredientId)));
         }
 
         var result = recipe.AddIngredient(request.Request.IngredientId, request.Request.Amount, request.Request.Unit);
         if (!result.IsSuccess)
         {
-            return Result.Invalid<RecipeIngredientId>(result.Error);
+            return Result.Failure<RecipeIngredientId>(result.Error);
         }
         
-        return Result.Ok(result.Value);
+        return Result.Success(result.Value);
     }
 }

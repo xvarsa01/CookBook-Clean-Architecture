@@ -15,8 +15,8 @@ public record RecipeDuration : IValueObject<TimeSpan>, IValueObjectFactory<Recip
     public static Result<RecipeDuration> CreateObject(TimeSpan duration)
     {
         return duration <= TimeSpan.Zero
-            ? Result.Invalid<RecipeDuration>(ValueObjectsErrors.RecipeDurationNotPositiveError())
-            : Result.Ok(new RecipeDuration(duration));
+            ? Result.Failure<RecipeDuration>(ValueObjectsErrors.RecipeDurationNotPositiveError())
+            : Result.Success(new RecipeDuration(duration));
     }
     
     public static implicit operator TimeSpan(RecipeDuration duration) => duration.Value;
