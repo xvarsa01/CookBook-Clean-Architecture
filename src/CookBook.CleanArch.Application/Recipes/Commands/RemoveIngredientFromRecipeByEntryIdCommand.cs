@@ -7,12 +7,12 @@ using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Recipes.Commands;
 
-public record RemoveIngredientFromRecipeCommand(RecipeId RecipeId, RecipeIngredientId EntryId) : ICommand;
+public record RemoveIngredientFromRecipeByEntryIdCommand(RecipeId RecipeId, RecipeIngredientId EntryId) : ICommand;
 
-internal sealed class RemoveIngredientFromRecipeCommandHandler(IRepository<Recipe, RecipeId > recipeRepository)
-    : ICommandHandler<RemoveIngredientFromRecipeCommand>
+internal sealed class RemoveIngredientFromRecipeByEntryIdCommandHandler(IRepository<Recipe, RecipeId > recipeRepository)
+    : ICommandHandler<RemoveIngredientFromRecipeByEntryIdCommand>
 {
-    public async Task<Result> Handle(RemoveIngredientFromRecipeCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(RemoveIngredientFromRecipeByEntryIdCommand request, CancellationToken cancellationToken)
     {
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)

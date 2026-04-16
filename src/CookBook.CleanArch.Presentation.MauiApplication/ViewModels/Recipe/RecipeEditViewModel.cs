@@ -185,7 +185,7 @@ public partial class RecipeEditViewModel(
     {
         foreach (var recipeIngredientId in _pendingRemovedIngredientIds)
         {
-            var result = await Mediator.Send(new RemoveIngredientFromRecipeCommand(Id, new RecipeIngredientId(recipeIngredientId)));
+            var result = await Mediator.Send(new RemoveIngredientFromRecipeByEntryIdCommand(Id, new RecipeIngredientId(recipeIngredientId)));
             if (!result.IsSuccess)
                 return false;
         }

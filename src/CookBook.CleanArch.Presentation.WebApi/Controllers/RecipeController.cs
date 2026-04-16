@@ -133,7 +133,7 @@ public class RecipeController : ControllerBase
         var recipeId = new RecipeId(id);
         var ingredientInRecipeId = new RecipeIngredientId(entryId);
         
-        var result = await _mediator.Send(new RemoveIngredientFromRecipeCommand(recipeId, ingredientInRecipeId));
+        var result = await _mediator.Send(new RemoveIngredientFromRecipeByEntryIdCommand(recipeId, ingredientInRecipeId));
         if (result.IsSuccess)
         {
             return NoContent();
