@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
-             xmlns:validations="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Validations"
+             xmlns:viewModels="using:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
              x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.IngredientCreateEditBaseView"
              x:Name="Root">
     
@@ -51,17 +51,17 @@
                         <toolkit:EventToCommandBehavior
                             EventName="TextChanged"
                             Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                            CommandParameter="{x:Static validations:IngredientDetailModelValidator.IngredientNameProperty}" />
+                            CommandParameter="{x:Static viewModels:IngredientFormModelValidator.IngredientNameProperty}" />
                     </Entry.Behaviors>
                 </Entry>
 
                 <Label Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
                                       Converter={StaticResource ValidationResultToErrorMessagesConverter},
-                                      ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientNameProperty}}"
+                                      ConverterParameter={x:Static viewModels:IngredientFormModelValidator.IngredientNameProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
                                            Converter={StaticResource ValidationResultToHasErrorConverter},
-                                           ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientNameProperty}}" />
+                                           ConverterParameter={x:Static viewModels:IngredientFormModelValidator.IngredientNameProperty}}" />
 
                 <!-- Image URL -->
                 <Label Text="{x:Static texts:IngredientEditViewTexts.ImageUrl_Label_Text}"
@@ -72,17 +72,17 @@
                         <toolkit:EventToCommandBehavior
                             EventName="TextChanged"
                             Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                            CommandParameter="{x:Static validations:IngredientDetailModelValidator.IngredientImageUrlProperty}" />
+                            CommandParameter="{x:Static viewModels:IngredientFormModelValidator.IngredientImageUrlProperty}" />
                     </Entry.Behaviors>
                 </Entry>
 
                 <Label Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
                                       Converter={StaticResource ValidationResultToErrorMessagesConverter},
-                                      ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientImageUrlProperty}}"
+                                      ConverterParameter={x:Static viewModels:IngredientFormModelValidator.IngredientImageUrlProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
                                            Converter={StaticResource ValidationResultToHasErrorConverter},
-                                           ConverterParameter={x:Static validations:IngredientDetailModelValidator.IngredientImageUrlProperty}}" />
+                                           ConverterParameter={x:Static viewModels:IngredientFormModelValidator.IngredientImageUrlProperty}}" />
 
                 <!-- Description -->
                 <Label Text="{x:Static texts:IngredientEditViewTexts.Description_Label_Text}"

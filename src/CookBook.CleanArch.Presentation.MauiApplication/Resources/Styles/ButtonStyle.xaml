@@ -6,6 +6,9 @@
     <Style x:Key="PrimaryButtonStyle" TargetType="Button">
         <Setter Property="TextColor" Value="{StaticResource PrimaryButtonTextColor}" />
         <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontFamily" Value="MontserratMedium" />
+        <Setter Property="CornerRadius" Value="5" />
         
         <Style.Triggers>
             <Trigger TargetType="Button"

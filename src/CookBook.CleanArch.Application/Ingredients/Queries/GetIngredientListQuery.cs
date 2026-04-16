@@ -61,10 +61,10 @@ internal class GetIngredientListQueryHandler (ICookBookDbContext dbContext) : IQ
         queryable = filter.SortParameter switch
         {
             IngredientsSortParameter.Name => filter.IsSortAscending
-                ? queryable.OrderBy(r => r.Name)
-                : queryable.OrderByDescending(r => r.Name),
+                ? queryable.OrderBy(r => r.Name.ToUpper()).ThenBy(r => r.Name)
+                : queryable.OrderByDescending(r => r.Name.ToUpper()).ThenByDescending(r => r.Name),
             
-            _ => queryable.OrderBy(r => r.Name)
+            _ => queryable.OrderBy(r => r.Name.ToUpper()).ThenBy(r => r.Name)
         };
         return queryable;
     }

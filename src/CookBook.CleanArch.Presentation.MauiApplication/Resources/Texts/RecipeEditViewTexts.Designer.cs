@@ -18,7 +18,7 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class RecipeEditViewTexts {
@@ -61,137 +61,11 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add.
-        /// </summary>
-        internal static string AddIngredient_Button_Text {
-            get {
-                return ResourceManager.GetString("AddIngredient_Button_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount_Label_Text {
-            get {
-                return ResourceManager.GetString("Amount_Label_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description_Label_Text {
-            get {
-                return ResourceManager.GetString("Description_Label_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Duration.
-        /// </summary>
-        internal static string Duration_Label_Text {
-            get {
-                return ResourceManager.GetString("Duration_Label_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit Ingredients.
-        /// </summary>
-        internal static string EditIngredients_StartEdit_Button_Text {
-            get {
-                return ResourceManager.GetString("EditIngredients_StartEdit_Button_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stop editing.
-        /// </summary>
-        internal static string EditIngredients_StopEdit_Button_Text {
-            get {
-                return ResourceManager.GetString("EditIngredients_StopEdit_Button_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ingredients can only be edited for recipe that is already saved.
-        /// </summary>
-        internal static string ErrorUnsavedRecipe_Label_Text {
-            get {
-                return ResourceManager.GetString("ErrorUnsavedRecipe_Label_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Food Type.
-        /// </summary>
-        internal static string FoodType_Label_Text {
-            get {
-                return ResourceManager.GetString("FoodType_Label_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Image URL.
-        /// </summary>
-        internal static string ImageUrl_Label_Text {
-            get {
-                return ResourceManager.GetString("ImageUrl_Label_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string IngredientName_Label_Text {
-            get {
-                return ResourceManager.GetString("IngredientName_Label_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name_Label_Text {
-            get {
-                return ResourceManager.GetString("Name_Label_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CookBook.
         /// </summary>
         internal static string Page_Title {
             get {
                 return ResourceManager.GetString("Page_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Remove.
-        /// </summary>
-        internal static string RemoveIngredient_Button_Text {
-            get {
-                return ResourceManager.GetString("RemoveIngredient_Button_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save.
-        /// </summary>
-        internal static string Save_Button_Text {
-            get {
-                return ResourceManager.GetString("Save_Button_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unit.
-        /// </summary>
-        internal static string Unit_Label_Text {
-            get {
-                return ResourceManager.GetString("Unit_Label_Text", resourceCulture);
             }
         }
     }

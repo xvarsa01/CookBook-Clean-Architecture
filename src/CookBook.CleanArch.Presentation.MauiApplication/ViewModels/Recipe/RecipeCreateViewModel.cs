@@ -15,7 +15,7 @@ public partial class RecipeCreateViewModel(
     IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
-    : RecipeCreateEditBaseViewModel(mediator, navigationService, messengerService)
+    : RecipeFormBaseViewModel(mediator, navigationService, messengerService)
 {
     protected override async Task LoadDataAsync()
     {
@@ -30,9 +30,19 @@ public partial class RecipeCreateViewModel(
             return;
         
         Recipe.Ingredients.Add(IngredientAmountNew);
+        OnPropertyChanged(nameof(Recipe));
+        await ValidateRecipeAsync();
         
         IngredientAmountNew = RecipeIngredientListModel.Empty;
         SelectedNewIngredient = null;
+    }
+    
+    [RelayCommand]
+    private void RemoveIngredient(RecipeIngredientListModel model)
+    {
+        Recipe.Ingredients.Remove(model);
+        OnPropertyChanged(nameof(Recipe));
+        MessengerService.Send(new RecipeIngredientDeleteMessage());
     }
 
     [RelayCommand]

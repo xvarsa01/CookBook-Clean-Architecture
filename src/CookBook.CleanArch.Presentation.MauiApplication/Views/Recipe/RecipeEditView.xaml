@@ -2,7 +2,6 @@
 
 <views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                       xmlns:controls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls"
                        xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:t="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
@@ -12,7 +11,7 @@
                        Style="{StaticResource ContentPageStyle}"
                        x:DataType="viewModels:RecipeEditViewModel">
     
-    <recipe:RecipeCreateEditBaseView
+    <recipe:RecipeFormBaseControl
         Recipe="{Binding Recipe}"
         SaveCommand="{Binding SaveRecipeCommand}"
         ValidatePropertyCommand="{Binding ValidatePropertyCommand}"

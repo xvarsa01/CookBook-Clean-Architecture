@@ -63,7 +63,7 @@
 
                             <Label Grid.Row="1" Grid.Column="1"
                                    HorizontalOptions="Center" VerticalOptions="Start"
-                                   Text="{Binding Recipe.Duration.Value, StringFormat='{0} min'}"
+                                   Text="{Binding Recipe.Duration.Value, Converter={StaticResource RecipeDurationToStringConverter}}"
                                    FontSize="11"
                                    TextColor="White" />
 

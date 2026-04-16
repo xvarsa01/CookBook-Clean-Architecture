@@ -18,7 +18,7 @@ public partial class IngredientEditViewModel(
     IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
-    : IngredientCreateEditBaseViewModel(mediator, navigationService, messengerService)
+    : IngredientFormBaseViewModel(mediator, navigationService, messengerService)
 {
     public IngredientId Id { get; set; } = new(Guid.Empty);
 

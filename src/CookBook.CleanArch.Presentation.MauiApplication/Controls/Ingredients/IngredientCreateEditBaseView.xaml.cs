@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
+using CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Controls;
 
