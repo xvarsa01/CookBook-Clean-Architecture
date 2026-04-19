@@ -6,9 +6,9 @@
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
                        xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
-                       xmlns:controls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls"
                        xmlns:ingredientControls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Ingredients"
                        xmlns:models="using:CookBook.CleanArch.Application.Ingredients.Models"
+                       xmlns:shared="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Shared"
                        x:Name="IngredientListViewRoot"
                        x:DataType="viewModels:IngredientListViewModel"
                        Title="{xaml:Static texts:IngredientListViewTexts.Page_Title}"
@@ -32,11 +32,11 @@
 
                 <ingredientControls:IngredientImageFilterControl HasImage="{Binding Filter.HasImage, Mode=TwoWay}" />
                 
-                <controls:SortDirectionControl IsSortAscending="{Binding Filter.IsSortAscending, Mode=TwoWay}" />
+                <shared:SortDirectionControl IsSortAscending="{Binding Filter.IsSortAscending, Mode=TwoWay}" />
                 
-                <controls:PageSizeSelectorControl SelectedPageSize="{Binding PagingOptions.PageSize, Mode=TwoWay}"/>
+                <shared:PageSizeSelectorControl SelectedPageSize="{Binding PagingOptions.PageSize, Mode=TwoWay}"/>
                 
-                <controls:ApplyFilterButton ApplyCommand="{Binding ApplyFilterCommand}" />
+                <shared:ApplyFilterButton ApplyCommand="{Binding ApplyFilterCommand}" />
             </HorizontalStackLayout>
         </Grid>
 
@@ -94,7 +94,7 @@
                     Style="{StaticResource PrimaryButtonStyle}"
                     WidthRequest="200" />
 
-            <controls:PagerControl ToFirstCommand="{Binding ToFirstPageCommand}"
+            <shared:PagerControl ToFirstCommand="{Binding ToFirstPageCommand}"
                                    ToNextCommandCommand="{Binding ToNextPageCommand}"
                                    ToPreviousCommand="{Binding ToPreviousPageCommand}"
                                    ToLastCommandCommand="{Binding ToLastPageCommand}"

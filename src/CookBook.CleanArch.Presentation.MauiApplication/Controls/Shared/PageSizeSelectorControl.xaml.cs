@@ -1,4 +1,4 @@
-﻿namespace CookBook.CleanArch.Presentation.MauiApplication.Controls;
+﻿namespace CookBook.CleanArch.Presentation.MauiApplication.Controls.Shared;
 
 public partial class PageSizeSelectorControl
 {

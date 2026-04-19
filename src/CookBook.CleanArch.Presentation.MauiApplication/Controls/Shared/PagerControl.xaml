@@ -3,7 +3,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="using:CookBook.CleanArch.Presentation.MauiApplication.Models"
-             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.PagerControl"
+             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Shared.PagerControl"
              x:Name="Root">
     
     <HorizontalStackLayout Spacing="5"

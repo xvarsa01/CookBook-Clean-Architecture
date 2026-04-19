@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CookBook.CleanArch.Presentation.MauiApplication.Models;
+﻿using System.Windows.Input;
 using CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
-namespace CookBook.CleanArch.Presentation.MauiApplication.Controls;
+namespace CookBook.CleanArch.Presentation.MauiApplication.Controls.Ingredients;
 
 public partial class IngredientCreateEditBaseView
 {

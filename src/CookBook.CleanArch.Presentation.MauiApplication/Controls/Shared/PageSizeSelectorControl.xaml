@@ -5,7 +5,7 @@
              xmlns:controls="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:inputKit="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
-             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.PageSizeSelectorControl"
+             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Shared.PageSizeSelectorControl"
              x:Name="Root">
     
     <VerticalStackLayout Spacing="10">

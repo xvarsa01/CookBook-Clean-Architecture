@@ -2,16 +2,16 @@
 <views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
-                       xmlns:controls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
+                       xmlns:ingredients="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Ingredients"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Ingredient.IngredientEditView"
                        x:DataType="viewModels:IngredientEditViewModel"
                        Title="{xaml:Static texts:IngredientEditViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}">
 
-    <controls:IngredientCreateEditBaseView
+    <ingredients:IngredientCreateEditBaseView
         Ingredient="{Binding Ingredient}"
         SaveCommand="{Binding SaveCommand}"
         ValidatePropertyCommand="{Binding ValidatePropertyCommand}"/>

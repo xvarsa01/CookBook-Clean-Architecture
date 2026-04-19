@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using CookBook.CleanArch.Domain.Shared;
 
-namespace CookBook.CleanArch.Presentation.WebApi;
+namespace CookBook.CleanArch.Presentation.WebApi.Converters;
 
 public class StronglyTypedIdJsonConverterFactory : JsonConverterFactory
 {

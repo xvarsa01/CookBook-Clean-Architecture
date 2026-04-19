@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using CookBook.CleanArch.Domain.Shared;
 
-namespace CookBook.CleanArch.Presentation.WebApi;
+namespace CookBook.CleanArch.Presentation.WebApi.Converters;
 
 public class ValueObjectJsonConverter<TValueObject, TValue> : System.Text.Json.Serialization.JsonConverter<TValueObject>
     where TValueObject : class, IValueObject<TValue>, IValueObjectFactory<TValueObject, TValue>

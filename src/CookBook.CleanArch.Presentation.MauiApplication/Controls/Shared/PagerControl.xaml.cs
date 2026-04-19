@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 
-namespace CookBook.CleanArch.Presentation.MauiApplication.Controls;
+namespace CookBook.CleanArch.Presentation.MauiApplication.Controls.Shared;
 
 public partial class PagerControl
 {

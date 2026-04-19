@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
              xmlns:inputKit="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.SortDirectionControl"
+             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Shared.SortDirectionControl"
              x:Name="Root">
     
     <VerticalStackLayout Spacing="10">
