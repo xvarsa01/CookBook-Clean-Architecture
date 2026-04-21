@@ -1,5 +1,6 @@
 using CookBook.CleanArch.Application.Recipes;
 using CookBook.CleanArch.Application.Recipes.Queries;
+using CookBook.CleanArch.Application.Shared;
 
 namespace CookBook.CleanArch.UnitTests.Queries;
 
@@ -10,7 +11,8 @@ public class RecipeQueryTests : QueryTestsBase
     {
         var handler = new GetRecipeListQueryHandler(DbContext);
         var filter = new RecipeFilter { Name = "abcd" };
-        var query = new GetRecipeListQuery(filter);
+        var paging = new PagingOptions();
+        var query = new GetRecipeListQuery(filter, paging);
 
         var result = await handler.Handle(query, CancellationToken.None);
 
@@ -23,7 +25,8 @@ public class RecipeQueryTests : QueryTestsBase
     {
         var handler = new GetRecipeListQueryHandler(DbContext);
         var filter = new RecipeFilter { Name = "abcd" };
-        var query = new GetRecipeListQuery(filter);
+        var paging = new PagingOptions();
+        var query = new GetRecipeListQuery(filter, paging);
 
         var result = await handler.Handle(query, CancellationToken.None);
 
@@ -36,7 +39,8 @@ public class RecipeQueryTests : QueryTestsBase
     {
         var handler = new GetRecipeListQueryHandler(DbContext);
         var filter = new RecipeFilter { Name = "BCDEFG" };
-        var query = new GetRecipeListQuery(filter);
+        var paging = new PagingOptions();
+        var query = new GetRecipeListQuery(filter, paging);
 
         var result = await handler.Handle(query, CancellationToken.None);
 

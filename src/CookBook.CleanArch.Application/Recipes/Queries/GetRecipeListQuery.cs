@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Recipes.Queries;
 
-public record GetRecipeListQuery(RecipeFilter Filter, PagingOptions? PagingOptions = null) : IQuery<PagedResult<RecipeListResponse>>;
+public record GetRecipeListQuery(RecipeFilter Filter, PagingOptions PagingOptions) : IQuery<PagedResult<RecipeListResponse>>;
 
 internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryHandler<GetRecipeListQuery, PagedResult<RecipeListResponse>>
 {

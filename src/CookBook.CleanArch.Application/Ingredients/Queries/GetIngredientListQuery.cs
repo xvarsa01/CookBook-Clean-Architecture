@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Ingredients.Queries;
 
-public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions? PagingOptions = null) : IQuery<PagedResult<IngredientListResponse>>;
+public record GetIngredientListQuery(IngredientFilter Filter, PagingOptions PagingOptions) : IQuery<PagedResult<IngredientListResponse>>;
 
 internal class GetIngredientListQueryHandler (ICookBookDbContext dbContext) : IQueryHandler<GetIngredientListQuery, PagedResult<IngredientListResponse>>
 {

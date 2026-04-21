@@ -8,6 +8,7 @@ using CookBook.CleanArch.Application.Ingredients;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Application.Ingredients.Queries;
 using CookBook.CleanArch.Application.Recipes.Models;
+using CookBook.CleanArch.Application.Shared;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
@@ -63,7 +64,8 @@ public abstract partial class RecipeFormBaseViewModel(
 
     protected async Task LoadIngredientsAsync()
     {
-        var result = await Mediator.Send(new GetIngredientListQuery(new IngredientFilter()));
+        var paging = new PagingOptions { PageSize = 1000 };
+        var result = await Mediator.Send(new GetIngredientListQuery(new IngredientFilter(),  paging));
         if (!result.IsSuccess)
             return;
 
