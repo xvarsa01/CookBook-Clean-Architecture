@@ -35,8 +35,5 @@ public class Result
     public static Result<T> Success<T>(T value) => new(true, value, null);
     public static Result<T> Failure<T>(Error errorMessage) => new(false, default, errorMessage);
 
-    public static Result<TValue> Create<TValue>(TValue? value) =>
-        value is not null 
-            ? Success(value)
-            : Failure<TValue>(Error.NullValue);
+    public static Result<TValue> Create<TValue>(TValue value) => Success(value);
 }

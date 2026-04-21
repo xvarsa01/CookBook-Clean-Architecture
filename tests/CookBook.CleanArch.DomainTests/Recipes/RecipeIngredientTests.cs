@@ -324,4 +324,23 @@ public class RecipeIngredientTests
         var after = recipe.Ingredients.Select(i => (i.Id, i.IngredientId, i.Amount, i.Unit)).ToList();
         Assert.Equal(before, after);
     }
+    
+    [Fact]
+    public void Ingredient_Property_WhenNavigationNotMaterialized_ShouldFollowBuildConfigurationContract()
+    {
+        // Arrange
+        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var entry = recipe.Ingredients.Single();
+    
+        // Act + Assert
+    #if DEBUG
+        // In DEBUG, GetIngredientForReadModelOnly returns _ingredient ?? null!
+        Assert.Null((object?)entry.Ingredient);
+    #else
+        // In non-DEBUG, GetIngredientForReadModelOnly throws
+        var ex = Assert.Throws<InvalidOperationException>(() => _ = entry.Ingredient);
+        Assert.Contains("read-model navigation only", ex.Message);
+    #endif
+    }
+    
 }

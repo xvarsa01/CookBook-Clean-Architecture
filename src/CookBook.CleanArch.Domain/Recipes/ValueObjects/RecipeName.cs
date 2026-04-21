@@ -20,9 +20,4 @@ public record RecipeName : IValueObject<string>, IValueObjectFactory<RecipeName,
     }
 
     public static implicit operator string(RecipeName name) => name.Value;
-    
-    public override string ToString()
-    {
-        return Value;
-    }
 }

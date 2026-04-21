@@ -38,11 +38,6 @@ public class ImageUrl : IValueObject<string>, IValueObjectFactory<ImageUrl, stri
 
     public static implicit operator string(ImageUrl name) => name.Value;
     
-    public override string ToString()
-    {
-        return Value;
-    }
-
     private static bool IsCorrectExtension(string v)
     {
         var uri = new Uri(v);

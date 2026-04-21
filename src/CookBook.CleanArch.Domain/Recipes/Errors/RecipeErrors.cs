@@ -7,8 +7,6 @@ public static class RecipeErrors
 {
     public static Error RecipeNotFoundError(RecipeId recipeId) => new($"Recipe {recipeId} not found");
     
-    public static Error RecipeHasNoIngredientsError(RecipeId recipeId) => new($"Recipe entity {recipeId} has no ingredients.");
-
     public static Error RecipeIngredientByEntryIdNotFoundError(RecipeIngredientId recipeIngredientEntryId, RecipeId recipeId) =>
         new($"Ingredient entry for {recipeIngredientEntryId.Value} not found in recipe {recipeId.Value}.");
 
@@ -20,7 +18,5 @@ public static class RecipeErrors
 
     public static Error RecipeMinimumNumberOfIngredientsError(RecipeId recipeId) =>
         new($"Recipe {recipeId} must contain at least 1 ingredient.");
-    
-    public static Error RecipeUpdateFailedError(RecipeId recipeId) => new($"Recipe {recipeId} update failed");
 }
 

@@ -8,7 +8,6 @@ namespace CookBook.CleanArch.DomainTests.Recipes;
 
 public class RecipeTests
 {
-    
     private const string ValidName = "Cappuccino";
     private const string ValidDescription = "with oak mil";
     private const string ValidImageUrl = "https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg";

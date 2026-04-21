@@ -42,11 +42,7 @@ public static class RecipeTestSeeds
             imageUrl: ImageUrl.CreateObject("http://a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
-            ingredients:
-            [
-                new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
-                    MeasurementUnit.Ml)
-            ]).Value;
+            ingredients: SingleIngredient()).Value;
     }
     
     public static Recipe RecipeWithTwoIngredients()

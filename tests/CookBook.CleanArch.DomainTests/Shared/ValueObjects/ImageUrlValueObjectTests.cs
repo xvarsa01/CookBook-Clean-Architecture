@@ -1,6 +1,6 @@
 ﻿using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.DomainTests.ValueObjects;
+namespace CookBook.CleanArch.DomainTests.Shared.ValueObjects;
 
 public class ImageUrlValueObjectTests
 {
@@ -22,11 +22,10 @@ public class ImageUrlValueObjectTests
     }
 
     [Fact]
-    public void Creating_ImageUrl_With_Protocol_Relative_Url_Should_Succeed()
+    public void Creating_ImageUrl_With_Protocol_Relative_Url_Should_Fail()
     {
         var url = ImageUrl.CreateObject("//a.gif");
-        Assert.True(url.IsSuccess);
-        Assert.Equal("//a.gif", url.Value.Value);
+        Assert.True(url.IsFailure);
     }
 
     [Fact]
@@ -40,9 +39,9 @@ public class ImageUrlValueObjectTests
     [Fact]
     public void Creating_ImageUrl_With_Uppercase_Extension_Should_Succeed()
     {
-        var url = ImageUrl.CreateObject("https://a.PNG");
+        var url = ImageUrl.CreateObject("https://example.com/images/photo.JPEG");
         Assert.True(url.IsSuccess);
-        Assert.Equal("https://a.PNG", url.Value.Value);
+        Assert.Equal("https://example.com/images/photo.JPEG", url.Value.Value);
     }
     
     
@@ -89,5 +88,15 @@ public class ImageUrlValueObjectTests
         Assert.True(url.IsFailure);
     }
     
+    // implicit operators:
+    [Fact]
+    public void Implicit_Conversion_To_String_Should_Return_Underlying_Value()
+    {
+        var url = ImageUrl.CreateObject("http://example.com/a.png");
+        Assert.True(url.IsSuccess);
     
+        string value = url.Value;
+    
+        Assert.Equal("http://example.com/a.png", value);
+    }
 }
