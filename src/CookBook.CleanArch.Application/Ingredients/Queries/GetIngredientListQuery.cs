@@ -39,9 +39,10 @@ internal class GetIngredientListQueryHandler (ICookBookDbContext dbContext) : IQ
 
     private static IQueryable<Ingredient> ApplyFilter(IngredientFilter filter, IQueryable<Ingredient> queryable)
     {
-        if (filter.Name is not null)
+        if (!string.IsNullOrEmpty(filter.Name))
         {
-            queryable = queryable.Where(i => i.Name.ToLower().Contains(filter.Name.ToLower()));
+            var nameFilter = $"%{filter.Name.Replace(" ", "")}%";
+            queryable = queryable.Where(i => EF.Functions.Like(i.Name.Replace(" ", ""), nameFilter));
         }
 
         if (filter.HasDescription is not null)

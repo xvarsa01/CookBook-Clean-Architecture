@@ -1,4 +1,6 @@
 using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Infrastructure;
 using CookBook.CleanArch.Infrastructure.Factories;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +24,13 @@ public class QueryTestsBase : IAsyncLifetime
 
     protected IDbContextFactory<CookBookDbContext> DbContextFactory { get; }
     protected CookBookDbContext DbContext { get; private set; } = null!;
+    protected IReadOnlyList<Ingredient> SeededIngredients { get; private set; } = [];
+    protected IReadOnlyList<Recipe> SeededRecipes { get; private set; } = [];
+
+    protected Ingredient GetSeededIngredientsByName(string ingredientName) =>
+        SeededIngredients.Single(r => r.Name == ingredientName);
+    protected Recipe GetSeededRecipeByName(string recipeName) =>
+        SeededRecipes.Single(r => r.Name.Value == recipeName);
 
     public async Task InitializeAsync()
     {
@@ -29,8 +38,10 @@ public class QueryTestsBase : IAsyncLifetime
         await DbContext.Database.EnsureDeletedAsync();
         await DbContext.Database.EnsureCreatedAsync();
 
-        DbContext.AddRange(RecipeTestSeeds.SeededRecipes);
-        DbContext.AddRange(IngredientTestSeeds.SeededIngredients);
+        SeededIngredients = IngredientTestSeeds.SeededIngredients;
+        SeededRecipes = RecipeTestSeeds.SeededRecipes;
+        DbContext.AddRange(SeededIngredients);
+        DbContext.AddRange(SeededRecipes);
         await DbContext.SaveChangesAsync();
     }
 

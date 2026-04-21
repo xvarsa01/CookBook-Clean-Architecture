@@ -18,6 +18,11 @@ public static class IngredientTestSeeds
         description: "bio eco raw from my garden",
         imageUrl: ImageUrl.CreateObject(ValidImageUrl).Value).Value;
     
+    public static readonly Ingredient UsedInSingleRecipe = Ingredient.Create(
+        name: "used in single recipe",
+        description: null,
+        imageUrl: ImageUrl.CreateObject(ValidImageUrl).Value).Value;
+    
     public static readonly Ingredient IngredientNotUsedInAnyRecipe =  Ingredient.Create(
         name: "Newly Added",
         description: "this ingredient should not be in any recipe at start of test and should be adder later ",
@@ -38,29 +43,29 @@ public static class IngredientTestSeeds
         description: "this will be updated",
         imageUrl: ImageUrl.CreateObject(ValidImageUrl).Value).Value;
     
-    public static readonly Ingredient IngredientForNamingTest1 =  Ingredient.Create(
+    public static readonly Ingredient IngredientForNamingTest1 = Ingredient.Create(
         name: "AXA",
         description: null,
         imageUrl: ImageUrl.CreateObject(ValidImageUrl).Value).Value;
-    public static readonly Ingredient IngredientForNamingTest2 =  Ingredient.Create(
+    public static readonly Ingredient IngredientForNamingTest2 = Ingredient.Create(
         name: "AxA",
         description: null,
         imageUrl: ImageUrl.CreateObject(ValidImageUrl).Value).Value;
-    public static readonly Ingredient IngredientForNamingTest3 =  Ingredient.Create(
+    public static readonly Ingredient IngredientForNamingTest3 = Ingredient.Create(
         name: "AXXXA",
         description: null,
         imageUrl: ImageUrl.CreateObject(ValidImageUrl).Value).Value;
-    public static readonly Ingredient IngredientForNamingTest4 =  Ingredient.Create(
-        name: "XX XX",
+    public static readonly Ingredient IngredientForNamingTest4 = Ingredient.Create(
+        name: "X X",
         description: null,
         imageUrl: ImageUrl.CreateObject(ValidImageUrl).Value).Value;
     
-    public static readonly Ingredient IngredientWithNullImage1 =  Ingredient.Create(
+    public static readonly Ingredient IngredientWithNullImage1 = Ingredient.Create(
         name: "Null image 1",
         description: null,
         imageUrl: null).Value;
     
-    public static readonly Ingredient IngredientWithNullImage2 =  Ingredient.Create(
+    public static readonly Ingredient IngredientWithNullImage2 = Ingredient.Create(
         name: "Null image 2",
         description: null,
         imageUrl: null).Value;
@@ -70,6 +75,7 @@ public static class IngredientTestSeeds
     [
         Water,
         Lemon,
+        UsedInSingleRecipe,
         IngredientNotUsedInAnyRecipe,
         MinimalisticIngredient,
         IngredientForTestOfDelete,

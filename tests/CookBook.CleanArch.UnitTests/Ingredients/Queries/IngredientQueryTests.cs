@@ -131,7 +131,7 @@ public class IngredientQueryTests : QueryTestsBase
     }
     
     [Fact]
-    public async Task Get_Ingredient_List_Query_With_Name_Filter_X_Space_X_Returns_One_Matching_Result()
+    public async Task Get_Ingredient_List_Query_With_Name_Filter_X_Space_X_Returns_Two_Matching_Result()        // return also AXXXA
     {
         // Arrange
         var handler = new GetIngredientListQueryHandler(DbContext);
@@ -144,7 +144,7 @@ public class IngredientQueryTests : QueryTestsBase
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Single(result.Value.Items);
+        Assert.Equal(2, result.Value.Items.Count());
     }
     
     [Fact]
