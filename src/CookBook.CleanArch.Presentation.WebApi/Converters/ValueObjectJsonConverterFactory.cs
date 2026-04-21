@@ -31,23 +31,6 @@ public class ValueObjectJsonConverterFactory : JsonConverterFactory
         return (JsonConverter)Activator.CreateInstance(type)!;
     }
 
-    // private static bool IsValueObject(Type type, [NotNullWhen(true)] out Type? idType)
-    // {
-    //     var baseType = type.BaseType;
-    //     while (baseType != null)
-    //     {
-    //         if (baseType.IsGenericType && baseType.GetGenericTypeDefinition() == typeof(IValueObject<>))
-    //         {
-    //             idType = baseType.GetGenericArguments()[0];
-    //             return true;
-    //         }
-    //
-    //         baseType = baseType.BaseType;
-    //     }
-    //
-    //     idType = null;
-    //     return false;
-    // }
     private static bool IsValueObject(Type type, [NotNullWhen(true)] out Type? valueType)
     {
         var interfaceType = type

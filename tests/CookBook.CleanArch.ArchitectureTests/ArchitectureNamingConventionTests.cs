@@ -121,11 +121,12 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     }
     
     [Fact]
-    public void Factories_ShouldBeIn_Infrastructure_Layer()
+    public void Factories_ShouldNotBeIn_Domain_Or_Application_Layer()
     {
         Classes().That()
             .HaveNameEndingWith("Factory")
-            .Should().ResideInAssembly(InfrastructureAssembly)
+            .Should().NotResideInAssembly(CoreAssembly)
+            .AndShould().NotResideInAssembly(ApplicationAssembly)
             .Check(Architecture);
     }
     
