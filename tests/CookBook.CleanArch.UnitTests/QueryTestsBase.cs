@@ -4,7 +4,7 @@ using CookBook.CleanArch.Infrastructure.Factories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CookBook.CleanArch.UnitTests.Queries;
+namespace CookBook.CleanArch.UnitTests;
 
 public class QueryTestsBase : IAsyncLifetime
 {
@@ -29,8 +29,8 @@ public class QueryTestsBase : IAsyncLifetime
         await DbContext.Database.EnsureDeletedAsync();
         await DbContext.Database.EnsureCreatedAsync();
 
-        DbContext.AddRange(RecipeTestSeeds.SeededRecipes());
-        DbContext.AddRange(IngredientTestSeeds.SeededIngredients());
+        DbContext.AddRange(RecipeTestSeeds.SeededRecipes);
+        DbContext.AddRange(IngredientTestSeeds.SeededIngredients);
         await DbContext.SaveChangesAsync();
     }
 

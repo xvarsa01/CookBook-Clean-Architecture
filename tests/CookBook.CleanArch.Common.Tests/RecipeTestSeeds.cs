@@ -9,8 +9,7 @@ public static class RecipeTestSeeds
 {
     private static IReadOnlyCollection<RecipeCreateIngredient> SingleIngredient() =>
     [
-        new RecipeCreateIngredient(
-            IngredientTestSeeds.Water.Id,
+        new(IngredientTestSeeds.Water.Id,
             IngredientAmount.CreateObject(100).Value,
             MeasurementUnit.Ml)
     ];
@@ -19,10 +18,10 @@ public static class RecipeTestSeeds
     {
         return Recipe.Create(name: RecipeName.CreateObject("empty recipe").Value,
             description: "baseline recipe",
-            imageUrl: ImageUrl.CreateObject("http://a.png").Value,
+            imageUrl: ImageUrl.CreateObject("http://example.com/a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
-            ingredients: new List<RecipeCreateIngredient>()).Value;
+            ingredients: new List<RecipeCreateIngredient>()).Value;         // this throws!
     }
 
     public static Recipe MinimalisticRecipe()
@@ -39,7 +38,7 @@ public static class RecipeTestSeeds
     {
         return Recipe.Create(name: RecipeName.CreateObject("recipe with 1 ingredient").Value,
             description: "this will be added",
-            imageUrl: ImageUrl.CreateObject("http://a.png").Value,
+            imageUrl: ImageUrl.CreateObject("http://example.com/a.png").Value,
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
             ingredients: SingleIngredient()).Value;
@@ -158,9 +157,8 @@ public static class RecipeTestSeeds
             ingredients: SingleIngredient()).Value;
     }
     
-    public static List<Recipe> SeededRecipes() =>
+    public static List<Recipe> SeededRecipes =>
     [
-        EmptyRecipe(),
         MinimalisticRecipe(),
         RecipeWithSingleIngredient(),
         RecipeWithTwoIngredients(),
