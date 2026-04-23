@@ -29,8 +29,4 @@
       <ProjectReference Include="..\CookBook.CleanArch.Common.Tests\CookBook.CleanArch.Common.Tests.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="UseCases\Recipes\" />
-    </ItemGroup>
-
 </Project>
