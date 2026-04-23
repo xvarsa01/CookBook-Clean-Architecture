@@ -11,7 +11,7 @@
                        Title="{xaml:Static texts:IngredientEditViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}">
 
-    <ingredients:IngredientCreateEditBaseView
+    <ingredients:IngredientFormBaseView
         Ingredient="{Binding Ingredient}"
         SaveCommand="{Binding SaveCommand}"
         ValidatePropertyCommand="{Binding ValidatePropertyCommand}"/>
