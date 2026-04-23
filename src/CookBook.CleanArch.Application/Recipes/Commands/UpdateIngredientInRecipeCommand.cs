@@ -12,7 +12,6 @@ public record UpdateIngredientInRecipeCommand(RecipeId RecipeId, RecipeUpdateIng
 
 internal sealed class UpdateRecipeIngredientCommandHandler(IRepository<Recipe, RecipeId> recipeRepository) : ICommandHandler<UpdateIngredientInRecipeCommand>
 {
-
     public async Task<Result> Handle(UpdateIngredientInRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);

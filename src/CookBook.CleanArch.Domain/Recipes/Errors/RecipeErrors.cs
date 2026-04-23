@@ -18,5 +18,7 @@ public static class RecipeErrors
 
     public static Error RecipeMinimumNumberOfIngredientsError(RecipeId recipeId) =>
         new($"Recipe {recipeId} must contain at least 1 ingredient.");
+    
+    public static Error RecipeNoIngredientsError() => new($"Recipe must contain at least 1 ingredient.");
 }
 

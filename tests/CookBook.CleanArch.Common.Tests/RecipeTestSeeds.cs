@@ -99,17 +99,6 @@ public static class RecipeTestSeeds
                 .ToList()).Value;
     }
 
-    public static Recipe RecipeForTestOfDeleteWithoutIngredient()
-    {
-        return Recipe.Create(
-            name: RecipeName.CreateObject("delete me").Value,
-            description: "i will be deleted simply",
-            imageUrl: null,
-            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other,
-            ingredients: SingleIngredient()).Value;
-    }
-
     public static Recipe RecipeForTestOfDeleteWithIngredient()
     {
         return Recipe.Create(
@@ -256,7 +245,6 @@ public static class RecipeTestSeeds
         RecipeWithTwoIngredients(),
         RecipeWithDuplicateIngredientEntries(),
         RecipeFullWithMaximumIngredients(),
-        RecipeForTestOfDeleteWithoutIngredient(),
         RecipeForTestOfDeleteWithIngredient(),
         RecipeForTestOfUpdate(),
         RecipeForForNamingTest1(),
