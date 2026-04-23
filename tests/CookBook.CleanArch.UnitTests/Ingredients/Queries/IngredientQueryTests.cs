@@ -6,7 +6,7 @@ using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 
 namespace CookBook.CleanArch.UnitTests.Ingredients.Queries;
 
-public class IngredientQueryTests : QueryTestsBase
+public class IngredientQueryTests : UnitTestsBase
 {
     [Fact]
     public async Task Get_Ingredient_Detail_Query_Returns_Result_When_Ingredient_Exists()

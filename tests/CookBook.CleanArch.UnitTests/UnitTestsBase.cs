@@ -1,18 +1,20 @@
 using CookBook.CleanArch.Common.Tests;
 using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Infrastructure;
 using CookBook.CleanArch.Infrastructure.Factories;
+using CookBook.CleanArch.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CookBook.CleanArch.UnitTests;
 
-public class QueryTestsBase : IAsyncLifetime
+public class UnitTestsBase : IAsyncLifetime
 {
     private readonly ServiceProvider _serviceProvider;
 
-    protected QueryTestsBase()
+    protected UnitTestsBase()
     {
         var databaseName = $"{GetType().FullName}_{Guid.NewGuid():N}.db";
         DbContextFactory = new DbContextSqLiteFactory(databaseName);
@@ -24,6 +26,9 @@ public class QueryTestsBase : IAsyncLifetime
 
     protected IDbContextFactory<CookBookDbContext> DbContextFactory { get; }
     protected CookBookDbContext DbContext { get; private set; } = null!;
+    protected EfRecipeRepository RecipeRepository { get; private set; } = null!;
+    protected EfRepository<Ingredient, IngredientId> IngredientRepository { get; private set; } = null!;
+    
     protected IReadOnlyList<Ingredient> SeededIngredients { get; private set; } = [];
     protected IReadOnlyList<Recipe> SeededRecipes { get; private set; } = [];
 
@@ -35,6 +40,9 @@ public class QueryTestsBase : IAsyncLifetime
     public async Task InitializeAsync()
     {
         DbContext = await DbContextFactory.CreateDbContextAsync();
+        RecipeRepository = new EfRecipeRepository(DbContext);
+        IngredientRepository = new EfRepository<Ingredient, IngredientId>(DbContext);
+        
         await DbContext.Database.EnsureDeletedAsync();
         await DbContext.Database.EnsureCreatedAsync();
 

@@ -8,7 +8,7 @@ using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.UnitTests.Recipes.Queries;
 
-public class RecipeQueryTests : QueryTestsBase
+public class RecipeQueryTests : UnitTestsBase
 {
     // GetRecipeDetailQuery:
     
