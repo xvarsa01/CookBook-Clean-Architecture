@@ -40,7 +40,7 @@ public static class MauiProgram
         
         builder.Services
             .AddAppServices()
-            .AddUseCasesServices()
+            .AddApplicationServices()
             .AddInfraServices(options);
         
         var app = builder.Build();

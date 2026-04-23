@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var options = GetDALOptions();
-builder.Services.AddUseCasesServices()
+builder.Services.AddApplicationServices()
                 .AddInfraServices(options);
 
 builder.Services.AddOpenApi();
