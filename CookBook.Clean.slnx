@@ -17,6 +17,7 @@
     <Project Path="tests/CookBook.CleanArch.ArchitectureTests/CookBook.CleanArch.ArchitectureTests.csproj" />
     <Project Path="tests/CookBook.CleanArch.Common.Tests/CookBook.CleanArch.Common.Tests.csproj" />
     <Project Path="tests/CookBook.CleanArch.Domain.Tests/CookBook.CleanArch.Domain.Tests.csproj" />
-    <Project Path="tests/CookBook.CleanArch.IntegrationTests/CookBook.CleanArch.IntegrationTests.csproj" />
+    <Project Path="tests/CookBook.CleanArch.Presentation.MauiApp.Tests/CookBook.CleanArch.Presentation.MauiApp.Tests.csproj" />
+    <Project Path="tests/CookBook.CleanArch.Presentation.WebApi.Tests/CookBook.CleanArch.Presentation.WebApi.Tests.csproj" />
   </Folder>
 </Solution>

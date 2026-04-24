@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
         <TargetFramework Condition="$([MSBuild]::IsOSPlatform('OSX'))">net10.0-maccatalyst</TargetFramework>
         <TargetFramework Condition=" '$(OS)' == 'Windows_NT' ">net10.0-windows10.0.19041.0</TargetFramework>
-        <OutputType>Exe</OutputType>
+        <OutputType Condition="'$(TargetFramework)' != 'net10.0'">Exe</OutputType>
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
 
@@ -27,10 +28,7 @@
 
         <!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
         <WindowsPackageType>None</WindowsPackageType>
-
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">17.0</SupportedOSPlatformVersion>
-
+        
         <RootNamespace>CookBook.CleanArch.Presentation.MauiApplication</RootNamespace>
         <AssemblyName>CookBook.CleanArch.Presentation.MauiApplication</AssemblyName>
     </PropertyGroup>

@@ -46,11 +46,6 @@ public abstract partial class IngredientFormBaseViewModel(
 
         Ingredient.ValidationResults = result;
 
-        Ingredient.ValidationResults.Errors.Remove(
-            Ingredient.ValidationResults.Errors.FirstOrDefault(x => x.PropertyName == propertyName));
-
-        Ingredient.ValidationResults.Errors.AddRange(result.Errors);
-
         OnPropertyChanged(nameof(Ingredient.ValidationResults));
     }
 

@@ -101,11 +101,6 @@ public abstract partial class RecipeFormBaseViewModel(
         var result = await _recipeValidator.ValidateAsync(Recipe);
         Recipe.ValidationResults = result;
 
-        Recipe.ValidationResults.Errors.Remove(
-            Recipe.ValidationResults.Errors.FirstOrDefault(x => x.PropertyName == propertyName));
-
-        Recipe.ValidationResults.Errors.AddRange(result.Errors);
-
         OnPropertyChanged(nameof(Recipe.ValidationResults));
     }
 
