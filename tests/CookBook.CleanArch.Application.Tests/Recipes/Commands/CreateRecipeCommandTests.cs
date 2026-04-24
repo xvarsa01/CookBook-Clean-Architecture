@@ -9,9 +9,9 @@ using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace CookBook.CleanArch.UnitTests.Recipes.Commands;
+namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
 
-public class CreateRecipeCommandTests : UnitTestsBase
+public class CreateRecipeCommandTests : ApplicationTestsBase
 {
     [Fact]
     public async Task CreateRecipeCommand_WithAllProperties_PersistsRecipe()

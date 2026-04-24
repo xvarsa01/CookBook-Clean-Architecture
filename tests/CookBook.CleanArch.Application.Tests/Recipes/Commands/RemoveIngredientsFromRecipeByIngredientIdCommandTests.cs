@@ -4,9 +4,9 @@ using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace CookBook.CleanArch.UnitTests.Recipes.Commands;
+namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
 
-public class RemoveIngredientsFromRecipeByIngredientIdCommandTests : UnitTestsBase
+public class RemoveIngredientsFromRecipeByIngredientIdCommandTests : ApplicationTestsBase
 {
     [Fact]
     public async Task RemoveIngredientsFromRecipeByIngredientIdCommand_WithSingleMatchingIngredient_RemovesIngredient()

@@ -7,9 +7,9 @@ using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace CookBook.CleanArch.UnitTests.Recipes.Commands;
+namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
 
-public class UpdateRecipeCommandTests : UnitTestsBase
+public class UpdateRecipeCommandTests : ApplicationTestsBase
 {
     [Fact]
     public async Task UpdateRecipeCommand_WithAllProperties_UpdatesRecipe()

@@ -6,9 +6,9 @@ using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace CookBook.CleanArch.UnitTests.Ingredients.Commands;
+namespace CookBook.CleanArch.Application.Tests.Ingredients.Commands;
 
-public class UpdateIngredientCommandTests : UnitTestsBase
+public class UpdateIngredientCommandTests : ApplicationTestsBase
 {
     [Fact]
     public async Task UpdateIngredientCommand_WhenAllFieldsProvided_UpdatesAllProperties()

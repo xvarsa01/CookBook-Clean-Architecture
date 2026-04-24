@@ -13,10 +13,10 @@
     <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/Tests/">
+    <Project Path="tests/CookBook.CleanArch.Application.Tests/CookBook.CleanArch.Application.Tests.csproj" />
     <Project Path="tests/CookBook.CleanArch.ArchitectureTests/CookBook.CleanArch.ArchitectureTests.csproj" />
     <Project Path="tests/CookBook.CleanArch.Common.Tests/CookBook.CleanArch.Common.Tests.csproj" />
     <Project Path="tests/CookBook.CleanArch.DomainTests/CookBook.CleanArch.DomainTests.csproj" />
     <Project Path="tests/CookBook.CleanArch.IntegrationTests/CookBook.CleanArch.IntegrationTests.csproj" />
-    <Project Path="tests/CookBook.CleanArch.UnitTests/CookBook.CleanArch.UnitTests.csproj" />
   </Folder>
 </Solution>

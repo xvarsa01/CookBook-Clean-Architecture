@@ -14,13 +14,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Installer = CookBook.CleanArch.Application.Installer;
 
-namespace CookBook.CleanArch.UnitTests;
+namespace CookBook.CleanArch.Application.Tests;
 
-public class UnitTestsBase : IAsyncLifetime
+public class ApplicationTestsBase : IAsyncLifetime
 {
     private readonly ServiceProvider _serviceProvider;
 
-    protected UnitTestsBase()
+    protected ApplicationTestsBase()
     {
         var databaseName = $"{GetType().FullName}_{Guid.NewGuid():N}.db";
         DbContextFactory = new DbContextSqLiteFactory(databaseName);

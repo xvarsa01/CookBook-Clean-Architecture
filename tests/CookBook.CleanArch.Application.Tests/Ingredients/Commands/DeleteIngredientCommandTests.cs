@@ -4,9 +4,9 @@ using CookBook.CleanArch.Domain.Ingredients.Errors;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace CookBook.CleanArch.UnitTests.Ingredients.Commands;
+namespace CookBook.CleanArch.Application.Tests.Ingredients.Commands;
 
-public class DeleteIngredientCommandTests : UnitTestsBase
+public class DeleteIngredientCommandTests : ApplicationTestsBase
 {
     [Fact]
     public async Task DeleteIngredientCommand_WhenIngredientExists_RemovesIngredient()

@@ -6,9 +6,9 @@ using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace CookBook.CleanArch.UnitTests.Recipes.Commands;
+namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
 
-public class UpdateIngredientInRecipeCommandTests : UnitTestsBase
+public class UpdateIngredientInRecipeCommandTests : ApplicationTestsBase
 {
     [Fact]
     public async Task UpdateIngredientInRecipeCommand_WithValidData_UpdatesIngredient()

@@ -3,9 +3,9 @@ using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace CookBook.CleanArch.UnitTests.Ingredients.Commands;
+namespace CookBook.CleanArch.Application.Tests.Ingredients.Commands;
 
-public class CreateIngredientCommandTests : UnitTestsBase
+public class CreateIngredientCommandTests : ApplicationTestsBase
 {
     [Fact]
     public async Task CreateIngredientCommand_WithAllProperties_PersistsIngredient()
