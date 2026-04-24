@@ -1,6 +1,6 @@
 ﻿using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
-namespace CookBook.CleanArch.DomainTests.Ingredients.ValueObjects;
+namespace CookBook.CleanArch.Domain.Tests.Ingredients.ValueObjects;
 
 public class IngredientAmountValueObjectTests
 {

@@ -2,7 +2,7 @@
 using CookBook.CleanArch.Domain.Recipes.Events;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
-namespace CookBook.CleanArch.DomainTests.Recipes.Events;
+namespace CookBook.CleanArch.Domain.Tests.Recipes.Events;
 
 public class RecipeEventTests
 {

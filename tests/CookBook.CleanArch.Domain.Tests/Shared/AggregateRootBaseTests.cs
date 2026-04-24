@@ -1,7 +1,7 @@
 ﻿using CookBook.CleanArch.Common.Tests;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
-namespace CookBook.CleanArch.DomainTests.Shared;
+namespace CookBook.CleanArch.Domain.Tests.Shared;
 
 public class AggregateRootBaseTests
 {

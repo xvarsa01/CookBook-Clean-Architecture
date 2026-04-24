@@ -4,7 +4,7 @@ using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
-namespace CookBook.CleanArch.DomainTests.Recipes;
+namespace CookBook.CleanArch.Domain.Tests.Recipes;
 
 public class RecipeIngredientTests
 {

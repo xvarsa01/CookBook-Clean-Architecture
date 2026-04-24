@@ -1,6 +1,6 @@
 ﻿using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.DomainTests.Shared.ValueObjects;
+namespace CookBook.CleanArch.Domain.Tests.Shared.ValueObjects;
 
 public class ImageUrlValueObjectTests
 {

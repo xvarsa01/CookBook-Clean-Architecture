@@ -1,7 +1,7 @@
 ﻿using CookBook.CleanArch.Domain.Ingredients;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.DomainTests.Ingredients;
+namespace CookBook.CleanArch.Domain.Tests.Ingredients;
 
 public class IngredientTests
 {

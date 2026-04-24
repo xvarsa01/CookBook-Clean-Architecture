@@ -1,6 +1,6 @@
 ﻿using CookBook.CleanArch.Domain.Shared;
 
-namespace CookBook.CleanArch.DomainTests.Shared;
+namespace CookBook.CleanArch.Domain.Tests.Shared;
 
 public class StronglyTypedIdsTests
 {
