@@ -50,7 +50,6 @@ public class IngredientEditViewModelTests : MauiTestsBase
         await ExecuteScopeAsync(async sp =>
         {
             var navigation = (TestNavigationService)sp.GetRequiredService<INavigationService>();
-            var messenger = sp.GetRequiredService<IMessengerService>();
 
             var vm = sp.GetRequiredService<IngredientEditViewModel>();
             vm.Id = IngredientTestSeeds.IngredientForTestOfUpdate.Id;
@@ -76,28 +75,6 @@ public class IngredientEditViewModelTests : MauiTestsBase
     }
 
     [Fact]
-    public async Task SaveAsync_Should_Send_IngredientEditMessage()
-    {
-        await ExecuteScopeAsync(async sp =>
-        {
-            var vm = sp.GetRequiredService<IngredientEditViewModel>();
-            vm.Id = IngredientTestSeeds.IngredientForTestOfUpdate.Id;
-
-            await vm.OnAppearingAsync();
-
-            vm.Ingredient.Name = "x";
-            vm.Ingredient.Description = "y";
-
-            // Act
-            await vm.SaveCommand.ExecuteAsync(null);
-
-            // Assert is indirect (via test messenger or DB trigger)
-            // If your IMessengerService is testable, extend it like:
-            Assert.True(true);
-        });
-    }
-
-    [Fact]
     public async Task SaveAsync_Should_Not_Save_When_Invalid()
     {
         await ExecuteScopeAsync(async sp =>
@@ -107,7 +84,7 @@ public class IngredientEditViewModelTests : MauiTestsBase
 
             await vm.OnAppearingAsync();
 
-            vm.Ingredient.Name = string.Empty; // invalid
+            vm.Ingredient.Name = string.Empty;
 
             var db = GetDbContext(sp);
             var before = db.Ingredients.Single(i => i.Id == vm.Id).Name;
