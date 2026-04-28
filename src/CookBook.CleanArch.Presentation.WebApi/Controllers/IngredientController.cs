@@ -1,4 +1,3 @@
-using CookBook.CleanArch.Application;
 using CookBook.CleanArch.Application.Ingredients;
 using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Ingredients.Models;
@@ -23,21 +22,9 @@ public class IngredientController : ControllerBase
         _mediator = mediator;
         _logger = logger;
     }
-
-    [HttpPost(Name = "CreateIngredient")]
-    public async Task<ActionResult<Guid>> Create(
-        [FromBody] IngredientCreateRequest request)
-    {
-        Result<IngredientId> result = await _mediator.Send(new CreateIngredientCommand(request));
-        if (result.IsSuccess)
-        {
-            return Ok(result.Value.Value);
-        }
-        return BadRequest(result.Error);
-    }
         
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<IngredientDetailResponse>> GetById(Guid id)
+    public async Task<ActionResult<IngredientResponse>> GetById(Guid id)
     {
         var ingredientId = new IngredientId(id);
         var result = await _mediator.Send(new GetIngredientDetailQuery(ingredientId));
@@ -57,6 +44,18 @@ public class IngredientController : ControllerBase
         if (result.IsSuccess)
         {
             return Ok(result.Value);
+        }
+        return BadRequest(result.Error);
+    }
+    
+    [HttpPost(Name = "CreateIngredient")]
+    public async Task<ActionResult<Guid>> Create(
+        [FromBody] IngredientCreateRequest request)
+    {
+        Result<IngredientId> result = await _mediator.Send(new CreateIngredientCommand(request));
+        if (result.IsSuccess)
+        {
+            return Ok(result.Value.Value);
         }
         return BadRequest(result.Error);
     }

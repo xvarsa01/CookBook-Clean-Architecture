@@ -1,9 +1,6 @@
-using CookBook.CleanArch.Application;
 using CookBook.CleanArch.Application.Behaviors;
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Common.Tests;
-using CookBook.CleanArch.Domain.Ingredients;
-using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Infrastructure;
@@ -12,7 +9,6 @@ using CookBook.CleanArch.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Installer = CookBook.CleanArch.Application.Installer;
 
 namespace CookBook.CleanArch.Application.Tests;
 
@@ -51,12 +47,9 @@ public class ApplicationTestsBase : IAsyncLifetime
     protected IDbContextFactory<CookBookDbContext> DbContextFactory { get; }
     protected CookBookDbContext DbContext { get; private set; } = null!;
     public IMediator Mediator { get; private set; } = null!;
-    
-    protected IReadOnlyList<Ingredient> SeededIngredients { get; private set; } = [];
+
     protected IReadOnlyList<Recipe> SeededRecipes { get; private set; } = [];
 
-    protected Ingredient GetSeededIngredientsByName(string ingredientName) =>
-        SeededIngredients.Single(r => r.Name == ingredientName);
     protected Recipe GetSeededRecipeByName(string recipeName) =>
         SeededRecipes.Single(r => r.Name.Value == recipeName);
 
@@ -76,10 +69,6 @@ public class ApplicationTestsBase : IAsyncLifetime
         DbContext.AddRange(RecipeTestSeeds.SeededRecipes);
         await DbContext.SaveChangesAsync();
         DbContext.ChangeTracker.Clear();
-
-        SeededIngredients = await DbContext.Ingredients
-            .AsNoTracking()
-            .ToListAsync();
 
         SeededRecipes = await DbContext.Recipes
             .AsNoTracking()

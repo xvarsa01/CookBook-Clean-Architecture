@@ -28,7 +28,7 @@ public partial class IngredientDetailViewModel(
     public IngredientId Id { get; set; } = null!;
 
     [ObservableProperty]
-    public partial IngredientDetailResponse? Ingredient { get; set; }
+    public partial IngredientResponse? Ingredient { get; set; }
     
     [ObservableProperty]
     public partial ObservableCollection<RecipeListResponse> RecipesUsingIngredient { get; set; } = [];

@@ -52,7 +52,7 @@ public abstract partial class IngredientFormBaseViewModel(
 }
 public partial class IngredientFormModel() : ObservableObject
 {
-    public IngredientFormModel(IngredientDetailResponse response) : this()
+    public IngredientFormModel(IngredientResponse response) : this()
     {
         Name = response.Name;
         Description = response.Description;

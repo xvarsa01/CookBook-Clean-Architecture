@@ -1,11 +1,8 @@
-using CookBook.CleanArch.Application;
-using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Recipes;
 using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Recipes.Queries;
 using CookBook.CleanArch.Application.Shared;
-using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using MediatR;
@@ -24,17 +21,6 @@ public class RecipeController : ControllerBase
     {
         _mediator = mediator;
         _logger = logger;
-    }
-
-    [HttpPost(Name = "CreateRecipe")]
-    public async Task<ActionResult<RecipeId>> Create(RecipeCreateRequest requestOut)
-    {
-        var result = await _mediator.Send(new CreateRecipeCommand(requestOut));
-        if (result.IsSuccess)
-        {
-            return Ok(result.Value);
-        }
-        return BadRequest(result.Error);
     }
     
     [HttpGet("{id:guid}")]
@@ -89,6 +75,17 @@ public class RecipeController : ControllerBase
         return BadRequest(result.Error);
     }
 
+    [HttpPost(Name = "CreateRecipe")]
+    public async Task<ActionResult<RecipeId>> Create(RecipeCreateRequest requestOut)
+    {
+        var result = await _mediator.Send(new CreateRecipeCommand(requestOut));
+        if (result.IsSuccess)
+        {
+            return Ok(result.Value);
+        }
+        return BadRequest(result.Error);
+    }
+    
     [HttpPut(Name = "UpdateRecipe")]
     public async Task<ActionResult<RecipeId>> Update(RecipeUpdateRequest requestOut)
     {

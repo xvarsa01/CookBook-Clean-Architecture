@@ -8,16 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Ingredients.Queries;
 
-public record GetIngredientDetailQuery(IngredientId Id) : IQuery<IngredientDetailResponse>;
+public record GetIngredientDetailQuery(IngredientId Id) : IQuery<IngredientResponse>;
 
-internal class GetIngredientDetailQueryHandler(ICookBookDbContext dbContext) : IQueryHandler<GetIngredientDetailQuery, IngredientDetailResponse>
+internal class GetIngredientDetailQueryHandler(ICookBookDbContext dbContext) : IQueryHandler<GetIngredientDetailQuery, IngredientResponse>
 {
-    public async Task<Result<IngredientDetailResponse>> Handle(GetIngredientDetailQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IngredientResponse>> Handle(GetIngredientDetailQuery request, CancellationToken cancellationToken)
     {
         var ingredient = await dbContext
             .Ingredients
             .Where(i => i.Id == request.Id)
-            .Select(ingredient => new IngredientDetailResponse(
+            .Select(ingredient => new IngredientResponse(
                 ingredient.Id,
                 ingredient.Name,
                 ingredient.Description,
@@ -25,7 +25,7 @@ internal class GetIngredientDetailQueryHandler(ICookBookDbContext dbContext) : I
             .FirstOrDefaultAsync(cancellationToken);
         
         return ingredient == null
-            ? Result.Failure<IngredientDetailResponse>(IngredientErrors.IngredientNotFoundError(request.Id))
+            ? Result.Failure<IngredientResponse>(IngredientErrors.IngredientNotFoundError(request.Id))
             : Result.Success(ingredient);
     }
 }

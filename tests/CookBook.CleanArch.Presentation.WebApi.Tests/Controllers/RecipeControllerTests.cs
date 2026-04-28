@@ -13,6 +13,28 @@ namespace CookBook.CleanArch.Presentation.WebApi.Tests.Controllers;
 public class RecipeControllerTests : WebApiTestsBase
 {
     [Fact]
+    public async Task GetById_Returns_Ok_When_Recipe_Exists()
+    {
+        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
+
+        var response = await Client.Value.GetAsync($"/recipe/{seededRecipe.Id.Value}");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var recipe = await response.Content.ReadFromJsonAsync<RecipeResponse>(Options);
+        Assert.NotNull(recipe);
+        Assert.Equal(seededRecipe.Id, recipe.Id);
+    }
+
+    [Fact]
+    public async Task GetById_Returns_NotFound_When_Recipe_Does_Not_Exist()
+    {
+        var response = await Client.Value.GetAsync($"/recipe/{Guid.NewGuid()}");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+    
+    [Fact]
     public async Task GetAllRecipes_Returns_At_Last_One_Recipe()
     {
         var response = await Client.Value.GetAsync("/recipe");
@@ -149,28 +171,6 @@ public class RecipeControllerTests : WebApiTestsBase
         {
             Assert.True(string.Compare(items[i].Name, items[i + 1].Name, StringComparison.OrdinalIgnoreCase) >= 0);
         }
-    }
-
-    [Fact]
-    public async Task GetById_Returns_Ok_When_Recipe_Exists()
-    {
-        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
-
-        var response = await Client.Value.GetAsync($"/recipe/{seededRecipe.Id.Value}");
-
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var recipe = await response.Content.ReadFromJsonAsync<RecipeResponse>(Options);
-        Assert.NotNull(recipe);
-        Assert.Equal(seededRecipe.Id, recipe.Id);
-    }
-
-    [Fact]
-    public async Task GetById_Returns_NotFound_When_Recipe_Does_Not_Exist()
-    {
-        var response = await Client.Value.GetAsync($"/recipe/{Guid.NewGuid()}");
-
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
     [Fact]

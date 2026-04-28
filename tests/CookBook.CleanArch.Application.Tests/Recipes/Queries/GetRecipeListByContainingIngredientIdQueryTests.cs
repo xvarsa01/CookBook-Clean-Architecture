@@ -9,7 +9,7 @@ public class GetRecipeListByContainingIngredientIdQueryTests : ApplicationTestsB
     public async Task Get_Recipe_List_By_Containing_IngredientId_Query_With_Lemon_Returns_Recipes_Containing_Lemon()
     {
         // Arrange
-        var lemon = GetSeededIngredientsByName(IngredientTestSeeds.Lemon.Name);
+        var lemon = IngredientTestSeeds.Lemon;
         var expectedRecipeIds = new[]
         {
             GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name).Id,
@@ -34,7 +34,7 @@ public class GetRecipeListByContainingIngredientIdQueryTests : ApplicationTestsB
     public async Task Get_Recipe_List_By_Containing_IngredientId_Query_With_Ingredient_Used_In_No_Recipes_Returns_Empty_List()
     {
         // Arrange
-        var ingredient = GetSeededIngredientsByName(IngredientTestSeeds.IngredientNotUsedInAnyRecipe.Name);
+        var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
         var query = new GetRecipeListByContainingIngredientIdQuery(ingredient.Id);
 
         // Act
