@@ -1,6 +1,8 @@
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using CookBook.CleanArch.Application;
+using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Infrastructure;
 using CookBook.CleanArch.Presentation.WebApi.Converters;
 
@@ -11,9 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.Converters.Add(new StronglyTypedIdJsonConverterFactory());
-        options.JsonSerializerOptions.Converters.Add(new ValueObjectJsonConverterFactory());
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        JsonOptionsSetup.Configure(options.JsonSerializerOptions);
     });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen(c =>
     c.UseInlineDefinitionsForEnums();
 });
 
-var options = GetDALOptions();
+var options = GetDALOptions(builder.Configuration);
 builder.Services.AddApplicationServices()
                 .AddInfraServices(options);
 
@@ -45,15 +45,54 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.InitializeDatabase();
 
-DbOptions GetDALOptions([CallerFilePath] string sourceFilePath = "")
+app.Run();
+return;
+
+DbOptions GetDALOptions(IConfiguration configuration, [CallerFilePath] string sourceFilePath = "")
 {
+    var dbSection = configuration.GetSection("CookBook:DB");
+    
     var relativePath = Path.Combine(Path.GetDirectoryName(sourceFilePath)!,"../CookBook.CleanArch.Infrastructure");
     DbOptions dalOptions = new()
     {
         DatabaseDirectory = Path.GetFullPath(relativePath),
-        DatabaseName = "cookbook.db",
+        DatabaseName = dbSection["DatabaseName"] ?? "cookbook.db",
+        SeedDemoData = TryParseBool(dbSection["SeedDemoData"]),
+        RecreateDatabaseEachTime = TryParseBool(dbSection["RecreateDatabaseEachTime"]),
+        UseInMemoryDb = TryParseBool(dbSection["UseInMemoryDatabase"]),
     };
     return dalOptions;
+}
+
+bool TryParseBool(string? value) => bool.TryParse(value, out var parsed) && parsed;
+
+
+public static class AppInitialization
+{
+    public static void InitializeDatabase(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+
+        var options = scope.ServiceProvider.GetRequiredService<DbOptions>();
+        var migrator = scope.ServiceProvider.GetRequiredService<IDbMigrator>();
+        migrator.Migrate();
+
+        if (options.SeedDemoData)
+        {
+            var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+            seeder.Seed();
+        }
+    }
+}
+
+public static class JsonOptionsSetup
+{
+    public static void Configure(JsonSerializerOptions options)
+    {
+        options.Converters.Add(new StronglyTypedIdJsonConverterFactory());
+        options.Converters.Add(new ValueObjectJsonConverterFactory());
+        options.Converters.Add(new JsonStringEnumConverter());
+    }
 }

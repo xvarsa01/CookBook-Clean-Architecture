@@ -17,7 +17,8 @@ public static class Installer
 {
     public static IServiceCollection AddInfraServices(this IServiceCollection services, DbOptions options)
     {
-        services.AddSingleton(Options.Create(options));
+        services.AddSingleton(options);
+        services.AddSingleton<IOptions<DbOptions>>(sp => Options.Create(sp.GetRequiredService<DbOptions>()));
 
         if (options.UseInMemoryDb)
         {
@@ -34,11 +35,12 @@ public static class Installer
         services.AddScoped(typeof(IRepository<Recipe, RecipeId>), typeof(EfRecipeRepository));
         services.AddScoped<IRecipeRepository, EfRecipeRepository>();
         
-        services.AddSingleton<IDbContextFactory<CookBookDbContext>>(_ =>
-            new DbContextSqLiteFactory(options.DatabaseFilePath));
+        services.AddSingleton<IDbContextFactory<CookBookDbContext>>(sp =>
+            new DbContextSqLiteFactory(sp.GetRequiredService<DbOptions>().DatabaseFilePath));
         services.AddDbContext<CookBookDbContext>((sp, contextOptions) =>
         {
-            contextOptions.UseSqlite($"Data Source={options.DatabaseFilePath}");
+            var dbOptions = sp.GetRequiredService<DbOptions>();
+            contextOptions.UseSqlite($"Data Source={dbOptions.DatabaseFilePath}");
             contextOptions.AddCreatedDateUpdatedDateInterceptor(sp);
             contextOptions.AddDomainsEventInterceptor(sp);
         });

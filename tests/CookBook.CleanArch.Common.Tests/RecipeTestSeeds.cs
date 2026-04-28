@@ -238,7 +238,7 @@ public static class RecipeTestSeeds
             ]).Value;
     }
 
-    public static List<Recipe> SeededRecipes =>
+    public static readonly List<Recipe> SeededRecipes =
     [
         MinimalisticRecipe(),
         RecipeWithSingleIngredient(),

@@ -72,11 +72,20 @@ public class ApplicationTestsBase : IAsyncLifetime
         await DbContext.Database.EnsureDeletedAsync();
         await DbContext.Database.EnsureCreatedAsync();
 
-        SeededIngredients = IngredientTestSeeds.SeededIngredients;
-        SeededRecipes = RecipeTestSeeds.SeededRecipes;
-        DbContext.AddRange(SeededIngredients);
-        DbContext.AddRange(SeededRecipes);
+        DbContext.AddRange(IngredientTestSeeds.SeededIngredients);
+        DbContext.AddRange(RecipeTestSeeds.SeededRecipes);
         await DbContext.SaveChangesAsync();
+        DbContext.ChangeTracker.Clear();
+
+        SeededIngredients = await DbContext.Ingredients
+            .AsNoTracking()
+            .ToListAsync();
+
+        SeededRecipes = await DbContext.Recipes
+            .AsNoTracking()
+            .Include(r => r.Ingredients)
+            .ThenInclude(ri => ri.Ingredient)
+            .ToListAsync();
     }
 
     public async Task DisposeAsync()

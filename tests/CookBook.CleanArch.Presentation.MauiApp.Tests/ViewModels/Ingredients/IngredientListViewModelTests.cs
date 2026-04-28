@@ -60,7 +60,6 @@ public class IngredientListViewModelTests : MauiTestsBase
         });
     }
     
-
     [Fact]
     public async Task LoadPage_Should_Set_TotalItemsCount()
     {

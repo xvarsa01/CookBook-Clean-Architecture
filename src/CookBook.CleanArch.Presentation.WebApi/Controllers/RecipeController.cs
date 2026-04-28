@@ -5,6 +5,7 @@ using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Recipes.Queries;
 using CookBook.CleanArch.Application.Shared;
+using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using MediatR;
@@ -49,7 +50,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet(Name = "GetRecipeList")]
-    public async Task<ActionResult<IEnumerable<RecipeListResponse>>> GetList(
+    public async Task<ActionResult<PagedResult<RecipeListResponse>>> GetList(
         [FromQuery] RecipeFilter filter,
         [FromQuery] PagingOptions paging)
     {
@@ -80,10 +81,6 @@ public class RecipeController : ControllerBase
         [FromQuery] string ingredientNameSubstring)
     {
         var result = await _mediator.Send(new GetRecipeListByContainingIngredientNameQuery(ingredientNameSubstring));
-        if (!result.IsSuccess)
-        {
-            return BadRequest(result.Error);
-        }
         if (result.IsSuccess)
         {
             return Ok(result.Value);
@@ -148,7 +145,7 @@ public class RecipeController : ControllerBase
         var result = await _mediator.Send(new UpdateIngredientInRecipeCommand(recipeId, request));
         if (result.IsSuccess)
         {
-            return Ok(result);
+            return Ok();
         }
         return BadRequest(result.Error);
     }
