@@ -11,5 +11,10 @@ public class InMemoryRecipeRepository : InMemoryRepository<Recipe, RecipeId>, IR
     {
         return Store.Values.Count(recipe => recipe.Ingredients.Any(ri => ri.IngredientId == ingredientId));
     }
+    
+    public Task<Recipe?> GetRecipeWithIngredientsByIdAsync(RecipeId id)
+    {
+        return GetByIdAsync(id); 
+    }
 }
 

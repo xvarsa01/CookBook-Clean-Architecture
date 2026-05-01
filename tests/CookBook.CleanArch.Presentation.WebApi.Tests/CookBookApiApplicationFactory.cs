@@ -51,8 +51,7 @@ public class CookBookApiApplicationFactory : WebApplicationFactory<Program>
                 DatabaseDirectory = databaseDirectory,
                 DatabaseName = "recipe-controller-tests.db",
                 RecreateDatabaseEachTime = true,
-                SeedDemoData = true,
-                UseInMemoryDb = false
+                SeedDemoData = true
             });
 
             // Replace the default DbSeeder with test-specific seeder

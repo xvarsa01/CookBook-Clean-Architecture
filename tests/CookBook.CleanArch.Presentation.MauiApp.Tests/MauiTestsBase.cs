@@ -37,7 +37,6 @@ public class MauiTestsBase : IAsyncLifetime
         services.AddInfraServices(new DbOptions
         {
             DatabaseName = dbName,
-            UseInMemoryDb = false,
             RecreateDatabaseEachTime = true,
             SeedDemoData = false,
             DatabaseDirectory = dbFolder

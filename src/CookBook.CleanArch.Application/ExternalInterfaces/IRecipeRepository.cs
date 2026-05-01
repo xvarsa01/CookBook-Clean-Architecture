@@ -7,4 +7,6 @@ namespace CookBook.CleanArch.Application.ExternalInterfaces;
 public interface IRecipeRepository : IRepository<Recipe, RecipeId>
 {
     int GetRecipeCountByContainingIngredientId(IngredientId ingredientId);
+    
+    Task<Recipe?> GetRecipeWithIngredientsByIdAsync(RecipeId id); // this is unused in current application, check `GetRecipeDetailQuery` class for explanation
 }

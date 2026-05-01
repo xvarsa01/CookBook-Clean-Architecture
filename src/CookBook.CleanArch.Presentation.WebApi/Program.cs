@@ -60,8 +60,7 @@ DbOptions GetDALOptions(IConfiguration configuration, [CallerFilePath] string so
         DatabaseDirectory = Path.GetFullPath(relativePath),
         DatabaseName = dbSection["DatabaseName"] ?? "cookbook.db",
         SeedDemoData = TryParseBool(dbSection["SeedDemoData"]),
-        RecreateDatabaseEachTime = TryParseBool(dbSection["RecreateDatabaseEachTime"]),
-        UseInMemoryDb = TryParseBool(dbSection["UseInMemoryDatabase"]),
+        RecreateDatabaseEachTime = TryParseBool(dbSection["RecreateDatabaseEachTime"])
     };
     return dalOptions;
 }

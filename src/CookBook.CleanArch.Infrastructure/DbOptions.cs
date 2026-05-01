@@ -8,5 +8,4 @@ public record DbOptions
 
     public bool RecreateDatabaseEachTime { get; init; } = false;    // Deletes database before application startup
     public bool SeedDemoData { get; init; } = false;
-    public bool UseInMemoryDb { get; init; } = false;
 }

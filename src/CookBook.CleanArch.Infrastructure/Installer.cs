@@ -19,15 +19,6 @@ public static class Installer
     {
         services.AddSingleton(options);
         services.AddSingleton<IOptions<DbOptions>>(sp => Options.Create(sp.GetRequiredService<DbOptions>()));
-
-        if (options.UseInMemoryDb)
-        {
-            services.AddSingleton(typeof(IRepository<,>), typeof(InMemoryRepository<,>));
-            services.AddSingleton<InMemoryRecipeRepository>();
-            services.AddSingleton<IRecipeRepository>(sp => sp.GetRequiredService<InMemoryRecipeRepository>());
-            services.AddSingleton<IRepository<Recipe, RecipeId>>(sp => sp.GetRequiredService<InMemoryRecipeRepository>());
-            return services;   
-        }
         
         services.AddScoped<IDbMigrator, DbMigrator>();
         services.AddScoped<IDbSeeder, DbSeeder>();
