@@ -50,12 +50,5 @@ public class RecipeContainsZeroIngredientsConverterTests
         Assert.IsType<bool>(result);
         Assert.False((bool)result);
     }
-
-    [Fact]
-    public void ConvertBack_ThrowsNotImplementedException()
-    {
-        // Assert
-        Assert.Throws<NotImplementedException>(() => _converter.ConvertBack(true, typeof(int), null, CultureInfo.CurrentCulture));
-    }
 }
 

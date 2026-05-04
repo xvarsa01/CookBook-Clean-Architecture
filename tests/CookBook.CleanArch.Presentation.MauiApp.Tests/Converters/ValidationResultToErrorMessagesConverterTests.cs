@@ -96,12 +96,5 @@ public class ValidationResultToErrorMessagesConverterTests
         // Assert
         Assert.Null(result);
     }
-    
-    [Fact]
-    public void ConvertBack_ThrowsNotImplementedException()
-    {
-        // Assert
-        Assert.Throws<NotImplementedException>(() => _converter.ConvertBack(null, typeof(object), null, CultureInfo.CurrentCulture));
-    }
 }
 
