@@ -126,4 +126,7 @@
   <data name="Edit_Button_Text" xml:space="preserve">
     <value>Upravit</value>
   </data>
+  <data name="UsedInFollowingRecipes_CollectionTitle_Text" xml:space="preserve">
+      <value>Ingredience se používá v následujících receptech:</value>
+  </data>
 </root>

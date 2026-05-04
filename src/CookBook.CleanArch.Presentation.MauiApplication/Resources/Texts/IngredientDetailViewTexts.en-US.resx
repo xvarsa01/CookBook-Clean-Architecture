@@ -126,4 +126,7 @@
   <data name="Edit_Button_Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="UsedInFollowingRecipes_CollectionTitle_Text" xml:space="preserve">
+      <value>Ingredient is used in following recipes:</value>
+  </data>
 </root>

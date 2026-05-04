@@ -25,7 +25,8 @@ public partial class IngredientDetailViewModel(
     IAlertService alertService)
     : ViewModelBase(messengerService), IRecipient<IngredientEditMessage>
 {
-    public IngredientId Id { get; set; } = null!;
+    [ObservableProperty]
+    public partial IngredientId Id { get; set; } = null!;
 
     [ObservableProperty]
     public partial IngredientResponse? Ingredient { get; set; }
@@ -93,6 +94,18 @@ public partial class IngredientDetailViewModel(
         if (message.IngredientId == Id)
         {
             ForceDataRefreshOnNextAppearing();
+        }
+    }
+
+    async partial void OnIdChanged(IngredientId value)
+    {
+        try
+        {
+            await LoadDataAsync();
+        }
+        catch (Exception ex)
+        {
+            // ignored
         }
     }
 }

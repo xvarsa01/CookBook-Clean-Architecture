@@ -97,6 +97,11 @@
                                         <Image Source="{Binding IngredientImageUrl.Value, TargetNullValue='ingredient_placeholder.jpg'}"
                                                WidthRequest="60" HeightRequest="60"
                                                Aspect="AspectFill" />
+                                        
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={x:Reference RecipeDetailViewRoot}, Path=BindingContext.GoToIngredientDetailCommand}"
+                                                                  CommandParameter="{Binding IngredientId}" />
+                                        </Border.GestureRecognizers>
                                     </Border>
 
                                     <Label VerticalOptions="Center">

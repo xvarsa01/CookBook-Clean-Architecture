@@ -1,13 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Recipes.Queries;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
-using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using MediatR;
@@ -22,7 +21,8 @@ public partial class  RecipeDetailViewModel(
     : ViewModelBase(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeIngredientAddMessage>,
         IRecipient<RecipeIngredientDeleteMessage>
 {
-    public RecipeId Id { get; set; } = null!;
+    [ObservableProperty]
+    public partial RecipeId Id { get; set; } = null!;
 
     [ObservableProperty]
     public partial RecipeResponse? Recipe { get; set; }
@@ -66,6 +66,17 @@ public partial class  RecipeDetailViewModel(
             );
         }
     }
+    
+    [RelayCommand]
+    private async Task GoToIngredientDetailAsync(IngredientId id)
+    {
+        ForceDataRefreshOnNextAppearing();
+        
+        await navigationService.GoToAsync(
+            $"{NavigationService.IngredientListRouteAbsolute}{NavigationService.IngredientDetailRouteRelative}",
+            new Dictionary<string, object?> { [nameof(IngredientDetailViewModel.Id)] = id }
+        );
+    }
 
     public void Receive(RecipeEditMessage message)
     {
@@ -75,6 +86,18 @@ public partial class  RecipeDetailViewModel(
         }
     }
 
+    async partial void OnIdChanged(RecipeId value)
+    {
+        try
+        {
+            await LoadDataAsync();
+        }
+        catch (Exception ex)
+        {
+            // ignored
+        }
+    }
+    
     public void Receive(RecipeIngredientAddMessage message)
     {
         ForceDataRefreshOnNextAppearing();

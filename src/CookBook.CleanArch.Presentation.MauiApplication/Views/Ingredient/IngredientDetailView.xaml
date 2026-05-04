@@ -49,7 +49,7 @@
             </VerticalStackLayout>
         </Grid>
         
-        <Label Text="Ingredient is used in following recipes:" /> 
+        <Label Text="{x:Static texts:IngredientDetailViewTexts.UsedInFollowingRecipes_CollectionTitle_Text}" /> 
         <CollectionView ItemsSource="{Binding RecipesUsingIngredient}"
                         VerticalOptions="Fill"
                         ItemsLayout="HorizontalList">
