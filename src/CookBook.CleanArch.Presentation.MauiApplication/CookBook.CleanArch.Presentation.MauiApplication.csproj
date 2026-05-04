@@ -34,6 +34,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <InternalsVisibleTo Include="CookBook.CleanArch.Presentation.MauiApp.Tests" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="CommunityToolkit.Maui" />
         <PackageReference Include="CommunityToolkit.Mvvm" />
         <PackageReference Include="FluentValidation" />

@@ -286,7 +286,7 @@
                        VerticalOptions="Center"
                        Text="{x:Static t:RecipeFormBaseControlTexts.Save_Button_No_Ingredients_Warning_Text}" 
                        Style="{StaticResource ValidationErrorLabelStyle}"
-                       IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.Ingredients.Count, Converter={StaticResource RecipeContainsAtLeastOneIngredientConverter}}" />
+                       IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.Ingredients.Count, Converter={StaticResource RecipeContainsZeroIngredientsConverter}}" />
 
                 <Button Grid.Column="1"
                         Text="{x:Static t:RecipeFormBaseControlTexts.Save_Button_Text}"

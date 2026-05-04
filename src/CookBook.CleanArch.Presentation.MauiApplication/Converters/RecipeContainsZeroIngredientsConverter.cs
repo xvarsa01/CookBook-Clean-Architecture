@@ -1,9 +1,8 @@
 ﻿using System.Globalization;
-using CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Converters;
 
-public class RecipeContainsAtLeastOneIngredientConverter : IValueConverter
+public class RecipeContainsZeroIngredientsConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

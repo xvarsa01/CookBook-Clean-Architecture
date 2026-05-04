@@ -8,10 +8,11 @@ using CookBook.CleanArch.Presentation.MauiApp.Tests.MockedServices;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace CookBook.CleanArch.Presentation.MauiApp.Tests;
 
-public class MauiTestsBase : IAsyncLifetime
+public class MauiTestsBase : IAsyncLifetime, IDisposable
 {
     private readonly ServiceProvider _serviceProvider;
 
@@ -20,8 +21,6 @@ public class MauiTestsBase : IAsyncLifetime
         var services = new ServiceCollection();
 
         var dbName = $"{GetType().FullName}_{Guid.NewGuid():N}.db";
-
-        // --- Infra (force in-memory/sqlite test db) ---
         services.AddDbContext<CookBookDbContext>(options =>
         {
             options.UseSqlite($"Data Source={dbName}");
@@ -29,7 +28,6 @@ public class MauiTestsBase : IAsyncLifetime
 
         services.AddScoped<ICookBookDbContext>(sp => sp.GetRequiredService<CookBookDbContext>());
         services.AddScoped<DbContext>(sp => sp.GetRequiredService<CookBookDbContext>());
-        
         
         var dbFolder = Path.Combine(Path.GetTempPath(), "CookBookTests", Guid.NewGuid().ToString());
         Directory.CreateDirectory(dbFolder);
@@ -64,6 +62,11 @@ public class MauiTestsBase : IAsyncLifetime
         services.AddLogging();
 
         _serviceProvider = services.BuildServiceProvider();
+
+        // Mock the dispatcher
+        var dispatcherMock = new Mock<IDispatcher>();
+        var dispatcher = dispatcherMock.Object;
+        DispatcherProvider.SetCurrent(new TestDispatcherProvider(dispatcher));
     }
 
     protected IServiceScope CreateScope() => _serviceProvider.CreateScope();
@@ -105,5 +108,25 @@ public class MauiTestsBase : IAsyncLifetime
         var sp = scope.ServiceProvider;
 
         await action(sp);
+    }
+
+    public void Dispose()
+    {
+        DispatcherProvider.SetCurrent(null);
+        GC.SuppressFinalize(this);
+    }
+
+    private sealed class TestDispatcherProvider : IDispatcherProvider
+    {
+        private readonly IDispatcher _dispatcher;
+
+        public TestDispatcherProvider(IDispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
+        }
+
+        public IDispatcher? GetForCurrentThread() => _dispatcher;
+
+        public IDispatcher? GetForMainThread() => _dispatcher;
     }
 }
