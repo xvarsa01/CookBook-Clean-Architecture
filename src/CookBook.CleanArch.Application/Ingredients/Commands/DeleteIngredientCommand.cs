@@ -1,6 +1,5 @@
 ﻿using CookBook.CleanArch.Application.Abstraction;
 using CookBook.CleanArch.Application.ExternalInterfaces;
-using CookBook.CleanArch.Application.Recipes.Queries;
 using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Ingredients;
 using CookBook.CleanArch.Domain.Ingredients.Errors;

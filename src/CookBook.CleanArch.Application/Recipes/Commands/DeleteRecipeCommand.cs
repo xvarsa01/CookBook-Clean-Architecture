@@ -3,7 +3,6 @@ using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Domain;
 using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.Errors;
-using CookBook.CleanArch.Domain.Recipes.Events;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Recipes.Commands;

@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain.Recipes.Enums;
-using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe;

@@ -7,7 +7,6 @@ using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Application.Ingredients.Queries;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
-using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using MediatR;

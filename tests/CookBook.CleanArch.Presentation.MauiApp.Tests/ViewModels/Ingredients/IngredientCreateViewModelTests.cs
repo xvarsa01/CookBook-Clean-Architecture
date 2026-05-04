@@ -2,7 +2,6 @@
 using CookBook.CleanArch.Presentation.MauiApp.Tests.MockedServices;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CookBook.CleanArch.Presentation.MauiApp.Tests.ViewModels.Ingredients;
 
