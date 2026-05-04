@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:views="using:CookBook.CleanArch.Presentation.MauiApplication.Views"
+                       xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
+                       xmlns:inputKit="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+                       xmlns:helpers="using:CookBook.CleanArch.Presentation.MauiApplication.Helpers"
+                       x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.SettingsView"
+                       Title="Settings"
+                       Style="{StaticResource ContentPageStyle}"
+                       x:DataType="viewModels:SettingsViewModel">
+    <VerticalStackLayout Padding="20"
+                         Spacing="16">
+        <Label Text="{helpers:DynamicTranslate LocalizationManager={StaticResource SettingsLocalizationManager}, Text=Language_Selector_Title_Text}"
+               FontSize="16" />
+        <Picker ItemsSource="{Binding Languages}"
+                ItemDisplayBinding="{Binding Text}"
+                SelectedItem="{Binding SelectedLanguage}">
+        </Picker>
+
+        <Label Text="{helpers:DynamicTranslate LocalizationManager={StaticResource SettingsLocalizationManager}, Text=Theme_Selector_Title_Text}"
+               FontSize="16" />
+
+        <inputKit:RadioButtonGroupView>
+            <inputKit:RadioButton IsChecked="{Binding Path=IsDarkTheme}"
+                                  Text="{helpers:DynamicTranslate LocalizationManager={StaticResource SettingsLocalizationManager}, Text=DarkMode_Option_Text}" />
+            <inputKit:RadioButton IsChecked="{Binding Path=IsDarkTheme, Converter={StaticResource InverseBooleanConverter}}"
+                                  Text="{helpers:DynamicTranslate LocalizationManager={StaticResource SettingsLocalizationManager}, Text=LightMode_Option_Text}"
+                                  TextColor="{DynamicResource PrimaryLabelTextColor}" />
+        </inputKit:RadioButtonGroupView>
+    </VerticalStackLayout>
+</views:ContentPageBase>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ResourceDictionary x:Class="CookBook.CleanArch.Presentation.MauiApplication.Resources.LocalizationManagers"
+                    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:helpers="using:CookBook.CleanArch.Presentation.MauiApplication.Helpers"
+                    xmlns:texts="using:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts">
+    
+    <helpers:DynamicLocalizationManager x:Key="AppShellLocalizationManager"
+                                        ResourceManager="{x:Static texts:AppShellTexts.ResourceManager}" />
+    
+    <helpers:DynamicLocalizationManager x:Key="SettingsLocalizationManager"
+                                        ResourceManager="{x:Static texts:SettingsViewTexts.ResourceManager}" />
+    
+</ResourceDictionary>

@@ -18,17 +18,17 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class AppShellTexts {
+    internal class LanguageTexts {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AppShellTexts() {
+        internal LanguageTexts() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts.AppShellTexts", typeof(AppShellTexts).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts.LanguageTexts", typeof(LanguageTexts).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,38 +60,20 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File.
+        ///   Looks up a localized string similar to Czech.
         /// </summary>
-        internal static string File_MenuItem_Title {
+        internal static string cs {
             get {
-                return ResourceManager.GetString("File_MenuItem_Title", resourceCulture);
+                return ResourceManager.GetString("cs", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ingredients.
+        ///   Looks up a localized string similar to English.
         /// </summary>
-        internal static string Ingredients_Tab_Title {
+        internal static string en {
             get {
-                return ResourceManager.GetString("Ingredients_Tab_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Recipes.
-        /// </summary>
-        internal static string Recipes_Tab_Title {
-            get {
-                return ResourceManager.GetString("Recipes_Tab_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        internal static string Settings_Tab_Title {
-            get {
-                return ResourceManager.GetString("Settings_Tab_Title", resourceCulture);
+                return ResourceManager.GetString("en", resourceCulture);
             }
         }
     }

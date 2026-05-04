@@ -1,5 +1,6 @@
 ﻿using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
+using CookBook.CleanArch.Presentation.MauiApplication.Views;
 using CookBook.CleanArch.Presentation.MauiApplication.Views.Ingredient;
 using CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe;
 
@@ -16,6 +17,8 @@ public class NavigationService : INavigationService
     public const string IngredientDetailRouteRelative = "/detail";
     public const string IngredientEditRouteRelative = "/edit";
     public const string IngredientCreateRouteRelative = "/create";
+    
+    public const string SettingsAbsolute = "//settings";
 
     public IEnumerable<RouteModel> Routes { get; } = new List<RouteModel>
     {
@@ -30,6 +33,8 @@ public class NavigationService : INavigationService
 
         new(RecipeListRouteAbsolute + RecipeCreateRouteRelative, typeof(RecipeCreateView)),
         new(RecipeListRouteAbsolute + RecipeDetailRouteRelative + RecipeEditRouteRelative, typeof(RecipeEditView)),
+        
+        new(SettingsAbsolute, typeof(SettingsView)),
     };
 
     public async Task GoToAsync(string route)

@@ -22,4 +22,8 @@ public partial class AppShell
     [RelayCommand]
     private async Task GoToIngredientsAsync()
         => await _navigationService.GoToAsync(NavigationService.IngredientListRouteAbsolute);
+    
+    [RelayCommand]
+    private async Task GoToSettingsAsync()
+        => await _navigationService.GoToAsync(NavigationService.SettingsAbsolute);
 }

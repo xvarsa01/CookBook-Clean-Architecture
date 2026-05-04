@@ -2,6 +2,7 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Converters"
+             xmlns:resources="using:CookBook.CleanArch.Presentation.MauiApplication.Resources"
              x:Class="CookBook.CleanArch.Presentation.MauiApplication.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -12,6 +13,7 @@
                 <ResourceDictionary Source="Resources/Styles/ContentPageStyle.xaml" />
                 <ResourceDictionary Source="Resources/Styles/LabelStyle.xaml" />
                 <ResourceDictionary Source="Resources/Styles/EntryStyles.xaml" />
+                <resources:LocalizationManagers />
             </ResourceDictionary.MergedDictionaries>
             
             <converters:FoodTypeToColorConverter x:Key="FoodTypeToColorConverter" />

@@ -17,6 +17,7 @@ public static class Installer
         services.AddSingleton<IMessengerService, MessengerService>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IAlertService, AlertService>();
+        services.AddSingleton<ILocalizationService, LocalizationService>();
         
         services.AddTransient<IngredientDetailViewModel>();
         services.AddTransient<IngredientListViewModel>();
@@ -27,6 +28,8 @@ public static class Installer
         services.AddTransient<RecipeListViewModel>();
         services.AddTransient<RecipeCreateViewModel>();
         services.AddTransient<RecipeEditViewModel>();
+        
+        services.AddTransient<SettingsViewModel>();
 
         return services;
     }
