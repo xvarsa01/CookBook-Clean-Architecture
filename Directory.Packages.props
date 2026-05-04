@@ -25,7 +25,6 @@
     <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.41" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="Moq" Version="4.20.72" />
-    <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageVersion Include="TngTech.ArchUnitNET.xUnit" Version="0.13.3" />
     <PackageVersion Include="xunit" Version="2.9.3" />

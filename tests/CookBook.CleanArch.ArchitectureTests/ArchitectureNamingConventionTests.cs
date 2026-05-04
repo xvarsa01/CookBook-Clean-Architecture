@@ -125,7 +125,7 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     {
         Classes().That()
             .HaveNameEndingWith("Factory")
-            .Should().NotResideInAssembly(CoreAssembly)
+            .Should().NotResideInAssembly(DomainAssembly)
             .AndShould().NotResideInAssembly(ApplicationAssembly)
             .Check(Architecture);
     }
@@ -163,7 +163,7 @@ public class ArchitectureNamingConventionTests : ArchitectureTestBase
     {
         Classes().That()
             .AreAssignableTo(typeof(AggregateRootBase<>))
-            .Should().ResideInAssembly(CoreAssembly)
+            .Should().ResideInAssembly(DomainAssembly)
             .Check(Architecture);
     }
 }

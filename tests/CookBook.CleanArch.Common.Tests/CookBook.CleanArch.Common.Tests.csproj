@@ -10,8 +10,4 @@
       <ProjectReference Include="..\..\src\CookBook.CleanArch.Domain\CookBook.CleanArch.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Shouldly" />
-    </ItemGroup>
-
 </Project>

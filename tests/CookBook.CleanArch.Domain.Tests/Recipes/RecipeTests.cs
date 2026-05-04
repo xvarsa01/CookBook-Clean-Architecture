@@ -1,4 +1,5 @@
-﻿using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+﻿using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
@@ -204,10 +205,37 @@ public class RecipeTests
         var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         var durationResult = RecipeDuration.CreateObject(TimeSpan.FromMinutes(-1));
+        if (durationResult.IsSuccess)
+        {
+            recipe.UpdateRest(null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(-1)).Value, null);
+        }
 
         Assert.True(durationResult.IsFailure);
     }
     
+    [Fact]
+    public void UpdateRest_WhenAllParametersAreNull_ShouldNotChangeTheRecipe()
+    {
+        // Arrange
+        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var originalName = recipe.Name;
+        var originalDescription = recipe.Description;
+        var originalImageUrl = recipe.ImageUrl;
+        var originalDuration = recipe.Duration;
+        var originalType = recipe.Type;
+        var originalIngredients = recipe.Ingredients.ToList();
+
+        // Act
+        recipe.UpdateRest(null, null, null);
+
+        // Assert
+        Assert.Equal(originalName, recipe.Name);
+        Assert.Equal(originalDescription, recipe.Description);
+        Assert.Equal(originalImageUrl, recipe.ImageUrl);
+        Assert.Equal(originalDuration, recipe.Duration);
+        Assert.Equal(originalType, recipe.Type);
+        Assert.Equal(originalIngredients, recipe.Ingredients);
+    }
     
     [Fact]
     public void Updating_RecipeType_Should_Update_Type()

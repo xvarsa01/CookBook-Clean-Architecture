@@ -8,7 +8,16 @@ public class ArchitectureFrameworkDependencyTests : ArchitectureTestBase
     [Fact]
     public void CoreLayer_ShouldNotDependOn_EntityFramework()
     {
-        Types().That().ResideInAssembly(CoreAssembly).Should()
+        Types().That().ResideInAssembly(DomainAssembly).Should()
+            .NotDependOnAnyTypesThat()
+            .ResideInNamespace("Microsoft.EntityFrameworkCore")
+            .Check(Architecture);
+    }
+    
+    [Fact]
+    public void Presentation_WebApi_Layer_ShouldNotDependOn_EntityFramework()
+    {
+        Types().That().ResideInAssembly(WebApiAssembly).Should()
             .NotDependOnAnyTypesThat()
             .ResideInNamespace("Microsoft.EntityFrameworkCore")
             .Check(Architecture);
@@ -17,7 +26,7 @@ public class ArchitectureFrameworkDependencyTests : ArchitectureTestBase
     [Fact]
     public void CoreLayer_ShouldNotDependOn_AspNetCore()
     {
-        Types().That().ResideInAssembly(CoreAssembly).Should()
+        Types().That().ResideInAssembly(DomainAssembly).Should()
             .NotDependOnAnyTypesThat()
             .ResideInNamespaceMatching("Microsoft.AspNetCore(\\..+)?")
             .Check(Architecture);
