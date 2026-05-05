@@ -129,4 +129,7 @@
   <data name="UsedInFollowingRecipes_CollectionTitle_Text" xml:space="preserve">
       <value>Ingredience se používá v následujících receptech:</value>
   </data>
+  <data name="NotUsedInAnyRecipes_CollectionTitle_Text" xml:space="preserve">
+      <value>Ingredience není použita v žádných receptech.</value>
+  </data>
 </root>

@@ -79,6 +79,15 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ingredient is not used in any recipes..
+        /// </summary>
+        internal static string NotUsedInAnyRecipes_CollectionTitle_Text {
+            get {
+                return ResourceManager.GetString("NotUsedInAnyRecipes_CollectionTitle_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CookBook.
         /// </summary>
         internal static string Page_Title {

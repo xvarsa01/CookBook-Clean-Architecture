@@ -17,7 +17,7 @@ public partial class RecipeListViewModel(
     IMediator mediator,
     INavigationService navigationService,
     IMessengerService messengerService)
-    : ViewModelWithPager<RecipeFilter, RecipeSortParameter>(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeDeleteMessage>
+    : ViewModelWithPager<RecipeFilter, RecipeSortParameter>(messengerService), IRecipient<RecipeEditMessage>, IRecipient<RecipeDeleteMessage>, IRecipient<LanguageChangedMessage>
 {
     [ObservableProperty]
     public partial ObservableCollection<RecipeListResponse> Recipes { get; set; } = [];
@@ -141,5 +141,16 @@ public partial class RecipeListViewModel(
     public void Receive(RecipeDeleteMessage message)
     {
         ForceDataRefreshOnNextAppearing();
+    }
+    
+    public void Receive(LanguageChangedMessage message)
+    {
+        RefreshRecipeTypes();
+    }
+    
+    private void RefreshRecipeTypes()
+    {
+        var items = Recipes.ToList();
+        Recipes = new ObservableCollection<RecipeListResponse>(items);      // workaround to trigger UI update of recipe types after language change,
     }
 }

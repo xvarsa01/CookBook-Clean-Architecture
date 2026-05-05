@@ -3,9 +3,9 @@ using CookBook.CleanArch.Presentation.MauiApplication.Converters;
 
 namespace CookBook.CleanArch.Presentation.MauiApp.Tests.Converters;
 
-public class RecipeContainsZeroIngredientsConverterTests
+public class IsCountZeroConverterTests
 {
-    private readonly RecipeContainsZeroIngredientsConverter _converter = new();
+    private readonly IsCountZeroConverter _converter = new();
 
     [Fact]
     public void Convert_ZeroIngredients_ReturnsTrue()

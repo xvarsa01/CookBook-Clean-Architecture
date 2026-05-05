@@ -1,11 +1,12 @@
 ﻿using System.Globalization;
 using CookBook.CleanArch.Presentation.MauiApplication.Helpers;
+using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Services;
 
-public class LocalizationService : ILocalizationService
+public class LocalizationService(IMessengerService messengerService) : ILocalizationService
 {
     public string[] GetSupportedCultures() => ["en", "cs"];
 
@@ -21,6 +22,8 @@ public class LocalizationService : ILocalizationService
 
         ApplyResourceCulture(normalized);
         SetDynamicResourcesCulture(normalized);
+
+        messengerService.Send(new LanguageChangedMessage());
     }
     
     private void SetDynamicResourcesCulture(CultureInfo culture)

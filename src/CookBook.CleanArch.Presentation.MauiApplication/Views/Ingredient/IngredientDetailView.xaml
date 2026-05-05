@@ -53,10 +53,16 @@
             </HorizontalStackLayout>            
         </Grid>
         
-        <Label Text="{x:Static texts:IngredientDetailViewTexts.UsedInFollowingRecipes_CollectionTitle_Text}" /> 
+        <Label Text="{x:Static texts:IngredientDetailViewTexts.UsedInFollowingRecipes_CollectionTitle_Text}"
+               IsVisible="{Binding RecipesUsingIngredient.Count, Converter={StaticResource IsCountNotZeroConverter}}"/>
+        
+        <Label Text="{x:Static texts:IngredientDetailViewTexts.NotUsedInAnyRecipes_CollectionTitle_Text}"
+               IsVisible="{Binding RecipesUsingIngredient.Count, Converter={StaticResource IsCountZeroConverter}}"/> 
+        
         <CollectionView ItemsSource="{Binding RecipesUsingIngredient}"
                         VerticalOptions="Fill"
-                        ItemsLayout="HorizontalList">
+                        ItemsLayout="HorizontalList"
+                        IsVisible="{Binding RecipesUsingIngredient.Count, Converter={StaticResource IsCountNotZeroConverter}}">
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:RecipeListResponse">

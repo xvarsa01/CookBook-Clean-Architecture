@@ -22,7 +22,8 @@
             <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
             <converters:FoodTypeToStringConverter x:Key="FoodTypeToStringConverter" />
             <converters:RecipeDurationToStringConverter x:Key="RecipeDurationToStringConverter" />
-            <converters:RecipeContainsZeroIngredientsConverter x:Key="RecipeContainsZeroIngredientsConverter" />
+            <converters:IsCountZeroConverter x:Key="IsCountZeroConverter" />
+            <converters:IsCountNotZeroConverter x:Key="IsCountNotZeroConverter" />
             <converters:RecipeIngredientsCountToStringConverter x:Key="RecipeIngredientsCountToStringConverter"/>
             <converters:UnitToStringConverter x:Key="UnitToStringConverter"/>
             <converters:LocalizedNullableBoolConverter x:Key="LocalizedNullableBoolConverter" />

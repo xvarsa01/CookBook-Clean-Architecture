@@ -2,7 +2,6 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:enums="using:CookBook.CleanArch.Domain.Recipes.Enums"
              xmlns:helpers="using:CookBook.CleanArch.Presentation.MauiApplication.Helpers"
              x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe.RecipeTypePickerControl"
              x:Name="Root">
@@ -11,18 +10,8 @@
         <Label FontSize="12"
                Text="{helpers:DynamicTranslate LocalizationManager={StaticResource RecipeControlsLocalizationManager}, Text=RecipeType_Title_Text}" />
         <Picker SelectedItem="{Binding Source={x:Reference Root}, Path=SelectedRecipeType, Mode=TwoWay}"
+                ItemsSource="{Binding Source={x:Reference Root}, Path=RecipeTypes}"
                 ItemDisplayBinding="{Binding Converter={StaticResource FoodTypeToStringConverter}}">
-            <Picker.ItemsSource>
-                <x:Array Type="{x:Type x:Object}">
-                    <x:Null />
-                    <enums:RecipeType>MainDish</enums:RecipeType>
-                    <enums:RecipeType>Soup</enums:RecipeType>
-                    <enums:RecipeType>Dessert</enums:RecipeType>
-                    <enums:RecipeType>Drink</enums:RecipeType>
-                    <enums:RecipeType>Caffe</enums:RecipeType>
-                    <enums:RecipeType>Other</enums:RecipeType>
-                </x:Array>
-            </Picker.ItemsSource>
         </Picker>
     </VerticalStackLayout>
 </ContentView>

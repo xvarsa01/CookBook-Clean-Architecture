@@ -109,4 +109,7 @@
   <data name="UsedInFollowingRecipes_CollectionTitle_Text" xml:space="preserve">
       <value>Ingredient is used in following recipes:</value>
   </data>
+  <data name="NotUsedInAnyRecipes_CollectionTitle_Text" xml:space="preserve">
+      <value>Ingredient is not used in any recipes.</value>
+  </data>
 </root>
