@@ -9,6 +9,8 @@
 
     <Color x:Key="NavigationBarBackgroudColor">#F2F2F2</Color>
     <Color x:Key="NavigationBarTextColor">#000000</Color>
+    
+    <Color x:Key="ShellBackButtonColorColor">#000000</Color>
 
     <Color x:Key="PrimaryLabelTextColor">#000000</Color>
     <Color x:Key="ListItemBackgroundColor">#FFFFFF</Color>

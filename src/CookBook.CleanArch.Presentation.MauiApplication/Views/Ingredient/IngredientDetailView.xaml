@@ -13,43 +13,44 @@
                        x:Name="IngredientDetailViewRoot"
                        x:DataType="viewModels:IngredientDetailViewModel">
     <VerticalStackLayout Spacing="20">
-        <HorizontalStackLayout HorizontalOptions="End"
-                               Spacing="15"
-                               HeightRequest="30">
-            <Button FontFamily="{x:Static rs:FontKeys.IconsFont}"
-                    Text="{x:Static rs:IconKeys.Delete}"
-                    CornerRadius="5"
-                    BackgroundColor="{StaticResource ErrorColor}"
-                    Command="{Binding DeleteCommand}" />
+        <Grid>
+            <Grid HorizontalOptions="Center" VerticalOptions="Start"
+                  ColumnDefinitions="*, Auto, Auto, *"
+                  ColumnSpacing="20">
 
-            <Button FontFamily="{x:Static rs:FontKeys.IconsFont}"
-                    Text="{x:Static rs:IconKeys.Edit}"
-                    CornerRadius="5"
-                    BackgroundColor="{StaticResource PrimaryColor}"
-                    Command="{Binding GoToEditCommand}" />
-        </HorizontalStackLayout>
+                <Border Grid.Column="1"
+                        HorizontalOptions="Center" VerticalOptions="Center"
+                        Style="{StaticResource ImageBorderStyle}">
+                    <Image Aspect="AspectFill"
+                           WidthRequest="170" HeightRequest="170"
+                           Source="{Binding Ingredient.ImageUrl.Value, TargetNullValue='ingredient_placeholder.jpg'}"/>
+                </Border>
 
-        <Grid HorizontalOptions="Center" VerticalOptions="Start"
-              RowDefinitions="170, *" ColumnDefinitions="*, Auto, Auto, *"
-              RowSpacing="20" ColumnSpacing="20">
+                <VerticalStackLayout Grid.Column="2"
+                                     Spacing="20">
+                    <Label FontSize="24" 
+                           Text="{Binding Ingredient.Name}" />
 
-            <Border Grid.Row="0" Grid.Column="1"
-                    HorizontalOptions="Center" VerticalOptions="Center"
-                    Style="{StaticResource ImageBorderStyle}">
-                <Image Aspect="AspectFill"
-                       WidthRequest="170" HeightRequest="170"
-                       Source="{Binding Ingredient.ImageUrl.Value, TargetNullValue='ingredient_placeholder.jpg'}"/>
-            </Border>
+                    <Label FontSize="14" 
+                           Text="{Binding Ingredient.Description}"/>
+                </VerticalStackLayout>
+            </Grid>
+            <HorizontalStackLayout HorizontalOptions="End"
+                                   VerticalOptions="Start"
+                                   Spacing="15"
+                                   HeightRequest="30">
+                <Button FontFamily="{x:Static rs:FontKeys.IconsFont}"
+                        Text="{x:Static rs:IconKeys.Delete}"
+                        CornerRadius="5"
+                        BackgroundColor="{StaticResource ErrorColor}"
+                        Command="{Binding DeleteCommand}" />
 
-            <VerticalStackLayout Grid.Row="0" Grid.RowSpan="2"
-                                 Grid.Column="2"
-                                 Spacing="20">
-                <Label FontSize="24" 
-                       Text="{Binding Ingredient.Name}" />
-
-                <Label FontSize="14" 
-                       Text="{Binding Ingredient.Description}"/>
-            </VerticalStackLayout>
+                <Button FontFamily="{x:Static rs:FontKeys.IconsFont}"
+                        Text="{x:Static rs:IconKeys.Edit}"
+                        CornerRadius="5"
+                        BackgroundColor="{StaticResource PrimaryColor}"
+                        Command="{Binding GoToEditCommand}" />
+            </HorizontalStackLayout>            
         </Grid>
         
         <Label Text="{x:Static texts:IngredientDetailViewTexts.UsedInFollowingRecipes_CollectionTitle_Text}" /> 

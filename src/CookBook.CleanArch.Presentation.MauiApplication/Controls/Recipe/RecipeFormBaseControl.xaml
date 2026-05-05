@@ -231,48 +231,53 @@
                             HorizontalOptions="End">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="viewModels:RecipeIngredientListModel">
-                        <HorizontalStackLayout>
-                            <Border Margin="5, 5, 20, 5"
+                        <Grid ColumnDefinitions="Auto, Auto, Auto, *, Auto"
+                              ColumnSpacing="10">
+                            <Border Grid.Column="0"
+                                    Margin="5, 5, 20, 5"
                                     Style="{StaticResource ImageBorderStyle}">
                                 <Image Source="{Binding IngredientImageUrl, TargetNullValue='ingredient_placeholder.jpg'}"
                                        WidthRequest="60" HeightRequest="60"
                                        Aspect="AspectFill" />
                             </Border>
                             
-                            <HorizontalStackLayout x:Name="IngredientsEditingLayout"
-                                                   VerticalOptions="Center"
-                                                   Spacing="10">
-                                <Entry Text="{Binding Amount}"
-                                       x:Name="AmountEntry">
-                                    <Entry.Behaviors>
-                                        <toolkit:EventToCommandBehavior EventName="Unfocused"
-                                                                        Command="{Binding Source={x:Reference Root}, Path=UpdateIngredientCommand}"
-                                                                        CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
-                                    </Entry.Behaviors>
-                                </Entry>
-                                <Picker x:Name="UnitPicker"
-                                        ItemsSource="{Binding Source={x:Reference Root}, Path=Units}"
-                                        ItemDisplayBinding="{Binding ., Converter={StaticResource UnitToStringConverter}}"
-                                        SelectedItem="{Binding Unit}">
-                                    <Picker.Behaviors>
-                                        <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged"
-                                                                        Command="{Binding Source={x:Reference Root}, Path=UpdateIngredientCommand}"
-                                                                        CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
-                                    </Picker.Behaviors>
-                                </Picker>
-                                
-                                <Label Text="{Binding IngredientName}"
-                                       VerticalOptions="Center"
-                                       MinimumWidthRequest="100" />
-                                
-                                <Button HorizontalOptions="Start" VerticalOptions="Center"
-                                        Text="{x:Static t:RecipeFormBaseControlTexts.RemoveIngredient_Button_Text}"
-                                        Command="{Binding Source={x:Reference Root}, Path=RemoveIngredientCommand}"
-                                        CommandParameter="{Binding .}"
-                                        Style="{StaticResource ErrorButtonStyle}" />
-                            </HorizontalStackLayout>
+                            <Entry x:Name="AmountEntry"
+                                   Grid.Column="1"
+                                   VerticalOptions="Center"
+                                   Text="{Binding Amount}">
+                                <Entry.Behaviors>
+                                    <toolkit:EventToCommandBehavior EventName="Unfocused"
+                                                                    Command="{Binding Source={x:Reference Root}, Path=UpdateIngredientCommand}"
+                                                                    CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
+                                </Entry.Behaviors>
+                            </Entry>
                             
-                        </HorizontalStackLayout>
+                            <Picker x:Name="UnitPicker"
+                                    Grid.Column="2"
+                                    VerticalOptions="Center"
+                                    MinimumWidthRequest="200"
+                                    ItemsSource="{Binding Source={x:Reference Root}, Path=Units}"
+                                    ItemDisplayBinding="{Binding ., Converter={StaticResource UnitToStringConverter}}"
+                                    SelectedItem="{Binding Unit}">
+                                <Picker.Behaviors>
+                                    <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged"
+                                                                    Command="{Binding Source={x:Reference Root}, Path=UpdateIngredientCommand}"
+                                                                    CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
+                                </Picker.Behaviors>
+                            </Picker>
+                            
+                            <Label Grid.Column="3"
+                                   Text="{Binding IngredientName}"
+                                   VerticalOptions="Center" />
+                            
+                            <Button Grid.Column="4"
+                                    HorizontalOptions="Start" VerticalOptions="Center"
+                                    Text="{x:Static t:RecipeFormBaseControlTexts.RemoveIngredient_Button_Text}"
+                                    Command="{Binding Source={x:Reference Root}, Path=RemoveIngredientCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Style="{StaticResource ErrorButtonStyle}" />
+                            
+                        </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
