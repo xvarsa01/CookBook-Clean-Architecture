@@ -26,5 +26,11 @@
     </data>
     <data name="RecipeType_Title_Text" xml:space="preserve">
         <value>Type</value>
-  </data>
+    </data>
+    <data name="UseMinimalDuration_Title_Text" xml:space="preserve">
+        <value>Minimal duration</value>
+    </data>
+    <data name="UseMaximalDuration_Title_Text" xml:space="preserve">
+        <value>Maximal duration</value>
+    </data>
 </root>

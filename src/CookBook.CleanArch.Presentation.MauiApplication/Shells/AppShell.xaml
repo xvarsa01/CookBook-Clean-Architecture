@@ -21,7 +21,7 @@
         </MenuBarItem>
     </Shell.MenuBarItems>
 
-    <ShellContent ContentTemplate="{DataTemplate i:IngredientListView}" Route="ingredients" />
     <ShellContent ContentTemplate="{DataTemplate r:RecipeListView}" Route="recipes" />
+    <ShellContent ContentTemplate="{DataTemplate i:IngredientListView}" Route="ingredients" />
     <ShellContent ContentTemplate="{DataTemplate s:SettingsView }" Route="settings" />
 </Shell>

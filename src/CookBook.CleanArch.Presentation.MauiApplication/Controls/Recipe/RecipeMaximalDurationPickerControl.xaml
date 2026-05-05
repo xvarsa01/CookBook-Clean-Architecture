@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="using:CookBook.CleanArch.Presentation.MauiApplication.Helpers"
+             x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe.RecipeMaximalDurationPickerControl"
+             x:Name="Root">
+
+    <VerticalStackLayout Spacing="10">
+        <Label FontSize="12"
+               Text="{helpers:DynamicTranslate LocalizationManager={StaticResource RecipeControlsLocalizationManager}, Text=UseMaximalDuration_Title_Text}" />
+        <Switch IsToggled="{Binding Source={x:Reference Root}, Path=UsePicker, Mode=TwoWay}" />
+        <TimePicker Time="{Binding Source={x:Reference Root}, Path=SelectedValue, Mode=TwoWay}"
+                    Format="HH:mm"
+                    IsEnabled="{Binding Source={x:Reference Root}, Path=UsePicker}">
+        </TimePicker>
+    </VerticalStackLayout>
+</ContentView>
+
+

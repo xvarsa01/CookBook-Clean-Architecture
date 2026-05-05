@@ -86,5 +86,23 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
                 return ResourceManager.GetString("Search_Title_Text", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximal duration.
+        /// </summary>
+        internal static string UseMaximalDuration_Title_Text {
+            get {
+                return ResourceManager.GetString("UseMaximalDuration_Title_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal duration.
+        /// </summary>
+        internal static string UseMinimalDuration_Title_Text {
+            get {
+                return ResourceManager.GetString("UseMinimalDuration_Title_Text", resourceCulture);
+            }
+        }
     }
 }

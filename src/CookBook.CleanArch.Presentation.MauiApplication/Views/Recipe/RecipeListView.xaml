@@ -31,6 +31,12 @@
 
                 <recipeControls:RecipeTypePickerControl SelectedRecipeType="{Binding Filter.RecipeType, Mode=TwoWay}" />
 
+                <recipeControls:RecipeMinimalDurationPickerControl UsePicker="{Binding UseMinimalDuration, Mode=TwoWay}"
+                                                                   SelectedValue="{Binding MinimalDuration, Mode=TwoWay}"/>
+                
+                <recipeControls:RecipeMaximalDurationPickerControl UsePicker="{Binding UseMaximalDuration, Mode=TwoWay}"
+                                                                   SelectedValue="{Binding MaximalDuration, Mode=TwoWay}"/>
+                
                 <shared:SortDirectionControl IsSortAscending="{Binding Filter.IsSortAscending, Mode=TwoWay}" />
                 
                 <shared:PageSizeSelectorControl SelectedPageSize="{Binding PagingOptions.PageSize, Mode=TwoWay}"/>

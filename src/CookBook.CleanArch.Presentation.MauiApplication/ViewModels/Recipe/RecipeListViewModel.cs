@@ -24,6 +24,74 @@ public partial class RecipeListViewModel(
 
     public override RecipeFilter Filter { get; set; } = new();
 
+    public bool UseMinimalDuration
+    {
+        get => Filter.MinimalDuration.HasValue;
+        set
+        {
+            if (value == Filter.MinimalDuration.HasValue)
+                return;
+
+            if (value)
+            {
+                Filter.MinimalDuration = MinimalDuration;
+            }
+            else
+            {
+                Filter.MinimalDuration = null;
+            }
+
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(MinimalDuration));
+        }
+    }
+    
+    public bool UseMaximalDuration
+    {
+        get => Filter.MaximalDuration.HasValue;
+        set
+        {
+            if (value == Filter.MaximalDuration.HasValue)
+                return;
+
+            if (value)
+            {
+                Filter.MaximalDuration = MaximalDuration;
+            }
+            else
+            {
+                Filter.MaximalDuration = null;
+            }
+
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(MaximalDuration));
+        }
+    }
+
+    public TimeSpan MinimalDuration
+    {
+        get => Filter.MinimalDuration ?? TimeSpan.Zero;
+        set
+        {
+            Filter.MinimalDuration = UseMinimalDuration ? value : null;
+
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(UseMinimalDuration));
+        }
+    }
+    
+    public TimeSpan MaximalDuration
+    {
+        get => Filter.MaximalDuration ?? TimeSpan.Zero;
+        set
+        {
+            Filter.MaximalDuration = UseMaximalDuration ? value : null;
+
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(UseMaximalDuration));
+        }
+    }
+
     protected override async Task LoadDataAsync()
     {
         await base.LoadDataAsync();
