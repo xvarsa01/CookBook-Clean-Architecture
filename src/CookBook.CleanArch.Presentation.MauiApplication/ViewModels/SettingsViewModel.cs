@@ -9,7 +9,6 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
 public partial class SettingsViewModel(
     IMessengerService messengerService,
-    IServiceProvider serviceProvider,
     ILocalizationService localizationService) : ViewModelBase(messengerService)
 {
     [ObservableProperty]

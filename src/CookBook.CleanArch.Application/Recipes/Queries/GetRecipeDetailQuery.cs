@@ -56,8 +56,8 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext, IRecipe
     /// to repositories, but it is less flexible and less testable. It is also better for performance.
     ///
     /// Method below is better for quick development if you don't know which DB will be used in the end. Or you plan to
-    /// change DB in the future. Using this method you would change only repository implementation, and not the application layer.
-    /// It is also better for testability, because you can easily mock repositories.
+    /// change DB in the future. Using this method during change of DB you would change only repository implementations,
+    /// and not the application layer. It is also better for testability, because you can easily mock repositories.
     /// </summary>
     public async Task<Result<RecipeResponse>> HandleUnusedAlternative(GetRecipeDetailQuery request, CancellationToken cancellationToken)
     {

@@ -14,17 +14,6 @@ public static class RecipeTestSeeds
             MeasurementUnit.Ml)
     ];
 
-    public static Recipe EmptyRecipe()
-    {
-        return Recipe.Create(
-            name: RecipeName.CreateObject("empty recipe").Value,
-            description: "baseline recipe",
-            imageUrl: ImageUrl.CreateObject("http://example.com/a.png").Value,
-            duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
-            type: RecipeType.Other,
-            ingredients: new List<RecipeCreateIngredient>()).Value;         // this throws!
-    }
-
     public static Recipe MinimalisticRecipe()
     {
         return Recipe.Create(

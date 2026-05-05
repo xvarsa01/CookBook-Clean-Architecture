@@ -7,8 +7,7 @@ public record ImageUrl : IValueObject<string>, IValueObjectFactory<ImageUrl, str
 {
     public string Value { get; }
 
-    private static readonly Regex ImageExtensionRegex = new(@"\.(png|jpg|jpeg|gif|svg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled
-    );
+    private static readonly Regex ImageExtensionRegex = new(@"\.(png|jpg|jpeg|gif|svg)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
     
     private static readonly string[] AllowedHosts =
     [

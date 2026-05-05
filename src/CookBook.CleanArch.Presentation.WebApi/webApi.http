@@ -24,7 +24,7 @@ Content-Type: application/json
 {
   "Name": "Test second ingredient",
   "Descripton": "one more ingredient",
-  "ImageUrl": "some image url"
+  "ImageUrl": "https://example.com/1234.jpg"
 }
 > {% client.global.set("ingredient2id", response.body); %}
 
@@ -47,7 +47,7 @@ Content-Type: application/json
   "Id": "{{ingredient2id}}",
   "Name": "Updated name123",
   "Descripton": "updated description",
-  "ImageUrl": "some deffierent image url"
+  "ImageUrl": "https://example.com/5678.jpg"
 }
 
 ###

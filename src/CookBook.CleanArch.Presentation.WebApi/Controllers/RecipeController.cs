@@ -15,12 +15,10 @@ namespace CookBook.CleanArch.Presentation.WebApi.Controllers;
 public class RecipeController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly ILogger<RecipeController> _logger;
 
-    public RecipeController(IMediator mediator, ILogger<RecipeController> logger)
+    public RecipeController(IMediator mediator)
     {
         _mediator = mediator;
-        _logger = logger;
     }
     
     [HttpGet("{id:guid}")]

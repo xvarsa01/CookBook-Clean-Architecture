@@ -19,7 +19,6 @@
             </ResourceDictionary.MergedDictionaries>
             
             <converters:FoodTypeToColorConverter x:Key="FoodTypeToColorConverter" />
-            <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
             <converters:FoodTypeToStringConverter x:Key="FoodTypeToStringConverter" />
             <converters:RecipeDurationToStringConverter x:Key="RecipeDurationToStringConverter" />
             <converters:IsCountZeroConverter x:Key="IsCountZeroConverter" />

@@ -20,7 +20,7 @@ public class EfRecipeRepository(DbContext dbContext) : EfRepository<Recipe, Reci
         return _dbSet.Count(recipe => recipe.Ingredients.Any(ri => ri.IngredientId == ingredientId));
     }
     
-    public async Task<Recipe?> GetRecipeWithIngredientsByIdAsync(RecipeId id)// this is unused in current application, check `GetRecipeDetailQuery` class for explanation
+    public async Task<Recipe?> GetRecipeWithIngredientsByIdAsync(RecipeId id)// this is not used in current application, check `GetRecipeDetailQuery` class for explanation
     {
         return await _dbSet
             .Include(r => r.Ingredients)

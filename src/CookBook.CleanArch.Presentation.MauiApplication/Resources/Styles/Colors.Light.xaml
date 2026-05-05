@@ -4,7 +4,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     x:Class="CookBook.CleanArch.Presentation.MauiApplication.Resources.Styles.ColorsLight">
     <Color x:Key="PrimaryColor">#00AE4B</Color>
-    <Color x:Key="UnselectedColor">#888888</Color>
     <Color x:Key="BackgroundColor">#FFFFFF</Color>
 
     <Color x:Key="NavigationBarBackgroudColor">#F2F2F2</Color>
