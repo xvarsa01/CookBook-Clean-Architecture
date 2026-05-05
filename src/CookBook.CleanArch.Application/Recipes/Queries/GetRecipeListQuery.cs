@@ -50,14 +50,20 @@ internal class GetRecipeListQueryHandler(ICookBookDbContext dbContext) : IQueryH
 
         if (filter.MinimalDuration.HasValue)
         {
-            var min = RecipeDuration.CreateObject(filter.MinimalDuration.Value).Value;
-            queryable = queryable.Where(r => r.Duration >= min);
+            var minResult = RecipeDuration.CreateObject(filter.MinimalDuration.Value);
+            if (minResult.IsSuccess)
+            {
+                queryable = queryable.Where(r => r.Duration >= minResult.Value);
+            }
         }
 
         if (filter.MaximalDuration.HasValue)
         {
-            var max = RecipeDuration.CreateObject(filter.MaximalDuration.Value).Value;
-            queryable = queryable.Where(r => r.Duration <= max);
+            var maxResult = RecipeDuration.CreateObject(filter.MaximalDuration.Value);
+            if (maxResult.IsSuccess)
+            {
+                queryable = queryable.Where(r => r.Duration <= maxResult.Value);
+            }
         }
         
         queryable = filter.SortParameter switch
