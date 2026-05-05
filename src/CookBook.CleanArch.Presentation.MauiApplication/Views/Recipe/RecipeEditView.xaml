@@ -21,7 +21,7 @@
         IngredientAmountNew="{Binding IngredientAmountNew}"
         SelectedNewIngredient="{Binding SelectedNewIngredient}"
         AddIngredientCommand="{Binding AddNewIngredientToRecipeCommand}"
-        UpdateIngredientCommand="{Binding UpdateIngredientCommand}"
+        UpdateIngredientCommand="{Binding UpdateIngredientAsyncCommand}"
         RemoveIngredientCommand="{Binding RemoveIngredientCommand}"
         ValidateIngredientCommand="{Binding ValidateIngredientAmountNewPropertyCommand}" />
 

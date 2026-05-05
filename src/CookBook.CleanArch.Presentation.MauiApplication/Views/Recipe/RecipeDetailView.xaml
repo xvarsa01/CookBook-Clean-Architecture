@@ -6,6 +6,7 @@
                        xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:models="using:CookBook.CleanArch.Application.Recipes.Models"
+                       xmlns:rs="using:CookBook.CleanArch.Presentation.MauiApplication.Resources.Fonts"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe.RecipeDetailView"
                        Title="{xaml:Static texts:RecipeDetailViewTexts.Page_Title}"
                        Style="{StaticResource ContentPageStyle}"
@@ -19,7 +20,8 @@
             <Button Grid.Column="1"
                     VerticalOptions="Start"
                     HeightRequest="30"
-                    Text="{x:Static texts:RecipeDetailViewTexts.Delete_Button_Text}"
+                    FontFamily="{x:Static rs:FontKeys.IconsFont}"
+                    Text="{x:Static rs:IconKeys.Delete}"
                     CornerRadius="5"
                     BackgroundColor="{StaticResource ErrorColor}"
                     Command="{Binding DeleteCommand}" />
@@ -27,7 +29,8 @@
             <Button Grid.Row="0"
                     HorizontalOptions="End" VerticalOptions="Start"
                     HeightRequest="30"
-                    Text="{x:Static texts:RecipeDetailViewTexts.Edit_Button_Text}"
+                    FontFamily="{x:Static rs:FontKeys.IconsFont}"
+                    Text="{x:Static rs:IconKeys.Edit}"
                     CornerRadius="5"
                     Command="{Binding GoToEditCommand}"
                     Style="{StaticResource PrimaryButtonStyle}" />

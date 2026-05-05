@@ -3,6 +3,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="using:CookBook.CleanArch.Presentation.MauiApplication.Models"
+             xmlns:rs="using:CookBook.CleanArch.Presentation.MauiApplication.Resources.Fonts"
              x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Shared.PagerControl"
              x:Name="Root">
     
@@ -11,14 +12,14 @@
         <Button Command="{Binding Source={x:Reference Root}, Path=ToFirstCommand}"
                 FontSize="18"
                 HorizontalOptions="Center"
-                Text="⏮"
-                VerticalOptions="Center" />
+                FontFamily="{x:Static rs:FontKeys.IconsFont}"
+                Text="{x:Static rs:IconKeys.FirstPage}" />
 
         <Button Command="{Binding Source={x:Reference Root}, Path=ToPreviousCommand}"
                 FontSize="18"
                 HorizontalOptions="Center"
-                Text="◀"
-                VerticalOptions="Center" />
+                FontFamily="{x:Static rs:FontKeys.IconsFont}"
+                Text="{x:Static rs:IconKeys.PreviousPage}" />
 
         <!--  Page numbers  -->
         <CollectionView ItemsSource="{Binding Source={x:Reference Root}, Path=PageNumbers}"
@@ -48,14 +49,14 @@
         <Button Command="{Binding Source={x:Reference Root}, Path=ToNextCommandCommand}"
                 FontSize="18"
                 HorizontalOptions="Center"
-                Text="▶"
-                VerticalOptions="Center" />
+                FontFamily="{x:Static rs:FontKeys.IconsFont}"
+                Text="{x:Static rs:IconKeys.NextPage}" />
 
         <Button Command="{Binding Source={x:Reference Root}, Path=ToLastCommandCommand}"
                 FontSize="18"
                 HorizontalOptions="Center"
-                Text="⏭"
-                VerticalOptions="Center" />
+                FontFamily="{x:Static rs:FontKeys.IconsFont}"
+                Text="{x:Static rs:IconKeys.LastPage}" />
             </HorizontalStackLayout>
 
 </ContentView>
