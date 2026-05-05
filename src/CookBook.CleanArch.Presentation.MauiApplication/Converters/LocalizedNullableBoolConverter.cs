@@ -3,7 +3,7 @@ using CookBook.CleanArch.Presentation.MauiApplication.Helpers;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Converters;
 
-public class NullableBoolToStringConverter : IValueConverter
+public class LocalizedNullableBoolConverter : IValueConverter
 {
     private const string YesKey = "HasImageFilter_Yes_Text";
     private const string NoKey = "HasImageFilter_No_Text";

@@ -12,7 +12,7 @@
         <Picker ItemsSource="{Binding Source={x:Reference Root}, Path=Options}"
                 SelectedItem="{Binding Source={x:Reference Root}, Path=HasImage}">
             <Picker.ItemDisplayBinding>
-                <Binding Converter="{StaticResource NullableBoolToStringConverter}"
+                <Binding Converter="{StaticResource LocalizedNullableBoolConverter}"
                          ConverterParameter="{StaticResource IngredientsControlsLocalizationManager}" />
             </Picker.ItemDisplayBinding>
         </Picker>

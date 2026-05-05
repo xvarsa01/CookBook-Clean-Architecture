@@ -11,7 +11,7 @@ public partial class DynamicLocalizationManager : ObservableObject
     [ObservableProperty]
     public partial ResourceManager? ResourceManager { get; set; }
 
-    public string this[string text] => GetValue(text);
+    public virtual string this[string text] => GetValue(text);
 
     public string GetValue(string text)
     {

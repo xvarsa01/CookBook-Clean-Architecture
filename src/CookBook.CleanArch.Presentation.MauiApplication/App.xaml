@@ -25,7 +25,7 @@
             <converters:RecipeContainsZeroIngredientsConverter x:Key="RecipeContainsZeroIngredientsConverter" />
             <converters:RecipeIngredientsCountToStringConverter x:Key="RecipeIngredientsCountToStringConverter"/>
             <converters:UnitToStringConverter x:Key="UnitToStringConverter"/>
-            <converters:NullableBoolToStringConverter x:Key="NullableBoolToStringConverter" />
+            <converters:LocalizedNullableBoolConverter x:Key="LocalizedNullableBoolConverter" />
             <converters:NullableTimeSpanConverter x:Key="NullableTimeSpanConverter" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <converters:ValidationResultToErrorMessagesConverter x:Key="ValidationResultToErrorMessagesConverter" />
