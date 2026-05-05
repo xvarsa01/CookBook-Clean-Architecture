@@ -1,4 +1,5 @@
-﻿using CookBook.CleanArch.Presentation.MauiApplication.Shells;
+﻿using CookBook.CleanArch.Presentation.MauiApplication.Helpers;
+using CookBook.CleanArch.Presentation.MauiApplication.Shells;
 using Microsoft.Extensions.Hosting;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication;
@@ -14,6 +15,8 @@ public partial class App
         _hostedServices = _serviceProvider.GetServices<IHostedService>().ToArray();
         
         InitializeComponent();
+        Current!.UserAppTheme = AppTheme.Dark;
+        ThemeResourceManager.ApplyThemeResources(UserAppTheme);
     }
 
     protected override Window CreateWindow(IActivationState? activationState)

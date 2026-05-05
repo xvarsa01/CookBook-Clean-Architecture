@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CookBook.CleanArch.Presentation.MauiApplication.Helpers;
 using CookBook.CleanArch.Presentation.MauiApplication.Models;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 
@@ -62,5 +63,6 @@ public partial class SettingsViewModel(
         var app = Microsoft.Maui.Controls.Application.Current;
 
         app?.UserAppTheme = value ? AppTheme.Dark : AppTheme.Light;
+        ThemeResourceManager.ApplyThemeResources(app?.UserAppTheme ?? AppTheme.Dark);
     }
 }
