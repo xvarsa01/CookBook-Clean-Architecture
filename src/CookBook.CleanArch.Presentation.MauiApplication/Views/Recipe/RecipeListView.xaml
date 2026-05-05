@@ -2,14 +2,13 @@
 <views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
-                       xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
-                       xmlns:t="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:recipeControls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe"
                        xmlns:models="using:CookBook.CleanArch.Application.Recipes.Models"
                        xmlns:shared="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Shared"
+                       xmlns:helpers="using:CookBook.CleanArch.Presentation.MauiApplication.Helpers"
                        x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Recipe.RecipeListView"
-                       Title="{xaml:Static t:RecipeListViewTexts.Page_Title}"
+                       Title="{helpers:DynamicTranslate LocalizationManager={StaticResource RecipeListLocalizationManager}, Text=Page_Title}"
                        x:DataType="viewModels:RecipeListViewModel"
                        x:Name="RecipeListViewRoot"
                        Style="{StaticResource ContentPageStyle}">
@@ -24,7 +23,7 @@
             <!--  Title  -->
             <Label Grid.Column="0"
                    FontSize="24"
-                   Text="{x:Static t:RecipeListViewTexts.Title_Label}" />
+                   Text="{helpers:DynamicTranslate LocalizationManager={StaticResource RecipeListLocalizationManager}, Text=Title_Label}" />
 
             <HorizontalStackLayout Grid.Column="2" Spacing="20">
 
@@ -107,7 +106,7 @@
             <Button Margin="10,0"
                     Padding="12,6"
                     HorizontalOptions="Start"
-                    Text="{x:Static t:RecipeListViewTexts.Add_Button_Text}"
+                    Text="{helpers:DynamicTranslate LocalizationManager={StaticResource RecipeListLocalizationManager}, Text=Add_Button_Text}"
                     Command="{Binding GoToCreateCommand}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     WidthRequest="300" />

@@ -1,4 +1,6 @@
-﻿using CookBook.CleanArch.Presentation.MauiApplication.Helpers;
+﻿using System.Globalization;
+using CookBook.CleanArch.Presentation.MauiApplication.Helpers;
+using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using CookBook.CleanArch.Presentation.MauiApplication.Shells;
 using Microsoft.Extensions.Hosting;
 
@@ -17,6 +19,9 @@ public partial class App
         InitializeComponent();
         Current!.UserAppTheme = AppTheme.Dark;
         ThemeResourceManager.ApplyThemeResources(UserAppTheme);
+        
+        var localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
+        localizationService.SetCulture(new CultureInfo("en"));
     }
 
     protected override Window CreateWindow(IActivationState? activationState)

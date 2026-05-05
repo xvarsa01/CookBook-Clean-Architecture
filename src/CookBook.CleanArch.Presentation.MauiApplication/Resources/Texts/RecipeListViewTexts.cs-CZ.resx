@@ -126,13 +126,4 @@
   <data name="Add_Button_Text" xml:space="preserve">
     <value>Přidat recept</value>
   </data>
-  <data name="Search_Placeholder_Text" xml:space="preserve">
-    <value>Hledat recept…</value>
-  </data>
-  <data name="Search_Title_Text" xml:space="preserve">
-    <value>Název</value>
-  </data>
-  <data name="RecipeType_Title_Text" xml:space="preserve">
-    <value>Typ</value>
-  </data>
 </root>

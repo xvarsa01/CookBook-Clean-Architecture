@@ -18,17 +18,17 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class IngredientListViewTexts {
+    internal class IngredientFormBaseControlTexts {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal IngredientListViewTexts() {
+        internal IngredientFormBaseControlTexts() {
         }
         
         /// <summary>
@@ -38,8 +38,8 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager(("CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts.IngredientListVie" +
-                            "wTexts"), typeof(IngredientListViewTexts).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager(("CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts.IngredientFormBas" +
+                            "eControlTexts"), typeof(IngredientFormBaseControlTexts).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,29 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create new Ingredient.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
-        internal static string Add_Button_Text {
+        internal static string Description_Label_Text {
             get {
-                return ResourceManager.GetString("Add_Button_Text", resourceCulture);
+                return ResourceManager.GetString("Description_Label_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image URL.
+        /// </summary>
+        internal static string ImageUrl_Label_Text {
+            get {
+                return ResourceManager.GetString("ImageUrl_Label_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name_Label_Text {
+            get {
+                return ResourceManager.GetString("Name_Label_Text", resourceCulture);
             }
         }
         
@@ -79,11 +97,11 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ingredients.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
-        internal static string Title_Label {
+        internal static string Save_Button_Text {
             get {
-                return ResourceManager.GetString("Title_Label", resourceCulture);
+                return ResourceManager.GetString("Save_Button_Text", resourceCulture);
             }
         }
     }

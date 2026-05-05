@@ -2,16 +2,15 @@
 <views:ContentPageBase x:Class="CookBook.CleanArch.Presentation.MauiApplication.Views.Ingredient.IngredientListView"
                        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                       xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
                        xmlns:viewModels="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.ViewModels"
                        xmlns:views="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Views"
-                       xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
                        xmlns:ingredientControls="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Ingredients"
                        xmlns:models="using:CookBook.CleanArch.Application.Ingredients.Models"
                        xmlns:shared="using:CookBook.CleanArch.Presentation.MauiApplication.Controls.Shared"
+                       xmlns:helpers="using:CookBook.CleanArch.Presentation.MauiApplication.Helpers"
                        x:Name="IngredientListViewRoot"
                        x:DataType="viewModels:IngredientListViewModel"
-                       Title="{xaml:Static texts:IngredientListViewTexts.Page_Title}"
+                       Title="{helpers:DynamicTranslate LocalizationManager={StaticResource IngredientsListLocalizationManager}, Text=Page_Title}"
                        Style="{StaticResource ContentPageStyle}">
     <Grid HorizontalOptions="Fill"
           RowDefinitions="Auto, *, Auto"
@@ -23,14 +22,14 @@
             <!--  Title  -->
             <Label Grid.Column="0"
                    FontSize="24"
-                   Text="{x:Static texts:IngredientListViewTexts.Title_Label}"
+                   Text="{helpers:DynamicTranslate LocalizationManager={StaticResource IngredientsListLocalizationManager}, Text=Title_Label}"
                    VerticalOptions="Start" />
 
             <HorizontalStackLayout Grid.Column="2" Spacing="20">
 
                 <ingredientControls:IngredientSearchControl SearchText="{Binding Filter.Name, Mode=TwoWay}" />
 
-                <ingredientControls:IngredientImageFilterControl HasImage="{Binding Filter.HasImage, Mode=TwoWay}" />
+                <ingredientControls:IngredientHasImagePickerControl HasImage="{Binding Filter.HasImage, Mode=TwoWay}" />
                 
                 <shared:SortDirectionControl IsSortAscending="{Binding Filter.IsSortAscending, Mode=TwoWay}" />
                 
@@ -89,7 +88,7 @@
             <Button Margin="10,0"
                     Padding="12,6"
                     HorizontalOptions="Start"
-                    Text="{x:Static texts:IngredientListViewTexts.Add_Button_Text}"
+                    Text="{helpers:DynamicTranslate LocalizationManager={StaticResource IngredientsListLocalizationManager}, Text=Add_Button_Text}"
                     Command="{Binding GoToCreateCommand}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     WidthRequest="200" />

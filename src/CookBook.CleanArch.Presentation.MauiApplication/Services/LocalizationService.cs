@@ -39,26 +39,40 @@ public class LocalizationService : ILocalizationService
     private static void ApplyResourceCulture(CultureInfo culture)
     {
         AppShellTexts.Culture = culture;
-        ControlTexts.Culture = culture;
+        LanguageTexts.Culture = culture;
         FoodTypeTexts.Culture = culture;
+        UnitTexts.Culture = culture;
+
         IngredientDetailViewModelTexts.Culture = culture;
         IngredientDetailViewTexts.Culture = culture;
-        IngredientEditViewTexts.Culture = culture;
         IngredientListViewTexts.Culture = culture;
-        LanguageTexts.Culture = culture;
-        RecipeCreateViewTexts.Culture = culture;
+        IngredientCreateViewTexts.Culture = culture;
+        IngredientEditViewTexts.Culture = culture;
+        
         RecipeDetailViewTexts.Culture = culture;
-        RecipeEditViewTexts.Culture = culture;
-        RecipeFormBaseControlTexts.Culture = culture;
         RecipeListViewTexts.Culture = culture;
+        RecipeCreateViewTexts.Culture = culture;
+        RecipeEditViewTexts.Culture = culture;
+        
+        ControlTexts.Culture = culture;
+        IngredientControlsTexts.Culture = culture;
+        IngredientFormBaseControlTexts.Culture = culture;
+        RecipeControlsTexts.Culture = culture;
+        RecipeFormBaseControlTexts.Culture = culture;
+        
         SettingsViewTexts.Culture = culture;
-        UnitTexts.Culture = culture;
     }
     
     private readonly IEnumerable<string> dynamicLocalizationManagerKeys = new List<string>
     {
         "SettingsLocalizationManager",
-        "AppShellLocalizationManager"
+        "AppShellLocalizationManager",
+        "IngredientsListLocalizationManager",
+        "RecipeListLocalizationManager",
+        
+        "ControlsLocalizationManager",
+        "IngredientsControlsLocalizationManager",
+        "RecipeControlsLocalizationManager"
     };
         
         

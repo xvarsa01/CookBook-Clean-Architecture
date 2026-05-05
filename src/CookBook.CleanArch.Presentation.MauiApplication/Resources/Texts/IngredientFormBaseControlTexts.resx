@@ -100,10 +100,16 @@
   <data name="Page_Title" xml:space="preserve">
     <value>CookBook</value>
   </data>
-  <data name="Title_Label" xml:space="preserve">
-    <value>Recipes</value>
+  <data name="Save_Button_Text" xml:space="preserve">
+    <value>Save</value>
   </data>
-  <data name="Add_Button_Text" xml:space="preserve">
-    <value>Add Recipe</value>
+  <data name="Name_Label_Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Description_Label_Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ImageUrl_Label_Text" xml:space="preserve">
+    <value>Image URL</value>
   </data>
 </root>

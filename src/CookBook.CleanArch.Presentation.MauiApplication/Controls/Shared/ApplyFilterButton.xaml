@@ -3,6 +3,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
+             xmlns:helpers="using:CookBook.CleanArch.Presentation.MauiApplication.Helpers"
              x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Shared.ApplyFilterButton"
              x:Name="Root">
     
@@ -12,6 +13,6 @@
             CornerRadius="5"
             FontFamily="MontserratMedium"
             Style="{StaticResource PrimaryButtonStyle}"
-            Text="{x:Static texts:ControlTexts.ApplyFilter_Button_Text}"
+            Text="{helpers:DynamicTranslate LocalizationManager={StaticResource ControlsLocalizationManager}, Text=ApplyFilter_Button_Text}"
             VerticalOptions="Start" />
 </ContentView>

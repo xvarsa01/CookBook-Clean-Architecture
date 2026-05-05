@@ -126,13 +126,4 @@
   <data name="Add_Button_Text" xml:space="preserve">
     <value>Create new Ingredient</value>
   </data>
-  <data name="Search_Placeholder_Text" xml:space="preserve">
-    <value>Search ingredient...</value>
-  </data>
-  <data name="Search_Title_Text" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="Image_Title_Text" xml:space="preserve">
-    <value>Has Image</value>
-  </data>
 </root>

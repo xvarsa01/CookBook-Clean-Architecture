@@ -2,16 +2,15 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:texts="clr-namespace:CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts"
              xmlns:enums="using:CookBook.CleanArch.Domain.Recipes.Enums"
+             xmlns:helpers="using:CookBook.CleanArch.Presentation.MauiApplication.Helpers"
              x:Class="CookBook.CleanArch.Presentation.MauiApplication.Controls.Recipe.RecipeTypePickerControl"
              x:Name="Root">
 
     <VerticalStackLayout Spacing="10">
         <Label FontSize="12"
-               Text="{x:Static texts:RecipeListViewTexts.RecipeType_Title_Text}" />
-        <Picker x:Name="TypePicker"
-                SelectedItem="{Binding Source={x:Reference Root}, Path=SelectedRecipeType, Mode=TwoWay}"
+               Text="{helpers:DynamicTranslate LocalizationManager={StaticResource RecipeControlsLocalizationManager}, Text=RecipeType_Title_Text}" />
+        <Picker SelectedItem="{Binding Source={x:Reference Root}, Path=SelectedRecipeType, Mode=TwoWay}"
                 ItemDisplayBinding="{Binding Converter={StaticResource FoodTypeToStringConverter}}">
             <Picker.ItemsSource>
                 <x:Array Type="{x:Type x:Object}">

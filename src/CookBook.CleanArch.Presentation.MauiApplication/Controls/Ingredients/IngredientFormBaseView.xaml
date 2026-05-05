@@ -16,7 +16,7 @@
             <Button Grid.Column="1"
                     VerticalOptions="Start"
                     HeightRequest="30"
-                    Text="{x:Static texts:IngredientEditViewTexts.Save_Button_Text}"
+                    Text="{x:Static texts:IngredientFormBaseControlTexts.Save_Button_Text}"
                     CornerRadius="5"
                     BackgroundColor="{StaticResource PrimaryColor}"
                     Command="{Binding Source={x:Reference Root}, Path=SaveCommand}" />
@@ -43,7 +43,7 @@
                                  Spacing="10">
 
                 <!-- Name -->
-                <Label Text="{x:Static texts:IngredientEditViewTexts.Name_Label_Text}"
+                <Label Text="{x:Static texts:IngredientFormBaseControlTexts.Name_Label_Text}"
                        TextColor="{StaticResource PrimaryLabelTextColor}" />
 
                 <Entry Text="{Binding Source={x:Reference Root}, Path=Ingredient.Name}">
@@ -64,7 +64,7 @@
                                            ConverterParameter={x:Static viewModels:IngredientFormModelValidator.IngredientNameProperty}}" />
 
                 <!-- Image URL -->
-                <Label Text="{x:Static texts:IngredientEditViewTexts.ImageUrl_Label_Text}"
+                <Label Text="{x:Static texts:IngredientFormBaseControlTexts.ImageUrl_Label_Text}"
                        TextColor="{StaticResource PrimaryLabelTextColor}" />
 
                 <Entry Text="{Binding Source={x:Reference Root}, Path=Ingredient.ImageUrl}">
@@ -85,7 +85,7 @@
                                            ConverterParameter={x:Static viewModels:IngredientFormModelValidator.IngredientImageUrlProperty}}" />
 
                 <!-- Description -->
-                <Label Text="{x:Static texts:IngredientEditViewTexts.Description_Label_Text}"
+                <Label Text="{x:Static texts:IngredientFormBaseControlTexts.Description_Label_Text}"
                        TextColor="{StaticResource PrimaryLabelTextColor}" />
 
                 <Editor Text="{Binding Source={x:Reference Root}, Path=Ingredient.Description}"

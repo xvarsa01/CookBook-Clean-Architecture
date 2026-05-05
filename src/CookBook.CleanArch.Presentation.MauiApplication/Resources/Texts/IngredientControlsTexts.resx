@@ -18,7 +18,23 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Page_Title" xml:space="preserve">
-        <value>CookBook</value>
+    
+    <data name="Search_Placeholder_Text" xml:space="preserve">
+        <value>Search ingredient...</value>
+    </data>
+    <data name="Search_Title_Text" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="HasImageFilter_Title_Text" xml:space="preserve">
+        <value>Has Image</value>
+    </data>
+    <data name="HasImageFilter_Yes_Text" xml:space="preserve">
+        <value>Yes</value>
+    </data>
+    <data name="HasImageFilter_No_Text" xml:space="preserve">
+        <value>No</value>
+    </data>
+    <data name="HasImageFilter_Neutral_Text" xml:space="preserve">
+        <value>-</value>
     </data>
 </root>

@@ -11,5 +11,16 @@
     
     <helpers:DynamicLocalizationManager x:Key="SettingsLocalizationManager"
                                         ResourceManager="{x:Static texts:SettingsViewTexts.ResourceManager}" />
+    <helpers:DynamicLocalizationManager x:Key="IngredientsListLocalizationManager"
+                                        ResourceManager="{x:Static texts:IngredientListViewTexts.ResourceManager}" />
+    <helpers:DynamicLocalizationManager x:Key="RecipeListLocalizationManager"
+                                        ResourceManager="{x:Static texts:RecipeListViewTexts.ResourceManager}" />
+    
+    <helpers:DynamicLocalizationManager x:Key="ControlsLocalizationManager"
+                                        ResourceManager="{x:Static texts:ControlTexts.ResourceManager}" />
+    <helpers:DynamicLocalizationManager x:Key="IngredientsControlsLocalizationManager"
+                                        ResourceManager="{x:Static texts:IngredientControlsTexts.ResourceManager}" />
+    <helpers:DynamicLocalizationManager x:Key="RecipeControlsLocalizationManager"
+                                        ResourceManager="{x:Static texts:RecipeControlsTexts.ResourceManager}" />
     
 </ResourceDictionary>
