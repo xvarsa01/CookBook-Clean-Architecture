@@ -8,4 +8,5 @@ public static class IconKeys
     public const string NextPage = "d"; // ASCII HEX 64
     public const string Delete = "e"; // ASCII HEX 65
     public const string Edit = "f"; // ASCII HEX 66
+    public const string HamburgerMenu = "g"; // ASCII HEX 67
 }
