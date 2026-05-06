@@ -61,7 +61,7 @@ public partial class IngredientFormModel() : ObservableObject
     public required partial Guid Id { get; set; }
     
     [ObservableProperty]
-    public partial string Name { get; set; }
+    public required partial string Name { get; set; }
     [ObservableProperty]
     public partial string? Description { get; set; }
     [ObservableProperty]

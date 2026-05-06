@@ -186,7 +186,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
             var remaining = saved.Ingredients.Single();
             Assert.Equal(IngredientTestSeeds.Lemon.Id.Value, remaining.IngredientId.Value);
             Assert.Equal(1, remaining.Amount.Value);
-            Assert.Equal(MeasurementUnit.None, remaining.Unit);
+            Assert.Equal(MeasurementUnit.Pieces, remaining.Unit);
         });
     }
 
@@ -258,7 +258,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
             var remaining = saved.Ingredients.Single();
             Assert.Equal(IngredientTestSeeds.Lemon.Id.Value, remaining.IngredientId.Value);
             Assert.Equal(1, remaining.Amount.Value);
-            Assert.Equal(MeasurementUnit.None, remaining.Unit);
+            Assert.Equal(MeasurementUnit.Pieces, remaining.Unit);
         });
     }
 

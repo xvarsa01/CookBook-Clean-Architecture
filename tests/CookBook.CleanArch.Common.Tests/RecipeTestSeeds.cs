@@ -49,7 +49,7 @@ public static class RecipeTestSeeds
                 new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
                     MeasurementUnit.Ml),
                 new RecipeCreateIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value,
-                    MeasurementUnit.None)
+                    MeasurementUnit.Pieces)
             ]).Value;
     }
     
