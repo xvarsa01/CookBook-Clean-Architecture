@@ -125,7 +125,8 @@
         <Grid Grid.Column="0"
               Grid.Row="1"
               RowDefinitions="Auto, *"
-              RowSpacing="30">
+              RowSpacing="10"
+              Margin="0, 20, 0, 0">
             <Label Grid.Row="0"
                    Text="{x:Static t:RecipeFormBaseControlTexts.Description_Label_Text}" />
 

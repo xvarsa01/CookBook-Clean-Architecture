@@ -247,6 +247,10 @@ public class RecipeFormModelValidator : AbstractValidator<RecipeFormModel>
                 {
                     context.AddFailure("At least one ingredient must be added to the recipe");
                 }
+                else if (ingredients.Count > 10)
+                {
+                    context.AddFailure("The recipe cannot contain more than 10 ingredients");
+                }
             });
             
     }
