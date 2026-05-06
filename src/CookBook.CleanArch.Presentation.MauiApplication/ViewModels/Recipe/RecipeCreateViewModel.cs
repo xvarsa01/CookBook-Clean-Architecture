@@ -74,7 +74,7 @@ public partial class RecipeCreateViewModel(
 
         await Mediator.Send(new CreateRecipeCommand(request));
 
-        MessengerService.Send(new RecipeEditMessage { RecipeId = Recipe.Id });
+        MessengerService.Send(new RecipeEditMessage { RecipeId = new RecipeId(Recipe.Id) });
 
         NavigationService.SendBackButtonPressed();
     }

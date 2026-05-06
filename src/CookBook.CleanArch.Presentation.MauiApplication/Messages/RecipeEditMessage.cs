@@ -1,6 +1,8 @@
-﻿namespace CookBook.CleanArch.Presentation.MauiApplication.Messages;
+﻿using CookBook.CleanArch.Domain.Recipes.ValueObjects;
+
+namespace CookBook.CleanArch.Presentation.MauiApplication.Messages;
 
 public record RecipeEditMessage
 {
-    public required Guid RecipeId { get; init; }
+    public required RecipeId RecipeId { get; init; }
 }

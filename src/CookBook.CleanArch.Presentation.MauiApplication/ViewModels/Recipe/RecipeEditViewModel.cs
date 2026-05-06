@@ -179,7 +179,7 @@ public partial class RecipeEditViewModel(
         if (!updateResult.IsSuccess)
             return;
 
-        MessengerService.Send(new RecipeEditMessage { RecipeId = Recipe.Id });
+        MessengerService.Send(new RecipeEditMessage { RecipeId = new RecipeId(Recipe.Id) });
 
         NavigationService.SendBackButtonPressed();
     }

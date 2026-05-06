@@ -1,5 +1,3 @@
 ﻿namespace CookBook.CleanArch.Presentation.MauiApplication.Messages;
 
-public record RecipeIngredientDeleteMessage
-{
-}
+public record RecipeIngredientDeleteMessage;
