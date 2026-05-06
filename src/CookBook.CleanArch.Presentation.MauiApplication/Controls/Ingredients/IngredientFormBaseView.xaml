@@ -17,9 +17,9 @@
                     VerticalOptions="Start"
                     HeightRequest="30"
                     Text="{x:Static texts:IngredientFormBaseControlTexts.Save_Button_Text}"
-                    CornerRadius="5"
-                    BackgroundColor="{StaticResource PrimaryColor}"
-                    Command="{Binding Source={x:Reference Root}, Path=SaveCommand}" />
+                    Command="{Binding Source={x:Reference Root}, Path=SaveCommand}"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    IsEnabled="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults, Converter={StaticResource ValidationResultToHasNoErrorConverter}}"/>
         </Grid>
 
         <Grid Grid.Row="1"
@@ -50,8 +50,11 @@
                     <Entry.Behaviors>
                         <toolkit:EventToCommandBehavior
                             EventName="TextChanged"
-                            Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                            CommandParameter="{x:Static viewModels:IngredientFormModelValidator.IngredientNameProperty}" />
+                            Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}" />
+                        <!-- Loaded is here to trigger validation on page load. It is not needed in recipe create, as some other element triggers it instead -->
+                        <toolkit:EventToCommandBehavior
+                            EventName="Loaded"
+                            Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}" />
                     </Entry.Behaviors>
                 </Entry>
 
@@ -71,8 +74,7 @@
                     <Entry.Behaviors>
                         <toolkit:EventToCommandBehavior
                             EventName="TextChanged"
-                            Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                            CommandParameter="{x:Static viewModels:IngredientFormModelValidator.IngredientImageUrlProperty}" />
+                            Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}" />
                     </Entry.Behaviors>
                 </Entry>
 

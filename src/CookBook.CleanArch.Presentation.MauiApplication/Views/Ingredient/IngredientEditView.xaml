@@ -14,6 +14,6 @@
     <ingredients:IngredientFormBaseView
         Ingredient="{Binding Ingredient}"
         SaveCommand="{Binding SaveCommand}"
-        ValidatePropertyCommand="{Binding ValidatePropertyCommand}"/>
+        ValidateIngredientCommand="{Binding ValidateIngredientCommand}"/>
 
 </views:ContentPageBase>

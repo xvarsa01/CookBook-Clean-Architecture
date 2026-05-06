@@ -37,7 +37,7 @@ public partial class IngredientEditViewModel(
     [RelayCommand]
     private async Task SaveAsync()
     {
-        if (!await ValidateAsync())
+        if (!await ValidateIngredientAsync())
             return;
 
         var imageUrl = TryCreateImageUrl();

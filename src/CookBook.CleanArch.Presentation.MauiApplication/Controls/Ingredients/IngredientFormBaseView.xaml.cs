@@ -19,7 +19,7 @@ public partial class IngredientFormBaseView
         set => SetValue(IngredientProperty, value);
     }
 
-    // SAVE COMMAND
+    // ===== COMMANDS =====
     public static readonly BindableProperty SaveCommandProperty =
         BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(IngredientFormBaseView));
     public ICommand SaveCommand
@@ -28,13 +28,12 @@ public partial class IngredientFormBaseView
         set => SetValue(SaveCommandProperty, value);
     }
 
-    // VALIDATE PROPERTY COMMAND
-    public static readonly BindableProperty ValidatePropertyCommandProperty =
-        BindableProperty.Create(nameof(ValidatePropertyCommand), typeof(ICommand), typeof(IngredientFormBaseView));
-    public ICommand ValidatePropertyCommand
+    public static readonly BindableProperty ValidateIngredientCommandProperty =
+        BindableProperty.Create(nameof(ValidateIngredientCommand), typeof(ICommand), typeof(IngredientFormBaseView));
+    public ICommand ValidateIngredientCommand
     {
-        get => (ICommand)GetValue(ValidatePropertyCommandProperty);
-        set => SetValue(ValidatePropertyCommandProperty, value);
+        get => (ICommand)GetValue(ValidateIngredientCommandProperty);
+        set => SetValue(ValidateIngredientCommandProperty, value);
     }
 }
 

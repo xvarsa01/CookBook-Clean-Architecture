@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics.CodeAnalysis;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain.Ingredients.Errors;
@@ -25,9 +26,13 @@ public abstract partial class IngredientFormBaseViewModel(
     [ObservableProperty]
     public partial IngredientFormModel Ingredient { get; set; } = IngredientFormModel.Empty;
 
-    protected async Task<bool> ValidateAsync()
+    [RelayCommand]
+    protected async Task<bool> ValidateIngredientAsync()
     {
         Ingredient.ValidationResults = await _ingredientValidator.ValidateAsync(Ingredient);
+        
+        OnPropertyChanged(nameof(Ingredient.ValidationResults));
+        
         return Ingredient.ValidationResults.IsValid;
     }
 
@@ -40,26 +45,21 @@ public abstract partial class IngredientFormBaseViewModel(
         return result.IsSuccess ? result.Value : null;
     }
 
-    [RelayCommand]
-    private async Task ValidateProperty(string propertyName)
-    {
-        ValidationResult result = await _ingredientValidator.ValidateAsync(Ingredient);
-
-        Ingredient.ValidationResults = result;
-
-        OnPropertyChanged(nameof(Ingredient.ValidationResults));
-    }
-
 }
 public partial class IngredientFormModel() : ObservableObject
 {
+    [SetsRequiredMembers]
     public IngredientFormModel(IngredientResponse response) : this()
     {
+        Id = response.Id.Value;
         Name = response.Name;
         Description = response.Description;
         ImageUrl = response.ImageUrl?.Value;
     }
 
+    [ObservableProperty]
+    public required partial Guid Id { get; set; }
+    
     [ObservableProperty]
     public partial string Name { get; set; }
     [ObservableProperty]
@@ -74,6 +74,7 @@ public partial class IngredientFormModel() : ObservableObject
     public static IngredientFormModel Empty
         => new()
         {
+            Id = Guid.Empty,
             Name = string.Empty,
             Description = string.Empty,
             ImageUrl = null

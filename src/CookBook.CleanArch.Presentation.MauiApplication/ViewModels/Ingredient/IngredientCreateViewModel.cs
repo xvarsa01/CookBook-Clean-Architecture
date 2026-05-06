@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Ingredients.Models;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Presentation.MauiApplication.Messages;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using MediatR;
 
@@ -15,7 +17,7 @@ public partial class IngredientCreateViewModel(
     [RelayCommand]
     private async Task SaveAsync()
     {
-        if (!await ValidateAsync())
+        if (!await ValidateIngredientAsync())
             return;
 
         var imageUrl = TryCreateImageUrl();
@@ -26,6 +28,8 @@ public partial class IngredientCreateViewModel(
             imageUrl);
 
         await Mediator.Send(new CreateIngredientCommand(request));
+        
+        MessengerService.Send(new IngredientEditMessage{ IngredientId = new IngredientId(Ingredient.Id) });
 
         NavigationService.SendBackButtonPressed();
     }
