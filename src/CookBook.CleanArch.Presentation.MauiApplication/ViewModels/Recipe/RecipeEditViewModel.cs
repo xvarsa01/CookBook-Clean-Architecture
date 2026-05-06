@@ -184,35 +184,91 @@ public partial class RecipeEditViewModel(
         NavigationService.SendBackButtonPressed();
     }
 
-    private async Task<bool> ApplyPendingIngredientChangesAsync()
+private async Task<bool> ApplyPendingIngredientChangesAsync()
+{
+    var currentCount = Recipe.Ingredients.Count;
+    var pendingAdds = _pendingAddedIngredients.Count;
+    var pendingRemoves = _pendingRemovedIngredientIds.Count;
+    var resultingCount = currentCount + pendingAdds - pendingRemoves;
+
+    if (resultingCount is < Domain.Recipes.Recipe.MinIngredients or > Domain.Recipes.Recipe.MaxIngredients)
+        return false;
+
+    foreach (var request in _pendingUpdatedIngredients)
     {
-        foreach (var recipeIngredientId in _pendingRemovedIngredientIds)
-        {
-            var result = await Mediator.Send(new RemoveIngredientFromRecipeByEntryIdCommand(Id, new RecipeIngredientId(recipeIngredientId)));
-            if (!result.IsSuccess)
-                return false;
-        }
-
-        foreach (var pendingAdd in _pendingAddedIngredients)
-        {
-            var result = await Mediator.Send(new AddIngredientToRecipeCommand(Id, pendingAdd.Request));
-            if (!result.IsSuccess)
-                return false;
-        }
-
-        foreach (var request in _pendingUpdatedIngredients)
-        {
-            var result = await Mediator.Send(new UpdateIngredientInRecipeCommand(Id, request));
-            if (!result.IsSuccess)
-                return false;
-        }
-
-        _pendingRemovedIngredientIds.Clear();
-        _pendingAddedIngredients.Clear();
-        _pendingUpdatedIngredients.Clear();
-
-        return true;
+        var result = await Mediator.Send(new UpdateIngredientInRecipeCommand(Id, request));
+        if (!result.IsSuccess)
+            return false;
     }
+
+    // Decide ordering for adds/removes to keep intermediate count valid.
+    var adds = _pendingAddedIngredients.ToList();
+    var removes = _pendingRemovedIngredientIds.ToList();
+
+    while (adds.Count > 0 || removes.Count > 0)
+    {
+        // If we're at max, remove first to make space.
+        if (currentCount >= Domain.Recipes.Recipe.MaxIngredients && removes.Count > 0)
+        {
+            var removeId = removes[0];
+            removes.RemoveAt(0);
+
+            var result = await Mediator.Send(
+                new RemoveIngredientFromRecipeByEntryIdCommand(Id, new RecipeIngredientId(removeId)));
+            if (!result.IsSuccess)
+                return false;
+
+            currentCount--;
+            continue;
+        }
+
+        // If we're at min, add first to allow removals.
+        if (currentCount <= Domain.Recipes.Recipe.MinIngredients && adds.Count > 0)
+        {
+            var add = adds[0];
+            adds.RemoveAt(0);
+
+            var result = await Mediator.Send(new AddIngredientToRecipeCommand(Id, add.Request));
+            if (!result.IsSuccess)
+                return false;
+
+            currentCount++;
+            continue;
+        }
+
+        if (adds.Count > 0)
+        {
+            var add = adds[0];
+            adds.RemoveAt(0);
+
+            var result = await Mediator.Send(new AddIngredientToRecipeCommand(Id, add.Request));
+            if (!result.IsSuccess)
+                return false;
+
+            currentCount++;
+            continue;
+        }
+        
+        if (removes.Count > 0)
+        {
+            var removeId = removes[0];
+            removes.RemoveAt(0);
+
+            var result = await Mediator.Send(
+                new RemoveIngredientFromRecipeByEntryIdCommand(Id, new RecipeIngredientId(removeId)));
+            if (!result.IsSuccess)
+                return false;
+
+            currentCount--;
+        }
+    }
+
+    _pendingRemovedIngredientIds.Clear();
+    _pendingAddedIngredients.Clear();
+    _pendingUpdatedIngredients.Clear();
+
+    return true;
+}
 
     private sealed class PendingAddIngredientChange(RecipeIngredientListModel model, RecipeAddIngredientRequest request)
     {
