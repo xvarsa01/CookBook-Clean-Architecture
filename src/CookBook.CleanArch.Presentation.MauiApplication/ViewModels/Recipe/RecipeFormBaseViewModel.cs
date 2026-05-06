@@ -269,6 +269,6 @@ public class RecipeIngredientListModelValidator : AbstractValidator<RecipeIngred
     
         RuleFor(x => x.Unit)
             .NotEqual(MeasurementUnit.None)
-            .WithMessage("The recipe type must be selected");
+            .WithMessage("The unit must be selected");
     }
 }
