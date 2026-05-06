@@ -169,6 +169,15 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recipe cannot contain more than 10 ingredients.
+        /// </summary>
+        internal static string Save_Button_More_Than_Maximum_Ingredients_Warning_Text {
+            get {
+                return ResourceManager.GetString("Save_Button_More_Than_Maximum_Ingredients_Warning_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add at least one ingredient to recipe.
         /// </summary>
         internal static string Save_Button_No_Ingredients_Warning_Text {

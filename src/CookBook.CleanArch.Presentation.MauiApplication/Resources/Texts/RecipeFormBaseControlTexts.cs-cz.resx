@@ -56,4 +56,7 @@
         <data name="Save_Button_No_Ingredients_Warning_Text" xml:space="preserve">
       <value>Přidejte alespoň jednu ingredienci k receptu</value>
     </data>
+    <data name="Save_Button_More_Than_Maximum_Ingredients_Warning_Text" xml:space="preserve">
+        <value>Recept nemůže obsahovat více než 10 ingrediencí</value>
+    </data>
 </root>

@@ -23,6 +23,7 @@
             <converters:RecipeDurationToStringConverter x:Key="RecipeDurationToStringConverter" />
             <converters:IsCountZeroConverter x:Key="IsCountZeroConverter" />
             <converters:IsCountNotZeroConverter x:Key="IsCountNotZeroConverter" />
+            <converters:IsCountGreaterThanConverter x:Key="IsCountGreaterThanConverter" />
             <converters:RecipeIngredientsCountToStringConverter x:Key="RecipeIngredientsCountToStringConverter"/>
             <converters:UnitToStringConverter x:Key="UnitToStringConverter"/>
             <converters:LocalizedNullableBoolConverter x:Key="LocalizedNullableBoolConverter" />

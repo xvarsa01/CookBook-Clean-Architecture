@@ -26,7 +26,8 @@ public record Recipe : AggregateRootBase<RecipeId>
     private readonly List<RecipeIngredient> _ingredients = [];
     public IReadOnlyCollection<RecipeIngredient> Ingredients => _ingredients.AsReadOnly();
     
-    private const int MaxIngredients = 10;
+    public const int MinIngredients = 1;
+    public const int MaxIngredients = 10;
     
     private Recipe(RecipeId id, RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type) : base(id)
     {

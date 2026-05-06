@@ -162,4 +162,7 @@
   <data name="Save_Button_No_Ingredients_Warning_Text" xml:space="preserve">
       <value>Add at least one ingredient to recipe</value>
   </data>
+  <data name="Save_Button_More_Than_Maximum_Ingredients_Warning_Text" xml:space="preserve">
+      <value>Recipe cannot contain more than 10 ingredients</value>
+  </data>
 </root>
