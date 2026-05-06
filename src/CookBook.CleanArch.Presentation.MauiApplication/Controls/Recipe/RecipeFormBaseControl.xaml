@@ -27,8 +27,7 @@
                        Text="{Binding Source={x:Reference Root}, Path=Recipe.Name}">
                     <Entry.Behaviors>
                         <toolkit:EventToCommandBehavior EventName="TextChanged"
-                                                        Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                                                        CommandParameter="{x:Static viewModels:RecipeFormModelValidator.RecipeNameProperty}" />
+                                                        Command="{Binding Source={x:Reference Root}, Path=ValidateRecipeCommand}" />
                     </Entry.Behaviors>
                 </Entry>
                 <Label Style="{StaticResource ValidationErrorLabelStyle}"
@@ -55,8 +54,7 @@
                         SelectedItem="{Binding Source={x:Reference Root}, Path=Recipe.RecipeType}">
                     <Picker.Behaviors>
                         <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged"
-                                                        Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                                                        CommandParameter="{x:Static viewModels:RecipeFormModelValidator.RecipeRecipeTypeProperty}" />
+                                                        Command="{Binding Source={x:Reference Root}, Path=ValidateRecipeCommand}" />
                     </Picker.Behaviors>
                 </Picker>
                 <Label Grid.Row="2"
@@ -76,8 +74,7 @@
                             Format="HH:mm">
                     <TimePicker.Behaviors>
                         <toolkit:EventToCommandBehavior EventName="PropertyChanged"
-                                                        Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                                                        CommandParameter="{x:Static viewModels:RecipeFormModelValidator.RecipeDurationProperty}" />
+                                                        Command="{Binding Source={x:Reference Root}, Path=ValidateRecipeCommand}" />
                     </TimePicker.Behaviors>
                 </TimePicker>
                 <Label Grid.Row="2" Grid.Column="1"
@@ -99,8 +96,7 @@
                 <Entry Text="{Binding Source={x:Reference Root}, Path=Recipe.ImageUrl}">
                     <Entry.Behaviors>
                         <toolkit:EventToCommandBehavior EventName="TextChanged"
-                                                        Command="{Binding Source={x:Reference Root}, Path=ValidatePropertyCommand}"
-                                                        CommandParameter="{x:Static viewModels:RecipeFormModelValidator.RecipeImageUrlProperty}" />
+                                                        Command="{Binding Source={x:Reference Root}, Path=ValidateRecipeCommand}" />
                     </Entry.Behaviors>
                 </Entry>
                 <Label Style="{StaticResource ValidationErrorLabelStyle}"
@@ -156,8 +152,7 @@
                        Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.Amount}">
                     <Entry.Behaviors>
                         <toolkit:EventToCommandBehavior EventName="TextChanged"
-                                                        Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}"
-                                                        CommandParameter="{x:Static viewModels:RecipeIngredientListModelValidator.IngredientAmountProperty}" />
+                                                        Command="{Binding Source={x:Reference Root}, Path=ValidateNewIngredientCommand}" />
                     </Entry.Behaviors>
                 </Entry>
                 <Label Grid.Column="0"
@@ -180,8 +175,7 @@
                         SelectedItem="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.Unit}">
                     <Picker.Behaviors>
                         <toolkit:EventToCommandBehavior EventName="PropertyChanged"
-                                                        Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}"
-                                                        CommandParameter="{x:Static viewModels:RecipeIngredientListModelValidator.IngredientUnitProperty}" />
+                                                        Command="{Binding Source={x:Reference Root}, Path=ValidateNewIngredientCommand}" />
                     </Picker.Behaviors>
                 </Picker>
                 <Label Grid.Column="1"
@@ -204,8 +198,7 @@
                         SelectedItem="{Binding Source={x:Reference Root}, Path=SelectedNewIngredient}">
                     <Picker.Behaviors>
                         <toolkit:EventToCommandBehavior EventName="PropertyChanged"
-                                                        Command="{Binding Source={x:Reference Root}, Path=ValidateIngredientCommand}"
-                                                        CommandParameter="{x:Static viewModels:RecipeIngredientListModelValidator.IngredientIdProperty}" />
+                                                        Command="{Binding Source={x:Reference Root}, Path=ValidateNewIngredientCommand}" />
                     </Picker.Behaviors>
                 </Picker>
                 <Label Grid.Column="2"
@@ -242,30 +235,53 @@
                                        Aspect="AspectFill" />
                             </Border>
                             
-                            <Entry x:Name="AmountEntry"
-                                   Grid.Column="1"
-                                   VerticalOptions="Center"
-                                   Text="{Binding Amount}">
-                                <Entry.Behaviors>
-                                    <toolkit:EventToCommandBehavior EventName="Unfocused"
-                                                                    Command="{Binding Source={x:Reference Root}, Path=UpdateIngredientCommand}"
-                                                                    CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
-                                </Entry.Behaviors>
-                            </Entry>
+                            <Grid RowDefinitions="*, Auto"
+                                 Grid.Column="1"
+                                 VerticalOptions="Center">
+                                <Entry x:Name="AmountEntry"
+                                       Grid.Row="0"
+                                       VerticalOptions="Center"
+                                       Text="{Binding Amount}">
+                                    <Entry.Behaviors>
+                                        <toolkit:EventToCommandBehavior EventName="Unfocused"
+                                                                        Command="{Binding Source={x:Reference Root}, Path=UpdateIngredientCommand}"
+                                                                        CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
+                                    </Entry.Behaviors>
+                                </Entry>
+                                <Label Grid.Row="1"
+                                       Style="{StaticResource ValidationErrorLabelStyle}"
+                                       Text="{Binding  ValidationResults, 
+                                                        Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                        ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientAmountProperty}}"
+                                       IsVisible="{Binding ValidationResults,
+                                                        Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                        ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientAmountProperty}}" />
+                            </Grid>
                             
-                            <Picker x:Name="UnitPicker"
-                                    Grid.Column="2"
-                                    VerticalOptions="Center"
-                                    MinimumWidthRequest="200"
-                                    ItemsSource="{Binding Source={x:Reference Root}, Path=Units}"
-                                    ItemDisplayBinding="{Binding ., Converter={StaticResource UnitToStringConverter}}"
-                                    SelectedItem="{Binding Unit}">
-                                <Picker.Behaviors>
-                                    <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged"
-                                                                    Command="{Binding Source={x:Reference Root}, Path=UpdateIngredientCommand}"
-                                                                    CommandParameter="{Binding Source={x:Reference AmountEntry}, Path=BindingContext}" />
-                                </Picker.Behaviors>
-                            </Picker>
+                            <Grid RowDefinitions="*, Auto"
+                                  Grid.Column="2"
+                                  VerticalOptions="Center">
+                                <Picker Grid.Row="0"
+                                        x:Name="UnitPicker"
+                                        MinimumWidthRequest="200"
+                                        ItemsSource="{Binding Source={x:Reference Root}, Path=Units}"
+                                        ItemDisplayBinding="{Binding ., Converter={StaticResource UnitToStringConverter}}"
+                                        SelectedItem="{Binding Unit}">
+                                    <Picker.Behaviors>
+                                        <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged"
+                                                                        Command="{Binding Source={x:Reference Root}, Path=UpdateIngredientCommand}"
+                                                                        CommandParameter="{Binding Source={x:Reference UnitPicker}, Path=BindingContext}" />
+                                    </Picker.Behaviors>
+                                </Picker>
+                                <Label Grid.Row="1"
+                                       Style="{StaticResource ValidationErrorLabelStyle}"
+                                       Text="{Binding  ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
+                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientUnitProperty}}"
+                                       IsVisible="{Binding ValidationResults, 
+                                                    Converter={StaticResource ValidationResultToHasErrorConverter}, 
+                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientUnitProperty}}" />
+                            </Grid>
                             
                             <Label Grid.Column="3"
                                    Text="{Binding IngredientName}"

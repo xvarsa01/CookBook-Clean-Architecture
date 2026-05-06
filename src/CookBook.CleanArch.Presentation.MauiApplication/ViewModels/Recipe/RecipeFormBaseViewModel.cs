@@ -75,15 +75,35 @@ public abstract partial class RecipeFormBaseViewModel(
             Ingredients.Add(item);
     }
 
+    [RelayCommand]
     protected async Task<bool> ValidateRecipeAsync()
     {
         Recipe.ValidationResults = await _recipeValidator.ValidateAsync(Recipe);
+        
+        OnPropertyChanged(nameof(Recipe.ValidationResults));
+        
         return Recipe.ValidationResults.IsValid;
     }
+    
+    protected async Task<bool> ValidateExistingIngredientAsync(RecipeIngredientListModel model)
+    {
+        model.ValidationResults = await _ingredientValidator.ValidateAsync(model);
+        Recipe.ValidationResults = await _recipeValidator.ValidateAsync(
+            Recipe, options => options.IncludeProperties(nameof(Recipe.Ingredients)));
+        
+        OnPropertyChanged(nameof(model.ValidationResults));
+        OnPropertyChanged(nameof(Recipe.ValidationResults));
+        
+        return model.ValidationResults.IsValid;
+    }
 
+    [RelayCommand]
     protected async Task<bool> ValidateNewIngredientAsync()
     {
         IngredientAmountNew.ValidationResults = await _ingredientValidator.ValidateAsync(IngredientAmountNew);
+        
+        OnPropertyChanged(nameof(IngredientAmountNew.ValidationResults));
+        
         return IngredientAmountNew.ValidationResults.IsValid;
     }
 
@@ -94,29 +114,6 @@ public abstract partial class RecipeFormBaseViewModel(
 
         var result = ImageUrl.CreateObject(Recipe.ImageUrl);
         return result.IsSuccess ? result.Value : null;
-    }
-
-    [RelayCommand]
-    private async Task ValidateProperty(string propertyName)
-    {
-        var result = await _recipeValidator.ValidateAsync(Recipe);
-        Recipe.ValidationResults = result;
-
-        OnPropertyChanged(nameof(Recipe.ValidationResults));
-    }
-
-    [RelayCommand]
-    private async Task ValidateIngredientAmountNewProperty(string propertyName)
-    {
-        var result = await _ingredientValidator.ValidateAsync(IngredientAmountNew);
-        IngredientAmountNew.ValidationResults = result;
-
-        IngredientAmountNew.ValidationResults.Errors.Remove(
-            IngredientAmountNew.ValidationResults.Errors.FirstOrDefault(x => x.PropertyName == propertyName));
-
-        IngredientAmountNew.ValidationResults.Errors.AddRange(result.Errors);
-
-        OnPropertyChanged(nameof(IngredientAmountNew.ValidationResults));
     }
 
     public void Receive(RecipeIngredientEditMessage message) => ForceDataRefreshOnNextAppearing();
@@ -242,18 +239,15 @@ public class RecipeFormModelValidator : AbstractValidator<RecipeFormModel>
             .IsValidOptionalValueObject<RecipeFormModel, ImageUrl>();
         
         RuleFor(x => x.Ingredients)
-            .Custom((ingredients, context) =>
-            {
-                switch (ingredients.Count)
-                {
-                    case 0:
-                        context.AddFailure(RecipeErrors.RecipeMinimumNumberOfIngredientsError().Message);
-                        break;
-                    case > 10:
-                        context.AddFailure(RecipeErrors.RecipeMaximumNumberOfIngredientsError().Message);
-                        break;
-                }
-            });
+            .Must(i => i.Count > 0)
+            .WithMessage(RecipeErrors.RecipeMinimumNumberOfIngredientsError().Message);
+
+        RuleFor(x => x.Ingredients)
+            .Must(i => i.Count <= 10)
+            .WithMessage(RecipeErrors.RecipeMaximumNumberOfIngredientsError().Message);
+        
+        RuleForEach(x => x.Ingredients)
+            .SetValidator(new RecipeIngredientListModelValidator());
     }
 }
 

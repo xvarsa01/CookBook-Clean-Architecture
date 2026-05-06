@@ -84,9 +84,12 @@ public partial class RecipeEditViewModel(
     }
     
     [RelayCommand]
-    private void UpdateIngredientAsync(RecipeIngredientListModel? model)
+    private async Task UpdateIngredientAsync(RecipeIngredientListModel? model)
     {
         if (model is null)
+            return;
+        
+        if (!await ValidateExistingIngredientAsync(model))
             return;
 
         var ingredientAmountResult = IngredientAmount.CreateObject(model.Amount);

@@ -31,12 +31,12 @@ public partial class RecipeFormBaseControl
         set => SetValue(SaveCommandProperty, value);
     }
 
-    public static readonly BindableProperty ValidatePropertyCommandProperty =
-        BindableProperty.Create(nameof(ValidatePropertyCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
-    public ICommand ValidatePropertyCommand
+    public static readonly BindableProperty ValidateRecipeCommandProperty =
+        BindableProperty.Create(nameof(ValidateRecipeCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
+    public ICommand ValidateRecipeCommand
     {
-        get => (ICommand)GetValue(ValidatePropertyCommandProperty);
-        set => SetValue(ValidatePropertyCommandProperty, value);
+        get => (ICommand)GetValue(ValidateRecipeCommandProperty);
+        set => SetValue(ValidateRecipeCommandProperty, value);
     }
 
     public static readonly BindableProperty AddIngredientCommandProperty =
@@ -63,12 +63,12 @@ public partial class RecipeFormBaseControl
         set => SetValue(RemoveIngredientCommandProperty, value);
     }
 
-    public static readonly BindableProperty ValidateIngredientCommandProperty =
-        BindableProperty.Create(nameof(ValidateIngredientCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
-    public ICommand ValidateIngredientCommand
+    public static readonly BindableProperty ValidateNewIngredientCommandProperty =
+        BindableProperty.Create(nameof(ValidateNewIngredientCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
+    public ICommand ValidateNewIngredientCommand
     {
-        get => (ICommand)GetValue(ValidateIngredientCommandProperty);
-        set => SetValue(ValidateIngredientCommandProperty, value);
+        get => (ICommand)GetValue(ValidateNewIngredientCommandProperty);
+        set => SetValue(ValidateNewIngredientCommandProperty, value);
     }
 
     // ===== DATA =====

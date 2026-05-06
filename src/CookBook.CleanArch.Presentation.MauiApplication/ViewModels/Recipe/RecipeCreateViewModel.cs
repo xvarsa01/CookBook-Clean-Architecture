@@ -29,6 +29,7 @@ public partial class RecipeCreateViewModel(
         
         Recipe.Ingredients.Add(IngredientAmountNew);
         OnPropertyChanged(nameof(Recipe));
+        
         await ValidateRecipeAsync();
         
         IngredientAmountNew = RecipeIngredientListModel.Empty;
@@ -36,13 +37,24 @@ public partial class RecipeCreateViewModel(
     }
     
     [RelayCommand]
-    private void RemoveIngredient(RecipeIngredientListModel model)
+    private async Task RemoveIngredient(RecipeIngredientListModel model)
     {
         Recipe.Ingredients.Remove(model);
         OnPropertyChanged(nameof(Recipe));
+        await ValidateRecipeAsync();
+        
         MessengerService.Send(new RecipeIngredientDeleteMessage());
     }
 
+    [RelayCommand]
+    private async Task UpdateIngredient(RecipeIngredientListModel? model)
+    {
+        if (model is not null)
+        {
+            await ValidateExistingIngredientAsync(model);
+        }
+    }
+    
     [RelayCommand]
     private async Task SaveRecipeAsync()
     {

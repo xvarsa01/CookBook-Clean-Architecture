@@ -14,15 +14,15 @@
     <recipe:RecipeFormBaseControl
         Recipe="{Binding Recipe}"
         SaveCommand="{Binding SaveRecipeCommand}"
-        ValidatePropertyCommand="{Binding ValidatePropertyCommand}"
         Ingredients="{Binding Ingredients}"
         Units="{Binding Units}"
         FoodTypes="{Binding FoodTypes}"
         IngredientAmountNew="{Binding IngredientAmountNew}"
         SelectedNewIngredient="{Binding SelectedNewIngredient}"
         AddIngredientCommand="{Binding AddNewIngredientToRecipeCommand}"
-        UpdateIngredientCommand="{Binding UpdateIngredientAsyncCommand}"
+        UpdateIngredientCommand="{Binding UpdateIngredientCommand}"
         RemoveIngredientCommand="{Binding RemoveIngredientCommand}"
-        ValidateIngredientCommand="{Binding ValidateIngredientAmountNewPropertyCommand}" />
+        ValidateRecipeCommand="{Binding ValidateRecipeCommand}"
+        ValidateNewIngredientCommand="{Binding ValidateNewIngredientCommand}" />
 
 </views:ContentPageBase>

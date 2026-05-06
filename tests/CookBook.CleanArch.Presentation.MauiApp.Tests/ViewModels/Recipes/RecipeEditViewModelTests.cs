@@ -107,7 +107,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
             added.Amount = 25;
             added.Unit = MeasurementUnit.Ml;
 
-            vm.UpdateIngredientAsyncCommand.Execute(added);
+            vm.UpdateIngredientCommand.Execute(added);
 
             await vm.SaveRecipeCommand.ExecuteAsync(null);
 
@@ -140,7 +140,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
             model.Amount = 250;
             model.Unit = MeasurementUnit.Pieces;
 
-            vm.UpdateIngredientAsyncCommand.Execute(model);
+            vm.UpdateIngredientCommand.Execute(model);
 
             await vm.SaveRecipeCommand.ExecuteAsync(null);
 
@@ -173,7 +173,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
 
             water.Amount = 999;
             water.Unit = MeasurementUnit.Pieces;
-            vm.UpdateIngredientAsyncCommand.Execute(water);
+            vm.UpdateIngredientCommand.Execute(water);
 
             await vm.SaveRecipeCommand.ExecuteAsync(null);
 
@@ -243,7 +243,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
             var water = vm.Recipe.Ingredients.Single(x => x.IngredientId == IngredientTestSeeds.Water.Id.Value);
             water.Amount = 777;
             water.Unit = MeasurementUnit.Pieces;
-            vm.UpdateIngredientAsyncCommand.Execute(water);
+            vm.UpdateIngredientCommand.Execute(water);
 
             await vm.RemoveIngredientCommand.ExecuteAsync(water);
 
@@ -287,7 +287,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
 
             lemon.Amount = 333;
             lemon.Unit = MeasurementUnit.Ml;
-            vm.UpdateIngredientAsyncCommand.Execute(lemon);
+            vm.UpdateIngredientCommand.Execute(lemon);
 
             await vm.SaveRecipeCommand.ExecuteAsync(null);
 
