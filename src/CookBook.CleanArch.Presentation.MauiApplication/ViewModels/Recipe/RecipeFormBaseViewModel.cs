@@ -10,6 +10,7 @@ using CookBook.CleanArch.Application.Ingredients.Queries;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Shared;
 using CookBook.CleanArch.Domain.Recipes.Enums;
+using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
@@ -243,16 +244,16 @@ public class RecipeFormModelValidator : AbstractValidator<RecipeFormModel>
         RuleFor(x => x.Ingredients)
             .Custom((ingredients, context) =>
             {
-                if (ingredients.Count == 0)
+                switch (ingredients.Count)
                 {
-                    context.AddFailure("At least one ingredient must be added to the recipe");
-                }
-                else if (ingredients.Count > 10)
-                {
-                    context.AddFailure("The recipe cannot contain more than 10 ingredients");
+                    case 0:
+                        context.AddFailure(RecipeErrors.RecipeMinimumNumberOfIngredientsError().Message);
+                        break;
+                    case > 10:
+                        context.AddFailure(RecipeErrors.RecipeMaximumNumberOfIngredientsError().Message);
+                        break;
                 }
             });
-            
     }
 }
 

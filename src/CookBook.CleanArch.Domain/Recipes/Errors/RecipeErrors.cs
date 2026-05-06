@@ -12,12 +12,21 @@ public static class RecipeErrors
     public static Error RecipeIngredientByIdNotFoundError(IngredientId ingredientId, RecipeId recipeId) =>
         new($"Ingredient {ingredientId} not found in recipe {recipeId}.");
     
-    public static Error RecipeMaximumNumberOfIngredientsError(RecipeId recipeId) =>
-        new($"Recipe {recipeId} can not have more than 10 ingredients.");
+    public static Error RecipeMaximumNumberOfIngredientsError(RecipeId? recipeId = null)
+    {
+        return recipeId == null
+            ? new Error($"Recipe can not have more than 10 ingredients.")
+            : new Error($"Recipe {recipeId} can not have more than 10 ingredients.");
+    }
 
-    public static Error RecipeMinimumNumberOfIngredientsError(RecipeId recipeId) =>
-        new($"Recipe {recipeId} must contain at least 1 ingredient.");
-    
+    public static Error RecipeMinimumNumberOfIngredientsError(RecipeId? recipeId = null)
+    {
+        return recipeId == null
+            ? new Error($"Recipe must contain at least 1 ingredient.")
+            : new Error($"Recipe {recipeId} must contain at least 1 ingredient.");
+        
+    }
+
     public static Error RecipeNoIngredientsError() => new($"Recipe must contain at least 1 ingredient.");
 }
 

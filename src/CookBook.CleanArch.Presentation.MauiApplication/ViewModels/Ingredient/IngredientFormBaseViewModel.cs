@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Ingredients.Models;
+using CookBook.CleanArch.Domain.Ingredients.Errors;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using CookBook.CleanArch.Presentation.MauiApplication.Validations;
@@ -87,8 +88,8 @@ public class IngredientFormModelValidator : AbstractValidator<IngredientFormMode
     public IngredientFormModelValidator()
     {
         RuleFor(x => x.Name)
-            .NotNull().WithMessage("The ingredient name must not be empty")
-            .NotEmpty().WithMessage("The ingredient name must not be empty");
+            .NotNull().WithMessage(IngredientErrors.IngredientNameEmptyError().Message)
+            .NotEmpty().WithMessage(IngredientErrors.IngredientNameEmptyError().Message);
 
         RuleFor(x => x.ImageUrl)
             .IsValidOptionalValueObject<IngredientFormModel, ImageUrl>();
