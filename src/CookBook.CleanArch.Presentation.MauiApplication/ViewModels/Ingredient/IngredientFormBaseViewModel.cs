@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain.Ingredients.Errors;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
+using CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using CookBook.CleanArch.Presentation.MauiApplication.Validations;
 using FluentValidation;
@@ -89,8 +90,20 @@ public class IngredientFormModelValidator : AbstractValidator<IngredientFormMode
     public IngredientFormModelValidator()
     {
         RuleFor(x => x.Name)
-            .NotNull().WithMessage(IngredientErrors.IngredientNameEmptyError().Message)
-            .NotEmpty().WithMessage(IngredientErrors.IngredientNameEmptyError().Message);
+            .NotNull()
+                .WithMessage(_ =>
+                {
+                    var err = IngredientErrors.IngredientNameEmptyError();
+                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
+                })
+            .NotEmpty()
+                .WithMessage(_ =>
+                {
+                    var err = IngredientErrors.IngredientNameEmptyError();
+                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
+                });
 
         RuleFor(x => x.ImageUrl)
             .IsValidOptionalValueObject<IngredientFormModel, ImageUrl>();

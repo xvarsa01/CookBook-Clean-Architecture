@@ -77,7 +77,7 @@ public class CreateRecipeCommandTests : ApplicationTestsBase
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(RecipeErrors.RecipeNoIngredientsError(), result.Error);
+        Assert.Equal(RecipeErrors.RecipeMinimumNumberOfIngredientsError(), result.Error);
 
         await using var db = await DbContextFactory.CreateDbContextAsync();
         var recipe = await db.Recipes
@@ -104,7 +104,7 @@ public class CreateRecipeCommandTests : ApplicationTestsBase
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(RecipeErrors.RecipeNoIngredientsError(), result.Error);
+        Assert.Equal(RecipeErrors.RecipeMinimumNumberOfIngredientsError(), result.Error);
     }
 
     [Fact]

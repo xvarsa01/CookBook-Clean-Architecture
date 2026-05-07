@@ -15,7 +15,7 @@ public record RecipeDuration : IValueObject<TimeSpan>, IValueObjectFactory<Recip
     public static Result<RecipeDuration> CreateObject(TimeSpan duration)
     {
         return duration <= TimeSpan.Zero
-            ? Result.Failure<RecipeDuration>(ValueObjectsErrors.RecipeDurationNotPositiveError())
+            ? Result.Failure<RecipeDuration>(RecipeValueObjectsErrors.RecipeDurationNotPositiveError())
             : Result.Success(new RecipeDuration(duration));
     }
     

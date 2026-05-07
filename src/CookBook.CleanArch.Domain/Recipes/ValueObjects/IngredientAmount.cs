@@ -15,7 +15,7 @@ public record IngredientAmount : IValueObject<decimal>, IValueObjectFactory<Ingr
     public static Result<IngredientAmount> CreateObject(decimal amount)
     {
         return amount <= 0
-            ? Result.Failure<IngredientAmount>(ValueObjectsErrors.IngredientAmountNotPositiveError())
+            ? Result.Failure<IngredientAmount>(RecipeValueObjectsErrors.IngredientAmountNotPositiveError())
             : Result.Success(new IngredientAmount(amount));
     }
     

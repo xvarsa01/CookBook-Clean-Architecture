@@ -14,6 +14,7 @@ using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using CookBook.CleanArch.Presentation.MauiApplication.Messages;
+using CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using CookBook.CleanArch.Presentation.MauiApplication.Validations;
 using FluentValidation;
@@ -233,18 +234,33 @@ public class RecipeFormModelValidator : AbstractValidator<RecipeFormModel>
 
         RuleFor(x => x.RecipeType)
             .NotEqual(RecipeType.None)
-            .WithMessage("The recipe type must be selected");
+            .WithMessage(_ =>
+            {
+                var err = RecipeErrors.RecipeTypeNotSelectedError();
+                var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                return string.IsNullOrEmpty(localized) ? err.Message : localized;
+            });
 
         RuleFor(x => x.ImageUrl)
             .IsValidOptionalValueObject<RecipeFormModel, ImageUrl>();
         
         RuleFor(x => x.Ingredients)
             .Must(i => i.Count > 0)
-            .WithMessage(RecipeErrors.RecipeMinimumNumberOfIngredientsError().Message);
+            .WithMessage(_ =>
+            {
+                var err = RecipeErrors.RecipeMinimumNumberOfIngredientsError();
+                var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                return string.IsNullOrEmpty(localized) ? err.Message : localized;
+            });
 
         RuleFor(x => x.Ingredients)
             .Must(i => i.Count <= 10)
-            .WithMessage(RecipeErrors.RecipeMaximumNumberOfIngredientsError().Message);
+            .WithMessage(_ =>
+            {
+                var err = RecipeErrors.RecipeMaximumNumberOfIngredientsError();
+                var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                return string.IsNullOrEmpty(localized) ? err.Message : localized;
+            });
         
         RuleForEach(x => x.Ingredients)
             .SetValidator(new RecipeIngredientListModelValidator());
@@ -261,13 +277,23 @@ public class RecipeIngredientListModelValidator : AbstractValidator<RecipeIngred
     {
         RuleFor(x => x.IngredientId)
             .NotEqual(Guid.Empty)
-            .WithMessage("The ingredient must be selected");
+            .WithMessage(_ =>
+            {
+                var err = RecipeIngredientErrors.IngredientNotSelectedError();
+                var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                return string.IsNullOrEmpty(localized) ? err.Message : localized;
+            });
     
         RuleFor(x => x.Amount)
             .IsValidValueObject<RecipeIngredientListModel, IngredientAmount>();
     
         RuleFor(x => x.Unit)
             .NotEqual(MeasurementUnit.None)
-            .WithMessage("The unit must be selected");
+            .WithMessage(_ =>
+            {
+                var err = RecipeIngredientErrors.UnitNotSelectedError();
+                var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                return string.IsNullOrEmpty(localized) ? err.Message : localized;
+            });
     }
 }

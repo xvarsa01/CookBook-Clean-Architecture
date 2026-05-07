@@ -41,6 +41,7 @@ public class LocalizationService(IMessengerService messengerService) : ILocaliza
     
     private static void ApplyResourceCulture(CultureInfo culture)
     {
+        DomainErrorTexts.Culture = culture;
         AppShellTexts.Culture = culture;
         LanguageTexts.Culture = culture;
         FoodTypeTexts.Culture = culture;

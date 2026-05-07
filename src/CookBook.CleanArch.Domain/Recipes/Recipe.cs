@@ -49,7 +49,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         var id = new RecipeId(Guid.NewGuid());
 
         if (ingredients.Count == 0)
-            return Result.Failure<Recipe>(RecipeErrors.RecipeNoIngredientsError());
+            return Result.Failure<Recipe>(RecipeErrors.RecipeMinimumNumberOfIngredientsError());
 
         var recipe = new Recipe(id, name, description, imageUrl, duration, type);
 

@@ -15,7 +15,7 @@ public record RecipeName : IValueObject<string>, IValueObjectFactory<RecipeName,
     public static Result<RecipeName> CreateObject(string value)
     {
         return string.IsNullOrWhiteSpace(value) || value.Length < 3
-            ? Result.Failure<RecipeName>(ValueObjectsErrors.RecipeNameNotInvalidError())
+            ? Result.Failure<RecipeName>(RecipeValueObjectsErrors.RecipeNameNotInvalidError())
             : Result.Success(new RecipeName(value));
     }
 

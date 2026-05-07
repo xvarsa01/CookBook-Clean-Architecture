@@ -1,4 +1,6 @@
-﻿using CookBook.CleanArch.Domain.Shared;
+﻿using System.Globalization;
+using CookBook.CleanArch.Domain.Shared;
+using CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts;
 using FluentValidation;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.Validations;
@@ -25,11 +27,7 @@ public static class ValidationResultExtensions
     {
         return ruleBuilder.Custom((value, context) =>
         {
-            var result = TValueObject.CreateObject(value);
-            if (result.IsFailure)
-            {
-                context.AddFailure(result.Error.Message);
-            }
+            ValidateValueObject<T, TProperty, TValueObject>(value, context);
         });
     }
     
@@ -42,12 +40,32 @@ public static class ValidationResultExtensions
             if (string.IsNullOrWhiteSpace(value))
                 return;
 
-            var result = TValueObject.CreateObject(value);
-            if (result.IsFailure)
-            {
-                context.AddFailure(result.Error.Message);
-            }
+            ValidateValueObject<T, string, TValueObject>(value, context);
         });
     }
   
+    private static void ValidateValueObject<T, TProperty, TValueObject>(
+        TProperty value,
+        ValidationContext<T> context)
+        where TValueObject : IValueObject<TProperty>, IValueObjectFactory<TValueObject, TProperty>
+    {
+        var result = TValueObject.CreateObject(value);
+
+        if (result.IsSuccess)
+        {
+            return;
+        }
+
+        var error = result.Error;
+
+        var localizedTemplate = DomainErrorTexts.ResourceManager.GetString(
+            error.Code,
+            CultureInfo.CurrentUICulture);
+
+        var localized = string.IsNullOrEmpty(localizedTemplate)
+            ? error.Message
+            : string.Format(localizedTemplate, error.Arguments);
+
+        context.AddFailure(localized);
+    }
 }
