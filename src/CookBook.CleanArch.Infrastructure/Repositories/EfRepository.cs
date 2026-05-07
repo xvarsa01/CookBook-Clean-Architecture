@@ -8,33 +8,26 @@ public class EfRepository<TEntity, TId> : IRepository<TEntity, TId>
     where TEntity : AggregateRootBase<TId>
     where TId : StronglyTypedId
 {
-    protected readonly DbSet<TEntity> _dbSet;
-    private readonly DbContext _dbContext;
+    protected readonly DbSet<TEntity> DbSet;
 
     public EfRepository(DbContext dbContext)
     {
-        _dbContext = dbContext;
-        _dbSet = dbContext.Set<TEntity>();
-    }
-
-    public async Task<List<TEntity>> GetAllAsync()
-    {
-        return await _dbSet.ToListAsync();
+        DbSet = dbContext.Set<TEntity>();
     }
 
     public virtual async Task<TEntity?> GetByIdAsync(TId id)
     {
-        return await _dbSet.SingleOrDefaultAsync(e => e.Id == id);
+        return await DbSet.SingleOrDefaultAsync(e => e.Id == id);
     }
 
     public void Delete(TEntity aggregate)
     {
-        _dbContext.Set<TEntity>().Remove(aggregate);
+        DbSet.Remove(aggregate);
     }
 
     public TId Add(TEntity aggregate)
     {
-        var entityId = _dbSet.Add(aggregate).Entity.Id;
+        var entityId = DbSet.Add(aggregate).Entity.Id;
         return entityId;
     }
 }

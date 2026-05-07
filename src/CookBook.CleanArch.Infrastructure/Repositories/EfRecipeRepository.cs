@@ -10,19 +10,19 @@ public class EfRecipeRepository(DbContext dbContext) : EfRepository<Recipe, Reci
 {
     public override async Task<Recipe?> GetByIdAsync(RecipeId id)
     {
-        return await _dbSet
+        return await DbSet
             .Include(r => r.Ingredients)
             .SingleOrDefaultAsync(e => e.Id == id);
     }
 
     public int GetRecipeCountByContainingIngredientId(IngredientId ingredientId)
     {
-        return _dbSet.Count(recipe => recipe.Ingredients.Any(ri => ri.IngredientId == ingredientId));
+        return DbSet.Count(recipe => recipe.Ingredients.Any(ri => ri.IngredientId == ingredientId));
     }
     
-    public async Task<Recipe?> GetRecipeWithIngredientsByIdAsync(RecipeId id)// this is not used in current application, check `GetRecipeDetailQuery` class for explanation
+    public async Task<Recipe?> GetRecipeWithIngredientsByIdAsync(RecipeId id)   // this is not used in current application, check `GetRecipeDetailQuery` class for explanation
     {
-        return await _dbSet
+        return await DbSet
             .Include(r => r.Ingredients)
             .ThenInclude(i => i.Ingredient)
             .SingleOrDefaultAsync(e => e.Id == id);
