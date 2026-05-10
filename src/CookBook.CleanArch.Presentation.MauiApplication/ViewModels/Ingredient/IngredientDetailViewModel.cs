@@ -103,7 +103,7 @@ public partial class IngredientDetailViewModel(
         {
             await LoadDataAsync();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // ignored
         }

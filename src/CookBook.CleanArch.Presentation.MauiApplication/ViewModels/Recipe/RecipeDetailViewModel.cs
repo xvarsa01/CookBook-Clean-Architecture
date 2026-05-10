@@ -92,7 +92,7 @@ public partial class  RecipeDetailViewModel(
         {
             await LoadDataAsync();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // ignored
         }
