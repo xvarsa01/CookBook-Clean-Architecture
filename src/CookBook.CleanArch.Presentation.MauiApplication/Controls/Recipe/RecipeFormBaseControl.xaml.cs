@@ -30,6 +30,14 @@ public partial class RecipeFormBaseControl
         get => (ICommand)GetValue(SaveCommandProperty);
         set => SetValue(SaveCommandProperty, value);
     }
+    
+    public static readonly BindableProperty CancelChangesCommandProperty =
+        BindableProperty.Create(nameof(CancelChangesCommand), typeof(ICommand), typeof(RecipeFormBaseControl));
+    public ICommand CancelChangesCommand
+    {
+        get => (ICommand)GetValue(CancelChangesCommandProperty);
+        set => SetValue(CancelChangesCommandProperty, value);
+    }
 
     public static readonly BindableProperty ValidateRecipeCommandProperty =
         BindableProperty.Create(nameof(ValidateRecipeCommand), typeof(ICommand), typeof(RecipeFormBaseControl));

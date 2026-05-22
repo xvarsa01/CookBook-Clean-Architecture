@@ -61,6 +61,15 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Revert changes.
+        /// </summary>
+        internal static string CancelChanges_Button_Text {
+            get {
+                return ResourceManager.GetString("CancelChanges_Button_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         internal static string Description_Label_Text {

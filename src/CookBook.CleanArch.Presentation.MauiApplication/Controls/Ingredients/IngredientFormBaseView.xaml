@@ -13,6 +13,15 @@
               ColumnDefinitions="*, Auto"
               ColumnSpacing="15">
 
+            <Button Grid.Column="0"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    HeightRequest="30"
+                    Text="{x:Static texts:IngredientFormBaseControlTexts.CancelChanges_Button_Text}"
+                    Command="{Binding Source={x:Reference Root}, Path=CancelChangesCommand}"
+                    Style="{StaticResource ErrorButtonStyle}"
+                    IsVisible="{Binding Source={x:Reference Root}, Path=CancelChangesCommand, Converter={StaticResource NullToFalseConverter}}" />
+
             <Button Grid.Column="1"
                     VerticalOptions="Start"
                     HeightRequest="30"

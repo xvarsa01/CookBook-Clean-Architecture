@@ -16,6 +16,8 @@ public partial class IngredientEditViewModel(
     IMessengerService messengerService)
     : IngredientFormBaseViewModel(mediator, navigationService, messengerService)
 {
+    private IngredientResponse? _ingredientResponse;
+
     public IngredientId Id { get; set; } = new(Guid.Empty);
 
     protected override async Task LoadDataAsync()
@@ -30,7 +32,17 @@ public partial class IngredientEditViewModel(
         var result = (await Mediator.Send(new GetIngredientDetailQuery(Id)));
         if (result.IsSuccess)
         {
-            Ingredient = new IngredientFormModel(result.Value);
+            _ingredientResponse = result.Value;
+            Ingredient = new IngredientFormModel(_ingredientResponse!);
+        }
+    }
+
+    [RelayCommand]
+    private void CancelChanges()
+    {
+        if (_ingredientResponse is not null)
+        {
+            Ingredient = new IngredientFormModel(_ingredientResponse);
         }
     }
     

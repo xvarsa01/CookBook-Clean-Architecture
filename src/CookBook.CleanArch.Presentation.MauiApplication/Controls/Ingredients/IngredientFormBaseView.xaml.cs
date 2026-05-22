@@ -28,6 +28,14 @@ public partial class IngredientFormBaseView
         set => SetValue(SaveCommandProperty, value);
     }
 
+    public static readonly BindableProperty CancelChangesCommandProperty =
+        BindableProperty.Create(nameof(CancelChangesCommand), typeof(ICommand), typeof(IngredientFormBaseView));
+    public ICommand CancelChangesCommand
+    {
+        get => (ICommand)GetValue(CancelChangesCommandProperty);
+        set => SetValue(CancelChangesCommandProperty, value);
+    }
+
     public static readonly BindableProperty ValidateIngredientCommandProperty =
         BindableProperty.Create(nameof(ValidateIngredientCommand), typeof(ICommand), typeof(IngredientFormBaseView));
     public ICommand ValidateIngredientCommand

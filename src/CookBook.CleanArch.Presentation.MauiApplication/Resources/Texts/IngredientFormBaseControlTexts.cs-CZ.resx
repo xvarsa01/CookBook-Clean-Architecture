@@ -123,6 +123,9 @@
   <data name="Save_Button_Text" xml:space="preserve">
     <value>Uložit</value>
   </data>
+  <data name="CancelChanges_Button_Text" xml:space="preserve">
+      <value>Vrátit změny</value>
+  </data>
   <data name="Name_Label_Text" xml:space="preserve">
     <value>Název</value>
   </data>

@@ -300,7 +300,7 @@
             </CollectionView>
             
             <Grid Grid.Row="2"
-                  ColumnDefinitions="*, Auto"
+                  ColumnDefinitions="*, Auto, Auto"
                   ColumnSpacing="20">
                 
                 <Label Grid.Column="0"
@@ -321,6 +321,13 @@
                            ConverterParameter=10}" />
 
                 <Button Grid.Column="1"
+                        IsVisible="{Binding Source={x:Reference Root}, Path=CancelChangesCommand, Converter={StaticResource NullToFalseConverter}}"
+                        Text="{x:Static t:RecipeFormBaseControlTexts.CancelChanges_Button_Text}"
+                        Command="{Binding Source={x:Reference Root}, Path=CancelChangesCommand}"
+                        Style="{StaticResource ErrorButtonStyle}"
+                        IsEnabled="True" />
+                
+                <Button Grid.Column="2"
                         Text="{x:Static t:RecipeFormBaseControlTexts.Save_Button_Text}"
                         Command="{Binding Source={x:Reference Root}, Path=SaveCommand}"
                         Style="{StaticResource PrimaryButtonStyle}"

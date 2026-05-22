@@ -165,4 +165,7 @@
   <data name="Save_Button_More_Than_Maximum_Ingredients_Warning_Text" xml:space="preserve">
       <value>Recipe cannot contain more than 10 ingredients</value>
   </data>
+  <data name="CancelChanges_Button_Text" xml:space="preserve">
+      <value>Revert changes</value>
+  </data>
 </root>

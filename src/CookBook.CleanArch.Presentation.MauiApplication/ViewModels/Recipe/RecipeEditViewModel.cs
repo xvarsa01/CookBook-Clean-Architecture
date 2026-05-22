@@ -17,6 +17,8 @@ public partial class RecipeEditViewModel(
     IMessengerService messengerService)
     : RecipeFormBaseViewModel(mediator, navigationService, messengerService)
 {
+    private RecipeResponse? _recipeResponse = null;
+    
     private readonly List<PendingAddIngredientChange> _pendingAddedIngredients = [];
     private readonly List<RecipeUpdateIngredientRequest> _pendingUpdatedIngredients = [];
     private readonly List<Guid> _pendingRemovedIngredientIds = [];
@@ -36,7 +38,8 @@ public partial class RecipeEditViewModel(
             var result = (await Mediator.Send(new GetRecipeDetailQuery(Id)));
             if (result.IsSuccess)
             {
-                Recipe = new RecipeFormModel(result.Value);
+                _recipeResponse = result.Value;
+                Recipe = new RecipeFormModel(_recipeResponse);
             }
         }
 
@@ -182,6 +185,19 @@ public partial class RecipeEditViewModel(
         MessengerService.Send(new RecipeEditMessage { RecipeId = new RecipeId(Recipe.Id) });
 
         NavigationService.SendBackButtonPressed();
+    }
+
+    [RelayCommand]
+    private void CancelChangesAsync()
+    {
+        _pendingAddedIngredients.Clear();
+        _pendingUpdatedIngredients.Clear();
+        _pendingRemovedIngredientIds.Clear();
+
+        if (_recipeResponse is not null)
+        {
+            Recipe = new RecipeFormModel(_recipeResponse!);
+        }
     }
 
     private async Task<bool> ApplyPendingIngredientChangesAsync()

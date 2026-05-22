@@ -29,6 +29,7 @@
             <converters:LocalizedNullableBoolConverter x:Key="LocalizedNullableBoolConverter" />
             <converters:NullableTimeSpanConverter x:Key="NullableTimeSpanConverter" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converters:NullToFalseConverter x:Key="NullToFalseConverter" />
             <converters:ValidationResultToErrorMessagesConverter x:Key="ValidationResultToErrorMessagesConverter" />
             <converters:ValidationResultToHasNoErrorConverter x:Key="ValidationResultToHasNoErrorConverter" />
             <converters:ValidationResultToHasErrorConverter x:Key="ValidationResultToHasErrorConverter" />

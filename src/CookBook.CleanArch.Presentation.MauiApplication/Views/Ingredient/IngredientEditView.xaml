@@ -13,6 +13,7 @@
 
     <ingredients:IngredientFormBaseView
         Ingredient="{Binding Ingredient}"
+        CancelChangesCommand="{Binding CancelChangesCommand}"
         SaveCommand="{Binding SaveCommand}"
         ValidateIngredientCommand="{Binding ValidateIngredientCommand}"/>
 

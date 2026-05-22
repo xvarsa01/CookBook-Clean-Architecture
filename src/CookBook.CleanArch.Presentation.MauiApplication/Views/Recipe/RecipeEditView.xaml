@@ -23,6 +23,7 @@
         UpdateIngredientCommand="{Binding UpdateIngredientCommand}"
         RemoveIngredientCommand="{Binding RemoveIngredientCommand}"
         ValidateRecipeCommand="{Binding ValidateRecipeCommand}"
-        ValidateNewIngredientCommand="{Binding ValidateNewIngredientCommand}" />
+        ValidateNewIngredientCommand="{Binding ValidateNewIngredientCommand}" 
+        CancelChangesCommand="{Binding CancelChangesAsyncCommand}"/>
 
 </views:ContentPageBase>
