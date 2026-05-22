@@ -33,10 +33,10 @@
                 <Label Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeNameProperty}}"
+                                                ConverterParameter={x:Static viewModels:RecipeFormModel.RecipeNameProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeNameProperty}}" />
+                                                ConverterParameter={x:Static viewModels:RecipeFormModel.RecipeNameProperty}}" />
             </VerticalStackLayout>
 
             <Grid Grid.Row="1"
@@ -62,10 +62,10 @@
                        Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeRecipeTypeProperty}}"
+                                                ConverterParameter={x:Static viewModels:RecipeFormModel.RecipeRecipeTypeProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeRecipeTypeProperty}}" />
+                                                ConverterParameter={x:Static viewModels:RecipeFormModel.RecipeRecipeTypeProperty}}" />
 
                 <Label Grid.Row="0" Grid.Column="1"
                        Text="{x:Static t:RecipeFormBaseControlTexts.Duration_Label_Text}" />
@@ -81,10 +81,10 @@
                        Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeDurationProperty}}"
+                                                ConverterParameter={x:Static viewModels:RecipeFormModel.RecipeDurationProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToHasErrorConverter},
-                                                ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeDurationProperty}}" />
+                                                ConverterParameter={x:Static viewModels:RecipeFormModel.RecipeDurationProperty}}" />
             </Grid>
 
             <StackLayout Grid.Row="2"
@@ -102,10 +102,10 @@
                 <Label Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeImageUrlProperty}}"
+                                                ConverterParameter={x:Static viewModels:RecipeFormModel.RecipeImageUrlProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=Recipe.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToHasErrorConverter},
-                                                ConverterParameter={x:Static viewModels:RecipeFormModelValidator.RecipeImageUrlProperty}}" />
+                                                ConverterParameter={x:Static viewModels:RecipeFormModel.RecipeImageUrlProperty}}" />
             </StackLayout>
             
             <Border Grid.Row="0"
@@ -160,10 +160,10 @@
                        Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientAmountProperty}}"
+                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModel.IngredientAmountProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientAmountProperty}}" />
+                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModel.IngredientAmountProperty}}" />
                 
                 <Label Grid.Column="1"
                        Grid.Row="0"
@@ -183,10 +183,10 @@
                        Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientUnitProperty}}"
+                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModel.IngredientUnitProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientUnitProperty}}" />
+                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModel.IngredientUnitProperty}}" />
 
                 <Label Grid.Column="2"
                        Grid.Row="0"
@@ -206,10 +206,10 @@
                        Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientIdProperty}}"
+                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModel.IngredientIdProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=IngredientAmountNew.ValidationResults, 
                                                 Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientIdProperty}}" />
+                                                ConverterParameter={x:Static viewModels:RecipeIngredientListModel.IngredientIdProperty}}" />
                 
                 <Button Grid.Column="3"
                         Grid.Row="1"
@@ -252,10 +252,10 @@
                                        Style="{StaticResource ValidationErrorLabelStyle}"
                                        Text="{Binding  ValidationResults, 
                                                         Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                        ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientAmountProperty}}"
+                                                        ConverterParameter={x:Static viewModels:RecipeIngredientListModel.IngredientAmountProperty}}"
                                        IsVisible="{Binding ValidationResults,
                                                         Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                        ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientAmountProperty}}" />
+                                                        ConverterParameter={x:Static viewModels:RecipeIngredientListModel.IngredientAmountProperty}}" />
                             </Grid>
                             
                             <Grid RowDefinitions="*, Auto"
@@ -277,10 +277,10 @@
                                        Style="{StaticResource ValidationErrorLabelStyle}"
                                        Text="{Binding  ValidationResults, 
                                                     Converter={StaticResource ValidationResultToErrorMessagesConverter}, 
-                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientUnitProperty}}"
+                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModel.IngredientUnitProperty}}"
                                        IsVisible="{Binding ValidationResults, 
                                                     Converter={StaticResource ValidationResultToHasErrorConverter}, 
-                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModelValidator.IngredientUnitProperty}}" />
+                                                    ConverterParameter={x:Static viewModels:RecipeIngredientListModel.IngredientUnitProperty}}" />
                             </Grid>
                             
                             <Label Grid.Column="3"

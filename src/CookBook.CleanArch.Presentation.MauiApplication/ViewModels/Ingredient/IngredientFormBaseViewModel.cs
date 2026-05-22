@@ -22,7 +22,7 @@ public abstract partial class IngredientFormBaseViewModel(
     protected readonly IMediator Mediator = mediator;
     protected readonly INavigationService NavigationService = navigationService;
 
-    private readonly IngredientFormModelValidator _ingredientValidator = new();
+    private readonly IngredientFormModel.Validator _ingredientValidator = new();
 
     [ObservableProperty]
     public partial IngredientFormModel Ingredient { get; set; } = IngredientFormModel.Empty;
@@ -63,14 +63,15 @@ public partial class IngredientFormModel() : ObservableObject
     
     [ObservableProperty]
     public required partial string Name { get; set; }
+    
     [ObservableProperty]
     public partial string? Description { get; set; }
+    
     [ObservableProperty]
     public partial string? ImageUrl { get; set; }
 
     [ObservableProperty]
     public partial ValidationResult? ValidationResults {get; set; } = new();
-
 
     public static IngredientFormModel Empty
         => new()
@@ -80,32 +81,33 @@ public partial class IngredientFormModel() : ObservableObject
             Description = string.Empty,
             ImageUrl = null
         };
-}
-
-public class IngredientFormModelValidator : AbstractValidator<IngredientFormModel>
-{
-    public static string IngredientNameProperty => nameof(IngredientFormModel.Name);
-    public static string IngredientImageUrlProperty => nameof(IngredientFormModel.ImageUrl);
-
-    public IngredientFormModelValidator()
+    
+    public static string IngredientNameProperty => nameof(Name);
+    public static string IngredientImageUrlProperty => nameof(ImageUrl);
+    
+    public class Validator : AbstractValidator<IngredientFormModel>
     {
-        RuleFor(x => x.Name)
-            .NotNull()
-                .WithMessage(_ =>
-                {
-                    var err = IngredientErrors.IngredientNameEmptyError();
-                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
-                })
-            .NotEmpty()
-                .WithMessage(_ =>
-                {
-                    var err = IngredientErrors.IngredientNameEmptyError();
-                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
-                });
+        public Validator()
+        {
+            RuleFor(x => x.Name)
+                .NotNull()
+                    .WithMessage(_ =>
+                    {
+                        var err = IngredientErrors.IngredientNameEmptyError();
+                        var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                        return string.IsNullOrEmpty(localized) ? err.Message : localized;
+                    })
+                .NotEmpty()
+                    .WithMessage(_ =>
+                    {
+                        var err = IngredientErrors.IngredientNameEmptyError();
+                        var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                        return string.IsNullOrEmpty(localized) ? err.Message : localized;
+                    });
 
-        RuleFor(x => x.ImageUrl)
-            .IsValidOptionalValueObject<IngredientFormModel, ImageUrl>();
+            RuleFor(x => x.ImageUrl)
+                .IsValidOptionalValueObject<IngredientFormModel, ImageUrl>();
+        }
     }
 }
+

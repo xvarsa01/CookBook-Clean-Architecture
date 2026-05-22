@@ -5,7 +5,7 @@ namespace CookBook.CleanArch.Presentation.MauiApp.Tests.ViewModels.Ingredients;
 
 public class IngredientFormValidationTests : MauiTestsBase
 {
-    private readonly IngredientFormModelValidator _validator = new();
+    private readonly IngredientFormModel.Validator _validator = new();
     
     [Fact]
     public void Should_Have_Error_When_Name_Is_Empty()

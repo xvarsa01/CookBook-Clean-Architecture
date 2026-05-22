@@ -61,10 +61,10 @@
                 <Label Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
                                       Converter={StaticResource ValidationResultToErrorMessagesConverter},
-                                      ConverterParameter={x:Static viewModels:IngredientFormModelValidator.IngredientNameProperty}}"
+                                      ConverterParameter={x:Static viewModels:IngredientFormModel.IngredientNameProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
                                            Converter={StaticResource ValidationResultToHasErrorConverter},
-                                           ConverterParameter={x:Static viewModels:IngredientFormModelValidator.IngredientNameProperty}}" />
+                                           ConverterParameter={x:Static viewModels:IngredientFormModel.IngredientNameProperty}}" />
 
                 <!-- Image URL -->
                 <Label Text="{x:Static texts:IngredientFormBaseControlTexts.ImageUrl_Label_Text}"
@@ -81,10 +81,10 @@
                 <Label Style="{StaticResource ValidationErrorLabelStyle}"
                        Text="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
                                       Converter={StaticResource ValidationResultToErrorMessagesConverter},
-                                      ConverterParameter={x:Static viewModels:IngredientFormModelValidator.IngredientImageUrlProperty}}"
+                                      ConverterParameter={x:Static viewModels:IngredientFormModel.IngredientImageUrlProperty}}"
                        IsVisible="{Binding Source={x:Reference Root}, Path=Ingredient.ValidationResults,
                                            Converter={StaticResource ValidationResultToHasErrorConverter},
-                                           ConverterParameter={x:Static viewModels:IngredientFormModelValidator.IngredientImageUrlProperty}}" />
+                                           ConverterParameter={x:Static viewModels:IngredientFormModel.IngredientImageUrlProperty}}" />
 
                 <!-- Description -->
                 <Label Text="{x:Static texts:IngredientFormBaseControlTexts.Description_Label_Text}"

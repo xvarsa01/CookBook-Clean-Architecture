@@ -35,8 +35,8 @@ public abstract partial class RecipeFormBaseViewModel(
     protected readonly IMediator Mediator = mediator;
     protected readonly INavigationService NavigationService = navigationService;
 
-    private readonly RecipeFormModelValidator _recipeValidator = new();
-    private readonly RecipeIngredientListModelValidator _ingredientValidator = new();
+    private readonly RecipeFormModel.Validator _recipeValidator = new();
+    private readonly RecipeIngredientListModel.Validator _ingredientValidator = new();
 
     [ObservableProperty]
     public partial RecipeFormModel Recipe { get; set; } = RecipeFormModel.Empty;
@@ -180,6 +180,57 @@ public partial class RecipeFormModel : ObservableObject
             Description = string.Empty,
             Duration = TimeSpan.Zero
         };
+    
+    public static string RecipeNameProperty => nameof(Name);
+    public static string RecipeDurationProperty => nameof(Duration);
+    public static string RecipeImageUrlProperty => nameof(ImageUrl);
+    public static string RecipeRecipeTypeProperty => nameof(RecipeType);
+    
+    public class Validator : AbstractValidator<RecipeFormModel>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.Name)
+                .IsValidValueObject<RecipeFormModel, RecipeName>();
+
+            RuleFor(x => x.Duration)
+                .IsValidValueObject<RecipeFormModel, RecipeDuration>();
+
+            RuleFor(x => x.RecipeType)
+                .NotEqual(RecipeType.None)
+                .WithMessage(_ =>
+                {
+                    var err = RecipeErrors.RecipeTypeNotSelectedError();
+                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
+                });
+
+            RuleFor(x => x.ImageUrl)
+                .IsValidOptionalValueObject<RecipeFormModel, ImageUrl>();
+            
+            RuleFor(x => x.Ingredients)
+                .Must(i => i.Count > 0)
+                .WithMessage(_ =>
+                {
+                    var err = RecipeErrors.RecipeMinimumNumberOfIngredientsError();
+                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
+                });
+
+            RuleFor(x => x.Ingredients)
+                .Must(i => i.Count <= 10)
+                .WithMessage(_ =>
+                {
+                    var err = RecipeErrors.RecipeMaximumNumberOfIngredientsError();
+                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
+                });
+            
+            RuleForEach(x => x.Ingredients)
+                .SetValidator(new RecipeIngredientListModel.Validator());
+        }
+    }
+
 }
 
 public partial class RecipeIngredientListModel : ObservableObject
@@ -215,85 +266,35 @@ public partial class RecipeIngredientListModel : ObservableObject
             Amount = 0,
             Unit = MeasurementUnit.None
         };
-}
 
-public class RecipeFormModelValidator : AbstractValidator<RecipeFormModel>
-{
-    public static string RecipeNameProperty => nameof(RecipeFormModel.Name);
-    public static string RecipeDurationProperty => nameof(RecipeFormModel.Duration);
-    public static string RecipeImageUrlProperty => nameof(RecipeFormModel.ImageUrl);
-    public static string RecipeRecipeTypeProperty => nameof(RecipeFormModel.RecipeType);
-
-    public RecipeFormModelValidator()
-    {
-        RuleFor(x => x.Name)
-            .IsValidValueObject<RecipeFormModel, RecipeName>();
-
-        RuleFor(x => x.Duration)
-            .IsValidValueObject<RecipeFormModel, RecipeDuration>();
-
-        RuleFor(x => x.RecipeType)
-            .NotEqual(RecipeType.None)
-            .WithMessage(_ =>
-            {
-                var err = RecipeErrors.RecipeTypeNotSelectedError();
-                var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                return string.IsNullOrEmpty(localized) ? err.Message : localized;
-            });
-
-        RuleFor(x => x.ImageUrl)
-            .IsValidOptionalValueObject<RecipeFormModel, ImageUrl>();
-        
-        RuleFor(x => x.Ingredients)
-            .Must(i => i.Count > 0)
-            .WithMessage(_ =>
-            {
-                var err = RecipeErrors.RecipeMinimumNumberOfIngredientsError();
-                var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                return string.IsNullOrEmpty(localized) ? err.Message : localized;
-            });
-
-        RuleFor(x => x.Ingredients)
-            .Must(i => i.Count <= 10)
-            .WithMessage(_ =>
-            {
-                var err = RecipeErrors.RecipeMaximumNumberOfIngredientsError();
-                var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                return string.IsNullOrEmpty(localized) ? err.Message : localized;
-            });
-        
-        RuleForEach(x => x.Ingredients)
-            .SetValidator(new RecipeIngredientListModelValidator());
-    }
-}
-
-public class RecipeIngredientListModelValidator : AbstractValidator<RecipeIngredientListModel>
-{
-    public static string IngredientIdProperty => nameof(RecipeIngredientListModel.IngredientId);
-    public static string IngredientAmountProperty => nameof(RecipeIngredientListModel.Amount);
-    public static string IngredientUnitProperty => nameof(RecipeIngredientListModel.Unit);
-
-    public RecipeIngredientListModelValidator()
-    {
-        RuleFor(x => x.IngredientId)
-            .NotEqual(Guid.Empty)
-            .WithMessage(_ =>
-            {
-                var err = RecipeIngredientErrors.IngredientNotSelectedError();
-                var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                return string.IsNullOrEmpty(localized) ? err.Message : localized;
-            });
+    public static string IngredientIdProperty => nameof(IngredientId);
+    public static string IngredientAmountProperty => nameof(Amount);
+    public static string IngredientUnitProperty => nameof(Unit);
     
-        RuleFor(x => x.Amount)
-            .IsValidValueObject<RecipeIngredientListModel, IngredientAmount>();
-    
-        RuleFor(x => x.Unit)
-            .NotEqual(MeasurementUnit.None)
-            .WithMessage(_ =>
-            {
-                var err = RecipeIngredientErrors.UnitNotSelectedError();
-                var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                return string.IsNullOrEmpty(localized) ? err.Message : localized;
-            });
+    public class Validator : AbstractValidator<RecipeIngredientListModel>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.IngredientId)
+                .NotEqual(Guid.Empty)
+                .WithMessage(_ =>
+                {
+                    var err = RecipeIngredientErrors.IngredientNotSelectedError();
+                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
+                });
+        
+            RuleFor(x => x.Amount)
+                .IsValidValueObject<RecipeIngredientListModel, IngredientAmount>();
+        
+            RuleFor(x => x.Unit)
+                .NotEqual(MeasurementUnit.None)
+                .WithMessage(_ =>
+                {
+                    var err = RecipeIngredientErrors.UnitNotSelectedError();
+                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
+                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
+                });
+        }
     }
 }
