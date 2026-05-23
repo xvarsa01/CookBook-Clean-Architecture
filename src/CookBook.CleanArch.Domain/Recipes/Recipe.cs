@@ -34,7 +34,7 @@ public record Recipe : AggregateRootBase<RecipeId>
     public const int MaxIngredients = 10;
     public const int MinReviewMark = 1;
     public const int MaxReviewMark = 5;
-    public const int MaxReviewDescriptionLength = 500;
+    public const int MaxReviewDescriptionLength = 100;
     
     private Recipe(RecipeId id, RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type) : base(id)
     {

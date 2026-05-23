@@ -15,6 +15,7 @@ using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using System.Collections.ObjectModel;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
@@ -33,6 +34,9 @@ public partial class  RecipeDetailViewModel(
 
     [ObservableProperty]
     public partial RecipeResponse? Recipe { get; set; }
+
+    [ObservableProperty]
+    public partial ObservableCollection<RecipeReviewResponse> Reviews { get; set; } = [];
     
     [ObservableProperty]
     public partial RecipeReviewListModel ReviewNew { get; set; } = RecipeReviewListModel.Empty;
@@ -45,6 +49,7 @@ public partial class  RecipeDetailViewModel(
         if (result.IsSuccess)
         {
             Recipe = result.Value;
+            Reviews = [.. result.Value.Reviews];
         }
     }
 
@@ -94,8 +99,7 @@ public partial class  RecipeDetailViewModel(
             return;
 
         var createdReview = new RecipeReviewResponse(result.Value, request.Mark, request.Description);
-        Recipe.Reviews.Add(createdReview);
-        OnPropertyChanged(nameof(Recipe.Reviews));
+        Reviews.Add(createdReview);
         ForceDataRefreshOnNextAppearing();
     }
 
@@ -109,8 +113,7 @@ public partial class  RecipeDetailViewModel(
         if (result.IsFailure)
             return;
 
-        Recipe.Reviews.Remove(review);
-        OnPropertyChanged(nameof(Recipe.Reviews));
+        Reviews.Remove(review);
         ForceDataRefreshOnNextAppearing();
     }
     

@@ -4,7 +4,6 @@ namespace CookBook.CleanArch.Domain.Recipes.Errors;
 
 public static class RecipeReviewErrors
 {
-    
     public static Error RecipeReviewNotFoundError(RecipeReviewId reviewId, RecipeId recipeId) =>
         new("Recipes.RecipeReviewNotFound", $"Review {reviewId.Value} not found in recipe {recipeId.Value}.", [reviewId, recipeId]);
 

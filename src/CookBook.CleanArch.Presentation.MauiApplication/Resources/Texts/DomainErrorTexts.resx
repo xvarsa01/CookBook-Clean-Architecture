@@ -53,10 +53,22 @@
     <data name="Recipes.RecipeTypeMustBeSelected" xml:space="preserve">
         <value>The recipe type must be selected.</value>
     </data>
-    
+    <data name="Recipes.RecipeReviewNotFound" xml:space="preserve">
+        <value>Review {0} not found in recipe {1}.</value>
+    </data>
+    <data name="Recipes.RecipeReviewMarkOutOfRange" xml:space="preserve">
+        <value>Review mark must be between 1 and 5.</value>
+    </data>
+    <data name="Recipes.RecipeReviewDescriptionRequired" xml:space="preserve">
+        <value>Review description is required.</value>
+    </data>
+    <data name="Recipes.RecipeReviewDescriptionTooLong" xml:space="preserve">
+        <value>Review description can not be longer than 100 characters.</value>
+    </data>
+
     <data name="RecipeIngredient.IngredientMustBeSelected" xml:space="preserve">
         <value>The ingredient must be selected.</value>
-    </data>    
+    </data>
     <data name="RecipeIngredient.UnitMustBeSelected" xml:space="preserve">
         <value>The unit must be selected.</value>
     </data>

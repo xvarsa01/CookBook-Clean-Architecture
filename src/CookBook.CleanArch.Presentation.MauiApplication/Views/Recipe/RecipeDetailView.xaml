@@ -126,7 +126,7 @@
                                Text="{Binding ReviewNew.Mark}">
                             <Entry.Behaviors>
                                 <toolkit:EventToCommandBehavior EventName="TextChanged"
-                                                                Command="{Binding ValidateNewReviewCommand}" />
+                                                                Command="{Binding Source={x:Reference RecipeDetailViewRoot}, Path=BindingContext.ValidateNewReviewCommand}" />
                             </Entry.Behaviors>
                         </Entry>
                         <Label Grid.Column="0"
@@ -147,7 +147,7 @@
                                Text="{Binding ReviewNew.Description}">
                             <Entry.Behaviors>
                                 <toolkit:EventToCommandBehavior EventName="TextChanged"
-                                                                Command="{Binding ValidateNewReviewCommand}" />
+                                                                Command="{Binding Source={x:Reference RecipeDetailViewRoot}, Path=BindingContext.ValidateNewReviewCommand}" />
                             </Entry.Behaviors>
                         </Entry>
                         <Label Grid.Column="1"
@@ -168,7 +168,7 @@
                     </Grid>
                     <CollectionView Grid.Column="1"
                                     Grid.Row="2"
-                                    ItemsSource="{Binding Recipe.Reviews}">
+                                    ItemsSource="{Binding Reviews}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:RecipeReviewResponse">
                                 <Grid ColumnDefinitions="Auto, *, Auto"
