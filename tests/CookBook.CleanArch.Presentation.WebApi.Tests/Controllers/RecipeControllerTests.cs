@@ -263,13 +263,16 @@ public class RecipeControllerTests : WebApiTestsBase
         
         var response = await Client.Value.PutAsJsonAsync(
             "/recipe",
-            new RecipeUpdateRequest(
+            new RecipeUpdateWithIngredientsRequest(
                 Id: seededRecipe.Id,
                 Name: updatedName,
                 Description: "updated description",
                 ImageUrl: ImageUrl.CreateObject($"https://example.com/1234.jpg").Value,
                 Duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(45)).Value,
-                Type: RecipeType.Soup),
+                Type: RecipeType.Soup,
+                Additions: null,
+                Updates: null,
+                Removals: null),
             Options);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -282,13 +285,16 @@ public class RecipeControllerTests : WebApiTestsBase
         
         var response = await Client.Value.PutAsJsonAsync(
             "/recipe",
-            new RecipeUpdateRequest(
+            new RecipeUpdateWithIngredientsRequest(
                 Id: new RecipeId(Guid.NewGuid()),
                 Name: updatedName,
                 Description: "description",
                 ImageUrl: null,
                 Duration: null,
-                Type: null),
+                Type: null,
+                Additions: null,
+                Updates: null,
+                Removals: null),
             Options);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -313,63 +319,6 @@ public class RecipeControllerTests : WebApiTestsBase
         var response = await Client.Value.DeleteAsync($"/recipe/{Guid.NewGuid()}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task AddIngredient_Returns_Ok_When_Request_Is_Valid()
-    {
-        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.MinimalisticRecipe().Name);
-        var newIngredient = IngredientTestSeeds.MinimalisticIngredient;
-
-        var response = await Client.Value.PostAsJsonAsync(
-            $"/recipe/{seededRecipe.Id.Value}/ingredient",
-            new RecipeAddIngredientRequest(
-                IngredientId: newIngredient.Id,
-                Amount: IngredientAmount.CreateObject(100).Value,
-                Unit: MeasurementUnit.Pieces),
-            Options);
-
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var recipe = await GetRecipeByIdAsync(seededRecipe.Id);
-        Assert.Contains(recipe.Ingredients, ingredient => ingredient.IngredientId == newIngredient.Id);
-    }
-
-    [Fact]
-    public async Task AddIngredient_Returns_BadRequest_When_Recipe_Does_Not_Exist()
-    {
-        var newIngredient = IngredientTestSeeds.MinimalisticIngredient;
-        var response = await Client.Value.PostAsJsonAsync(
-            $"/recipe/{Guid.NewGuid()}/ingredient",
-            new RecipeAddIngredientRequest(
-                IngredientId: newIngredient.Id,
-                Amount: IngredientAmount.CreateObject(100).Value,
-                Unit: MeasurementUnit.Pieces),
-            Options);
-
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task RemoveIngredient_Returns_NoContent_When_Ingredient_Entry_Exists()
-    {
-        var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name);
-        var ingredientEntryId = recipe.Ingredients.First().Id;
-
-        var response = await Client.Value.DeleteAsync($"/recipe/{recipe.Id.Value}/ingredient/{ingredientEntryId.Value}");
-
-        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-
-        var updatedRecipe = await GetRecipeByIdAsync(recipe.Id);
-        Assert.DoesNotContain(updatedRecipe.Ingredients, i => i.Id == ingredientEntryId);
-    }
-
-    [Fact]
-    public async Task RemoveIngredient_Returns_BadRequest_When_Recipe_Does_Not_Exist()
-    {
-        var response = await Client.Value.DeleteAsync($"/recipe/{Guid.NewGuid()}/ingredient/{Guid.NewGuid()}");
-
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
     [Fact]
@@ -442,42 +391,6 @@ public class RecipeControllerTests : WebApiTestsBase
     public async Task RemoveReview_Returns_BadRequest_When_Recipe_Does_Not_Exist()
     {
         var response = await Client.Value.DeleteAsync($"/recipe/{Guid.NewGuid()}/review/{Guid.NewGuid()}");
-
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task UpdateIngredient_Returns_Ok_When_Request_Is_Valid()
-    {
-        var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name);
-        var ingredientEntry = recipe.Ingredients.First();
-
-        var response = await Client.Value.PutAsJsonAsync(
-            $"/recipe/{recipe.Id.Value}/ingredient",
-            new RecipeUpdateIngredientRequest(
-                EntryId: ingredientEntry.Id,
-                NewAmount: IngredientAmount.CreateObject(250).Value,
-                NewUnit: MeasurementUnit.Slice),
-            Options);
-
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var updatedRecipe = await GetRecipeByIdAsync(recipe.Id);
-        var updatedIngredient = updatedRecipe.Ingredients.First(i => i.Id == ingredientEntry.Id);
-        Assert.Equal(250, updatedIngredient.Amount.Value);
-        Assert.Equal(MeasurementUnit.Slice, updatedIngredient.Unit);
-    }
-
-    [Fact]
-    public async Task UpdateIngredient_Returns_BadRequest_When_Recipe_Does_Not_Exist()
-    {
-        var response = await Client.Value.PutAsJsonAsync(
-            $"/recipe/{Guid.NewGuid()}/ingredient",
-            new RecipeUpdateIngredientRequest(
-                EntryId: new RecipeIngredientId(Guid.NewGuid()),
-                NewAmount: IngredientAmount.CreateObject(250).Value,
-                NewUnit: MeasurementUnit.Slice),
-            Options);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
