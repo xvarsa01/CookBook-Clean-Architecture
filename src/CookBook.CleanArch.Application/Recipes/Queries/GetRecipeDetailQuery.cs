@@ -35,7 +35,9 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext, IRecipe
                     ir.Ingredient.Name,
                     ir.Ingredient.ImageUrl
                 )).ToList(),
-                recipe.Reviews.Select(review => new RecipeReviewResponse(
+                recipe.Reviews
+                .OrderByDescending(review => review.CreatedAt)
+                .Select(review => new RecipeReviewResponse(
                     review.Id,
                     review.Mark,
                     review.Description
@@ -87,7 +89,9 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext, IRecipe
                 ir.Ingredient.Name,
                 ir.Ingredient.ImageUrl
             )).ToList(),
-            recipe.Reviews.Select(review => new RecipeReviewResponse(
+            recipe.Reviews
+            .OrderByDescending(review => review.CreatedAt)
+            .Select(review => new RecipeReviewResponse(
                 review.Id,
                 review.Mark,
                 review.Description

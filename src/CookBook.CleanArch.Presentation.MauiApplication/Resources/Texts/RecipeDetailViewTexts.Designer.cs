@@ -61,6 +61,15 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Average review: {0:F1}.
+        /// </summary>
+        internal static string AverageReview_Label_StringFormat {
+            get {
+                return ResourceManager.GetString("AverageReview_Label_StringFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt; Back.
         /// </summary>
         internal static string Back_Button_Text {
@@ -147,6 +156,24 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
         internal static string RemoveReview_Button_Text {
             get {
                 return ResourceManager.GetString("RemoveReview_Button_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string ReviewDescription_Label_Text {
+            get {
+                return ResourceManager.GetString("ReviewDescription_Label_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark.
+        /// </summary>
+        internal static string ReviewMark_Label_Text {
+            get {
+                return ResourceManager.GetString("ReviewMark_Label_Text", resourceCulture);
             }
         }
         

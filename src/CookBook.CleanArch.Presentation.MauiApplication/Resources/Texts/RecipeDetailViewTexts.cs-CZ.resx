@@ -147,6 +147,15 @@
   <data name="Reviews_Label_Text" xml:space="preserve">
       <value>Hodnocení</value>
   </data>
+  <data name="ReviewMark_Label_Text" xml:space="preserve">
+      <value>Známka</value>
+  </data>
+  <data name="ReviewDescription_Label_Text" xml:space="preserve">
+      <value>Popis</value>
+  </data>
+  <data name="AverageReview_Label_StringFormat" xml:space="preserve">
+      <value>Průměrné hodnocení: {0:F1}</value>
+  </data>
   <data name="RemoveReview_Button_Text" xml:space="preserve">
       <value>Odebrat</value>
   </data>

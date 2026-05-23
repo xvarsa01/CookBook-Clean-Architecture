@@ -111,6 +111,20 @@
                            Grid.Row="0"
                            Text="{x:Static texts:RecipeDetailViewTexts.Reviews_Label_Text}"
                            FontSize="16" />
+                    <Label Grid.Column="1"
+                           Grid.Row="0"
+                           HorizontalOptions="End"
+                           Text="{Binding AverageMark, StringFormat={x:Static texts:RecipeDetailViewTexts.AverageReview_Label_StringFormat}}"
+                           FontSize="16">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding AverageMark}"
+                                         Value="{x:Null}">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    
                     <Grid Grid.Column="1"
                           Grid.Row="1"
                           RowSpacing="10"
@@ -120,7 +134,7 @@
 
                         <Label Grid.Column="0"
                                Grid.Row="0"
-                               Text="Mark" />
+                               Text="{x:Static texts:RecipeDetailViewTexts.ReviewMark_Label_Text}" />
                         <Entry Grid.Column="0"
                                Grid.Row="1"
                                Text="{Binding ReviewNew.Mark}">
@@ -141,7 +155,7 @@
                         
                         <Label Grid.Column="1"
                                Grid.Row="0"
-                               Text="Description" />
+                               Text="{x:Static texts:RecipeDetailViewTexts.ReviewDescription_Label_Text}" />
                         <Entry Grid.Column="1"
                                Grid.Row="1"
                                Text="{Binding ReviewNew.Description}">

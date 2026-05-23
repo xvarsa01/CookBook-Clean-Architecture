@@ -36,6 +36,9 @@ public partial class  RecipeDetailViewModel(
     public partial RecipeResponse? Recipe { get; set; }
 
     [ObservableProperty]
+    public partial decimal? AverageMark { get; set; }
+    
+    [ObservableProperty]
     public partial ObservableCollection<RecipeReviewResponse> Reviews { get; set; } = [];
     
     [ObservableProperty]
@@ -50,6 +53,7 @@ public partial class  RecipeDetailViewModel(
         {
             Recipe = result.Value;
             Reviews = [.. result.Value.Reviews];
+            AverageMark = result.Value.AverageMark;
         }
     }
 
@@ -99,7 +103,8 @@ public partial class  RecipeDetailViewModel(
             return;
 
         var createdReview = new RecipeReviewResponse(result.Value, request.Mark, request.Description);
-        Reviews.Add(createdReview);
+        Reviews.Insert(0, createdReview);
+        RecalculateAverageMark();
         ForceDataRefreshOnNextAppearing();
     }
 
@@ -114,7 +119,18 @@ public partial class  RecipeDetailViewModel(
             return;
 
         Reviews.Remove(review);
+        RecalculateAverageMark();
         ForceDataRefreshOnNextAppearing();
+    }
+
+    private void RecalculateAverageMark()
+    {
+        if (Recipe is null)
+            return;
+
+        AverageMark = Reviews.Count == 0
+            ? null
+            : Reviews.Average(review => (decimal)review.Mark);
     }
     
     [RelayCommand]
