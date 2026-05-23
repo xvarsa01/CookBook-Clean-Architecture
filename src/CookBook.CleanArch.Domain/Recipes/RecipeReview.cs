@@ -20,13 +20,13 @@ public record RecipeReview : EntityBase<RecipeReviewId>
     internal static Result<RecipeReview> Create(RecipeId recipeId, int mark, string description)
     {
         if (mark is < Recipe.MinReviewMark or > Recipe.MaxReviewMark)
-            return Result.Failure<RecipeReview>(RecipeErrors.RecipeReviewMarkOutOfRangeError(mark));
+            return Result.Failure<RecipeReview>(RecipeReviewErrors.RecipeReviewMarkOutOfRangeError(mark));
 
         if (string.IsNullOrWhiteSpace(description))
-            return Result.Failure<RecipeReview>(RecipeErrors.RecipeReviewDescriptionRequiredError());
+            return Result.Failure<RecipeReview>(RecipeReviewErrors.RecipeReviewDescriptionRequiredError());
 
         if (description.Length > Recipe.MaxReviewDescriptionLength)
-            return Result.Failure<RecipeReview>(RecipeErrors.RecipeReviewDescriptionTooLongError());
+            return Result.Failure<RecipeReview>(RecipeReviewErrors.RecipeReviewDescriptionTooLongError());
 
         var id = new RecipeReviewId(Guid.NewGuid());
         return Result.Success(new RecipeReview(id, recipeId, mark, description));

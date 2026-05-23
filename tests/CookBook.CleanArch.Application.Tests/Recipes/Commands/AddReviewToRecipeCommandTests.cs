@@ -66,6 +66,6 @@ public class AddReviewToRecipeCommandTests : ApplicationTestsBase
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(RecipeErrors.RecipeReviewMarkOutOfRangeError(6), result.Error);
+        Assert.Equal(RecipeReviewErrors.RecipeReviewMarkOutOfRangeError(6), result.Error);
     }
 }

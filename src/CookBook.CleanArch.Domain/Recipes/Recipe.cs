@@ -133,7 +133,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         var idx = _reviews.FindIndex(review => review.Id == reviewId);
 
         if (idx < 0)
-            return Result.Failure(RecipeErrors.RecipeReviewNotFoundError(reviewId, Id));
+            return Result.Failure(RecipeReviewErrors.RecipeReviewNotFoundError(reviewId, Id));
 
         _reviews.RemoveAt(idx);
 

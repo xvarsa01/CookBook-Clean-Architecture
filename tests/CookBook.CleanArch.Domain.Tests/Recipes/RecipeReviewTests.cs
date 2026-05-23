@@ -40,7 +40,7 @@ public class RecipeReviewTests
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(RecipeErrors.RecipeReviewMarkOutOfRangeError(invalidMark), result.Error);
+        Assert.Equal(RecipeReviewErrors.RecipeReviewMarkOutOfRangeError(invalidMark), result.Error);
         Assert.Empty(recipe.Reviews);
     }
 
@@ -57,7 +57,7 @@ public class RecipeReviewTests
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(RecipeErrors.RecipeReviewDescriptionRequiredError(), result.Error);
+        Assert.Equal(RecipeReviewErrors.RecipeReviewDescriptionRequiredError(), result.Error);
         Assert.Empty(recipe.Reviews);
     }
 
@@ -73,7 +73,7 @@ public class RecipeReviewTests
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(RecipeErrors.RecipeReviewDescriptionTooLongError(), result.Error);
+        Assert.Equal(RecipeReviewErrors.RecipeReviewDescriptionTooLongError(), result.Error);
         Assert.Empty(recipe.Reviews);
     }
 
@@ -134,7 +134,7 @@ public class RecipeReviewTests
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(RecipeErrors.RecipeReviewNotFoundError(missingReviewId, recipe.Id), result.Error);
+        Assert.Equal(RecipeReviewErrors.RecipeReviewNotFoundError(missingReviewId, recipe.Id), result.Error);
         Assert.Single(recipe.Reviews);
         Assert.Contains(recipe.Reviews, review => review.Id == reviewId);
     }

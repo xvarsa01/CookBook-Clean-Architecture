@@ -13,18 +13,6 @@ public static class RecipeErrors
 
     public static Error RecipeIngredientByIdNotFoundError(IngredientId ingredientId, RecipeId recipeId) =>
         new("Recipes.RecipeIngredientNotFound", $"Ingredient {ingredientId} not found in recipe {recipeId}.", [ingredientId, recipeId]);
-
-    public static Error RecipeReviewNotFoundError(RecipeReviewId reviewId, RecipeId recipeId) =>
-        new("Recipes.RecipeReviewNotFound", $"Review {reviewId.Value} not found in recipe {recipeId.Value}.", [reviewId, recipeId]);
-
-    public static Error RecipeReviewMarkOutOfRangeError(int mark) =>
-        new("Recipes.RecipeReviewMarkOutOfRange", $"Review mark must be between {Recipe.MinReviewMark} and {Recipe.MaxReviewMark}.", mark);
-
-    public static Error RecipeReviewDescriptionRequiredError() =>
-        new("Recipes.RecipeReviewDescriptionRequired", "Review description is required.");
-
-    public static Error RecipeReviewDescriptionTooLongError() =>
-        new("Recipes.RecipeReviewDescriptionTooLong", $"Review description can not be longer than {Recipe.MaxReviewDescriptionLength} characters.");
     
     public static Error RecipeMaximumNumberOfIngredientsError(RecipeId? recipeId = null)
     {

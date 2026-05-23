@@ -64,6 +64,6 @@ public class RemoveReviewFromRecipeCommandTests : ApplicationTestsBase
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(RecipeErrors.RecipeReviewNotFoundError(reviewId, recipeId), result.Error);
+        Assert.Equal(RecipeReviewErrors.RecipeReviewNotFoundError(reviewId, recipeId), result.Error);
     }
 }
