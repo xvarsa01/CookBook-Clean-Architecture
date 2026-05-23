@@ -17,7 +17,7 @@ public partial class RecipeEditViewModel(
     IMessengerService messengerService)
     : RecipeFormBaseViewModel(mediator, navigationService, messengerService)
 {
-    private RecipeResponse? _recipeResponse = null;
+    private RecipeResponse? _recipeResponse;
     
     private readonly List<PendingAddIngredientChange> _pendingAddedIngredients = [];
     private readonly List<RecipeUpdateIngredientRequest> _pendingUpdatedIngredients = [];
@@ -165,9 +165,6 @@ public partial class RecipeEditViewModel(
         if (!await ValidateRecipeAsync())
             return;
 
-        if (!await ApplyPendingIngredientChangesAsync())
-            return;
-
         var imageUrl = TryCreateImageUrl();
 
         var request = new RecipeUpdateRequest(
@@ -178,9 +175,17 @@ public partial class RecipeEditViewModel(
             RecipeDuration.CreateObject(Recipe.Duration).Value,
             Recipe.RecipeType);
 
-        var updateResult = await Mediator.Send(new UpdateRecipeCommand(request));
+        var updateResult = await Mediator.Send(new UpdateRecipeWithIngredientsCommand(
+            request,
+            _pendingAddedIngredients.Select(x => x.Request).ToList(),
+            _pendingUpdatedIngredients.ToList(),
+            _pendingRemovedIngredientIds.Select(id => new RecipeIngredientId(id)).ToList()));
         if (!updateResult.IsSuccess)
             return;
+
+        _pendingAddedIngredients.Clear();
+        _pendingUpdatedIngredients.Clear();
+        _pendingRemovedIngredientIds.Clear();
 
         MessengerService.Send(new RecipeEditMessage { RecipeId = new RecipeId(Recipe.Id) });
 
@@ -200,93 +205,6 @@ public partial class RecipeEditViewModel(
         }
     }
 
-    private async Task<bool> ApplyPendingIngredientChangesAsync()
-    {
-        const int minIngredients = Domain.Recipes.Recipe.MinIngredients;
-        const int maxIngredients = Domain.Recipes.Recipe.MaxIngredients;
-
-        var pendingAdds = _pendingAddedIngredients.Count;
-        var pendingRemoves = _pendingRemovedIngredientIds.Count;
-        var finalCount = Recipe.Ingredients.Count;
-        var baseCount = finalCount - pendingAdds + pendingRemoves;
-
-        if (finalCount < minIngredients || finalCount > maxIngredients)
-            return false;
-
-        // Updates do not affect count, apply them first.
-        foreach (var request in _pendingUpdatedIngredients)
-        {
-            var result = await Mediator.Send(new UpdateIngredientInRecipeCommand(Id, request));
-            if (!result.IsSuccess)
-                return false;
-        }
-
-        var adds = _pendingAddedIngredients.ToList();
-        var removes = _pendingRemovedIngredientIds.ToList();
-        var currentCount = baseCount;
-
-        while (adds.Count > 0 || removes.Count > 0)
-        {
-            if (currentCount >= maxIngredients && removes.Count > 0)
-            {
-                var removeId = removes[0];
-                removes.RemoveAt(0);
-
-                var result = await Mediator.Send(
-                    new RemoveIngredientFromRecipeByEntryIdCommand(Id, new RecipeIngredientId(removeId)));
-                if (!result.IsSuccess)
-                    return false;
-
-                currentCount--;
-                continue;
-            }
-
-            if (currentCount <= minIngredients && adds.Count > 0)
-            {
-                var add = adds[0];
-                adds.RemoveAt(0);
-
-                var result = await Mediator.Send(new AddIngredientToRecipeCommand(Id, add.Request));
-                if (!result.IsSuccess)
-                    return false;
-
-                currentCount++;
-                continue;
-            }
-
-            if (adds.Count > 0)
-            {
-                var add = adds[0];
-                adds.RemoveAt(0);
-
-                var result = await Mediator.Send(new AddIngredientToRecipeCommand(Id, add.Request));
-                if (!result.IsSuccess)
-                    return false;
-
-                currentCount++;
-                continue;
-            }
-
-            if (removes.Count > 0)
-            {
-                var removeId = removes[0];
-                removes.RemoveAt(0);
-
-                var result = await Mediator.Send(
-                    new RemoveIngredientFromRecipeByEntryIdCommand(Id, new RecipeIngredientId(removeId)));
-                if (!result.IsSuccess)
-                    return false;
-
-                currentCount--;
-            }
-        }
-
-        _pendingRemovedIngredientIds.Clear();
-        _pendingAddedIngredients.Clear();
-        _pendingUpdatedIngredients.Clear();
-
-        return true;
-    }
 
     private sealed class PendingAddIngredientChange(RecipeIngredientListModel model, RecipeAddIngredientRequest request)
     {
