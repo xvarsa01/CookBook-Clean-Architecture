@@ -140,5 +140,23 @@ namespace CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts {
                 return ResourceManager.GetString("Page_Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        internal static string RemoveReview_Button_Text {
+            get {
+                return ResourceManager.GetString("RemoveReview_Button_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reviews.
+        /// </summary>
+        internal static string Reviews_Label_Text {
+            get {
+                return ResourceManager.GetString("Reviews_Label_Text", resourceCulture);
+            }
+        }
     }
 }

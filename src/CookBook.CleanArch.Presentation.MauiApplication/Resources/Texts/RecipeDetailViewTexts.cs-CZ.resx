@@ -144,4 +144,10 @@
   <data name="Duration_HoursAndMinutes_StringFormat" xml:space="preserve">
     <value>{0} h {1} min</value>
   </data>
+  <data name="Reviews_Label_Text" xml:space="preserve">
+      <value>Hodnocení</value>
+  </data>
+  <data name="RemoveReview_Button_Text" xml:space="preserve">
+      <value>Odebrat</value>
+  </data>
 </root>
