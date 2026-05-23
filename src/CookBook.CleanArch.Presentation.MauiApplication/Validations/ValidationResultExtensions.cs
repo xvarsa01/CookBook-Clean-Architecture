@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using CookBook.CleanArch.Domain.Shared;
+using CookBook.CleanArch.Presentation.MauiApplication.Extensions;
 using CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts;
 using FluentValidation;
 
@@ -58,14 +59,6 @@ public static class ValidationResultExtensions
 
         var error = result.Error;
 
-        var localizedTemplate = DomainErrorTexts.ResourceManager.GetString(
-            error.Code,
-            CultureInfo.CurrentUICulture);
-
-        var localized = string.IsNullOrEmpty(localizedTemplate)
-            ? error.Message
-            : string.Format(localizedTemplate, error.Arguments);
-
-        context.AddFailure(localized);
+        context.AddFailure(error.ToLocalizedMessage());
     }
 }

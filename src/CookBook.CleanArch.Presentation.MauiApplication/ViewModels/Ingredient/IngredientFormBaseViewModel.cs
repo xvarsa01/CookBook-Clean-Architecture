@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain.Ingredients.Errors;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
-using CookBook.CleanArch.Presentation.MauiApplication.Resources.Texts;
+using CookBook.CleanArch.Presentation.MauiApplication.Extensions;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
 using CookBook.CleanArch.Presentation.MauiApplication.Validations;
 using FluentValidation;
@@ -91,19 +91,9 @@ public partial class IngredientFormModel() : ObservableObject
         {
             RuleFor(x => x.Name)
                 .NotNull()
-                    .WithMessage(_ =>
-                    {
-                        var err = IngredientErrors.IngredientNameEmptyError();
-                        var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                        return string.IsNullOrEmpty(localized) ? err.Message : localized;
-                    })
+                    .WithMessage(_ => IngredientErrors.IngredientNameEmptyError().ToLocalizedMessage())
                 .NotEmpty()
-                    .WithMessage(_ =>
-                    {
-                        var err = IngredientErrors.IngredientNameEmptyError();
-                        var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                        return string.IsNullOrEmpty(localized) ? err.Message : localized;
-                    });
+                    .WithMessage(_ => IngredientErrors.IngredientNameEmptyError().ToLocalizedMessage());
 
             RuleFor(x => x.ImageUrl)
                 .IsValidOptionalValueObject<IngredientFormModel, ImageUrl>();
