@@ -84,14 +84,7 @@ public partial class RecipeEditViewModel(
     [RelayCommand]
     private async Task UpdateIngredientAsync(RecipeIngredientListModel? model)
     {
-        if (model is null || model.RecipeIngredientId == Guid.Empty || _pendingRemovedIngredientIds.Contains(model.RecipeIngredientId))
-            return;
-        
-        if (!await ValidateExistingIngredientAsync(model))
-            return;
-
-        var ingredientAmountResult = IngredientAmount.CreateObject(model.Amount);
-        if (ingredientAmountResult.IsFailure)
+        if (model is null)
             return;
 
         var pendingAdd = _pendingAddedIngredients.FirstOrDefault(x => ReferenceEquals(x, model));
@@ -100,6 +93,16 @@ public partial class RecipeEditViewModel(
             MessengerService.Send(new RecipeIngredientEditMessage());
             return;
         }
+
+        if (model.RecipeIngredientId == Guid.Empty || _pendingRemovedIngredientIds.Contains(model.RecipeIngredientId))
+            return;
+        
+        if (!await ValidateExistingIngredientAsync(model))
+            return;
+
+        var ingredientAmountResult = IngredientAmount.CreateObject(model.Amount);
+        if (ingredientAmountResult.IsFailure)
+            return;
         
         var existingUpdateIndex = _pendingUpdatedIngredients.FindIndex(x => x.RecipeIngredientId == model.RecipeIngredientId);
         if (existingUpdateIndex >= 0)
@@ -116,9 +119,6 @@ public partial class RecipeEditViewModel(
     [RelayCommand]
     private async Task RemoveIngredientAsync(RecipeIngredientListModel model)
     {
-        if (model.RecipeIngredientId == Guid.Empty)
-            return;
-        
         Recipe.Ingredients.Remove(model);
         OnPropertyChanged(nameof(Recipe));
         await ValidateRecipeAsync();
@@ -127,8 +127,12 @@ public partial class RecipeEditViewModel(
         if (pendingAdd is not null)
         {
             _pendingAddedIngredients.Remove(pendingAdd);
+            MessengerService.Send(new RecipeIngredientDeleteMessage());
             return;
         }
+
+        if (model.RecipeIngredientId == Guid.Empty)
+            return;
 
         _pendingUpdatedIngredients.RemoveAll(x => x.RecipeIngredientId == model.RecipeIngredientId);
         if (!_pendingRemovedIngredientIds.Contains(model.RecipeIngredientId))
