@@ -373,6 +373,80 @@ public class RecipeControllerTests : WebApiTestsBase
     }
 
     [Fact]
+    public async Task AddReview_Returns_Ok_When_Request_Is_Valid()
+    {
+        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.MinimalisticRecipe().Name);
+
+        var response = await Client.Value.PostAsJsonAsync(
+            $"/recipe/{seededRecipe.Id.Value}/review",
+            new RecipeAddReviewRequest(5, "Excellent coffee."),
+            Options);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var reviewId = await response.Content.ReadFromJsonAsync<RecipeReviewId>(Options);
+        var recipe = await GetRecipeByIdAsync(seededRecipe.Id);
+        var review = Assert.Single(recipe.Reviews);
+        Assert.Equal(reviewId, review.Id);
+        Assert.Equal(5, review.Mark);
+        Assert.Equal("Excellent coffee.", review.Description);
+        Assert.Equal(5m, recipe.AverageMark);
+    }
+
+    [Fact]
+    public async Task AddReview_Returns_BadRequest_When_Recipe_Does_Not_Exist()
+    {
+        var response = await Client.Value.PostAsJsonAsync(
+            $"/recipe/{Guid.NewGuid()}/review",
+            new RecipeAddReviewRequest(5, "Excellent coffee."),
+            Options);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task AddReview_Returns_BadRequest_When_Mark_Is_Invalid()
+    {
+        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.MinimalisticRecipe().Name);
+
+        var response = await Client.Value.PostAsJsonAsync(
+            $"/recipe/{seededRecipe.Id.Value}/review",
+            new RecipeAddReviewRequest(6, "Excellent coffee."),
+            Options);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task RemoveReview_Returns_NoContent_When_Review_Exists()
+    {
+        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.MinimalisticRecipe().Name);
+        var addResponse = await Client.Value.PostAsJsonAsync(
+            $"/recipe/{seededRecipe.Id.Value}/review",
+            new RecipeAddReviewRequest(4, "Good."),
+            Options);
+        addResponse.EnsureSuccessStatusCode();
+
+        var reviewId = await addResponse.Content.ReadFromJsonAsync<RecipeReviewId>(Options);
+
+        var response = await Client.Value.DeleteAsync($"/recipe/{seededRecipe.Id.Value}/review/{reviewId!.Value}");
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+        var updatedRecipe = await GetRecipeByIdAsync(seededRecipe.Id);
+        Assert.Empty(updatedRecipe.Reviews);
+        Assert.Null(updatedRecipe.AverageMark);
+    }
+
+    [Fact]
+    public async Task RemoveReview_Returns_BadRequest_When_Recipe_Does_Not_Exist()
+    {
+        var response = await Client.Value.DeleteAsync($"/recipe/{Guid.NewGuid()}/review/{Guid.NewGuid()}");
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
     public async Task UpdateIngredient_Returns_Ok_When_Request_Is_Valid()
     {
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name);

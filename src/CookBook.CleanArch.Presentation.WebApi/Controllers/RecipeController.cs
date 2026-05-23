@@ -132,6 +132,34 @@ public class RecipeController : ControllerBase
         }
         return BadRequest(result.Error);
     }
+
+    [HttpPost("{id:guid}/review", Name = "AddReviewToRecipe")]
+    public async Task<ActionResult<RecipeReviewId>> AddReview(Guid id, RecipeAddReviewRequest request)
+    {
+        var recipeId = new RecipeId(id);
+        var result = await _mediator.Send(new AddReviewToRecipeCommand(recipeId, request));
+        if (result.IsSuccess)
+        {
+            return Ok(result.Value);
+        }
+
+        return BadRequest(result.Error);
+    }
+
+    [HttpDelete("{id:guid}/review/{reviewId:guid}", Name = "RemoveReviewFromRecipe")]
+    public async Task<ActionResult> RemoveReview(Guid id, Guid reviewId)
+    {
+        var recipeId = new RecipeId(id);
+        var recipeReviewId = new RecipeReviewId(reviewId);
+
+        var result = await _mediator.Send(new RemoveReviewFromRecipeCommand(recipeId, recipeReviewId));
+        if (result.IsSuccess)
+        {
+            return NoContent();
+        }
+
+        return BadRequest(result.Error);
+    }
     
     [HttpPut("{id}/ingredient", Name = "UpdateIngredientInRecipe")]
     public async Task<ActionResult> Update(Guid id, RecipeUpdateIngredientRequest request)
