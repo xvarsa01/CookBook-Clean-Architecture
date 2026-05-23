@@ -19,6 +19,7 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext, IRecipe
             .Where(r => r.Id == request.Id)
             .Include(r => r.Ingredients)
             .ThenInclude(i => i.Ingredient)
+            .Include(r => r.Reviews)
             .Select(recipe => new RecipeResponse(
                 recipe.Id,
                 recipe.Name,
@@ -33,7 +34,13 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext, IRecipe
                     ir.Unit,
                     ir.Ingredient.Name,
                     ir.Ingredient.ImageUrl
-                )).ToList()))
+                )).ToList(),
+                recipe.Reviews.Select(review => new RecipeReviewResponse(
+                    review.Id,
+                    review.Mark,
+                    review.Description
+                )).ToList(),
+                recipe.AverageMark))
                 .FirstOrDefaultAsync(cancellationToken);
 
         return recipe == null
@@ -79,7 +86,13 @@ internal class GetRecipeDetailQueryHandler(ICookBookDbContext dbContext, IRecipe
                 ir.Unit,
                 ir.Ingredient.Name,
                 ir.Ingredient.ImageUrl
-            )).ToList());
+            )).ToList(),
+            recipe.Reviews.Select(review => new RecipeReviewResponse(
+                review.Id,
+                review.Mark,
+                review.Description
+            )).ToList(),
+            recipe.AverageMark);
 
         return Result.Success(response);
     }
