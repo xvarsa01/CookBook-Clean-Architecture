@@ -16,6 +16,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 using System.Collections.ObjectModel;
+using CookBook.CleanArch.Presentation.MauiApplication.Extensions;
 
 namespace CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
 
@@ -212,21 +213,11 @@ public partial class RecipeReviewListModel : ObservableObject
         {
             RuleFor(x => x.Mark)
                 .InclusiveBetween(1, 5)
-                .WithMessage(model =>
-                {
-                    var err = RecipeReviewErrors.RecipeReviewMarkOutOfRangeError(model.Mark);
-                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
-                });
+                .WithMessage(model => RecipeReviewErrors.RecipeReviewMarkOutOfRangeError(model.Mark).ToLocalizedMessage());
             
             RuleFor(x => x.Description)
                 .MaximumLength(Recipe.MaxReviewDescriptionLength)
-                .WithMessage(_ =>
-                {
-                    var err = RecipeReviewErrors.RecipeReviewDescriptionTooLongError();
-                    var localized = DomainErrorTexts.ResourceManager.GetString(err.Code, System.Globalization.CultureInfo.CurrentUICulture);
-                    return string.IsNullOrEmpty(localized) ? err.Message : localized;
-                });
+                .WithMessage(_ => RecipeReviewErrors.RecipeReviewDescriptionTooLongError().ToLocalizedMessage());
         }
     }
 }
