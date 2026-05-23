@@ -106,6 +106,7 @@ public partial class  RecipeDetailViewModel(
         var createdReview = new RecipeReviewResponse(result.Value, request.Mark, request.Description);
         Reviews.Insert(0, createdReview);
         RecalculateAverageMark();
+        ReviewNew = RecipeReviewListModel.Empty;
         ForceDataRefreshOnNextAppearing();
     }
 
