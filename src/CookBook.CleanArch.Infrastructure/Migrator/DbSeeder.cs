@@ -71,7 +71,7 @@ public sealed class DbSeeder(CookBookDbContext dbContext, ILogger<DbSeeder> logg
         foreach (var item in RecipeSeedData.Items)
         {
             var createIngredients = item.ingredients
-                .Select(seed => new RecipeCreateIngredient(
+                .Select(seed => new RecipeIngredientData(
                     ingredientByName[seed.ingredientName].Id,
                     IngredientAmount.CreateObject((decimal)seed.amount).Value,
                     seed.unit))

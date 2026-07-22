@@ -11,14 +11,14 @@ using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Recipes.Commands;
 
-public record UpdateRecipeWithIngredientsCommand(RecipeUpdateWithIngredientsRequest Request) : ICommand<RecipeId>;
+public record UpdateRecipeCommand(RecipeUpdateWithIngredientsRequest Request) : ICommand<RecipeId>;
 
-internal sealed class UpdateRecipeWithIngredientsCommandHandler(
+internal sealed class UpdateRecipeCommandHandler(
     IRepository<Recipe, RecipeId> recipeRepository,
     IRepository<Ingredient, IngredientId> ingredientRepository)
-    : ICommandHandler<UpdateRecipeWithIngredientsCommand, RecipeId>
+    : ICommandHandler<UpdateRecipeCommand, RecipeId>
 {
-    public async Task<Result<RecipeId>> Handle(UpdateRecipeWithIngredientsCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RecipeId>> Handle(UpdateRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipeRequest = request.Request;
         var recipe = await recipeRepository.GetByIdAsync(recipeRequest.Id);
@@ -54,14 +54,14 @@ internal sealed class UpdateRecipeWithIngredientsCommandHandler(
 
         if (recipeRequest.Ingredients is not null)
         {
-            List<RecipeCreateIngredient> ingredients = [];
+            List<RecipeIngredientData> ingredients = [];
             foreach (var ingredientRequest in recipeRequest.Ingredients)
             {
                 var ingredient = await ingredientRepository.GetByIdAsync(ingredientRequest.IngredientId);
                 if (ingredient is null)
                     return Result.Failure<RecipeId>(IngredientErrors.IngredientNotFoundError(ingredientRequest.IngredientId));
 
-                ingredients.Add(new RecipeCreateIngredient(ingredientRequest.IngredientId, ingredientRequest.Amount, ingredientRequest.Unit));
+                ingredients.Add(new RecipeIngredientData(ingredientRequest.IngredientId, ingredientRequest.Amount, ingredientRequest.Unit));
             }
 
             var result = recipe.UpdateIngredients(ingredients);

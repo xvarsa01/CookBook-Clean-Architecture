@@ -18,7 +18,7 @@ internal sealed class CreateRecipeCommandHandler(
 {
     public async Task<Result<RecipeId>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
-        List<RecipeCreateIngredient> ingredients = [];
+        List<RecipeIngredientData> ingredients = [];
         foreach (var ingredientRequest in request.Request.Ingredients ?? [])
         {
             var ingredientExists = await ingredientRepository.GetByIdAsync(ingredientRequest.IngredientId);
@@ -27,7 +27,7 @@ internal sealed class CreateRecipeCommandHandler(
                 return Result.Failure<RecipeId>(IngredientErrors.IngredientNotFoundError(ingredientRequest.IngredientId));
             }
 
-            ingredients.Add(new RecipeCreateIngredient(
+            ingredients.Add(new RecipeIngredientData(
                 ingredientRequest.IngredientId,
                 ingredientRequest.Amount,
                 ingredientRequest.Unit));

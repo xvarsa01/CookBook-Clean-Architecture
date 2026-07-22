@@ -4,7 +4,7 @@ using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.Domain.Recipes;
 
-public sealed record RecipeCreateIngredient(
+public sealed record RecipeIngredientData(
     IngredientId IngredientId,
     IngredientAmount Amount,
     MeasurementUnit Unit

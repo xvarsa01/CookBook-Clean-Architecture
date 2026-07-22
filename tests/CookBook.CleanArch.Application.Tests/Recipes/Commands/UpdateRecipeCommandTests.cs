@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
 
-public class UpdateRecipeWithIngredientsCommandTests : ApplicationTestsBase
+public class UpdateRecipeCommandTests : ApplicationTestsBase
 {
     [Fact]
     public async Task WithValidRecipeDataOnly_UpdatesRecipeAndPreservesIngredients()
@@ -27,7 +27,7 @@ public class UpdateRecipeWithIngredientsCommandTests : ApplicationTestsBase
             RecipeDuration.CreateObject(TimeSpan.FromMinutes(30)).Value,
             RecipeType.Soup);
 
-        var result = await Mediator.Send(new UpdateRecipeWithIngredientsCommand(request));
+        var result = await Mediator.Send(new UpdateRecipeCommand(request));
 
         Assert.True(result.IsSuccess);
         await using var db = await DbContextFactory.CreateDbContextAsync();
@@ -180,7 +180,7 @@ public class UpdateRecipeWithIngredientsCommandTests : ApplicationTestsBase
     private async Task<CookBook.CleanArch.Domain.Result<RecipeId>> Send(
         RecipeId recipeId,
         IReadOnlyCollection<RecipeUpdateIngredientRequest>? ingredients)
-        => await Mediator.Send(new UpdateRecipeWithIngredientsCommand(CreateRequest(recipeId, ingredients: ingredients)));
+        => await Mediator.Send(new UpdateRecipeCommand(CreateRequest(recipeId, ingredients: ingredients)));
 
     private static RecipeUpdateWithIngredientsRequest CreateRequest(
         RecipeId id,

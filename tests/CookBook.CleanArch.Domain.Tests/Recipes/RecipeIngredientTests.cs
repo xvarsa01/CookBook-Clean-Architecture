@@ -351,7 +351,7 @@ public class RecipeIngredientTests
         var recipe = RecipeTestSeeds.MinimalisticRecipe();
         var originalEntryId = recipe.Ingredients.Single().Id;
         var newIngredientId = new IngredientId(Guid.NewGuid());
-        IReadOnlyCollection<RecipeCreateIngredient> ingredients =
+        IReadOnlyCollection<RecipeIngredientData> ingredients =
         [
             new(newIngredientId, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml)
         ];
@@ -371,7 +371,7 @@ public class RecipeIngredientTests
         var originalEntryIds = recipe.Ingredients.Select(ingredient => ingredient.Id).ToList();
         var retainedIngredientId = recipe.Ingredients.Last().IngredientId;
         var addedIngredientId = new IngredientId(Guid.NewGuid());
-        IReadOnlyCollection<RecipeCreateIngredient> ingredients =
+        IReadOnlyCollection<RecipeIngredientData> ingredients =
         [
             new(retainedIngredientId, IngredientAmount.CreateObject(250).Value, MeasurementUnit.G),
             new(addedIngredientId, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml)

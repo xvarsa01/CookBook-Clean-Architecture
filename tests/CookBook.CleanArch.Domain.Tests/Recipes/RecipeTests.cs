@@ -14,7 +14,7 @@ public class RecipeTests
     private const string ValidImageUrl = "https://upload.wikimedia.org/wikipedia/commons/b/b8/Cappuccino_milk_froth.jpg";
     private const string NewValidImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Cappuccino_in_original.jpg/1920px-Cappuccino_in_original.jpg";
     
-    private static IReadOnlyCollection<RecipeCreateIngredient> DefaultIngredients() =>
+    private static IReadOnlyCollection<RecipeIngredientData> DefaultIngredients() =>
     [
         new(new IngredientId(Guid.NewGuid()),
             IngredientAmount.CreateObject(100).Value,
@@ -260,7 +260,7 @@ public class RecipeTests
     [Fact]
     public void Creating_Recipe_With_Initial_Ingredients_Should_Create_With_Those_Ingredients()
     {
-        var ingredients = new List<RecipeCreateIngredient>
+        var ingredients = new List<RecipeIngredientData>
         {
             new(
                 new IngredientId(Guid.NewGuid()),
@@ -288,7 +288,7 @@ public class RecipeTests
     public void Creating_Recipe_With_More_Than_10_Ingredients_Should_ReturnFailure()
     {
         var ingredients = Enumerable.Range(0, 11)
-            .Select(_ => new RecipeCreateIngredient(
+            .Select(_ => new RecipeIngredientData(
                 new IngredientId(Guid.NewGuid()),
                 IngredientAmount.CreateObject(1).Value,
                 MeasurementUnit.Pieces))

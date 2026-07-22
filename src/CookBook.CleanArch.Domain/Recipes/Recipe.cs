@@ -51,7 +51,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         ImageUrl? imageUrl,
         RecipeDuration duration,
         RecipeType type,
-        IReadOnlyCollection<RecipeCreateIngredient> ingredients)
+        IReadOnlyCollection<RecipeIngredientData> ingredients)
     {
         var id = new RecipeId(Guid.NewGuid());
 
@@ -193,7 +193,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         return Result.Success();
     }
 
-    public Result UpdateIngredients(IReadOnlyCollection<RecipeCreateIngredient> ingredients)
+    public Result UpdateIngredients(IReadOnlyCollection<RecipeIngredientData> ingredients)
     {
         if (ingredients.Count < MinIngredients)
             return Result.Failure(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));

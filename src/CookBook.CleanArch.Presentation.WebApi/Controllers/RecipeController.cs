@@ -87,7 +87,7 @@ public class RecipeController : ControllerBase
     [HttpPut(Name = "UpdateRecipe")]
     public async Task<ActionResult<RecipeId>> Update(RecipeUpdateWithIngredientsRequest requestOut)
     {
-        var result = await _mediator.Send(new UpdateRecipeWithIngredientsCommand(requestOut));
+        var result = await _mediator.Send(new UpdateRecipeCommand(requestOut));
         if (result.IsSuccess)
         {
             return Ok(result.Value);

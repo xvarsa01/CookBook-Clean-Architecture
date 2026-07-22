@@ -164,7 +164,7 @@ public partial class RecipeEditViewModel(
             RecipeDuration.CreateObject(Recipe.Duration).Value,
             Recipe.RecipeType,
             ingredients);
-        var updateResult = await Mediator.Send(new UpdateRecipeWithIngredientsCommand(request));
+        var updateResult = await Mediator.Send(new UpdateRecipeCommand(request));
         if (!updateResult.IsSuccess)
             return;
 
