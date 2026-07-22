@@ -98,12 +98,12 @@ public partial class  RecipeDetailViewModel(
         if (!await ValidateNewReviewAsync())
             return;
 
-        var request = new RecipeAddReviewRequest(ReviewNew.Mark, ReviewNew.Description);
+        var request = new AddRecipeReviewRequest(ReviewNew.Mark, ReviewNew.Description);
         var result = await mediator.Send(new AddReviewToRecipeCommand(Id, request));
         if (result.IsFailure)
             return;
 
-        var createdReview = new RecipeReviewResponse(result.Value, request.Mark, request.Description);
+        var createdReview = new RecipeReviewResponse(result.Value, request.Rating, request.Comment);
         Reviews.Insert(0, createdReview);
         RecalculateAverageMark();
         ReviewNew = RecipeReviewListModel.Empty;

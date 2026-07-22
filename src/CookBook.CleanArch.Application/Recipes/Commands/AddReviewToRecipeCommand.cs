@@ -8,7 +8,7 @@ using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Recipes.Commands;
 
-public record AddReviewToRecipeCommand(RecipeId RecipeId, RecipeAddReviewRequest Request) : ICommand<RecipeReviewId>;
+public record AddReviewToRecipeCommand(RecipeId RecipeId, AddRecipeReviewRequest Request) : ICommand<RecipeReviewId>;
 
 internal sealed class AddReviewToRecipeCommandHandler(IRepository<Recipe, RecipeId> recipeRepository)
     : ICommandHandler<AddReviewToRecipeCommand, RecipeReviewId>
@@ -21,7 +21,7 @@ internal sealed class AddReviewToRecipeCommandHandler(IRepository<Recipe, Recipe
             return Result.Failure<RecipeReviewId>(RecipeErrors.RecipeNotFoundError(request.RecipeId));
         }
 
-        var result = recipe.AddReview(request.Request.Mark, request.Request.Description);
+        var result = recipe.AddReview(request.Request.Rating, request.Request.Comment);
         if (result.IsFailure)
         {
             return Result.Failure<RecipeReviewId>(result.Error);

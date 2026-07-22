@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using CookBook.CleanArch.Application.Recipes.Models;
@@ -324,7 +324,7 @@ public class RecipeControllerTests : WebApiTestsBase
 
         var response = await Client.Value.PostAsJsonAsync(
             $"/recipe/{seededRecipe.Id.Value}/review",
-            new RecipeAddReviewRequest(5, "Excellent coffee."),
+            new AddRecipeReviewRequest(5, "Excellent coffee."),
             Options);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -343,7 +343,7 @@ public class RecipeControllerTests : WebApiTestsBase
     {
         var response = await Client.Value.PostAsJsonAsync(
             $"/recipe/{Guid.NewGuid()}/review",
-            new RecipeAddReviewRequest(5, "Excellent coffee."),
+            new AddRecipeReviewRequest(5, "Excellent coffee."),
             Options);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -356,7 +356,7 @@ public class RecipeControllerTests : WebApiTestsBase
 
         var response = await Client.Value.PostAsJsonAsync(
             $"/recipe/{seededRecipe.Id.Value}/review",
-            new RecipeAddReviewRequest(6, "Excellent coffee."),
+            new AddRecipeReviewRequest(6, "Excellent coffee."),
             Options);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -368,7 +368,7 @@ public class RecipeControllerTests : WebApiTestsBase
         var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.MinimalisticRecipe().Name);
         var addResponse = await Client.Value.PostAsJsonAsync(
             $"/recipe/{seededRecipe.Id.Value}/review",
-            new RecipeAddReviewRequest(4, "Good."),
+            new AddRecipeReviewRequest(4, "Good."),
             Options);
         addResponse.EnsureSuccessStatusCode();
 

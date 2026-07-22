@@ -16,7 +16,7 @@ public class AddReviewToRecipeCommandTests : ApplicationTestsBase
         var recipeId = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name).Id;
         var command = new AddReviewToRecipeCommand(
             recipeId,
-            new RecipeAddReviewRequest(5, "Excellent coffee."));
+            new AddRecipeReviewRequest(5, "Excellent coffee."));
 
         // Act
         var result = await Mediator.Send(command);
@@ -42,7 +42,7 @@ public class AddReviewToRecipeCommandTests : ApplicationTestsBase
         var recipeId = new RecipeId(Guid.NewGuid());
         var command = new AddReviewToRecipeCommand(
             recipeId,
-            new RecipeAddReviewRequest(5, "Excellent coffee."));
+            new AddRecipeReviewRequest(5, "Excellent coffee."));
 
         // Act
         var result = await Mediator.Send(command);
@@ -59,7 +59,7 @@ public class AddReviewToRecipeCommandTests : ApplicationTestsBase
         var recipeId = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name).Id;
         var command = new AddReviewToRecipeCommand(
             recipeId,
-            new RecipeAddReviewRequest(6, "Excellent coffee."));
+            new AddRecipeReviewRequest(6, "Excellent coffee."));
 
         // Act
         var result = await Mediator.Send(command);

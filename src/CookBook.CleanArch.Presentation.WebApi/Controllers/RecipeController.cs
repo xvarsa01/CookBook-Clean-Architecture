@@ -108,7 +108,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPost("{id:guid}/review", Name = "AddReviewToRecipe")]
-    public async Task<ActionResult<RecipeReviewId>> AddReview(Guid id, RecipeAddReviewRequest request)
+    public async Task<ActionResult<RecipeReviewId>> AddReview(Guid id, AddRecipeReviewRequest request)
     {
         var recipeId = new RecipeId(id);
         var result = await _mediator.Send(new AddReviewToRecipeCommand(recipeId, request));

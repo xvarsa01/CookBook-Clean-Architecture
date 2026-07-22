@@ -16,7 +16,7 @@ public class RemoveReviewFromRecipeCommandTests : ApplicationTestsBase
         var recipeId = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name).Id;
         var addResult = await Mediator.Send(new AddReviewToRecipeCommand(
             recipeId,
-            new RecipeAddReviewRequest(4, "Good.")));
+            new AddRecipeReviewRequest(4, "Good.")));
 
         DbContext.ChangeTracker.Clear();
         var command = new RemoveReviewFromRecipeCommand(recipeId, addResult.Value);
