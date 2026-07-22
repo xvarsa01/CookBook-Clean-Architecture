@@ -1,4 +1,4 @@
-﻿using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
@@ -12,25 +12,12 @@ public record RecipeUpdateWithIngredientsRequest(
     ImageUrl? ImageUrl,
     RecipeDuration? Duration,
     RecipeType? Type,
-    IReadOnlyCollection<RecipeUpdateWithIngredientsAddIngredientRequest>? Additions = null,
-    IReadOnlyCollection<RecipeUpdateWithIngredientsUpdateIngredientRequest>? Updates = null,
-    IReadOnlyCollection<RecipeIngredientId>? Removals = null
+    IReadOnlyCollection<RecipeUpdateIngredientRequest>? Ingredients = null
 );
 
-public sealed record RecipeUpdateWithIngredientsAddIngredientRequest(
+public sealed record RecipeUpdateIngredientRequest(
     IngredientId IngredientId,
     IngredientAmount Amount,
     MeasurementUnit Unit
 );
-
-public sealed record RecipeUpdateWithIngredientsUpdateIngredientRequest(
-    RecipeIngredientId EntryId,
-    IngredientAmount NewAmount,
-    MeasurementUnit NewUnit
-);
-
-
-
-
-
 

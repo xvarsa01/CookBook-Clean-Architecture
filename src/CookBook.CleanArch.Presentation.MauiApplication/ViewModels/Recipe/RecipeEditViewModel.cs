@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Recipes.Queries;
@@ -151,19 +151,11 @@ public partial class RecipeEditViewModel(
 
         var imageUrl = TryCreateImageUrl();
 
-        var additionsRequestList = _pendingAddedIngredients.Select(x => new RecipeUpdateWithIngredientsAddIngredientRequest(
+        var ingredients = Recipe.Ingredients.Select(x => new RecipeUpdateIngredientRequest(
             new IngredientId(x.IngredientId),
             IngredientAmount.CreateObject(x.Amount).Value,
             x.Unit)).ToList();
 
-        var updatesRequestList = _pendingUpdatedIngredients.Select(x =>
-            new RecipeUpdateWithIngredientsUpdateIngredientRequest(
-                new RecipeIngredientId(x.RecipeIngredientId),
-                IngredientAmount.CreateObject(x.Amount).Value,
-                x.Unit)).ToList();
-        
-        var removalsRequestList = _pendingRemovedIngredientIds.Select(x => new RecipeIngredientId(x)).ToList();
-        
         var request = new RecipeUpdateWithIngredientsRequest(
             new RecipeId(Recipe.Id),
             RecipeName.CreateObject(Recipe.Name).Value,
@@ -171,11 +163,7 @@ public partial class RecipeEditViewModel(
             imageUrl,
             RecipeDuration.CreateObject(Recipe.Duration).Value,
             Recipe.RecipeType,
-            additionsRequestList,
-            updatesRequestList,
-            removalsRequestList
-            );
-
+            ingredients);
         var updateResult = await Mediator.Send(new UpdateRecipeWithIngredientsCommand(request));
         if (!updateResult.IsSuccess)
             return;

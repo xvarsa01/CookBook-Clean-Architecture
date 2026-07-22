@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using CookBook.CleanArch.Application.Recipes.Models;
@@ -270,9 +270,7 @@ public class RecipeControllerTests : WebApiTestsBase
                 ImageUrl: ImageUrl.CreateObject($"https://example.com/1234.jpg").Value,
                 Duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(45)).Value,
                 Type: RecipeType.Soup,
-                Additions: null,
-                Updates: null,
-                Removals: null),
+                Ingredients: null),
             Options);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -292,9 +290,7 @@ public class RecipeControllerTests : WebApiTestsBase
                 ImageUrl: null,
                 Duration: null,
                 Type: null,
-                Additions: null,
-                Updates: null,
-                Removals: null),
+                Ingredients: null),
             Options);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

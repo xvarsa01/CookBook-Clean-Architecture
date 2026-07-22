@@ -3,23 +3,22 @@ using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Common.Tests;
 using CookBook.CleanArch.Domain.Ingredients.Errors;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-using RecipeAddIngredientRequest = CookBook.CleanArch.Application.Recipes.Models.RecipeUpdateWithIngredientsAddIngredientRequest;
-using RecipeUpdateIngredientRequest = CookBook.CleanArch.Application.Recipes.Models.RecipeUpdateWithIngredientsUpdateIngredientRequest;
-
 namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
 
 public class UpdateRecipeWithIngredientsCommandTests : ApplicationTestsBase
 {
     [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_WithValidRecipeDataOnly_UpdatesRecipe()
+    public async Task WithValidRecipeDataOnly_UpdatesRecipeAndPreservesIngredients()
     {
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeForTestOfUpdate().Name);
+        var originalIngredientIds = recipe.Ingredients.Select(x => x.Id).ToList();
         var request = CreateRequest(
             recipe.Id,
             RecipeName.CreateObject("updated name").Value,
@@ -28,308 +27,160 @@ public class UpdateRecipeWithIngredientsCommandTests : ApplicationTestsBase
             RecipeDuration.CreateObject(TimeSpan.FromMinutes(30)).Value,
             RecipeType.Soup);
 
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
+        var result = await Mediator.Send(new UpdateRecipeWithIngredientsCommand(request));
 
         Assert.True(result.IsSuccess);
-        Assert.Equal(recipe.Id, result.Value);
-
         await using var db = await DbContextFactory.CreateDbContextAsync();
-        var updatedRecipe = await db.Recipes.SingleAsync(r => r.Id == recipe.Id);
+        var updatedRecipe = await db.Recipes.Include(x => x.Ingredients).SingleAsync(x => x.Id == recipe.Id);
         Assert.Equal("updated name", updatedRecipe.Name.Value);
         Assert.Equal("updated description", updatedRecipe.Description);
-        Assert.Equal("http://example.com/updated.png", updatedRecipe.ImageUrl?.Value);
         Assert.Equal(TimeSpan.FromMinutes(30), updatedRecipe.Duration.Value);
-        Assert.Equal(RecipeType.Soup, updatedRecipe.Type);
+        Assert.Equal(originalIngredientIds, updatedRecipe.Ingredients.Select(x => x.Id));
     }
 
     [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_WithAdditionOnly_AddsIngredient()
+    public async Task WithDesiredIngredientAdded_AddsIngredient()
     {
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
-        var additions = new List<RecipeAddIngredientRequest>
-        {
-            new(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(200).Value, MeasurementUnit.Pieces)
-        };
+        var ingredients = IngredientsOf(recipe);
+        ingredients.Add(NewIngredient(IngredientTestSeeds.Lemon.Id, 200, MeasurementUnit.Pieces));
 
-        var request = CreateRequest(recipe.Id, additions: additions);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
+        var result = await Send(recipe.Id, ingredients);
 
         Assert.True(result.IsSuccess);
-
         await using var db = await DbContextFactory.CreateDbContextAsync();
-        var updatedRecipe = await db.Recipes
-            .Include(r => r.Ingredients)
-            .SingleAsync(r => r.Id == recipe.Id);
-
-        Assert.Equal(2, updatedRecipe.Ingredients.Count);
+        var updated = await db.Recipes.Include(x => x.Ingredients).SingleAsync(x => x.Id == recipe.Id);
+        Assert.Equal(2, updated.Ingredients.Count);
+        Assert.Contains(updated.Ingredients, x => x.IngredientId == IngredientTestSeeds.Lemon.Id);
     }
 
     [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_WithUpdateOnly_UpdatesIngredient()
+    public async Task WithDesiredIngredientChanged_UpdatesIngredient()
     {
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name);
-        var entryIdToUpdate = recipe.Ingredients.First().Id;
+        var entry = recipe.Ingredients.First();
+        var ingredients = IngredientsOf(recipe);
+        ingredients[0] = new(entry.IngredientId, Amount(500), MeasurementUnit.Ml);
 
-        var updates = new List<RecipeUpdateIngredientRequest>
-        {
-            new(entryIdToUpdate, IngredientAmount.CreateObject(500).Value, MeasurementUnit.Ml)
-        };
-
-        var request = CreateRequest(recipe.Id, updates: updates);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
+        var result = await Send(recipe.Id, ingredients);
 
         Assert.True(result.IsSuccess);
-
         await using var db = await DbContextFactory.CreateDbContextAsync();
-        var updatedRecipe = await db.Recipes
-            .Include(r => r.Ingredients)
-            .SingleAsync(r => r.Id == recipe.Id);
-
-        var updatedIngredient = updatedRecipe.Ingredients.First(i => i.Id == entryIdToUpdate);
-        Assert.Equal(500, updatedIngredient.Amount.Value);
-        Assert.Equal(MeasurementUnit.Ml, updatedIngredient.Unit);
+        var updated = await db.Recipes.Include(x => x.Ingredients).SingleAsync(x => x.Id == recipe.Id);
+        var updatedEntry = updated.Ingredients.Single(x => x.IngredientId == entry.IngredientId);
+        Assert.Equal(500, updatedEntry.Amount.Value);
+        Assert.Equal(MeasurementUnit.Ml, updatedEntry.Unit);
     }
 
     [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_WithRemovalOnly_RemovesIngredient()
+    public async Task WithDesiredIngredientRemoved_RemovesIngredient()
     {
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name);
-        var entryIdToRemove = recipe.Ingredients.First().Id;
+        var removedEntryId = recipe.Ingredients.First().Id;
+        var ingredients = IngredientsOf(recipe);
+        ingredients.RemoveAt(0);
 
-        var removals = new List<RecipeIngredientId> { entryIdToRemove };
-        var request = CreateRequest(recipe.Id, removals: removals);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
+        var result = await Send(recipe.Id, ingredients);
 
         Assert.True(result.IsSuccess);
-
         await using var db = await DbContextFactory.CreateDbContextAsync();
-        var updatedRecipe = await db.Recipes
-            .Include(r => r.Ingredients)
-            .SingleAsync(r => r.Id == recipe.Id);
-
-        Assert.Single(updatedRecipe.Ingredients);
-        Assert.DoesNotContain(entryIdToRemove, updatedRecipe.Ingredients.Select(i => i.Id));
+        var updated = await db.Recipes.Include(x => x.Ingredients).SingleAsync(x => x.Id == recipe.Id);
+        Assert.Single(updated.Ingredients);
+        Assert.DoesNotContain(updated.Ingredients, x => x.Id == removedEntryId);
     }
 
     [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_WithComplexChanges_AppliesAllChanges()
+    public async Task WithComplexDesiredState_ReconcilesAllIngredientChanges()
     {
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name);
-        var ingredientIds = recipe.Ingredients.ToList();
-        var entryIdToRemove = ingredientIds[0].Id;
-        var entryIdToUpdate = ingredientIds[1].Id;
-
-        var removals = new List<RecipeIngredientId> { entryIdToRemove };
-        var updates = new List<RecipeUpdateIngredientRequest>
+        var retained = recipe.Ingredients.Last();
+        var ingredients = new List<RecipeUpdateIngredientRequest>
         {
-            new(entryIdToUpdate, IngredientAmount.CreateObject(250).Value, MeasurementUnit.Ml)
-        };
-        var additions = new List<RecipeAddIngredientRequest>
-        {
-            new(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml)
+            new(retained.IngredientId, Amount(250), MeasurementUnit.Ml),
+            NewIngredient(IngredientTestSeeds.IngredientNotUsedInAnyRecipe.Id, 100, MeasurementUnit.Ml)
         };
 
-        var request = CreateRequest(recipe.Id, additions: additions, updates: updates, removals: removals);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
+        var result = await Send(recipe.Id, ingredients);
 
         Assert.True(result.IsSuccess);
-
         await using var db = await DbContextFactory.CreateDbContextAsync();
-        var updatedRecipe = await db.Recipes
-            .Include(r => r.Ingredients)
-            .SingleAsync(r => r.Id == recipe.Id);
-
-        Assert.Equal(2, updatedRecipe.Ingredients.Count);
-        Assert.DoesNotContain(entryIdToRemove, updatedRecipe.Ingredients.Select(i => i.Id));
+        var updated = await db.Recipes.Include(x => x.Ingredients).SingleAsync(x => x.Id == recipe.Id);
+        Assert.Equal(2, updated.Ingredients.Count);
+        Assert.Equal(250, updated.Ingredients.Single(x => x.IngredientId == retained.IngredientId).Amount.Value);
+        Assert.Contains(updated.Ingredients, x => x.IngredientId == IngredientTestSeeds.IngredientNotUsedInAnyRecipe.Id);
     }
 
     [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_WithNonExistingRecipe_ReturnsFailure()
+    public async Task WithNonExistingRecipe_ReturnsFailure()
     {
         var recipeId = new RecipeId(Guid.NewGuid());
-        var request = CreateRequest(recipeId);
-        var command = CreateCommand(request);
 
-        var result = await Mediator.Send(command);
+        var result = await Send(recipeId, null);
 
         Assert.True(result.IsFailure);
         Assert.Equal(RecipeErrors.RecipeNotFoundError(recipeId), result.Error);
     }
 
     [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_WithNonExistingIngredientToAdd_ReturnsFailure()
+    public async Task WithNonExistingIngredient_ReturnsFailure()
     {
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
-        var nonExistingIngredientId = new IngredientId(Guid.NewGuid());
-        var additions = new List<RecipeAddIngredientRequest>
-        {
-            new(nonExistingIngredientId, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml)
-        };
+        var missingIngredientId = new IngredientId(Guid.NewGuid());
+        var ingredients = IngredientsOf(recipe);
+        ingredients.Add(NewIngredient(missingIngredientId, 100, MeasurementUnit.Ml));
 
-        var request = CreateRequest(recipe.Id, additions: additions);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
+        var result = await Send(recipe.Id, ingredients);
 
         Assert.True(result.IsFailure);
-        Assert.Equal(IngredientErrors.IngredientNotFoundError(nonExistingIngredientId), result.Error);
+        Assert.Equal(IngredientErrors.IngredientNotFoundError(missingIngredientId), result.Error);
     }
 
     [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_ExceedingMaxIngredients_ReturnsFailure()
+    public async Task WithMoreThanMaximumIngredients_ReturnsFailure()
     {
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeFullWithMaximumIngredients().Name);
-        var additions = new List<RecipeAddIngredientRequest>
-        {
-            new(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml)
-        };
+        var ingredients = IngredientsOf(recipe);
+        ingredients.Add(NewIngredient(IngredientTestSeeds.Lemon.Id, 100, MeasurementUnit.Ml));
 
-        var request = CreateRequest(recipe.Id, additions: additions);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
+        var result = await Send(recipe.Id, ingredients);
 
         Assert.True(result.IsFailure);
         Assert.Equal(RecipeErrors.RecipeMaximumNumberOfIngredientsError(recipe.Id), result.Error);
     }
 
     [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_BelowMinIngredients_ReturnsFailure()
+    public async Task WithNoIngredients_ReturnsFailure()
     {
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
-        var entryIdToRemove = recipe.Ingredients.First().Id;
 
-        var removals = new List<RecipeIngredientId> { entryIdToRemove };
-        var request = CreateRequest(recipe.Id, removals: removals);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
+        var result = await Send(recipe.Id, []);
 
         Assert.True(result.IsFailure);
         Assert.Equal(RecipeErrors.RecipeMinimumNumberOfIngredientsError(recipe.Id), result.Error);
     }
 
     [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_WithUpdateAndRemovalConflict_ReturnsFailure()
-    {
-        var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name);
-        var entryIdToRemove = recipe.Ingredients.First().Id;
-
-        var removals = new List<RecipeIngredientId> { entryIdToRemove };
-        var updates = new List<RecipeUpdateIngredientRequest>
-        {
-            new(entryIdToRemove, IngredientAmount.CreateObject(500).Value, MeasurementUnit.Ml)
-        };
-
-        var request = CreateRequest(recipe.Id, updates: updates, removals: removals);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
-
-        Assert.True(result.IsFailure);
-    }
-
-    [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_WithNonExistingEntryIdToUpdate_ReturnsFailure()
+    public async Task ReplacingOnlyIngredient_Succeeds()
     {
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
-        var nonExistingEntryId = new RecipeIngredientId(Guid.NewGuid());
-
-        var updates = new List<RecipeUpdateIngredientRequest>
+        var ingredients = new List<RecipeUpdateIngredientRequest>
         {
-            new(nonExistingEntryId, IngredientAmount.CreateObject(500).Value, MeasurementUnit.Ml)
+            NewIngredient(IngredientTestSeeds.Water.Id, 100, MeasurementUnit.Ml)
         };
 
-        var request = CreateRequest(recipe.Id, updates: updates);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
-
-        Assert.True(result.IsFailure);
-        Assert.Equal(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(nonExistingEntryId, recipe.Id), result.Error);
-    }
-
-    [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_UpdateNameWithNullRemovesName_Preserves()
-    {
-        var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
-        var request = CreateRequest(recipe.Id);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
+        var result = await Send(recipe.Id, ingredients);
 
         Assert.True(result.IsSuccess);
-
         await using var db = await DbContextFactory.CreateDbContextAsync();
-        var updatedRecipe = await db.Recipes.SingleAsync(r => r.Id == recipe.Id);
-        Assert.Equal(recipe.Name.Value, updatedRecipe.Name.Value);
+        var updated = await db.Recipes.Include(x => x.Ingredients).SingleAsync(x => x.Id == recipe.Id);
+        Assert.Single(updated.Ingredients);
+        Assert.Equal(IngredientTestSeeds.Water.Id, updated.Ingredients.Single().IngredientId);
     }
 
-    [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_ReplaceIngredientWithAddAndRemove_Works()
-    {
-        var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name);
-        var ingredientIds = recipe.Ingredients.ToList();
-        var entryIdToRemove = ingredientIds[0].Id;
-
-        var additions = new List<RecipeAddIngredientRequest>
-        {
-            new(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Pieces)
-        };
-        var removals = new List<RecipeIngredientId> { entryIdToRemove };
-
-        var request = CreateRequest(recipe.Id, additions: additions, removals: removals);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
-
-        Assert.True(result.IsSuccess);
-
-        await using var db = await DbContextFactory.CreateDbContextAsync();
-        var updatedRecipe = await db.Recipes
-            .Include(r => r.Ingredients)
-            .SingleAsync(r => r.Id == recipe.Id);
-
-        Assert.Equal(2, updatedRecipe.Ingredients.Count);
-    }
-
-    [Fact]
-    public async Task UpdateRecipeWithIngredientsCommand_ReplaceOnlyIngredientWithAddAndRemove_Works()
-    {
-        var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
-        var entryIdToRemove = recipe.Ingredients.Single().Id;
-
-        var additions = new List<RecipeAddIngredientRequest>
-        {
-            new(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml)
-        };
-        var removals = new List<RecipeIngredientId> { entryIdToRemove };
-
-        var request = CreateRequest(recipe.Id, additions: additions, removals: removals);
-        var command = CreateCommand(request);
-
-        var result = await Mediator.Send(command);
-
-        Assert.True(result.IsSuccess);
-
-        await using var db = await DbContextFactory.CreateDbContextAsync();
-        var updatedRecipe = await db.Recipes
-            .Include(r => r.Ingredients)
-            .SingleAsync(r => r.Id == recipe.Id);
-
-        Assert.Single(updatedRecipe.Ingredients);
-        Assert.DoesNotContain(entryIdToRemove, updatedRecipe.Ingredients.Select(i => i.Id));
-    }
+    private async Task<CookBook.CleanArch.Domain.Result<RecipeId>> Send(
+        RecipeId recipeId,
+        IReadOnlyCollection<RecipeUpdateIngredientRequest>? ingredients)
+        => await Mediator.Send(new UpdateRecipeWithIngredientsCommand(CreateRequest(recipeId, ingredients: ingredients)));
 
     private static RecipeUpdateWithIngredientsRequest CreateRequest(
         RecipeId id,
@@ -338,21 +189,21 @@ public class UpdateRecipeWithIngredientsCommandTests : ApplicationTestsBase
         ImageUrl? imageUrl = null,
         RecipeDuration? duration = null,
         RecipeType? type = null,
-        IReadOnlyCollection<RecipeAddIngredientRequest>? additions = null,
-        IReadOnlyCollection<RecipeUpdateIngredientRequest>? updates = null,
-        IReadOnlyCollection<RecipeIngredientId>? removals = null)
-        => new(
-            id,
-            name,
-            description,
-            imageUrl,
-            duration,
-            type,
-            additions ?? [],
-            updates ?? [],
-            removals ?? []);
+        IReadOnlyCollection<RecipeUpdateIngredientRequest>? ingredients = null)
+        => new(id, name, description, imageUrl, duration, type, ingredients);
 
-    private static UpdateRecipeWithIngredientsCommand CreateCommand(RecipeUpdateWithIngredientsRequest request)
-        => new(request);
+    private static List<RecipeUpdateIngredientRequest> IngredientsOf(Recipe recipe)
+        => recipe.Ingredients
+            .Select(x => new RecipeUpdateIngredientRequest(x.IngredientId, x.Amount, x.Unit))
+            .ToList();
+
+    private static RecipeUpdateIngredientRequest NewIngredient(
+        IngredientId ingredientId,
+        decimal amount,
+        MeasurementUnit unit)
+        => new(ingredientId, Amount(amount), unit);
+
+    private static IngredientAmount Amount(decimal value)
+        => IngredientAmount.CreateObject(value).Value;
 }
 

@@ -1,4 +1,4 @@
-﻿using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.Events;
@@ -94,7 +94,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         if (removedCount == 0)
             return Result.Failure(RecipeErrors.RecipeIngredientByIdNotFoundError(ingredientId, Id));
 
-        if (_ingredients.Count - removedCount < 1)
+        if (_ingredients.Count - removedCount < MinIngredients)
             return Result.Failure(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
 
         _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
@@ -109,7 +109,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         if (idx < 0)
             return Result.Failure(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(entryId, Id));
 
-        if (_ingredients.Count == 1)
+        if (_ingredients.Count == MinIngredients)
             return Result.Failure(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
         
         _ingredients.RemoveAt(idx);
@@ -193,6 +193,29 @@ public record Recipe : AggregateRootBase<RecipeId>
         return Result.Success();
     }
 
+    public Result UpdateIngredients(IReadOnlyCollection<RecipeCreateIngredient> ingredients)
+    {
+        if (ingredients.Count < MinIngredients)
+            return Result.Failure(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
+
+        if (ingredients.Count > MaxIngredients)
+            return Result.Failure(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
+
+        _ingredients.Clear();
+
+        foreach (var ingredient in ingredients)
+        {
+            var result = AddIngredient(
+                ingredient.IngredientId,
+                ingredient.Amount,
+                ingredient.Unit);
+
+            if (result.IsFailure)
+                return Result.Failure(result.Error);
+        }
+
+        return Result.Success();
+    }
     public Result Delete()
     {
         RaiseEvent(new RecipeDeletedEvent(Id));

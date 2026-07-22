@@ -1,5 +1,7 @@
-﻿using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Domain.Ingredients.Errors;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
@@ -341,6 +343,61 @@ public class RecipeIngredientTests
         var ex = Assert.Throws<InvalidOperationException>(() => _ = entry.Ingredient);
         Assert.Contains("read-model navigation only", ex.Message);
     #endif
+    }
+
+    [Fact]
+    public void UpdateIngredients_WhenReplacingIngredients_ShouldCreateNewEntries()
+    {
+        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var originalEntryId = recipe.Ingredients.Single().Id;
+        var newIngredientId = new IngredientId(Guid.NewGuid());
+        IReadOnlyCollection<RecipeCreateIngredient> ingredients =
+        [
+            new(newIngredientId, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml)
+        ];
+
+        var result = recipe.UpdateIngredients(ingredients);
+
+        Assert.True(result.IsSuccess);
+        Assert.Single(recipe.Ingredients);
+        Assert.NotEqual(originalEntryId, recipe.Ingredients.Single().Id);
+        Assert.Equal(newIngredientId, recipe.Ingredients.Single().IngredientId);
+    }
+
+    [Fact]
+    public void UpdateIngredients_WhenGivenNewCollection_ShouldReplaceWholeCollection()
+    {
+        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var originalEntryIds = recipe.Ingredients.Select(ingredient => ingredient.Id).ToList();
+        var retainedIngredientId = recipe.Ingredients.Last().IngredientId;
+        var addedIngredientId = new IngredientId(Guid.NewGuid());
+        IReadOnlyCollection<RecipeCreateIngredient> ingredients =
+        [
+            new(retainedIngredientId, IngredientAmount.CreateObject(250).Value, MeasurementUnit.G),
+            new(addedIngredientId, IngredientAmount.CreateObject(100).Value, MeasurementUnit.Ml)
+        ];
+
+        var result = recipe.UpdateIngredients(ingredients);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(2, recipe.Ingredients.Count);
+        Assert.DoesNotContain(recipe.Ingredients, ingredient => originalEntryIds.Contains(ingredient.Id));
+        Assert.Equal(250, recipe.Ingredients.Single(ingredient => ingredient.IngredientId == retainedIngredientId).Amount.Value);
+        Assert.Contains(recipe.Ingredients, ingredient => ingredient.IngredientId == addedIngredientId);
+    }
+
+    [Fact]
+    public void UpdateIngredients_WhenCollectionIsEmpty_ShouldReturnFailureWithoutChangingState()
+    {
+        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var originalEntryId = recipe.Ingredients.Single().Id;
+
+        var result = recipe.UpdateIngredients([]);
+
+        Assert.True(result.IsFailure);
+        Assert.Equal(RecipeErrors.RecipeMinimumNumberOfIngredientsError(recipe.Id), result.Error);
+        Assert.Single(recipe.Ingredients);
+        Assert.Equal(originalEntryId, recipe.Ingredients.Single().Id);
     }
     
 }
