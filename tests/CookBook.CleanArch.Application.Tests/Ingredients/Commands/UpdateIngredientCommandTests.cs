@@ -1,140 +1,151 @@
-﻿using CookBook.CleanArch.Application.Ingredients.Commands;
+using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Domain.Ingredients;
 using CookBook.CleanArch.Domain.Ingredients.Errors;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
-using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 
 namespace CookBook.CleanArch.Application.Tests.Ingredients.Commands;
 
-public class UpdateIngredientCommandTests : ApplicationTestsBase
+public class UpdateIngredientCommandTests
 {
+    private readonly IIngredientRepository _ingredientRepositoryMock;
+    private readonly UpdateIngredientCommandHandler _handler;
+
+    public UpdateIngredientCommandTests()
+    {
+        _ingredientRepositoryMock = Substitute.For<IIngredientRepository>();
+        _handler = new UpdateIngredientCommandHandler(_ingredientRepositoryMock);
+    }
+
     [Fact]
     public async Task UpdateIngredientCommand_WhenAllFieldsProvided_UpdatesAllProperties()
     {
         // Arrange
-        var ingredient = IngredientTestSeeds.IngredientForTestOfUpdate;
+        var ingredient = IngredientTestData.CreateIngredient();
         var request = new IngredientUpdateRequest(
-            Id: ingredient.Id,
-            Name: "updated name",
-            Description: "updated description",
-            ImageUrl: ImageUrl.CreateObject("https://updated.com/img.jpg").Value);
+            ingredient.Id,
+            "updated name",
+            "updated description",
+            ImageUrl.CreateObject("https://updated.com/img.jpg").Value);
         var command = new UpdateIngredientCommand(request);
 
+        _ingredientRepositoryMock.GetByIdAsync(ingredient.Id).Returns(ingredient);
+
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Equal(new IngredientId(ingredient.Id), result.Value);
-
-        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-        var updated = await dbxAssert.Ingredients
-            .SingleAsync(i => i.Id == ingredient.Id);
-
-        Assert.Equal(request.Name, updated.Name);
-        Assert.Equal(request.Description, updated.Description);
-        Assert.Equal(request.ImageUrl!.Value, updated.ImageUrl!.Value);
+        Assert.Equal(ingredient.Id, result.Value);
+        Assert.Equal(request.Name, ingredient.Name);
+        Assert.Equal(request.Description, ingredient.Description);
+        Assert.Equal(request.ImageUrl, ingredient.ImageUrl);
     }
 
     [Fact]
     public async Task UpdateIngredientCommand_WhenOnlyNameProvided_UpdatesOnlyName()
     {
         // Arrange
-        var ingredient = IngredientTestSeeds.IngredientForTestOfUpdate;
+        var ingredient = IngredientTestData.CreateIngredient();
+        var originalDescription = ingredient.Description;
+        var originalImageUrl = ingredient.ImageUrl;
         var request = new IngredientUpdateRequest(
-            Id: ingredient.Id,
-            Name: "new name only",
-            Description: null,
-            ImageUrl: null);
+            ingredient.Id,
+            "new name only",
+            null,
+            null);
         var command = new UpdateIngredientCommand(request);
 
+        _ingredientRepositoryMock.GetByIdAsync(ingredient.Id).Returns(ingredient);
+
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
-
-        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-        var updated = await dbxAssert.Ingredients
-            .SingleAsync(i => i.Id == ingredient.Id);
-
-        Assert.Equal(request.Name, updated.Name);
-        Assert.Equal(ingredient.Description, updated.Description);
-        Assert.Equal(ingredient.ImageUrl, updated.ImageUrl);
+        Assert.Equal(request.Name, ingredient.Name);
+        Assert.Equal(originalDescription, ingredient.Description);
+        Assert.Equal(originalImageUrl, ingredient.ImageUrl);
     }
 
     [Fact]
     public async Task UpdateIngredientCommand_WhenNoFieldsProvided_DoesNotChangeAnything()
     {
         // Arrange
-        var ingredient = IngredientTestSeeds.IngredientForTestOfUpdate;
+        var ingredient = IngredientTestData.CreateIngredient();
+        var originalName = ingredient.Name;
+        var originalDescription = ingredient.Description;
+        var originalImageUrl = ingredient.ImageUrl;
         var request = new IngredientUpdateRequest(
-            Id: ingredient.Id,
-            Name: null,
-            Description: null,
-            ImageUrl: null);
+            ingredient.Id,
+            null,
+            null,
+            null);
         var command = new UpdateIngredientCommand(request);
 
+        _ingredientRepositoryMock.GetByIdAsync(ingredient.Id).Returns(ingredient);
+
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
-
-        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-        var unchanged = await dbxAssert.Ingredients
-            .SingleAsync(i => i.Id == ingredient.Id);
-
-        Assert.Equal(ingredient.Name, unchanged.Name);
-        Assert.Equal(ingredient.Description, unchanged.Description);
-        Assert.Equal(ingredient.ImageUrl, unchanged.ImageUrl);
+        Assert.Equal(originalName, ingredient.Name);
+        Assert.Equal(originalDescription, ingredient.Description);
+        Assert.Equal(originalImageUrl, ingredient.ImageUrl);
     }
 
     [Fact]
     public async Task UpdateIngredientCommand_WhenIngredientDoesNotExist_ReturnsNotFoundFailure()
     {
         // Arrange
+        var ingredientId = new IngredientId(Guid.NewGuid());
         var request = new IngredientUpdateRequest(
-            Id: new IngredientId(Guid.NewGuid()),
-            Name: "does not matter",
-            Description: null,
-            ImageUrl: null);
+            ingredientId,
+            "does not matter",
+            null,
+            null);
         var command = new UpdateIngredientCommand(request);
 
+        _ingredientRepositoryMock.GetByIdAsync(ingredientId).Returns((Ingredient?)null);
+
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(IngredientErrors.IngredientNotFoundError(new IngredientId(request.Id)), result.Error);
+        Assert.Equal(IngredientErrors.IngredientNotFoundError(ingredientId), result.Error);
     }
 
     [Fact]
-    public async Task UpdateIngredientCommand_WhenInvalidNameProvided_ReturnsFailure_AndDoesNotPersistChanges()
+    public async Task UpdateIngredientCommand_WhenInvalidNameProvided_ReturnsFailure_AndDoesNotUpdateIngredient()
     {
         // Arrange
-        var ingredient = IngredientTestSeeds.IngredientForTestOfUpdate;
+        var ingredient = IngredientTestData.CreateIngredient();
+        var originalName = ingredient.Name;
+        var originalDescription = ingredient.Description;
+        var originalImageUrl = ingredient.ImageUrl;
         var request = new IngredientUpdateRequest(
-            Id: ingredient.Id,
-            Name: string.Empty, // invalid
-            Description: "new description",
-            ImageUrl: null);
+            ingredient.Id,
+            string.Empty,
+            "new description",
+            null);
         var command = new UpdateIngredientCommand(request);
 
+        _ingredientRepositoryMock.GetByIdAsync(ingredient.Id).Returns(ingredient);
+
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsFailure);
-
-        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-        var unchanged = await dbxAssert.Ingredients
-            .SingleAsync(i => i.Id == ingredient.Id);
-
-        Assert.Equal(ingredient.Name, unchanged.Name);
-        Assert.Equal(ingredient.Description, unchanged.Description);
-        Assert.Equal(ingredient.ImageUrl, unchanged.ImageUrl);
+        Assert.Equal(IngredientErrors.IngredientNameEmptyError(), result.Error);
+        Assert.Equal(originalName, ingredient.Name);
+        Assert.Equal(originalDescription, ingredient.Description);
+        Assert.Equal(originalImageUrl, ingredient.ImageUrl);
     }
 }

@@ -1,73 +1,101 @@
-﻿using CookBook.CleanArch.Application.Recipes.Commands;
+using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Domain.Recipes;
+using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
-using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 
 namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
 
-public class RemoveIngredientsFromRecipeByIngredientIdCommandTests : ApplicationTestsBase
+public class RemoveIngredientsFromRecipeByIngredientIdCommandTests
 {
+    private readonly IRecipeRepository _recipeRepositoryMock;
+    private readonly RemoveIngredientFromRecipeByIngredientIdCommandHandler _handler;
+
+    public RemoveIngredientsFromRecipeByIngredientIdCommandTests()
+    {
+        _recipeRepositoryMock = Substitute.For<IRecipeRepository>();
+        _handler = new RemoveIngredientFromRecipeByIngredientIdCommandHandler(_recipeRepositoryMock);
+    }
+
     [Fact]
     public async Task RemoveIngredientsFromRecipeByIngredientIdCommand_WithSingleMatchingIngredient_RemovesIngredient()
     {
         // Arrange
-        var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name);
-        var ingredientId = recipe.Ingredients.First().IngredientId;
-        var initialCount = recipe.Ingredients.Count;
-        var command = new RemoveIngredientsFromRecipeByIngredientIdCommand(recipe.Id, ingredientId);
+        var ingredientToRemove = IngredientTestData.CreateIngredient();
+        var ingredientToKeep = IngredientTestData.CreateIngredient();
+        var recipe = RecipeTestData.CreateRecipe(
+        [
+            new RecipeIngredientData(
+                ingredientToRemove.Id,
+                IngredientAmount.CreateObject(1).Value,
+                MeasurementUnit.Pieces),
+            new RecipeIngredientData(
+                ingredientToKeep.Id,
+                IngredientAmount.CreateObject(1).Value,
+                MeasurementUnit.Pieces)
+        ]);
+        var command = new RemoveIngredientsFromRecipeByIngredientIdCommand(recipe.Id, ingredientToRemove.Id);
+
+        _recipeRepositoryMock.GetByIdAsync(recipe.Id).Returns(recipe);
 
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
-
-        await using var db = await DbContextFactory.CreateDbContextAsync();
-
-        var updated = await db.Recipes
-            .Include(r => r.Ingredients)
-            .SingleAsync(r => r.Id == recipe.Id);
-
-        Assert.Equal(initialCount - 1, updated.Ingredients.Count);
-        Assert.DoesNotContain(updated.Ingredients, i => i.IngredientId == ingredientId);
+        var remainingIngredient = Assert.Single(recipe.Ingredients);
+        Assert.Equal(ingredientToKeep.Id, remainingIngredient.IngredientId);
     }
 
     [Fact]
     public async Task RemoveIngredientsFromRecipeByIngredientIdCommand_WithMultipleMatchingIngredients_RemovesAllMatchingIngredients()
     {
         // Arrange
-        var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithDuplicateIngredientEntries().Name);
-        var ingredientId = recipe.Ingredients.First(i => i.IngredientId == IngredientTestSeeds.Lemon.Id).IngredientId;
-        var initialMatchingCount = recipe.Ingredients.Count(i => i.IngredientId == ingredientId);
-        var command = new RemoveIngredientsFromRecipeByIngredientIdCommand(recipe.Id, ingredientId);
+        var ingredientToRemove = IngredientTestData.CreateIngredient();
+        var ingredientToKeep = IngredientTestData.CreateIngredient();
+        var recipe = RecipeTestData.CreateRecipe(
+        [
+            new RecipeIngredientData(
+                ingredientToRemove.Id,
+                IngredientAmount.CreateObject(1).Value,
+                MeasurementUnit.Pieces),
+            new RecipeIngredientData(
+                ingredientToRemove.Id,
+                IngredientAmount.CreateObject(2).Value,
+                MeasurementUnit.Pieces),
+            new RecipeIngredientData(
+                ingredientToKeep.Id,
+                IngredientAmount.CreateObject(1).Value,
+                MeasurementUnit.Pieces)
+        ]);
+        var command = new RemoveIngredientsFromRecipeByIngredientIdCommand(recipe.Id, ingredientToRemove.Id);
+
+        _recipeRepositoryMock.GetByIdAsync(recipe.Id).Returns(recipe);
 
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
-
-        await using var db = await DbContextFactory.CreateDbContextAsync();
-
-        var updated = await db.Recipes
-            .Include(r => r.Ingredients)
-            .SingleAsync(r => r.Id == recipe.Id);
-
-        Assert.DoesNotContain(updated.Ingredients, i => i.IngredientId == ingredientId);
-        Assert.True(initialMatchingCount > 1);
+        Assert.DoesNotContain(recipe.Ingredients, ingredient => ingredient.IngredientId == ingredientToRemove.Id);
+        Assert.Contains(recipe.Ingredients, ingredient => ingredient.IngredientId == ingredientToKeep.Id);
     }
 
     [Fact]
-    public async Task RemoveIngredientsFromRecipeByIngredientIdCommand_WithNonExistingRecipe_Returns_Failure()
+    public async Task RemoveIngredientsFromRecipeByIngredientIdCommand_WithNonExistingRecipe_ReturnsFailure()
     {
         // Arrange
         var recipeId = new RecipeId(Guid.NewGuid());
-        var ingredientId = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name).Ingredients.First().IngredientId;
+        var ingredientId = IngredientTestData.CreateIngredient().Id;
         var command = new RemoveIngredientsFromRecipeByIngredientIdCommand(recipeId, ingredientId);
 
+        _recipeRepositoryMock.GetByIdAsync(recipeId).Returns((Recipe?)null);
+
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -75,29 +103,28 @@ public class RemoveIngredientsFromRecipeByIngredientIdCommandTests : Application
     }
 
     [Fact]
-    public async Task RemoveIngredientsFromRecipeByIngredientIdCommand_WithLastIngredient_Returns_Failure()
+    public async Task RemoveIngredientsFromRecipeByIngredientIdCommand_WithLastIngredient_ReturnsFailure()
     {
         // Arrange
-        var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
-        var ingredientId = recipe.Ingredients.First().IngredientId;
-        var command = new RemoveIngredientsFromRecipeByIngredientIdCommand(recipe.Id, ingredientId);
+        var ingredient = IngredientTestData.CreateIngredient();
+        var recipe = RecipeTestData.CreateRecipe(
+        [
+            new RecipeIngredientData(
+                ingredient.Id,
+                IngredientAmount.CreateObject(1).Value,
+                MeasurementUnit.Pieces)
+        ]);
+        var originalIngredient = Assert.Single(recipe.Ingredients);
+        var command = new RemoveIngredientsFromRecipeByIngredientIdCommand(recipe.Id, ingredient.Id);
+
+        _recipeRepositoryMock.GetByIdAsync(recipe.Id).Returns(recipe);
 
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(
-            RecipeErrors.RecipeMinimumNumberOfIngredientsError(recipe.Id),
-            result.Error);
-
-        await using var db = await DbContextFactory.CreateDbContextAsync();
-        var updated = await db.Recipes
-            .Include(r => r.Ingredients)
-            .SingleAsync(r => r.Id == recipe.Id);
-
-        // Ensure nothing changed
-        Assert.Single(updated.Ingredients);
-        Assert.Equal(ingredientId, updated.Ingredients.First().IngredientId);
+        Assert.Equal(RecipeErrors.RecipeMinimumNumberOfIngredientsError(recipe.Id), result.Error);
+        Assert.Same(originalIngredient, Assert.Single(recipe.Ingredients));
     }
 }

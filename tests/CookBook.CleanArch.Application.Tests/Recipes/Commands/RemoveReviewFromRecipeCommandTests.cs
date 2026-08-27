@@ -1,37 +1,39 @@
-using CookBook.CleanArch.Application.Recipes.Commands;
-using CookBook.CleanArch.Application.Recipes.Models;
+using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Application.Recipes.Commands;
+using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
-using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 
 namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
 
-public class RemoveReviewFromRecipeCommandTests : ApplicationTestsBase
+public class RemoveReviewFromRecipeCommandTests
 {
+    private readonly IRecipeRepository _recipeRepositoryMock;
+    private readonly RemoveReviewFromRecipeCommandHandler _handler;
+
+    public RemoveReviewFromRecipeCommandTests()
+    {
+        _recipeRepositoryMock = Substitute.For<IRecipeRepository>();
+        _handler = new RemoveReviewFromRecipeCommandHandler(_recipeRepositoryMock);
+    }
+
     [Fact]
     public async Task RemoveReviewFromRecipeCommand_WithExistingReview_RemovesReview()
     {
         // Arrange
-        var recipeId = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name).Id;
-        var addResult = await Mediator.Send(new AddReviewToRecipeCommand(
-            recipeId,
-            new AddRecipeReviewRequest(4, "Good.")));
+        var recipe = RecipeTestData.CreateRecipe();
+        var reviewId = recipe.AddReview(4, "Good.").Value;
+        var command = new RemoveReviewFromRecipeCommand(recipe.Id, reviewId);
 
-        DbContext.ChangeTracker.Clear();
-        var command = new RemoveReviewFromRecipeCommand(recipeId, addResult.Value);
+        _recipeRepositoryMock.GetByIdAsync(recipe.Id).Returns(recipe);
 
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
-
-        await using var db = await DbContextFactory.CreateDbContextAsync();
-        var recipe = await db.Recipes
-            .Include(r => r.Reviews)
-            .SingleAsync(r => r.Id == recipeId);
-
         Assert.Empty(recipe.Reviews);
     }
 
@@ -43,8 +45,10 @@ public class RemoveReviewFromRecipeCommandTests : ApplicationTestsBase
         var reviewId = new RecipeReviewId(Guid.NewGuid());
         var command = new RemoveReviewFromRecipeCommand(recipeId, reviewId);
 
+        _recipeRepositoryMock.GetByIdAsync(recipeId).Returns((Recipe?)null);
+
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -55,15 +59,18 @@ public class RemoveReviewFromRecipeCommandTests : ApplicationTestsBase
     public async Task RemoveReviewFromRecipeCommand_WithNonExistingReview_ReturnsFailure()
     {
         // Arrange
-        var recipeId = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name).Id;
+        var recipe = RecipeTestData.CreateRecipe();
         var reviewId = new RecipeReviewId(Guid.NewGuid());
-        var command = new RemoveReviewFromRecipeCommand(recipeId, reviewId);
+        var command = new RemoveReviewFromRecipeCommand(recipe.Id, reviewId);
+
+        _recipeRepositoryMock.GetByIdAsync(recipe.Id).Returns(recipe);
 
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(RecipeReviewErrors.RecipeReviewNotFoundError(reviewId, recipeId), result.Error);
+        Assert.Equal(RecipeReviewErrors.RecipeReviewNotFoundError(reviewId, recipe.Id), result.Error);
+        Assert.Empty(recipe.Reviews);
     }
 }

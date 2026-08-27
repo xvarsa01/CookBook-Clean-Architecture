@@ -1,38 +1,45 @@
+using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
-using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 
 namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
 
-public class AddReviewToRecipeCommandTests : ApplicationTestsBase
+public class AddReviewToRecipeCommandTests
 {
+    private readonly IRecipeRepository _recipeRepositoryMock;
+    private readonly AddReviewToRecipeCommandHandler _handler;
+
+    public AddReviewToRecipeCommandTests()
+    {
+        _recipeRepositoryMock = Substitute.For<IRecipeRepository>();
+        _handler = new AddReviewToRecipeCommandHandler(_recipeRepositoryMock);
+    }
+
     [Fact]
     public async Task AddReviewToRecipeCommand_WithValidData_AddsReview()
     {
         // Arrange
-        var recipeId = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name).Id;
-        var command = new AddReviewToRecipeCommand(
-            recipeId,
-            new AddRecipeReviewRequest(5, "Excellent coffee."));
+        var recipe = RecipeTestData.CreateRecipe();
+        var request = new AddRecipeReviewRequest(5, "Excellent coffee.");
+        var command = new AddReviewToRecipeCommand(recipe.Id, request);
+
+        _recipeRepositoryMock.GetByIdAsync(recipe.Id).Returns(recipe);
 
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
 
-        await using var db = await DbContextFactory.CreateDbContextAsync();
-        var recipe = await db.Recipes
-            .Include(r => r.Reviews)
-            .SingleAsync(r => r.Id == recipeId);
-
         var review = Assert.Single(recipe.Reviews);
         Assert.Equal(result.Value, review.Id);
-        Assert.Equal(5, review.Mark);
-        Assert.Equal("Excellent coffee.", review.Description);
+        Assert.Equal(request.Rating, review.Mark);
+        Assert.Equal(request.Comment, review.Description);
     }
 
     [Fact]
@@ -44,8 +51,10 @@ public class AddReviewToRecipeCommandTests : ApplicationTestsBase
             recipeId,
             new AddRecipeReviewRequest(5, "Excellent coffee."));
 
+        _recipeRepositoryMock.GetByIdAsync(recipeId).Returns((Recipe?)null);
+
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -56,16 +65,20 @@ public class AddReviewToRecipeCommandTests : ApplicationTestsBase
     public async Task AddReviewToRecipeCommand_WithInvalidMark_ReturnsFailure()
     {
         // Arrange
-        var recipeId = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name).Id;
+        var recipe = RecipeTestData.CreateRecipe();
+        var invalidMark = 6;
         var command = new AddReviewToRecipeCommand(
-            recipeId,
-            new AddRecipeReviewRequest(6, "Excellent coffee."));
+            recipe.Id,
+            new AddRecipeReviewRequest(invalidMark, "Excellent coffee."));
+
+        _recipeRepositoryMock.GetByIdAsync(recipe.Id).Returns(recipe);
 
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Equal(RecipeReviewErrors.RecipeReviewMarkOutOfRangeError(6), result.Error);
+        Assert.Equal(RecipeReviewErrors.RecipeReviewMarkOutOfRangeError(invalidMark), result.Error);
+        Assert.Empty(recipe.Reviews);
     }
 }

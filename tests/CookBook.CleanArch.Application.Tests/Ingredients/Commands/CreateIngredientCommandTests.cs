@@ -1,14 +1,30 @@
-﻿using CookBook.CleanArch.Application.Ingredients.Commands;
+﻿using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Ingredients.Models;
+using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
-using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 
 namespace CookBook.CleanArch.Application.Tests.Ingredients.Commands;
 
-public class CreateIngredientCommandTests : ApplicationTestsBase
+public class CreateIngredientCommandTests
 {
+    private readonly IRepository<Ingredient, IngredientId> _ingredientRepositoryMock;
+    private readonly CreateIngredientCommandHandler _handler;
+
+    public CreateIngredientCommandTests()
+    {
+        _ingredientRepositoryMock = Substitute.For<IRepository<Ingredient, IngredientId>>();
+        _ingredientRepositoryMock
+            .Add(Arg.Any<Ingredient>())
+            .Returns(call => call.Arg<Ingredient>().Id);
+        
+        _handler = new CreateIngredientCommandHandler(_ingredientRepositoryMock);
+    }
+
     [Fact]
-    public async Task CreateIngredientCommand_WithAllProperties_PersistsIngredient()
+    public async Task CreateIngredientCommand_WithAllProperties_AddsIngredientToRepository()
     {
         // Arrange
         var request = new IngredientCreateRequest(
@@ -18,24 +34,23 @@ public class CreateIngredientCommandTests : ApplicationTestsBase
         var command = new CreateIngredientCommand(request);
 
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.Value);
-
-        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-        var createdIngredient = await dbxAssert.Ingredients
-            .SingleAsync(i => i.Name == request.Name, CancellationToken.None);
-
-        Assert.Equal(request.Name, createdIngredient.Name);
-        Assert.Equal(request.Description, createdIngredient.Description);
-        Assert.NotNull(createdIngredient.ImageUrl);
-        Assert.Equal(request.ImageUrl!.Value, createdIngredient.ImageUrl!.Value);
+        
+        var addedIngredient = Arg.Is<Ingredient>(ingredient =>
+            ingredient.Id == result.Value &&
+            ingredient.Name == request.Name &&
+            ingredient.Description == request.Description &&
+            ingredient.ImageUrl == request.ImageUrl);
+        
+        _ingredientRepositoryMock.Received(1).Add(addedIngredient);
     }
 
     [Fact]
-    public async Task CreateIngredientCommand_WithNullableOptionalFields_PersistsIngredient()
+    public async Task CreateIngredientCommand_WithNullableOptionalFields_AddsIngredientToRepository()
     {
         // Arrange
         var request = new IngredientCreateRequest(
@@ -45,19 +60,19 @@ public class CreateIngredientCommandTests : ApplicationTestsBase
         var command = new CreateIngredientCommand(request);
 
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.Value);
 
-        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-        var createdIngredient = await dbxAssert.Ingredients
-            .SingleAsync(i => i.Name == request.Name, CancellationToken.None);
-
-        Assert.Equal(request.Name, createdIngredient.Name);
-        Assert.Null(createdIngredient.Description);
-        Assert.Null(createdIngredient.ImageUrl);
+        var addedIngredient = Arg.Is<Ingredient>(ingredient =>
+            ingredient.Id == result.Value &&
+            ingredient.Name == request.Name &&
+            ingredient.Description == request.Description &&
+            ingredient.ImageUrl == request.ImageUrl);
+        
+        _ingredientRepositoryMock.Received(1).Add(addedIngredient);
     }
     
     [Fact]
@@ -71,9 +86,11 @@ public class CreateIngredientCommandTests : ApplicationTestsBase
         var command = new CreateIngredientCommand(request);
 
         // Act
-        var result = await Mediator.Send(command);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsFailure);
+        
+        _ingredientRepositoryMock.DidNotReceive().Add(Arg.Any<Ingredient>());
     }
 }

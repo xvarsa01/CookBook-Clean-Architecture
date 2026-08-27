@@ -5,7 +5,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="CookBook.CleanArch.UnitTests" />
+        <InternalsVisibleTo Include="CookBook.CleanArch.Application.Tests" />
     </ItemGroup>
 
     <ItemGroup>
