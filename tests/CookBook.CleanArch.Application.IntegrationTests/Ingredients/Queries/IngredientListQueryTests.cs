@@ -1,9 +1,9 @@
-﻿using CookBook.CleanArch.Application.Ingredients;
+using CookBook.CleanArch.Application.Ingredients;
 using CookBook.CleanArch.Application.Ingredients.Queries;
 using CookBook.CleanArch.Application.Shared;
 using CookBook.CleanArch.Common.Tests;
 
-namespace CookBook.CleanArch.Application.Tests.Ingredients.Queries;
+namespace CookBook.CleanArch.Application.IntegrationTests.Ingredients.Queries;
 
 public class IngredientListQueryTests : ApplicationTestsBase
 {

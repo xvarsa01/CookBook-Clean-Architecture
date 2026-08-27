@@ -7,7 +7,7 @@ using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using NSubstitute;
 
-namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
+namespace CookBook.CleanArch.Application.UnitTests.Recipes.Commands;
 
 public class RemoveIngredientsFromRecipeByIngredientIdCommandTests
 {

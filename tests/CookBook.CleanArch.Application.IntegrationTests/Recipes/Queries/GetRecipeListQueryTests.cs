@@ -4,7 +4,7 @@ using CookBook.CleanArch.Application.Recipes.Queries;
 using CookBook.CleanArch.Application.Shared;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 
-namespace CookBook.CleanArch.Application.Tests.Recipes.Queries;
+namespace CookBook.CleanArch.Application.IntegrationTests.Recipes.Queries;
 
 public class GetRecipeListQueryTests : ApplicationTestsBase
 {

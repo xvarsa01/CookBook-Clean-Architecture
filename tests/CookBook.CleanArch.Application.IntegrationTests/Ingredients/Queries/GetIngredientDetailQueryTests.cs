@@ -1,8 +1,8 @@
-﻿using CookBook.CleanArch.Application.Ingredients.Queries;
+using CookBook.CleanArch.Application.Ingredients.Queries;
 using CookBook.CleanArch.Common.Tests;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 
-namespace CookBook.CleanArch.Application.Tests.Ingredients.Queries;
+namespace CookBook.CleanArch.Application.IntegrationTests.Ingredients.Queries;
 
 public class GetIngredientDetailQueryTests : ApplicationTestsBase
 {

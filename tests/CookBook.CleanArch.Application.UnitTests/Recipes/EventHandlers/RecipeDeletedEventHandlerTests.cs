@@ -1,23 +1,21 @@
-﻿using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Recipes.EventHandlers;
 using CookBook.CleanArch.Domain.Recipes.Events;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using Moq;
 
-namespace CookBook.CleanArch.Application.Tests.Recipes.EventHandlers;
+namespace CookBook.CleanArch.Application.UnitTests.Recipes.EventHandlers;
 
-public class RecipeNameUpdatedEventHandlerTest
+public class RecipeDeletedEventHandlerTests
 {
     [Fact]
     public async Task Handle_Should_Call_SendEmailAsync()
     {
         // Arrange
         var emailSenderMock = new Mock<IEmailSender>();
-        var handler = new RecipeNameUpdatedEventHandler(emailSenderMock.Object);
+        var handler = new RecipeDeletedEventHandler(emailSenderMock.Object);
         var recipeId = new RecipeId(Guid.NewGuid());
-        var oldName = "Old Name";
-        var newName = "New Name";
-        var notification = new RecipeNameUpdatedEvent(recipeId, oldName, newName);
+        var notification = new RecipeDeletedEvent(recipeId);
 
         // Act
         await handler.Handle(notification, CancellationToken.None);
@@ -27,8 +25,8 @@ public class RecipeNameUpdatedEventHandlerTest
             sender => sender.SendEmailAsync(
                 "to@test.com",
                 "from@test.com",
-                $"Recipe {notification.RecipeId} Name Updated",
-                $"Recipe with id {notification.RecipeId} has been updated from {notification.OldName} to {notification.NewName}. "
+                $"Recipe {notification.RecipeId} was deleted",
+                $"Recipe {notification.RecipeId} was deleted."
             ),
             Times.Once
         );

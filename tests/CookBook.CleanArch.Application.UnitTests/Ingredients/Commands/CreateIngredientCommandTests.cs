@@ -1,4 +1,4 @@
-﻿using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Ingredients.Commands;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Domain.Ingredients;
@@ -6,7 +6,7 @@ using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using NSubstitute;
 
-namespace CookBook.CleanArch.Application.Tests.Ingredients.Commands;
+namespace CookBook.CleanArch.Application.UnitTests.Ingredients.Commands;
 
 public class CreateIngredientCommandTests
 {

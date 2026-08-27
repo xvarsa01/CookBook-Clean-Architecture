@@ -1,10 +1,10 @@
-﻿using CookBook.CleanArch.Application.Recipes.EventHandlers;
+using CookBook.CleanArch.Application.Recipes.EventHandlers;
 using CookBook.CleanArch.Domain.Recipes.Events;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace CookBook.CleanArch.Application.Tests.Recipes.EventHandlers;
+namespace CookBook.CleanArch.Application.UnitTests.Recipes.EventHandlers;
 
 public class RecipeDescriptionUpdatedEventHandlerTest
 {

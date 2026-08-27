@@ -12,7 +12,7 @@ using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 using NSubstitute;
 
-namespace CookBook.CleanArch.Application.Tests.Recipes.Commands;
+namespace CookBook.CleanArch.Application.UnitTests.Recipes.Commands;
 
 public class UpdateRecipeCommandTests
 {

@@ -10,7 +10,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CookBook.CleanArch.Application.Tests;
+namespace CookBook.CleanArch.Application.IntegrationTests;
 
 public class ApplicationTestsBase : IAsyncLifetime
 {

@@ -6,7 +6,7 @@ using CookBook.CleanArch.Domain.Ingredients.Errors;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using NSubstitute;
 
-namespace CookBook.CleanArch.Application.Tests.Ingredients.Commands;
+namespace CookBook.CleanArch.Application.UnitTests.Ingredients.Commands;
 
 public class DeleteIngredientCommandTests
 {

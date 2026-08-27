@@ -3,7 +3,7 @@ using CookBook.CleanArch.Common.Tests;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace CookBook.CleanArch.Application.Tests.Recipes.Queries;
+namespace CookBook.CleanArch.Application.IntegrationTests.Recipes.Queries;
 
 public class GetRecipeDetailQueryTests : ApplicationTestsBase
 {
