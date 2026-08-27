@@ -12,12 +12,12 @@ public class RecipeEventTests
         var recipe = RecipeTestData.CreateRecipe();
         var originalName = recipe.Name;
 
-        recipe.UpdateName(RecipeName.CreateObject("New").Value);
+        recipe.UpdateName(RecipeName.CreateObject("New name").Value);
         
         var evt = Assert.Single(recipe.GetDomainEvents().OfType<RecipeNameUpdatedEvent>());
         Assert.Equal(recipe.Id, evt.RecipeId);
         Assert.Equal(originalName, evt.OldName);
-        Assert.Equal("New", evt.NewName);
+        Assert.Equal("New name", evt.NewName);
     }
     
     [Fact]

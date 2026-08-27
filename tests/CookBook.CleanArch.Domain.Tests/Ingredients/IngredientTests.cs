@@ -64,7 +64,7 @@ public class IngredientTests
     }
     
     [Fact]
-    public void Updating_IngredientName_ToEmpty_Should_Throw()
+    public void Updating_IngredientName_ToEmpty_Should_ReturnFailure()
     {
         var ingredient = Ingredient.Create(ValidName, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value).Value;
 
@@ -89,9 +89,9 @@ public class IngredientTests
     {
         var ingredient = Ingredient.Create(ValidName, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value).Value;
 
-        ingredient.UpdateDescription("New");
+        ingredient.UpdateDescription("New Description");
 
-        Assert.Equal("New", ingredient.Description);
+        Assert.Equal("New Description", ingredient.Description);
     }
     
     [Fact]

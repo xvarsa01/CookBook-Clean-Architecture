@@ -25,7 +25,13 @@ public class RecipeTests
     public void Creating_Recipe_With_Valid_Initial_State_Should_Create()
     {
         // Act
-        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(
+            RecipeName.CreateObject(ValidName).Value,
+            ValidDescription,
+            ImageUrl.CreateObject(ValidImageUrl).Value,
+            RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value,
+            RecipeType.Drink,
+            DefaultIngredients()).Value;
         
         // Assert
         Assert.NotEqual(Guid.Empty, recipe.Id);
@@ -39,7 +45,13 @@ public class RecipeTests
     public void Creating_Recipe_WithOut_DescriptionAndImage_Should_Create()
     {
         // Act
-        var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, null, null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
+        var recipe = Recipe.Create(
+            RecipeName.CreateObject(ValidName).Value,
+            null,
+            null,
+            RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value,
+            RecipeType.Drink,
+            DefaultIngredients()).Value;
         
         // Assert
         Assert.NotEqual(Guid.Empty, recipe.Id);
@@ -112,8 +124,13 @@ public class RecipeTests
         var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         var nameResult = RecipeName.CreateObject("");
+        if (nameResult.IsSuccess)
+        {
+            recipe.UpdateName(nameResult.Value);
+        }
 
         Assert.True(nameResult.IsFailure);
+        Assert.True(recipe.Name.Value == ValidName);
     }
     
     [Fact]
@@ -122,8 +139,13 @@ public class RecipeTests
         var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, ValidDescription, ImageUrl.CreateObject(ValidImageUrl).Value, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Drink, DefaultIngredients()).Value;
 
         var nameResult = RecipeName.CreateObject("AB");
+        if (nameResult.IsSuccess)
+        {
+            recipe.UpdateName(nameResult.Value);
+        }
 
         Assert.True(nameResult.IsFailure);
+        Assert.True(recipe.Name.Value == ValidName);
     }
     
     [Fact]
@@ -142,9 +164,9 @@ public class RecipeTests
     {
         var recipe = Recipe.Create(RecipeName.CreateObject(ValidName).Value, null, null, RecipeDuration.CreateObject(TimeSpan.FromMinutes(5)).Value, RecipeType.Caffe, DefaultIngredients()).Value;
 
-        recipe.UpdateDescription("New");
+        recipe.UpdateDescription("New description");
 
-        Assert.Equal("New", recipe.Description);
+        Assert.Equal("New description", recipe.Description);
     }
     
     [Fact]
@@ -305,5 +327,4 @@ public class RecipeTests
         Assert.True(result.IsFailure);
         Assert.Contains("can not have more than 10 ingredients", result.Error.Message);
     }
-
 }
