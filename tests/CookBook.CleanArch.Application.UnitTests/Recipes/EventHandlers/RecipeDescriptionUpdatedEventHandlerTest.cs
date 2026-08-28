@@ -2,36 +2,33 @@ using CookBook.CleanArch.Application.Recipes.EventHandlers;
 using CookBook.CleanArch.Domain.Recipes.Events;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using Microsoft.Extensions.Logging;
-using Moq;
+using NSubstitute;
 
 namespace CookBook.CleanArch.Application.UnitTests.Recipes.EventHandlers;
 
 public class RecipeDescriptionUpdatedEventHandlerTest
 {
     [Fact]
-    public Task Handle_Should_LogInformation()
+    public async Task Handle_Should_LogInformation()
     {
         // Arrange
-        var loggerMock = new Mock<ILogger<RecipeDescriptionUpdatedEventHandler>>();
-        var handler = new RecipeDescriptionUpdatedEventHandler(loggerMock.Object);
+        var loggerMock = Substitute.For<ILogger<RecipeDescriptionUpdatedEventHandler>>();
+        var handler = new RecipeDescriptionUpdatedEventHandler(loggerMock);
         var recipeId = new RecipeId(Guid.NewGuid());
         var oldDescription = "Old description";
         var newDescription = "New description";
         var notification = new RecipeDescriptionUpdatedEvent(recipeId, oldDescription, newDescription);
 
         // Act
-        handler.Handle(notification, CancellationToken.None);
+        await handler.Handle(notification, CancellationToken.None);
 
         // Assert
-        loggerMock.Verify(
-            logger => logger.Log(
-                LogLevel.Information,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Recipe Description Updated for recipe {notification.RecipeId} with new description {notification.NewDescription}")),
-                null,
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()!),
-            Times.Once);
-        
-        return Task.CompletedTask;
+        var logCall = Assert.Single(loggerMock.ReceivedCalls(),
+            call => call.GetMethodInfo().Name == nameof(ILogger.Log));
+
+        Assert.Equal(LogLevel.Information, logCall.GetArguments()[0]);
+        Assert.Contains(
+            $"Recipe Description Updated for recipe {notification.RecipeId} with new description {notification.NewDescription}",
+            logCall.GetArguments()[2]?.ToString());
     }
 }

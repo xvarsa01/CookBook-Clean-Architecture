@@ -2,7 +2,7 @@ using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Recipes.EventHandlers;
 using CookBook.CleanArch.Domain.Recipes.Events;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
-using Moq;
+using NSubstitute;
 
 namespace CookBook.CleanArch.Application.UnitTests.Recipes.EventHandlers;
 
@@ -12,8 +12,8 @@ public class RecipeDeletedEventHandlerTests
     public async Task Handle_Should_Call_SendEmailAsync()
     {
         // Arrange
-        var emailSenderMock = new Mock<IEmailSender>();
-        var handler = new RecipeDeletedEventHandler(emailSenderMock.Object);
+        var emailSenderMock = Substitute.For<IEmailSender>();
+        var handler = new RecipeDeletedEventHandler(emailSenderMock);
         var recipeId = new RecipeId(Guid.NewGuid());
         var notification = new RecipeDeletedEvent(recipeId);
 
@@ -21,14 +21,10 @@ public class RecipeDeletedEventHandlerTests
         await handler.Handle(notification, CancellationToken.None);
 
         // Assert
-        emailSenderMock.Verify(
-            sender => sender.SendEmailAsync(
-                "to@test.com",
-                "from@test.com",
-                $"Recipe {notification.RecipeId} was deleted",
-                $"Recipe {notification.RecipeId} was deleted."
-            ),
-            Times.Once
-        );
+        await emailSenderMock.Received(1).SendEmailAsync(
+            "to@test.com",
+            "from@test.com",
+            $"Recipe {notification.RecipeId} was deleted",
+            $"Recipe {notification.RecipeId} was deleted.");
     }
 }
