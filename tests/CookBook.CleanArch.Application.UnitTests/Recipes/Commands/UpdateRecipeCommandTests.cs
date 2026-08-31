@@ -67,7 +67,7 @@ public class UpdateRecipeCommandTests
         var existingAmount = IngredientAmount.CreateObject(1).Value;
         var addedAmount = IngredientAmount.CreateObject(200).Value;
         var recipe = RecipeTestData.CreateRecipe(
-        [
+        ingredients: [
             new RecipeIngredientData(existingIngredient.Id, existingAmount, MeasurementUnit.Pieces)
         ]);
         var ingredients = new List<RecipeUpdateIngredientRequest>
@@ -96,7 +96,7 @@ public class UpdateRecipeCommandTests
         // Arrange
         var ingredient = IngredientTestData.CreateIngredient();
         var recipe = RecipeTestData.CreateRecipe(
-        [
+        ingredients: [
             new RecipeIngredientData(
                 ingredient.Id,
                 IngredientAmount.CreateObject(1).Value,
@@ -130,7 +130,7 @@ public class UpdateRecipeCommandTests
         var retainedIngredient = IngredientTestData.CreateIngredient();
         var amount = IngredientAmount.CreateObject(1).Value;
         var recipe = RecipeTestData.CreateRecipe(
-        [
+        ingredients: [
             new RecipeIngredientData(removedIngredient.Id, amount, MeasurementUnit.Pieces),
             new RecipeIngredientData(retainedIngredient.Id, amount, MeasurementUnit.Pieces)
         ]);
@@ -164,7 +164,7 @@ public class UpdateRecipeCommandTests
         var updatedAmount = IngredientAmount.CreateObject(250).Value;
         var addedAmount = IngredientAmount.CreateObject(100).Value;
         var recipe = RecipeTestData.CreateRecipe(
-        [
+        ingredients: [
             new RecipeIngredientData(removedIngredient.Id, originalAmount, MeasurementUnit.Pieces),
             new RecipeIngredientData(retainedIngredient.Id, originalAmount, MeasurementUnit.Pieces)
         ]);
@@ -218,7 +218,7 @@ public class UpdateRecipeCommandTests
         var missingIngredientId = new IngredientId(Guid.NewGuid());
         var amount = IngredientAmount.CreateObject(1).Value;
         var recipe = RecipeTestData.CreateRecipe(
-        [
+        ingredients: [
             new RecipeIngredientData(existingIngredient.Id, amount, MeasurementUnit.Pieces)
         ]);
         var ingredients = new List<RecipeUpdateIngredientRequest>
@@ -249,7 +249,7 @@ public class UpdateRecipeCommandTests
         var ingredient = IngredientTestData.CreateIngredient();
         var amount = IngredientAmount.CreateObject(1).Value;
         var recipe = RecipeTestData.CreateRecipe(
-            Enumerable.Range(0, Recipe.MaxIngredients)
+            ingredients: Enumerable.Range(0, Recipe.MaxIngredients)
                 .Select(_ => new RecipeIngredientData(ingredient.Id, amount, MeasurementUnit.Pieces))
                 .ToList());
         var ingredients = Enumerable.Range(0, Recipe.MaxIngredients + 1)
@@ -296,7 +296,7 @@ public class UpdateRecipeCommandTests
         var replacementIngredient = IngredientTestData.CreateIngredient();
         var amount = IngredientAmount.CreateObject(100).Value;
         var recipe = RecipeTestData.CreateRecipe(
-        [
+        ingredients: [
             new RecipeIngredientData(originalIngredient.Id, amount, MeasurementUnit.Pieces)
         ]);
         var ingredients = new List<RecipeUpdateIngredientRequest>

@@ -27,7 +27,7 @@ public class RemoveIngredientsFromRecipeByIngredientIdCommandTests
         var ingredientToRemove = IngredientTestData.CreateIngredient();
         var ingredientToKeep = IngredientTestData.CreateIngredient();
         var recipe = RecipeTestData.CreateRecipe(
-        [
+        ingredients: [
             new RecipeIngredientData(
                 ingredientToRemove.Id,
                 IngredientAmount.CreateObject(1).Value,
@@ -57,7 +57,7 @@ public class RemoveIngredientsFromRecipeByIngredientIdCommandTests
         var ingredientToRemove = IngredientTestData.CreateIngredient();
         var ingredientToKeep = IngredientTestData.CreateIngredient();
         var recipe = RecipeTestData.CreateRecipe(
-        [
+        ingredients: [
             new RecipeIngredientData(
                 ingredientToRemove.Id,
                 IngredientAmount.CreateObject(1).Value,
@@ -108,7 +108,7 @@ public class RemoveIngredientsFromRecipeByIngredientIdCommandTests
         // Arrange
         var ingredient = IngredientTestData.CreateIngredient();
         var recipe = RecipeTestData.CreateRecipe(
-        [
+        ingredients: [
             new RecipeIngredientData(
                 ingredient.Id,
                 IngredientAmount.CreateObject(1).Value,

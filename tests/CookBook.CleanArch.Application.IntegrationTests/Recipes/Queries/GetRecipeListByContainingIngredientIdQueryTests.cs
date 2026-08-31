@@ -1,19 +1,19 @@
+using CookBook.CleanArch.Application.IntegrationTests.Infrastructure;
 using CookBook.CleanArch.Application.Recipes.Queries;
-using CookBook.CleanArch.Common.Tests;
 
 namespace CookBook.CleanArch.Application.IntegrationTests.Recipes.Queries;
 
-public class GetRecipeListByContainingIngredientIdQueryTests : ApplicationTestsBase
+public class GetRecipeListByContainingIngredientIdQueryTests : BaseIntegrationTest
 {
     [Fact]
     public async Task Get_Recipe_List_By_Containing_IngredientId_Query_With_Lemon_Returns_Recipes_Containing_Lemon()
     {
         // Arrange
-        var lemon = IngredientTestSeeds.Lemon;
+        var lemon = Ingredients.Lemon;
         var expectedRecipeIds = new[]
         {
-            GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name).Id,
-            GetSeededRecipeByName(RecipeTestSeeds.RecipeWithDuplicateIngredientEntries().Name).Id
+            Recipes.WithTwoIngredients.Id,
+            Recipes.WithDuplicateIngredientEntries.Id
         };
 
         var query = new GetRecipeListByContainingIngredientIdQuery(lemon.Id);
@@ -34,7 +34,7 @@ public class GetRecipeListByContainingIngredientIdQueryTests : ApplicationTestsB
     public async Task Get_Recipe_List_By_Containing_IngredientId_Query_With_Ingredient_Used_In_No_Recipes_Returns_Empty_List()
     {
         // Arrange
-        var ingredient = IngredientTestSeeds.IngredientNotUsedInAnyRecipe;
+        var ingredient = Ingredients.Unused;
         var query = new GetRecipeListByContainingIngredientIdQuery(ingredient.Id);
 
         // Act

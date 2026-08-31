@@ -1,16 +1,16 @@
 using CookBook.CleanArch.Application.Ingredients.Queries;
-using CookBook.CleanArch.Common.Tests;
+using CookBook.CleanArch.Application.IntegrationTests.Infrastructure;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 
 namespace CookBook.CleanArch.Application.IntegrationTests.Ingredients.Queries;
 
-public class GetIngredientDetailQueryTests : ApplicationTestsBase
+public class GetIngredientDetailQueryTests : BaseIntegrationTest
 {
     [Fact]
     public async Task Get_Ingredient_Detail_Query_Returns_Result_When_Ingredient_Exists()
     {
         // Arrange
-        var ingredient = IngredientTestSeeds.Water;
+        var ingredient = Ingredients.Water;
         var query = new GetIngredientDetailQuery(ingredient.Id);
         
         // Act

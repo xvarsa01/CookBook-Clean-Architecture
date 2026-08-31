@@ -1,3 +1,4 @@
+using CookBook.CleanArch.Application.IntegrationTests.Infrastructure;
 using CookBook.CleanArch.Application.Recipes;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Recipes.Queries;
@@ -6,13 +7,13 @@ using CookBook.CleanArch.Domain.Recipes.Enums;
 
 namespace CookBook.CleanArch.Application.IntegrationTests.Recipes.Queries;
 
-public class GetRecipeListQueryTests : ApplicationTestsBase
+public class GetRecipeListQueryTests : BaseIntegrationTest
 {
     [Fact]
-    public async Task Get_Recipe_List_Query_With_Name_Filter_BCD_Returns_Four_Matching_Results()
+    public async Task Get_Recipe_List_Query_With_Name_Filter_Recipe_Returns_Three_Matching_Results()
     {
         // Arrange
-        var filter = new RecipeFilter { Name = "BCD" };
+        var filter = new RecipeFilter { Name = "recipe" };
         var paging = new PagingOptions();
         var query = new GetRecipeListQuery(filter, paging);
 
@@ -21,14 +22,14 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Equal(4, result.Value.Items.Count());
+        Assert.Equal(3, result.Value.Items.Count());
     }
     
     [Fact]
-    public async Task Get_Recipe_List_Query_With_Name_Filter_ABCD_Returns_Two_Matching_Result()
+    public async Task Get_Recipe_List_Query_With_Name_Filter_Ingredients_Returns_Two_Matching_Results()
     {
         // Arrange
-        var filter = new RecipeFilter { Name = "abcd" };
+        var filter = new RecipeFilter { Name = "ingredients" };
         var paging = new PagingOptions();
         var query = new GetRecipeListQuery(filter, paging);
 
@@ -41,10 +42,10 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
     }
     
     [Fact]
-    public async Task Get_Recipe_List_Query_With_Name_Filter_CD_Space_EF_Returns_One_Matching_Result()
+    public async Task Get_Recipe_List_Query_With_Name_Filter_Minimalistic_Returns_One_Matching_Result()
     {
         // Arrange
-        var filter = new RecipeFilter { Name = "cd ef" };
+        var filter = new RecipeFilter { Name = "MINIMALISTIC" };
         var paging = new PagingOptions();
         var query = new GetRecipeListQuery(filter, paging);
 
@@ -57,10 +58,10 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
     }
     
     [Fact]
-    public async Task Get_Recipe_List_Query_With_Name_Filter_CDED_Returns_One_Matching_Result()
+    public async Task Get_Recipe_List_Query_With_Unknown_Name_Returns_No_Results()
     {
         // Arrange
-        var filter = new RecipeFilter { Name = "cdef" };
+        var filter = new RecipeFilter { Name = "missing" };
         var paging = new PagingOptions();
         var query = new GetRecipeListQuery(filter, paging);
 
@@ -69,12 +70,12 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Single(result.Value.Items);
+        Assert.Empty(result.Value.Items);
     }
     
     
     [Fact]
-    public async Task Get_Recipe_List_Query_With_RecipeType_Filter_True_Returns_Matching_Results()
+    public async Task Get_Recipe_List_Query_With_Caffe_Type_Filter_Returns_One_Matching_Result()
     {
         // Arrange
         var filter = new RecipeFilter { RecipeType = RecipeType.Caffe };
@@ -90,7 +91,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
     }
     
     [Fact]
-    public async Task Get_Recipe_List_Query_With_RecipeType_Filter_True_Returns_Matching_Results2()
+    public async Task Get_Recipe_List_Query_With_Soup_Type_Filter_Returns_Two_Matching_Results()
     {
         // Arrange
         var filter = new RecipeFilter { RecipeType = RecipeType.Soup };
@@ -106,7 +107,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
     }
     
     [Fact]
-    public async Task Get_Recipe_List_Query_With_MinimalDuration_Filter_Set_Returns_Matching_Results()
+    public async Task Get_Recipe_List_Query_With_Minimum_Duration_30_Minutes_Returns_Two_Matching_Results()
     {
         // Arrange
         var filter = new RecipeFilter { MinimalDuration = TimeSpan.FromMinutes(30) };
@@ -122,7 +123,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
     }
     
     [Fact]
-    public async Task Get_Recipe_List_Query_With_MinimalDuration_Filter_Set_Returns_Matching_Results2()
+    public async Task Get_Recipe_List_Query_With_Minimum_Duration_31_Minutes_Returns_One_Matching_Result()
     {
         // Arrange
         var filter = new RecipeFilter { MinimalDuration = TimeSpan.FromMinutes(31) };
@@ -137,7 +138,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
         Assert.Single(result.Value.Items);
     }
     [Fact]
-    public async Task Get_Recipe_List_Query_With_MaximalDuration_Filter_Set_Returns_Matching_Results()
+    public async Task Get_Recipe_List_Query_With_Maximum_Duration_3_Minutes_Returns_One_Matching_Result()
     {
         // Arrange
         var filter = new RecipeFilter { MaximalDuration = TimeSpan.FromMinutes(3) };
@@ -202,7 +203,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
         // Assert
         Assert.True(result.IsSuccess);
         var items = result.Value.Items.ToList();
-        var recipesById = SeededRecipes.ToDictionary(r => r.Id);
+        var recipesById = Recipes.All.ToDictionary(r => r.Id);
         AssertMonotonic(items, (prev, current) =>
             recipesById[prev.Id].Type.CompareTo(recipesById[current.Id].Type) <= 0);
     }
@@ -221,7 +222,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
         // Assert
         Assert.True(result.IsSuccess);
         var items = result.Value.Items.ToList();
-        var recipesById = SeededRecipes.ToDictionary(r => r.Id);
+        var recipesById = Recipes.All.ToDictionary(r => r.Id);
         AssertMonotonic(items, (prev, current) =>
             recipesById[prev.Id].Type.CompareTo(recipesById[current.Id].Type) >= 0);
     }
@@ -240,7 +241,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
         // Assert
         Assert.True(result.IsSuccess);
         var items = result.Value.Items.ToList();
-        var recipesById = SeededRecipes.ToDictionary(r => r.Id);
+        var recipesById = Recipes.All.ToDictionary(r => r.Id);
         AssertMonotonic(items, (prev, current) =>
             recipesById[prev.Id].Duration <= recipesById[current.Id].Duration);
     }
@@ -259,7 +260,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
         // Assert
         Assert.True(result.IsSuccess);
         var items = result.Value.Items.ToList();
-        var recipesById = SeededRecipes.ToDictionary(r => r.Id);
+        var recipesById = Recipes.All.ToDictionary(r => r.Id);
         AssertMonotonic(items, (prev, current) =>
             recipesById[prev.Id].Duration >= recipesById[current.Id].Duration);
     }
@@ -278,7 +279,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
         // Assert
         Assert.True(result.IsSuccess);
         var items = result.Value.Items.ToList();
-        var recipesById = SeededRecipes.ToDictionary(r => r.Id);
+        var recipesById = Recipes.All.ToDictionary(r => r.Id);
         AssertMonotonic(items, (prev, current) =>
             recipesById[prev.Id].CreatedAt <= recipesById[current.Id].CreatedAt);
     }
@@ -297,7 +298,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
         // Assert
         Assert.True(result.IsSuccess);
         var items = result.Value.Items.ToList();
-        var recipesById = SeededRecipes.ToDictionary(r => r.Id);
+        var recipesById = Recipes.All.ToDictionary(r => r.Id);
         AssertMonotonic(items, (prev, current) =>
             recipesById[prev.Id].CreatedAt >= recipesById[current.Id].CreatedAt);
     }
@@ -316,7 +317,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
         // Assert
         Assert.True(result.IsSuccess);
         var items = result.Value.Items.ToList();
-        var recipesById = SeededRecipes.ToDictionary(r => r.Id);
+        var recipesById = Recipes.All.ToDictionary(r => r.Id);
         AssertMonotonic(items, (prev, current) =>
             Nullable.Compare(recipesById[prev.Id].ModifiedAt, recipesById[current.Id].ModifiedAt) <= 0);
     }
@@ -335,7 +336,7 @@ public class GetRecipeListQueryTests : ApplicationTestsBase
         // Assert
         Assert.True(result.IsSuccess);
         var items = result.Value.Items.ToList();
-        var recipesById = SeededRecipes.ToDictionary(r => r.Id);
+        var recipesById = Recipes.All.ToDictionary(r => r.Id);
         AssertMonotonic(items, (prev, current) =>
             Nullable.Compare(recipesById[prev.Id].ModifiedAt, recipesById[current.Id].ModifiedAt) >= 0);
     }
