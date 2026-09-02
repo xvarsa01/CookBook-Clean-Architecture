@@ -14,7 +14,7 @@ public class RecipeIngredientTests
     public void AddIngredient_WhenRecipeHasCapacity_ShouldReturnSuccessAndAppendEntry()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var recipe = RecipeTestData.CreateRecipe();
         var ingredientId = new IngredientId(Guid.NewGuid());
         var countBefore = recipe.Ingredients.Count;
 
@@ -38,7 +38,8 @@ public class RecipeIngredientTests
     public void AddIngredient_WhenRecipeIsFull_ShouldReturnFailureWithMaximumIngredientsError()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeFullWithMaximumIngredients();
+        var setOfIngredients = IngredientTestData.CreateSet();
+        var recipe = RecipeTestData.CreateSet(setOfIngredients).WithMaximumIngredients;
         var ingredientId = new IngredientId(Guid.NewGuid());
         var before = recipe.Ingredients.Select(i => (i.Id, i.IngredientId, i.Amount, i.Unit)).ToList();
 
@@ -75,7 +76,8 @@ public class RecipeIngredientTests
     public void UpdateIngredientEntry_WhenEntryExists_ShouldReturnSuccessAndUpdateOnlyTargetEntry()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var setOfIngredients = IngredientTestData.CreateSet();
+        var recipe = RecipeTestData.CreateSet(setOfIngredients).WithTwoIngredients;
         var targetEntry = recipe.Ingredients.First();
         var untouchedEntry = recipe.Ingredients.Last();
         var untouchedAmountBefore = untouchedEntry.Amount;
@@ -104,7 +106,8 @@ public class RecipeIngredientTests
     public void UpdateIngredientEntry_WhenEntryDoesNotExist_ShouldReturnFailureWithEntryNotFoundError()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var setOfIngredients = IngredientTestData.CreateSet();
+        var recipe = RecipeTestData.CreateSet(setOfIngredients).WithTwoIngredients;
         var missingEntryId = new RecipeIngredientId(Guid.NewGuid());
 
         // Act
@@ -122,7 +125,8 @@ public class RecipeIngredientTests
     public void UpdateIngredientEntry_WhenEntryDoesNotExist_ShouldNotChangeIngredientState()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var setOfIngredients = IngredientTestData.CreateSet();
+        var recipe = RecipeTestData.CreateSet(setOfIngredients).WithTwoIngredients;
         var before = recipe.Ingredients.Select(i => (i.Id, i.Amount, i.Unit)).ToList();
 
         // Act
@@ -141,7 +145,8 @@ public class RecipeIngredientTests
     public void UpdateIngredientEntry_WhenRecipeHasDuplicateIngredientIds_ShouldUpdateOnlyMatchingEntryId()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeWithDuplicateIngredientEntries();
+        var setOfIngredients = IngredientTestData.CreateSet();
+        var recipe = RecipeTestData.CreateSet(setOfIngredients).WithDuplicateIngredientEntries;
         var duplicatedIngredientId = recipe.Ingredients
             .GroupBy(i => i.IngredientId)
             .Single(g => g.Count() > 1)
@@ -178,7 +183,7 @@ public class RecipeIngredientTests
     public void UpdateIngredientEntry_WhenRecipeHasSingleIngredient_ShouldReturnSuccessAndKeepCount()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
         var entry = recipe.Ingredients.Single();
 
         // Act
@@ -213,7 +218,8 @@ public class RecipeIngredientTests
     public void RemoveIngredientsByIngredientId_WhenIngredientExistsInMultipleEntries_ShouldRemoveAllMatchingEntries()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeWithDuplicateIngredientEntries();
+        var setOfIngredients = IngredientTestData.CreateSet();
+        var recipe = RecipeTestData.CreateSet(setOfIngredients).WithDuplicateIngredientEntries;
         var duplicatedIngredientId = recipe.Ingredients
             .GroupBy(i => i.IngredientId)
             .Single(g => g.Count() > 1)
@@ -237,7 +243,8 @@ public class RecipeIngredientTests
     public void RemoveIngredientsByIngredientId_WhenIngredientDoesNotExist_ShouldReturnFailureWithNotFoundError()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var setOfIngredients = IngredientTestData.CreateSet();
+        var recipe = RecipeTestData.CreateSet(setOfIngredients).WithTwoIngredients;
         var missingIngredientId = new IngredientId(Guid.NewGuid());
         var before = recipe.Ingredients.Select(i => (i.Id, i.IngredientId, i.Amount, i.Unit)).ToList();
 
@@ -256,7 +263,7 @@ public class RecipeIngredientTests
     public void RemoveIngredientsByIngredientId_WhenRemovalWouldLeaveNoIngredients_ShouldReturnFailureWithMinimumIngredientsError()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
         var ingredientId = recipe.Ingredients.Single().IngredientId;
         var before = recipe.Ingredients.Select(i => (i.Id, i.IngredientId, i.Amount, i.Unit)).ToList();
 
@@ -275,7 +282,8 @@ public class RecipeIngredientTests
     public void RemoveIngredientByEntryId_WhenEntryExistsInMultiIngredientRecipe_ShouldReturnSuccessAndRemoveOnlyTargetEntry()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var setOfIngredients = IngredientTestData.CreateSet();
+        var recipe = RecipeTestData.CreateSet(setOfIngredients).WithTwoIngredients;
         var targetEntry = recipe.Ingredients.First();
         var otherEntry = recipe.Ingredients.Last();
 
@@ -293,7 +301,8 @@ public class RecipeIngredientTests
     public void RemoveIngredientByEntryId_WhenEntryDoesNotExist_ShouldReturnFailureWithNotFoundError()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var setOfIngredients = IngredientTestData.CreateSet();
+        var recipe = RecipeTestData.CreateSet(setOfIngredients).WithTwoIngredients;
         var missingEntryId = new RecipeIngredientId(Guid.NewGuid());
         var before = recipe.Ingredients.Select(i => (i.Id, i.IngredientId, i.Amount, i.Unit)).ToList();
 
@@ -312,7 +321,7 @@ public class RecipeIngredientTests
     public void RemoveIngredientByEntryId_WhenRecipeHasSingleIngredient_ShouldReturnFailureWithMinimumIngredientsError()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
         var onlyEntryId = recipe.Ingredients.Single().Id;
         var before = recipe.Ingredients.Select(i => (i.Id, i.IngredientId, i.Amount, i.Unit)).ToList();
 
@@ -331,7 +340,7 @@ public class RecipeIngredientTests
     public void Ingredient_Property_WhenNavigationNotMaterialized_ShouldFollowBuildConfigurationContract()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
         var entry = recipe.Ingredients.Single();
     
         // Act + Assert
@@ -348,7 +357,7 @@ public class RecipeIngredientTests
     [Fact]
     public void UpdateIngredients_WhenReplacingIngredients_ShouldCreateNewEntries()
     {
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
         var originalEntryId = recipe.Ingredients.Single().Id;
         var newIngredientId = new IngredientId(Guid.NewGuid());
         IReadOnlyCollection<RecipeIngredientData> ingredients =
@@ -367,7 +376,8 @@ public class RecipeIngredientTests
     [Fact]
     public void UpdateIngredients_WhenGivenNewCollection_ShouldReplaceWholeCollection()
     {
-        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var setOfIngredients = IngredientTestData.CreateSet();
+        var recipe = RecipeTestData.CreateSet(setOfIngredients).WithTwoIngredients;
         var originalEntryIds = recipe.Ingredients.Select(ingredient => ingredient.Id).ToList();
         var retainedIngredientId = recipe.Ingredients.Last().IngredientId;
         var addedIngredientId = new IngredientId(Guid.NewGuid());
@@ -389,7 +399,7 @@ public class RecipeIngredientTests
     [Fact]
     public void UpdateIngredients_WhenCollectionIsEmpty_ShouldReturnFailureWithoutChangingState()
     {
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
         var originalEntryId = recipe.Ingredients.Single().Id;
 
         var result = recipe.UpdateIngredients([]);

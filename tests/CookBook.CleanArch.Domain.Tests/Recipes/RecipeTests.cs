@@ -217,7 +217,7 @@ public class RecipeTests
     public void UpdateRest_WhenAllParametersAreNull_ShouldNotChangeTheRecipe()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.RecipeWithTwoIngredients();
+        var recipe = RecipeTestData.CreateSet(IngredientTestData.CreateSet()).WithTwoIngredients;
         var originalName = recipe.Name;
         var originalDescription = recipe.Description;
         var originalImageUrl = recipe.ImageUrl;

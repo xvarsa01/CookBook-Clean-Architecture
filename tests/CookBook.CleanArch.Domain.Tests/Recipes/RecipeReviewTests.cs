@@ -11,7 +11,7 @@ public class RecipeReviewTests
     public void AddReview_WhenReviewIsValid_ShouldReturnSuccessAndAppendReview()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
 
         // Act
         var result = recipe.AddReview(5, "Excellent coffee.");
@@ -33,7 +33,7 @@ public class RecipeReviewTests
     public void AddReview_WhenMarkIsOutsideAllowedRange_ShouldReturnFailureAndNotAppendReview(int invalidMark)
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
 
         // Act
         var result = recipe.AddReview(invalidMark, "Nice.");
@@ -50,7 +50,7 @@ public class RecipeReviewTests
     public void AddReview_WhenDescriptionIsBlank_ShouldReturnFailureAndNotAppendReview(string invalidDescription)
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
 
         // Act
         var result = recipe.AddReview(4, invalidDescription);
@@ -65,7 +65,7 @@ public class RecipeReviewTests
     public void AddReview_WhenDescriptionIsTooLong_ShouldReturnFailureAndNotAppendReview()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
         var description = new string('a', Recipe.MaxReviewDescriptionLength + 1);
 
         // Act
@@ -81,7 +81,7 @@ public class RecipeReviewTests
     public void AverageMark_WhenRecipeHasNoReviews_ShouldBeNull()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
 
         // Assert
         Assert.Null(recipe.AverageMark);
@@ -91,7 +91,7 @@ public class RecipeReviewTests
     public void AverageMark_WhenRecipeHasReviews_ShouldReturnAverageOfMarks()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
 
         // Act
         recipe.AddReview(5, "Excellent.");
@@ -106,7 +106,7 @@ public class RecipeReviewTests
     public void RemoveReview_WhenReviewExists_ShouldReturnSuccessAndRemoveOnlyTargetReview()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
         var firstReviewId = recipe.AddReview(5, "Excellent.").Value;
         var secondReviewId = recipe.AddReview(2, "Too bitter.").Value;
 
@@ -125,7 +125,7 @@ public class RecipeReviewTests
     public void RemoveReview_WhenReviewDoesNotExist_ShouldReturnFailureAndNotChangeReviews()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
         var reviewId = recipe.AddReview(5, "Excellent.").Value;
         var missingReviewId = new RecipeReviewId(Guid.NewGuid());
 

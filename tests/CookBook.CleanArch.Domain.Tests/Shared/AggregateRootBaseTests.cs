@@ -9,7 +9,7 @@ public class AggregateRootBaseTests
     public void Clearing_DomainEvents_Should_Remove_All_Events()
     {
         // Arrange
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
         recipe.UpdateName(RecipeName.CreateObject("New").Value);
         recipe.UpdateDescription("New description");
         recipe.Delete();
@@ -26,7 +26,7 @@ public class AggregateRootBaseTests
     [Fact]
     public void Clearing_DomainEvents_On_Empty_Collection_Should_Not_Throw()
     {
-        var recipe = RecipeTestSeeds.MinimalisticRecipe();
+        var recipe = RecipeTestData.CreateRecipe();
 
         recipe.ClearDomainEvents();
 
