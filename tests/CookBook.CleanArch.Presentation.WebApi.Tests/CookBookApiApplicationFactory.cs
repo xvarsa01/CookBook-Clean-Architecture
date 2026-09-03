@@ -1,62 +1,64 @@
-﻿using CookBook.CleanArch.Application.ExternalInterfaces;
+using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Infrastructure;
+using CookBook.CleanArch.Infrastructure.Interceptors;
+using CookBook.CleanArch.Presentation.WebApi.Tests.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace CookBook.CleanArch.Presentation.WebApi.Tests;
 
-public class CookBookApiApplicationFactory : WebApplicationFactory<Program>
+public sealed class CookBookApiApplicationFactory : WebApplicationFactory<Program>
 {
-    private readonly string databaseDirectory = Path.Combine(
-        Path.GetTempPath(),
-        "CookBookTests",
-        $"{nameof(CookBookApiApplicationFactory)}_{Guid.NewGuid():N}");
+    private readonly SqliteConnection _connection = new("Data Source=:memory:");
 
-    protected override IHost CreateHost(IHostBuilder builder)
+    public CookBookApiApplicationFactory()
     {
-        builder.ConfigureServices(collection =>
-        {
-            collection.AddMvc().AddApplicationPart(typeof(Program).Assembly);
-        });
-        return base.CreateHost(builder);
+        _connection.Open();
     }
-    
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration((_, config) =>
+        builder.ConfigureTestServices(services =>
         {
-            Directory.CreateDirectory(databaseDirectory);
-
-            var dict = new Dictionary<string, string?>
+            services.RemoveAll<DbContextOptions<CookBookDbContext>>();
+            services.AddDbContext<CookBookDbContext>((serviceProvider, options) =>
             {
-                ["CookBook:DB:DatabaseDirectory"] = databaseDirectory,
-                ["CookBook:DB:DatabaseName"] = "recipe-controller-tests.db",
-                ["CookBook:DB:RecreateDatabaseEachTime"] = "true",
-                ["CookBook:DB:SeedDemoData"] = "false",
-                ["CookBook:DB:UseInMemoryDatabase"] = "false"
-            };
-
-            config.AddInMemoryCollection(dict);
-        });
-
-        builder.ConfigureServices(services =>
-        {
-            services.RemoveAll<DbOptions>();
-            services.AddSingleton(new DbOptions
-            {
-                DatabaseDirectory = databaseDirectory,
-                DatabaseName = "recipe-controller-tests.db",
-                RecreateDatabaseEachTime = true,
-                SeedDemoData = true
+                options.UseSqlite(_connection);
+                options.AddInterceptors(
+                    serviceProvider.GetRequiredService<CreatedDateUpdatedDateInterceptor>(),
+                    serviceProvider.GetRequiredService<DomainEventsInterceptor>());
             });
 
-            // Replace the default DbSeeder with test-specific seeder
-            services.RemoveAll<IDbSeeder>();
-            services.AddScoped<IDbSeeder, WebApiTestDbSeeder>();
+            services.RemoveAll<IDbMigrator>();
+            services.AddScoped<IDbMigrator, WebApiTestDbMigrator>();
+
+            var dbOptions = new DbOptions
+            {
+                DatabaseDirectory = "not-used",
+                DatabaseName = "not-used.db",
+                SeedDemoData = false
+            };
+
+            services.RemoveAll<DbOptions>();
+            services.RemoveAll<IOptions<DbOptions>>();
+            services.AddSingleton(dbOptions);
+            services.AddSingleton(Options.Create(dbOptions));
         });
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
+
+        if (disposing)
+        {
+            _connection.Dispose();
+        }
     }
 }

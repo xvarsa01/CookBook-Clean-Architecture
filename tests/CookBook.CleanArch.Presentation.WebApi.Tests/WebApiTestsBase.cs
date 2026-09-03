@@ -1,38 +1,44 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using CookBook.CleanArch.Common.Tests;
-using CookBook.CleanArch.Domain.Recipes;
+using CookBook.CleanArch.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CookBook.CleanArch.Presentation.WebApi.Tests;
 
 public abstract class WebApiTestsBase : IAsyncLifetime
 {
-    protected readonly CookBookApiApplicationFactory Application;
-    protected readonly Lazy<HttpClient> Client;
-    protected readonly JsonSerializerOptions Options;
-    private IReadOnlyList<Recipe> SeededRecipes { get; set; } = [];
+    private readonly CookBookApiApplicationFactory _application = new();
 
-    protected Recipe GetSeededRecipeByName(string recipeName) =>
-        SeededRecipes.Single(r => r.Name.Value == recipeName);
+    protected HttpClient Client { get; private set; } = null!;
+    protected JsonSerializerOptions Options { get; }
+    protected IngredientTestDataSet Ingredients { get; private set; } = null!;
+    protected RecipeTestDataSet Recipes { get; private set; } = null!;
 
     protected WebApiTestsBase()
     {
-        Application = new CookBookApiApplicationFactory();
-        Client = new Lazy<HttpClient>(Application.CreateClient());
-
         Options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
         JsonOptionsSetup.Configure(Options);
     }
 
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
-        SeededRecipes = RecipeTestSeeds.SeededRecipes;
-        return Task.CompletedTask;
+        Client = _application.CreateClient();
+
+        Ingredients = IngredientTestData.CreateSet();
+        Recipes = RecipeTestData.CreateSet(Ingredients);
+
+        using var scope = _application.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<CookBookDbContext>();
+
+        dbContext.AddRange(Ingredients.All);
+        dbContext.AddRange(Recipes.All);
+        await dbContext.SaveChangesAsync();
+        dbContext.ChangeTracker.Clear();
     }
 
     public async Task DisposeAsync()
     {
-        await Application.DisposeAsync();
+        Client.Dispose();
+        await _application.DisposeAsync();
     }
 }
-
-

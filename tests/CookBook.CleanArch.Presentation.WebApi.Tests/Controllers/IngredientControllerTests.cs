@@ -2,7 +2,6 @@
 using System.Net.Http.Json;
 using CookBook.CleanArch.Application.Ingredients.Models;
 using CookBook.CleanArch.Application.Shared;
-using CookBook.CleanArch.Common.Tests;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
@@ -13,9 +12,9 @@ public class IngredientControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetById_Returns_Ok_When_Ingredient_Exists()
     {
-        var seededIngredient = IngredientTestSeeds.Lemon;
+        var seededIngredient = Ingredients.Lemon;
 
-        var response = await Client.Value.GetAsync($"/ingredient/{seededIngredient.Id.Value}");
+        var response = await Client.GetAsync($"/ingredient/{seededIngredient.Id.Value}");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -27,15 +26,15 @@ public class IngredientControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetById_Returns_NotFound_When_Ingredient_Does_Not_Exist()
     {
-        var response = await Client.Value.GetAsync($"/ingredient/{Guid.NewGuid()}");
+        var response = await Client.GetAsync($"/ingredient/{Guid.NewGuid()}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
     
     [Fact]
-    public async Task GetAllIngredients_Returns_At_Last_One_Ingredient()
+    public async Task GetAllIngredients_Returns_At_Least_One_Ingredient()
     {
-        var response = await Client.Value.GetAsync("/ingredient");
+        var response = await Client.GetAsync("/ingredient");
         response.EnsureSuccessStatusCode();
         
         var ingredients = await response.Content.ReadFromJsonAsync<PagedResult<IngredientListResponse>>(Options);
@@ -46,7 +45,7 @@ public class IngredientControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetAllIngredients_Returns_10_Ingredients_When_PageSize_Is_Not_Specified()
     {
-        var response = await Client.Value.GetAsync($"/ingredient");
+        var response = await Client.GetAsync("/ingredient");
         response.EnsureSuccessStatusCode();
 
         var ingredients = await response.Content.ReadFromJsonAsync<PagedResult<IngredientListResponse>>(Options);
@@ -54,12 +53,13 @@ public class IngredientControllerTests : WebApiTestsBase
         Assert.NotNull(ingredients);
         Assert.Equal(0, ingredients.PageIndex);
         Assert.Equal(10, ingredients.PageSize);
+        Assert.Equal(10, ingredients.Items.Count());
     }
     
     [Fact]
     public async Task GetAllIngredients_Returns_10_Ingredients_When_PageSize_Is_0()
     {
-        var response = await Client.Value.GetAsync($"/ingredient?PageSize=0");
+        var response = await Client.GetAsync("/ingredient?PageSize=0");
         response.EnsureSuccessStatusCode();
 
         var ingredients = await response.Content.ReadFromJsonAsync<PagedResult<IngredientListResponse>>(Options);
@@ -67,6 +67,7 @@ public class IngredientControllerTests : WebApiTestsBase
         Assert.NotNull(ingredients);
         Assert.Equal(0, ingredients.PageIndex);
         Assert.Equal(10, ingredients.PageSize);
+        Assert.Equal(10, ingredients.Items.Count());
     }
 
     [Theory]
@@ -75,7 +76,7 @@ public class IngredientControllerTests : WebApiTestsBase
     [InlineData(10)]
     public async Task GetAllIngredients_Returns_Specified_Number_Of_Ingredients_When_PageSize_Is_Specified(int pageSize)
     {
-        var response = await Client.Value.GetAsync($"/ingredient?PageSize={pageSize}");
+        var response = await Client.GetAsync($"/ingredient?PageSize={pageSize}");
         response.EnsureSuccessStatusCode();
 
         var ingredients = await response.Content.ReadFromJsonAsync<PagedResult<IngredientListResponse>>(Options);
@@ -94,7 +95,7 @@ public class IngredientControllerTests : WebApiTestsBase
             Description: $"new description",
             ImageUrl: ImageUrl.CreateObject($"https://example.com/1234.jpg").Value);
 
-        var response = await Client.Value.PostAsJsonAsync("/ingredient", request, Options);
+        var response = await Client.PostAsJsonAsync("/ingredient", request, Options);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -107,7 +108,7 @@ public class IngredientControllerTests : WebApiTestsBase
             Description: $"new description",
             ImageUrl: ImageUrl.CreateObject($"https://example.com/1234.jpg").Value);
 
-        var response = await Client.Value.PostAsJsonAsync("/ingredient", request, Options);
+        var response = await Client.PostAsJsonAsync("/ingredient", request, Options);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -115,9 +116,9 @@ public class IngredientControllerTests : WebApiTestsBase
     [Fact]
     public async Task Update_Returns_Ok_When_Request_Is_Valid()
     {
-        var seededIngredient = IngredientTestSeeds.IngredientForTestOfUpdate;
+        var seededIngredient = Ingredients.Unused;
         
-        var response = await Client.Value.PutAsJsonAsync(
+        var response = await Client.PutAsJsonAsync(
             "/ingredient",
             new IngredientUpdateRequest(
                 Id: seededIngredient.Id,
@@ -132,7 +133,7 @@ public class IngredientControllerTests : WebApiTestsBase
     [Fact]
     public async Task Update_Returns_BadRequest_When_Ingredient_Does_Not_Exist()
     {
-        var response = await Client.Value.PutAsJsonAsync(
+        var response = await Client.PutAsJsonAsync(
             "/ingredient",
             new IngredientUpdateRequest(
                 Id: new IngredientId(Guid.NewGuid()),
@@ -147,20 +148,20 @@ public class IngredientControllerTests : WebApiTestsBase
     [Fact]
     public async Task DeleteAsync_Returns_NoContent_When_Ingredient_Exists()
     {
-        var seededIngredient = IngredientTestSeeds.IngredientForTestOfDelete;
+        var seededIngredient = Ingredients.Unused;
 
-        var response = await Client.Value.DeleteAsync($"/ingredient/{seededIngredient.Id.Value}");
+        var response = await Client.DeleteAsync($"/ingredient/{seededIngredient.Id.Value}");
 
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
-        var deleted = await Client.Value.GetAsync($"/ingredient/{seededIngredient.Id.Value}");
+        var deleted = await Client.GetAsync($"/ingredient/{seededIngredient.Id.Value}");
         Assert.Equal(HttpStatusCode.NotFound, deleted.StatusCode);
     }
 
     [Fact]
     public async Task DeleteAsync_Returns_NotFound_When_Ingredient_Does_Not_Exist()
     {
-        var response = await Client.Value.DeleteAsync($"/ingredient/{Guid.NewGuid()}");
+        var response = await Client.DeleteAsync($"/ingredient/{Guid.NewGuid()}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

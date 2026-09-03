@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http.Json;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Shared;
-using CookBook.CleanArch.Common.Tests;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
@@ -15,9 +14,9 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetById_Returns_Ok_When_Recipe_Exists()
     {
-        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
+        var seededRecipe = Recipes.WithSingleIngredient;
 
-        var response = await Client.Value.GetAsync($"/recipe/{seededRecipe.Id.Value}");
+        var response = await Client.GetAsync($"/recipe/{seededRecipe.Id.Value}");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -29,15 +28,15 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetById_Returns_NotFound_When_Recipe_Does_Not_Exist()
     {
-        var response = await Client.Value.GetAsync($"/recipe/{Guid.NewGuid()}");
+        var response = await Client.GetAsync($"/recipe/{Guid.NewGuid()}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
     
     [Fact]
-    public async Task GetAllRecipes_Returns_At_Last_One_Recipe()
+    public async Task GetAllRecipes_Returns_At_Least_One_Recipe()
     {
-        var response = await Client.Value.GetAsync("/recipe");
+        var response = await Client.GetAsync("/recipe");
         response.EnsureSuccessStatusCode();
         
         var recipes = await response.Content.ReadFromJsonAsync<PagedResult<RecipeListResponse>>(Options);
@@ -46,9 +45,9 @@ public class RecipeControllerTests : WebApiTestsBase
     }
 
     [Fact]
-    public async Task GetAllRecipes_Returns_10_Recipes_When_PageSize_Is_Not_Specified()
+    public async Task GetAllRecipes_Uses_Default_PageSize_When_PageSize_Is_Not_Specified()
     {
-        var response = await Client.Value.GetAsync($"/recipe");
+        var response = await Client.GetAsync($"/recipe");
         response.EnsureSuccessStatusCode();
 
         var recipes = await response.Content.ReadFromJsonAsync<PagedResult<RecipeListResponse>>(Options);
@@ -56,12 +55,13 @@ public class RecipeControllerTests : WebApiTestsBase
         Assert.NotNull(recipes);
         Assert.Equal(0, recipes.PageIndex);
         Assert.Equal(10, recipes.PageSize);
+        Assert.Equal(Recipes.All.Count, recipes.Items.Count());
     }
 
     [Fact]
-    public async Task GetAllRecipes_Returns_10_Recipes_When_PageSize_Is_0()
+    public async Task GetAllRecipes_Uses_Default_PageSize_When_PageSize_Is_0()
     {
-        var response = await Client.Value.GetAsync($"/recipe?PageSize=0");
+        var response = await Client.GetAsync($"/recipe?PageSize=0");
         response.EnsureSuccessStatusCode();
 
         var recipes = await response.Content.ReadFromJsonAsync<PagedResult<RecipeListResponse>>(Options);
@@ -69,16 +69,16 @@ public class RecipeControllerTests : WebApiTestsBase
         Assert.NotNull(recipes);
         Assert.Equal(0, recipes.PageIndex);
         Assert.Equal(10, recipes.PageSize);
+        Assert.Equal(Recipes.All.Count, recipes.Items.Count());
     }
 
     [Theory]
     [InlineData(1)]
-    [InlineData(5)]
-    [InlineData(10)]
-    [InlineData(15)]
+    [InlineData(2)]
+    [InlineData(4)]
     public async Task GetAllRecipes_Returns_Specified_Number_Of_Recipes_When_PageSize_Is_Specified(int pageSize)
     {
-        var response = await Client.Value.GetAsync($"/recipe?PageSize={pageSize}");
+        var response = await Client.GetAsync($"/recipe?PageSize={pageSize}");
         response.EnsureSuccessStatusCode();
 
         var recipes = await response.Content.ReadFromJsonAsync<PagedResult<RecipeListResponse>>(Options);
@@ -92,8 +92,8 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetAllRecipes_Returns_Only_Matching_Recipes_When_Name_Is_Specified()
     {
-        var seededRecipe =  RecipeTestSeeds.RecipeWithSingleIngredient();
-        var response = await Client.Value.GetAsync($"/recipe?Name={seededRecipe.Name.Value}");
+        var seededRecipe = Recipes.WithSingleIngredient;
+        var response = await Client.GetAsync($"/recipe?Name={seededRecipe.Name.Value}");
         response.EnsureSuccessStatusCode();
 
         var recipes = await response.Content.ReadFromJsonAsync<PagedResult<RecipeListResponse>>(Options);
@@ -106,7 +106,7 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetAllRecipes_Returns_Matching_Recipes_When_RecipeType_Is_Specified()
     {
-        var response = await Client.Value.GetAsync($"/recipe?RecipeType={nameof(RecipeType.Caffe)}");
+        var response = await Client.GetAsync($"/recipe?RecipeType={nameof(RecipeType.Caffe)}");
         response.EnsureSuccessStatusCode();
 
         var recipes = await response.Content.ReadFromJsonAsync<PagedResult<RecipeListResponse>>(Options);
@@ -119,7 +119,7 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetAllRecipes_Returns_Only_Recipes_Above_MinimalDuration_When_MinimalDuration_Is_Specified()
     {
-        var response = await Client.Value.GetAsync($"/recipe?MinimalDuration={ToQueryValue(TimeSpan.FromMinutes(30))}");
+        var response = await Client.GetAsync($"/recipe?MinimalDuration={ToQueryValue(TimeSpan.FromMinutes(30))}");
         response.EnsureSuccessStatusCode();
 
         var recipes = await response.Content.ReadFromJsonAsync<PagedResult<RecipeListResponse>>(Options);
@@ -131,7 +131,7 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetAllRecipes_Returns_Only_Recipes_At_Or_Below_MaximalDuration_When_MaximalDuration_Is_Specified()
     {
-        var response = await Client.Value.GetAsync($"/recipe?MaximalDuration={ToQueryValue(TimeSpan.FromMinutes(3))}");
+        var response = await Client.GetAsync($"/recipe?MaximalDuration={ToQueryValue(TimeSpan.FromMinutes(3))}");
         response.EnsureSuccessStatusCode();
 
         var recipes = await response.Content.ReadFromJsonAsync<PagedResult<RecipeListResponse>>(Options);
@@ -144,7 +144,7 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetAllRecipes_Returns_Recipes_In_Name_Order_When_SortParameter_Is_Specified()
     {
-        var response = await Client.Value.GetAsync($"/recipe?SortParameter=Name&IsSortAscending=true");
+        var response = await Client.GetAsync($"/recipe?SortParameter=Name&IsSortAscending=true");
         response.EnsureSuccessStatusCode();
 
         var recipes = await response.Content.ReadFromJsonAsync<PagedResult<RecipeListResponse>>(Options);
@@ -160,7 +160,7 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetAllRecipes_Returns_Recipes_In_Name_Order_Reversed_When_SortParameter_Is_Specified()
     {
-        var response = await Client.Value.GetAsync($"/recipe?SortParameter=Name&IsSortAscending=false");
+        var response = await Client.GetAsync($"/recipe?SortParameter=Name&IsSortAscending=false");
         response.EnsureSuccessStatusCode();
 
         var recipes = await response.Content.ReadFromJsonAsync<PagedResult<RecipeListResponse>>(Options);
@@ -176,9 +176,9 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetListByIngredientId_Returns_Ok_When_Ingredient_Id_Is_Valid()
     {
-        var ingredient = IngredientTestSeeds.Lemon;
+        var ingredient = Ingredients.Lemon;
 
-        var response = await Client.Value.GetAsync($"/recipe/ingredient/{ingredient.Id.Value}");
+        var response = await Client.GetAsync($"/recipe/ingredient/{ingredient.Id.Value}");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -190,7 +190,7 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetListByIngredientId_Returns_NotFound_When_Ingredient_Id_Is_Malformed()
     {
-        var response = await Client.Value.GetAsync("/recipe/ingredient/not-a-guid");
+        var response = await Client.GetAsync("/recipe/ingredient/not-a-guid");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -198,9 +198,9 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetListByIngredientName_Returns_Ok_When_Ingredient_Name_Is_Valid()
     {
-        var ingredient = IngredientTestSeeds.Lemon;
+        var ingredient = Ingredients.Lemon;
 
-        var response = await Client.Value.GetAsync($"/recipe/ingredient?ingredientNameSubstring={Uri.EscapeDataString(ingredient.Name)}");
+        var response = await Client.GetAsync($"/recipe/ingredient?ingredientNameSubstring={Uri.EscapeDataString(ingredient.Name)}");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -212,7 +212,7 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task GetListByIngredientName_Returns_BadRequest_When_Query_Is_Missing()
     {
-        var response = await Client.Value.GetAsync("/recipe/ingredient");
+        var response = await Client.GetAsync("/recipe/ingredient");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -220,7 +220,7 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task Create_Returns_Ok_When_Request_Is_Valid()
     {
-        var ingredient = IngredientTestSeeds.Lemon;
+        var ingredient = Ingredients.Lemon;
         var request = new RecipeCreateRequest(
             Name: RecipeName.CreateObject("new recipe").Value,
             Description: $"new description",
@@ -234,7 +234,7 @@ public class RecipeControllerTests : WebApiTestsBase
                     MeasurementUnit.Pieces)
             ]);
 
-        var response = await Client.Value.PostAsJsonAsync("/recipe", request, Options);
+        var response = await Client.PostAsJsonAsync("/recipe", request, Options);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -250,7 +250,7 @@ public class RecipeControllerTests : WebApiTestsBase
             Type: RecipeType.MainDish,
             Ingredients: []);
 
-        var response = await Client.Value.PostAsJsonAsync("/recipe", request, Options);
+        var response = await Client.PostAsJsonAsync("/recipe", request, Options);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -258,10 +258,10 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task Update_Returns_Ok_When_Request_Is_Valid()
     {
-        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeForTestOfUpdate().Name);
+        var seededRecipe = Recipes.WithTwoIngredients;
         var updatedName = RecipeName.CreateObject("updated name").Value;
         
-        var response = await Client.Value.PutAsJsonAsync(
+        var response = await Client.PutAsJsonAsync(
             "/recipe",
             new RecipeUpdateWithIngredientsRequest(
                 Id: seededRecipe.Id,
@@ -281,7 +281,7 @@ public class RecipeControllerTests : WebApiTestsBase
     {
         var updatedName = RecipeName.CreateObject("update will fail").Value;
         
-        var response = await Client.Value.PutAsJsonAsync(
+        var response = await Client.PutAsJsonAsync(
             "/recipe",
             new RecipeUpdateWithIngredientsRequest(
                 Id: new RecipeId(Guid.NewGuid()),
@@ -299,20 +299,20 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task DeleteAsync_Returns_NoContent_When_Recipe_Exists()
     {
-        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeForTestOfDeleteWithIngredient().Name);
+        var seededRecipe = Recipes.WithTwoIngredients;
 
-        var response = await Client.Value.DeleteAsync($"/recipe/{seededRecipe.Id.Value}");
+        var response = await Client.DeleteAsync($"/recipe/{seededRecipe.Id.Value}");
 
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
-        var deleted = await Client.Value.GetAsync($"/recipe/{seededRecipe.Id.Value}");
+        var deleted = await Client.GetAsync($"/recipe/{seededRecipe.Id.Value}");
         Assert.Equal(HttpStatusCode.NotFound, deleted.StatusCode);
     }
 
     [Fact]
     public async Task DeleteAsync_Returns_NotFound_When_Recipe_Does_Not_Exist()
     {
-        var response = await Client.Value.DeleteAsync($"/recipe/{Guid.NewGuid()}");
+        var response = await Client.DeleteAsync($"/recipe/{Guid.NewGuid()}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -320,9 +320,9 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task AddReview_Returns_Ok_When_Request_Is_Valid()
     {
-        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.MinimalisticRecipe().Name);
+        var seededRecipe = Recipes.WithTwoIngredients;
 
-        var response = await Client.Value.PostAsJsonAsync(
+        var response = await Client.PostAsJsonAsync(
             $"/recipe/{seededRecipe.Id.Value}/review",
             new AddRecipeReviewRequest(5, "Excellent coffee."),
             Options);
@@ -341,7 +341,7 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task AddReview_Returns_BadRequest_When_Recipe_Does_Not_Exist()
     {
-        var response = await Client.Value.PostAsJsonAsync(
+        var response = await Client.PostAsJsonAsync(
             $"/recipe/{Guid.NewGuid()}/review",
             new AddRecipeReviewRequest(5, "Excellent coffee."),
             Options);
@@ -352,9 +352,9 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task AddReview_Returns_BadRequest_When_Mark_Is_Invalid()
     {
-        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.MinimalisticRecipe().Name);
+        var seededRecipe = Recipes.WithTwoIngredients;
 
-        var response = await Client.Value.PostAsJsonAsync(
+        var response = await Client.PostAsJsonAsync(
             $"/recipe/{seededRecipe.Id.Value}/review",
             new AddRecipeReviewRequest(6, "Excellent coffee."),
             Options);
@@ -365,35 +365,34 @@ public class RecipeControllerTests : WebApiTestsBase
     [Fact]
     public async Task RemoveReview_Returns_NoContent_When_Review_Exists()
     {
-        var seededRecipe = GetSeededRecipeByName(RecipeTestSeeds.MinimalisticRecipe().Name);
-        var addResponse = await Client.Value.PostAsJsonAsync(
-            $"/recipe/{seededRecipe.Id.Value}/review",
-            new AddRecipeReviewRequest(4, "Good."),
-            Options);
-        addResponse.EnsureSuccessStatusCode();
+        var seededRecipe = Recipes.WithSingleIngredient;
+        var reviewId = seededRecipe.Reviews.First().Id;
+        var expectedRemainingReviews = seededRecipe.Reviews.Count - 1;
+        var expectedAverageMark = seededRecipe.Reviews
+            .Where(review => review.Id != reviewId)
+            .Average(review => (decimal)review.Mark);
 
-        var reviewId = await addResponse.Content.ReadFromJsonAsync<RecipeReviewId>(Options);
-
-        var response = await Client.Value.DeleteAsync($"/recipe/{seededRecipe.Id.Value}/review/{reviewId!.Value}");
+        var response = await Client.DeleteAsync($"/recipe/{seededRecipe.Id.Value}/review/{reviewId.Value}");
 
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
         var updatedRecipe = await GetRecipeByIdAsync(seededRecipe.Id);
-        Assert.Empty(updatedRecipe.Reviews);
-        Assert.Null(updatedRecipe.AverageMark);
+        Assert.Equal(expectedRemainingReviews, updatedRecipe.Reviews.Count);
+        Assert.DoesNotContain(updatedRecipe.Reviews, review => review.Id == reviewId);
+        Assert.Equal(expectedAverageMark, updatedRecipe.AverageMark);
     }
 
     [Fact]
     public async Task RemoveReview_Returns_BadRequest_When_Recipe_Does_Not_Exist()
     {
-        var response = await Client.Value.DeleteAsync($"/recipe/{Guid.NewGuid()}/review/{Guid.NewGuid()}");
+        var response = await Client.DeleteAsync($"/recipe/{Guid.NewGuid()}/review/{Guid.NewGuid()}");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
     private async Task<RecipeResponse> GetRecipeByIdAsync(RecipeId recipeId)
     {
-        var response = await Client.Value.GetAsync($"/recipe/{recipeId.Value}");
+        var response = await Client.GetAsync($"/recipe/{recipeId.Value}");
         response.EnsureSuccessStatusCode();
 
         var recipe = await response.Content.ReadFromJsonAsync<RecipeResponse>(Options);
