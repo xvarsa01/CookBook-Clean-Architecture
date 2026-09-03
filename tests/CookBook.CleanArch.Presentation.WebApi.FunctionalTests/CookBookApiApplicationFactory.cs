@@ -1,7 +1,7 @@
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Infrastructure;
 using CookBook.CleanArch.Infrastructure.Interceptors;
-using CookBook.CleanArch.Presentation.WebApi.Tests.Infrastructure;
+using CookBook.CleanArch.Presentation.WebApi.FunctionalTests.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
-namespace CookBook.CleanArch.Presentation.WebApi.Tests;
+namespace CookBook.CleanArch.Presentation.WebApi.FunctionalTests;
 
 public sealed class CookBookApiApplicationFactory : WebApplicationFactory<Program>
 {

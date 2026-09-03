@@ -3,7 +3,7 @@ using CookBook.CleanArch.Common.Tests;
 using CookBook.CleanArch.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CookBook.CleanArch.Presentation.WebApi.Tests;
+namespace CookBook.CleanArch.Presentation.WebApi.FunctionalTests;
 
 public abstract class WebApiTestsBase : IAsyncLifetime
 {

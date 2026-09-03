@@ -2,7 +2,7 @@
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Presentation.WebApi.Converters;
 
-namespace CookBook.CleanArch.Presentation.WebApi.Tests.Converters;
+namespace CookBook.CleanArch.Presentation.WebApi.FunctionalTests.Converters;
 
 public class ValueObjectJsonConverterTests
 {

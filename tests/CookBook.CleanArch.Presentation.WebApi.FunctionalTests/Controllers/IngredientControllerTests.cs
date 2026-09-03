@@ -5,7 +5,7 @@ using CookBook.CleanArch.Application.Shared;
 using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.Presentation.WebApi.Tests.Controllers;
+namespace CookBook.CleanArch.Presentation.WebApi.FunctionalTests.Controllers;
 
 public class IngredientControllerTests : WebApiTestsBase
 {

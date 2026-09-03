@@ -7,7 +7,7 @@ using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 using CookBook.CleanArch.Domain.Shared.ValueObjects;
 
-namespace CookBook.CleanArch.Presentation.WebApi.Tests.Controllers;
+namespace CookBook.CleanArch.Presentation.WebApi.FunctionalTests.Controllers;
 
 public class RecipeControllerTests : WebApiTestsBase
 {
