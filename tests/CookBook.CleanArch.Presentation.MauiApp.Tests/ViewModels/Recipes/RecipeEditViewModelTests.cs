@@ -16,14 +16,13 @@ public class RecipeEditViewModelTests : MauiTestsBase
         await ExecuteScopeAsync(async sp =>
         {
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeForTestOfUpdate();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithSingleIngredient;
             vm.Id = actual.Id;
 
             await vm.OnAppearingAsync();
 
             Assert.NotNull(vm.Recipe);
-            Assert.Equal(seeded.Name, vm.Recipe!.Name);
+            Assert.Equal(actual.Name, vm.Recipe!.Name);
             Assert.NotEmpty(vm.Recipe.Ingredients);
         });
     }
@@ -35,22 +34,21 @@ public class RecipeEditViewModelTests : MauiTestsBase
         {
             var messenger = (TestMessengerService)sp.GetRequiredService<IMessengerService>();
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeForTestOfUpdate();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithSingleIngredient;
 
             vm.Id = actual.Id;
             await vm.OnAppearingAsync();
 
-            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == IngredientTestSeeds.Lemon.Id.Value);
+            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == Ingredients.Lemon.Id.Value);
             vm.IngredientAmountNew.Amount = 12;
             vm.IngredientAmountNew.Unit = MeasurementUnit.Pieces;
 
             await vm.AddNewIngredientToRecipeCommand.ExecuteAsync(null);
 
             Assert.Equal(2, vm.Recipe.Ingredients.Count);
-            var added = vm.Recipe.Ingredients.Single(x => x.IngredientId == IngredientTestSeeds.Lemon.Id.Value);
+            var added = vm.Recipe.Ingredients.Single(x => x.IngredientId == Ingredients.Lemon.Id.Value);
             Assert.Equal(Guid.Empty, added.RecipeIngredientId);
-            Assert.Equal(IngredientTestSeeds.Lemon.Name, added.IngredientName);
+            Assert.Equal(Ingredients.Lemon.Name, added.IngredientName);
             Assert.Equal(12, added.Amount);
             Assert.Equal(MeasurementUnit.Pieces, added.Unit);
             Assert.Equal(Guid.Empty, vm.IngredientAmountNew.IngredientId);
@@ -68,8 +66,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
         {
             var messenger = (TestMessengerService)sp.GetRequiredService<IMessengerService>();
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeForTestOfUpdate();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithSingleIngredient;
 
             vm.Id = actual.Id;
             await vm.OnAppearingAsync();
@@ -91,19 +88,18 @@ public class RecipeEditViewModelTests : MauiTestsBase
         {
             var messenger = (TestMessengerService)sp.GetRequiredService<IMessengerService>();
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeForTestOfUpdate();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithSingleIngredient;
 
             vm.Id = actual.Id;
             await vm.OnAppearingAsync();
 
-            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == IngredientTestSeeds.Lemon.Id.Value);
+            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == Ingredients.Lemon.Id.Value);
             vm.IngredientAmountNew.Amount = 12;
             vm.IngredientAmountNew.Unit = MeasurementUnit.Pieces;
 
             await vm.AddNewIngredientToRecipeCommand.ExecuteAsync(null);
 
-            var added = vm.Recipe.Ingredients.Single(x => x.IngredientId == IngredientTestSeeds.Lemon.Id.Value);
+            var added = vm.Recipe.Ingredients.Single(x => x.IngredientId == Ingredients.Lemon.Id.Value);
             added.Amount = 25;
             added.Unit = MeasurementUnit.Ml;
 
@@ -116,7 +112,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
                 .Include(r => r.Ingredients)
                 .SingleAsync(r => r.Id == vm.Id);
 
-            var persistedAdded = saved.Ingredients.Single(x => x.IngredientId == IngredientTestSeeds.Lemon.Id);
+            var persistedAdded = saved.Ingredients.Single(x => x.IngredientId == Ingredients.Lemon.Id);
 
             Assert.Equal(25, persistedAdded.Amount.Value);
             Assert.Equal(MeasurementUnit.Ml, persistedAdded.Unit);
@@ -130,8 +126,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
         await ExecuteScopeAsync(async sp =>
         {
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeForTestOfUpdate();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithSingleIngredient;
 
             vm.Id = actual.Id;
             await vm.OnAppearingAsync();
@@ -162,13 +157,12 @@ public class RecipeEditViewModelTests : MauiTestsBase
         await ExecuteScopeAsync(async sp =>
         {
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeWithTwoIngredients();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithTwoIngredients;
 
             vm.Id = actual.Id;
             await vm.OnAppearingAsync();
 
-            var water = vm.Recipe.Ingredients.Single(x => x.IngredientId == IngredientTestSeeds.Water.Id.Value);
+            var water = vm.Recipe.Ingredients.Single(x => x.IngredientId == Ingredients.Water.Id.Value);
             await vm.RemoveIngredientCommand.ExecuteAsync(water);
 
             water.Amount = 999;
@@ -184,7 +178,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
 
             Assert.Single(saved.Ingredients);
             var remaining = saved.Ingredients.Single();
-            Assert.Equal(IngredientTestSeeds.Lemon.Id.Value, remaining.IngredientId.Value);
+            Assert.Equal(Ingredients.Lemon.Id.Value, remaining.IngredientId.Value);
             Assert.Equal(1, remaining.Amount.Value);
             Assert.Equal(MeasurementUnit.Pieces, remaining.Unit);
         });
@@ -197,19 +191,18 @@ public class RecipeEditViewModelTests : MauiTestsBase
         {
             var messenger = (TestMessengerService)sp.GetRequiredService<IMessengerService>();
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeForTestOfUpdate();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithSingleIngredient;
 
             vm.Id = actual.Id;
             await vm.OnAppearingAsync();
 
-            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == IngredientTestSeeds.Lemon.Id.Value);
+            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == Ingredients.Lemon.Id.Value);
             vm.IngredientAmountNew.Amount = 12;
             vm.IngredientAmountNew.Unit = MeasurementUnit.Pieces;
 
             await vm.AddNewIngredientToRecipeCommand.ExecuteAsync(null);
 
-            var added = vm.Recipe.Ingredients.Single(x => x.IngredientId == IngredientTestSeeds.Lemon.Id.Value);
+            var added = vm.Recipe.Ingredients.Single(x => x.IngredientId == Ingredients.Lemon.Id.Value);
 
             await vm.RemoveIngredientCommand.ExecuteAsync(added);
 
@@ -224,7 +217,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
                 .SingleAsync(r => r.Id == vm.Id);
 
             Assert.Single(saved.Ingredients);
-            Assert.Equal(IngredientTestSeeds.Water.Id.Value, saved.Ingredients.Single().IngredientId.Value);
+            Assert.Equal(Ingredients.Water.Id.Value, saved.Ingredients.Single().IngredientId.Value);
         });
     }
 
@@ -234,13 +227,12 @@ public class RecipeEditViewModelTests : MauiTestsBase
         await ExecuteScopeAsync(async sp =>
         {
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeWithTwoIngredients();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithTwoIngredients;
 
             vm.Id = actual.Id;
             await vm.OnAppearingAsync();
 
-            var water = vm.Recipe.Ingredients.Single(x => x.IngredientId == IngredientTestSeeds.Water.Id.Value);
+            var water = vm.Recipe.Ingredients.Single(x => x.IngredientId == Ingredients.Water.Id.Value);
             water.Amount = 777;
             water.Unit = MeasurementUnit.Pieces;
             vm.UpdateIngredientCommand.Execute(water);
@@ -256,7 +248,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
 
             Assert.Single(saved.Ingredients);
             var remaining = saved.Ingredients.Single();
-            Assert.Equal(IngredientTestSeeds.Lemon.Id.Value, remaining.IngredientId.Value);
+            Assert.Equal(Ingredients.Lemon.Id.Value, remaining.IngredientId.Value);
             Assert.Equal(1, remaining.Amount.Value);
             Assert.Equal(MeasurementUnit.Pieces, remaining.Unit);
         });
@@ -269,18 +261,17 @@ public class RecipeEditViewModelTests : MauiTestsBase
         {
             var navigation = (TestNavigationService)sp.GetRequiredService<INavigationService>();
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeWithTwoIngredients();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithTwoIngredients;
 
             vm.Id = actual.Id;
             await vm.OnAppearingAsync();
 
-            var water = vm.Recipe.Ingredients.Single(x => x.IngredientId == IngredientTestSeeds.Water.Id.Value);
-            var lemon = vm.Recipe.Ingredients.Single(x => x.IngredientId == IngredientTestSeeds.Lemon.Id.Value);
+            var water = vm.Recipe.Ingredients.Single(x => x.IngredientId == Ingredients.Water.Id.Value);
+            var lemon = vm.Recipe.Ingredients.Single(x => x.IngredientId == Ingredients.Lemon.Id.Value);
 
             await vm.RemoveIngredientCommand.ExecuteAsync(water);
 
-            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == IngredientTestSeeds.IngredientNotUsedInAnyRecipe.Id.Value);
+            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == Ingredients.Unused.Id.Value);
             vm.IngredientAmountNew.Amount = 5;
             vm.IngredientAmountNew.Unit = MeasurementUnit.Pieces;
             await vm.AddNewIngredientToRecipeCommand.ExecuteAsync(null);
@@ -298,13 +289,13 @@ public class RecipeEditViewModelTests : MauiTestsBase
 
             Assert.True(navigation.BackNavigationCalled);
             Assert.Equal(2, saved.Ingredients.Count);
-            Assert.DoesNotContain(saved.Ingredients, x => x.IngredientId.Value == IngredientTestSeeds.Water.Id.Value);
+            Assert.DoesNotContain(saved.Ingredients, x => x.IngredientId.Value == Ingredients.Water.Id.Value);
 
-            var persistedLemon = saved.Ingredients.Single(x => x.IngredientId.Value == IngredientTestSeeds.Lemon.Id.Value);
+            var persistedLemon = saved.Ingredients.Single(x => x.IngredientId.Value == Ingredients.Lemon.Id.Value);
             Assert.Equal(333, persistedLemon.Amount.Value);
             Assert.Equal(MeasurementUnit.Ml, persistedLemon.Unit);
 
-            var persistedNewIngredient = saved.Ingredients.Single(x => x.IngredientId.Value == IngredientTestSeeds.IngredientNotUsedInAnyRecipe.Id.Value);
+            var persistedNewIngredient = saved.Ingredients.Single(x => x.IngredientId.Value == Ingredients.Unused.Id.Value);
             Assert.Equal(5, persistedNewIngredient.Amount.Value);
             Assert.Equal(MeasurementUnit.Pieces, persistedNewIngredient.Unit);
         });
@@ -317,13 +308,12 @@ public class RecipeEditViewModelTests : MauiTestsBase
         {
             var navigation = (TestNavigationService)sp.GetRequiredService<INavigationService>();
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeFullWithMaximumIngredients();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithMaximumIngredients;
 
             vm.Id = actual.Id;
             await vm.OnAppearingAsync();
 
-            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == IngredientTestSeeds.Lemon.Id.Value);
+            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == Ingredients.Lemon.Id.Value);
             vm.IngredientAmountNew.Amount = 1;
             vm.IngredientAmountNew.Unit = MeasurementUnit.Pieces;
 
@@ -343,7 +333,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
 
             Assert.False(navigation.BackNavigationCalled);
             Assert.Equal(before.Ingredients.Count, after.Ingredients.Count);
-            Assert.DoesNotContain(after.Ingredients, x => x.IngredientId.Value == IngredientTestSeeds.Lemon.Id.Value && x.Amount.Value == 1);
+            Assert.DoesNotContain(after.Ingredients, x => x.IngredientId.Value == Ingredients.Lemon.Id.Value && x.Amount.Value == 1);
         });
     }
 
@@ -354,8 +344,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
         {
             var navigation = (TestNavigationService)sp.GetRequiredService<INavigationService>();
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            var seeded = RecipeTestSeeds.RecipeForTestOfUpdate();
-            var actual = SeededRecipes.Single(r => r.Name == seeded.Name);
+            var actual = Recipes.WithSingleIngredient;
 
             vm.Id = actual.Id;
             await vm.OnAppearingAsync();
@@ -385,7 +374,7 @@ public class RecipeEditViewModelTests : MauiTestsBase
         await ExecuteScopeAsync(async sp =>
         {
             var vm = sp.GetRequiredService<RecipeEditViewModel>();
-            vm.Id = GetSeededRecipeByName(RecipeTestSeeds.RecipeForTestOfUpdate().Name).Id;
+            vm.Id = Recipes.WithSingleIngredient.Id;
 
             await vm.OnAppearingAsync();
 

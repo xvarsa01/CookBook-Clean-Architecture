@@ -47,7 +47,7 @@ public class RecipeListViewModelTests : MauiTestsBase
             var navigation = (TestNavigationService)sp.GetRequiredService<INavigationService>();
             var vm = sp.GetRequiredService<RecipeListViewModel>();
 
-            var recipe = RecipeTestSeeds.RecipeWithSingleIngredient();
+            var recipe = Recipes.WithSingleIngredient;
 
             // Act
             await vm.GoToDetailCommand.ExecuteAsync(recipe.Id);

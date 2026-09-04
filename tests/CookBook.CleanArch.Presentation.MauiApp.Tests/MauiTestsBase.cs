@@ -2,7 +2,6 @@
 using CookBook.CleanArch.Application;
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Common.Tests;
-using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Infrastructure;
 using CookBook.CleanArch.Presentation.MauiApp.Tests.MockedServices;
 using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
@@ -73,10 +72,8 @@ public class MauiTestsBase : IAsyncLifetime, IDisposable
 
     public CookBookDbContext GetDbContext(IServiceProvider sp) => sp.GetRequiredService<CookBookDbContext>();
 
-    protected IReadOnlyList<Recipe> SeededRecipes { get; private set; } = RecipeTestSeeds.SeededRecipes;
-    
-    protected Recipe GetSeededRecipeByName(string recipeName) =>
-        SeededRecipes.Single(r => r.Name.Value == recipeName);
+    protected IngredientTestDataSet Ingredients { get; private set; } = null!;
+    protected RecipeTestDataSet Recipes { get; private set; } = null!;
 
     public async Task InitializeAsync()
     {
@@ -86,8 +83,11 @@ public class MauiTestsBase : IAsyncLifetime, IDisposable
         await db.Database.EnsureDeletedAsync();
         await db.Database.EnsureCreatedAsync();
         
-        db.AddRange(IngredientTestSeeds.SeededIngredients);
-        db.AddRange(SeededRecipes);
+        Ingredients = IngredientTestData.CreateSet();
+        Recipes = RecipeTestData.CreateSet(Ingredients);
+
+        db.AddRange(Ingredients.All);
+        db.AddRange(Recipes.All);
         await db.SaveChangesAsync();
     }
 

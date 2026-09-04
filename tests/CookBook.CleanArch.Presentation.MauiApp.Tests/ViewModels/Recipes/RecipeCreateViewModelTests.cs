@@ -32,7 +32,7 @@ public class RecipeCreateViewModelTests : MauiTestsBase
 
             await vm.OnAppearingAsync();
 
-            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == IngredientTestSeeds.Lemon.Id.Value);
+            vm.SelectedNewIngredient = vm.Ingredients.Single(x => x.Id.Value == Ingredients.Lemon.Id.Value);
             vm.IngredientAmountNew.Amount = 120;
             vm.IngredientAmountNew.Unit = MeasurementUnit.Pieces;
 
@@ -40,8 +40,8 @@ public class RecipeCreateViewModelTests : MauiTestsBase
 
             Assert.Single(vm.Recipe.Ingredients);
             var added = vm.Recipe.Ingredients.Single();
-            Assert.Equal(IngredientTestSeeds.Lemon.Id.Value, added.IngredientId);
-            Assert.Equal(IngredientTestSeeds.Lemon.Name, added.IngredientName);
+            Assert.Equal(Ingredients.Lemon.Id.Value, added.IngredientId);
+            Assert.Equal(Ingredients.Lemon.Name, added.IngredientName);
             Assert.Equal(120, added.Amount);
             Assert.Equal(MeasurementUnit.Pieces, added.Unit);
             Assert.Equal(Guid.Empty, vm.IngredientAmountNew.IngredientId);
@@ -84,9 +84,9 @@ public class RecipeCreateViewModelTests : MauiTestsBase
             var model = new RecipeIngredientListModel
             {
                 RecipeIngredientId = Guid.Empty,
-                IngredientId = IngredientTestSeeds.Water.Id.Value,
-                IngredientName = IngredientTestSeeds.Water.Name,
-                IngredientImageUrl = IngredientTestSeeds.Water.ImageUrl?.Value,
+                IngredientId = Ingredients.Water.Id.Value,
+                IngredientName = Ingredients.Water.Name,
+                IngredientImageUrl = Ingredients.Water.ImageUrl?.Value,
                 Amount = 50,
                 Unit = MeasurementUnit.Ml
             };
@@ -117,9 +117,9 @@ public class RecipeCreateViewModelTests : MauiTestsBase
             vm.Recipe.Ingredients.Add(new RecipeIngredientListModel
             {
                 RecipeIngredientId = Guid.Empty,
-                IngredientId = IngredientTestSeeds.Lemon.Id.Value,
-                IngredientName = IngredientTestSeeds.Lemon.Name,
-                IngredientImageUrl = IngredientTestSeeds.Lemon.ImageUrl?.Value,
+                IngredientId = Ingredients.Lemon.Id.Value,
+                IngredientName = Ingredients.Lemon.Name,
+                IngredientImageUrl = Ingredients.Lemon.ImageUrl?.Value,
                 Amount = 120,
                 Unit = MeasurementUnit.Pieces
             });

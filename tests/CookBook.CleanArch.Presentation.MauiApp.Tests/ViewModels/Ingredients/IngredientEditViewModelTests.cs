@@ -14,14 +14,14 @@ public class IngredientEditViewModelTests : MauiTestsBase
         await ExecuteScopeAsync(async sp =>
         {
             var vm = sp.GetRequiredService<IngredientEditViewModel>();
-            vm.Id = IngredientTestSeeds.Lemon.Id;
+            vm.Id = Ingredients.Lemon.Id;
 
             // Act
             await vm.OnAppearingAsync();
 
             // Assert
             Assert.NotNull(vm.Ingredient);
-            Assert.Equal(IngredientTestSeeds.Lemon.Name, vm.Ingredient!.Name);
+            Assert.Equal(Ingredients.Lemon.Name, vm.Ingredient!.Name);
         });
     }
 
@@ -51,7 +51,7 @@ public class IngredientEditViewModelTests : MauiTestsBase
             var navigation = (TestNavigationService)sp.GetRequiredService<INavigationService>();
 
             var vm = sp.GetRequiredService<IngredientEditViewModel>();
-            vm.Id = IngredientTestSeeds.IngredientForTestOfUpdate.Id;
+            vm.Id = Ingredients.Unused.Id;
 
             await vm.OnAppearingAsync();
 
@@ -79,7 +79,7 @@ public class IngredientEditViewModelTests : MauiTestsBase
         await ExecuteScopeAsync(async sp =>
         {
             var vm = sp.GetRequiredService<IngredientEditViewModel>();
-            vm.Id = IngredientTestSeeds.IngredientForTestOfUpdate.Id;
+            vm.Id = Ingredients.Unused.Id;
 
             await vm.OnAppearingAsync();
 

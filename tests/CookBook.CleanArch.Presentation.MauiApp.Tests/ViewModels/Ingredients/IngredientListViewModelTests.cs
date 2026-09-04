@@ -47,7 +47,7 @@ public class IngredientListViewModelTests : MauiTestsBase
             var navigation = (TestNavigationService)sp.GetRequiredService<INavigationService>();
             var vm = sp.GetRequiredService<IngredientListViewModel>();
 
-            var ingredient = IngredientTestSeeds.Lemon;
+            var ingredient = Ingredients.Lemon;
 
             // Act
             await vm.GoToDetailCommand.ExecuteAsync(ingredient.Id);

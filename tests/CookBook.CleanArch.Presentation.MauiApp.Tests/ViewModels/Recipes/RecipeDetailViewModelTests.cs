@@ -13,13 +13,13 @@ public class RecipeDetailViewModelTests : MauiTestsBase
         await ExecuteScopeAsync(async sp =>
         {
             var vm = sp.GetRequiredService<RecipeDetailViewModel>();
-            var seeded = SeededRecipes.Single(r => r.Name == RecipeTestSeeds.RecipeWithSingleIngredient().Name);
+            var seeded = Recipes.WithSingleIngredient;
             vm.Id = seeded.Id;
 
             await vm.OnAppearingAsync();
 
             Assert.NotNull(vm.Recipe);
-            Assert.Equal(RecipeTestSeeds.RecipeWithSingleIngredient().Name, vm.Recipe!.Name);
+            Assert.Equal(seeded.Name, vm.Recipe!.Name);
             Assert.Single(vm.Recipe.Ingredients);
         });
     }
@@ -32,7 +32,7 @@ public class RecipeDetailViewModelTests : MauiTestsBase
             var navigation = (TestNavigationService)sp.GetRequiredService<INavigationService>();
             var vm = sp.GetRequiredService<RecipeDetailViewModel>();
 
-            var seeded = SeededRecipes.Single(r => r.Name == RecipeTestSeeds.RecipeForTestOfDeleteWithIngredient().Name);
+            var seeded = Recipes.WithTwoIngredients;
             vm.Id = seeded.Id;
             await vm.OnAppearingAsync();
 
@@ -51,7 +51,7 @@ public class RecipeDetailViewModelTests : MauiTestsBase
             var navigation = (TestNavigationService)sp.GetRequiredService<INavigationService>();
             var vm = sp.GetRequiredService<RecipeDetailViewModel>();
 
-            var seeded = SeededRecipes.Single(r => r.Name == RecipeTestSeeds.RecipeWithSingleIngredient().Name);
+            var seeded = Recipes.WithSingleIngredient;
             vm.Id = seeded.Id;
             await vm.OnAppearingAsync();
 
