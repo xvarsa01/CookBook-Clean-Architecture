@@ -124,4 +124,19 @@
   <data name="Duration_HoursAndMinutes_StringFormat" xml:space="preserve">
     <value>{0} h {1} min</value>
   </data>
+  <data name="Reviews_Label_Text" xml:space="preserve">
+      <value>Reviews</value>
+  </data>
+  <data name="ReviewMark_Label_Text" xml:space="preserve">
+    <value>Mark</value>
+  </data>
+  <data name="ReviewDescription_Label_Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="AverageReview_Label_StringFormat" xml:space="preserve">
+    <value>Average review: {0:F1}</value>
+  </data>
+  <data name="RemoveReview_Button_Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>

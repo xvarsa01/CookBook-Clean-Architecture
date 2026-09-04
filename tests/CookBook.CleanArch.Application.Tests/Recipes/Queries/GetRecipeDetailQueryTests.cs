@@ -1,6 +1,7 @@
-﻿using CookBook.CleanArch.Application.Recipes.Queries;
+using CookBook.CleanArch.Application.Recipes.Queries;
 using CookBook.CleanArch.Common.Tests;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.CleanArch.Application.Tests.Recipes.Queries;
 
@@ -12,13 +13,13 @@ public class GetRecipeDetailQueryTests : ApplicationTestsBase
         // Arrange
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name);
         var query = new GetRecipeDetailQuery(recipe.Id);
-        
+
         // Act
         var result = await Mediator.Send(query);
 
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.Value);
-        
+
         // Assert
         Assert.Equal(recipe.Id, result.Value.Id);
         Assert.Equal(recipe.Name, result.Value.Name);
@@ -27,21 +28,23 @@ public class GetRecipeDetailQueryTests : ApplicationTestsBase
         Assert.Equal(recipe.Duration, result.Value.Duration);
         Assert.Equal(recipe.Type, result.Value.Type);
         Assert.Equal(recipe.Ingredients.Count, result.Value.Ingredients.Count);
+        Assert.Empty(result.Value.Reviews);
+        Assert.Null(result.Value.AverageMark);
     }
-    
+
     [Fact]
     public async Task Get_Recipe_Detail_Query_Returns_Result_With_All_Ingredients_When_Recipe_Exists()
     {
         // Arrange
         var recipe = GetSeededRecipeByName(RecipeTestSeeds.RecipeWithTwoIngredients().Name);
         var query = new GetRecipeDetailQuery(recipe.Id);
-        
+
         // Act
         var result = await Mediator.Send(query);
 
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.Value);
-        
+
         // Assert
         Assert.Equal(recipe.Ingredients.Count, result.Value.Ingredients.Count);
 
@@ -60,12 +63,42 @@ public class GetRecipeDetailQueryTests : ApplicationTestsBase
     }
 
     [Fact]
+    public async Task Get_Recipe_Detail_Query_Returns_Result_With_All_Reviews_When_Recipe_Exists()
+    {
+        // Arrange
+        var recipe = await DbContext.Recipes
+            .Include(r => r.Reviews)
+            .SingleAsync(r => r.Id == GetSeededRecipeByName(RecipeTestSeeds.RecipeWithSingleIngredient().Name).Id);
+
+        var firstReviewId = recipe.AddReview(5, "Excellent coffee.").Value;
+        var secondReviewId = recipe.AddReview(3, "Fine.").Value;
+        await DbContext.SaveChangesAsync();
+        DbContext.ChangeTracker.Clear();
+
+        var query = new GetRecipeDetailQuery(recipe.Id);
+
+        // Act
+        var result = await Mediator.Send(query);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(2, result.Value.Reviews.Count);
+        Assert.Equal(4m, result.Value.AverageMark);
+
+        var reviewsById = result.Value.Reviews.ToDictionary(x => x.Id);
+        Assert.Equal(5, reviewsById[firstReviewId].Mark);
+        Assert.Equal("Excellent coffee.", reviewsById[firstReviewId].Description);
+        Assert.Equal(3, reviewsById[secondReviewId].Mark);
+        Assert.Equal("Fine.", reviewsById[secondReviewId].Description);
+    }
+
+    [Fact]
     public async Task Get_Recipe_Detail_Query_Returns_Failure_When_Recipe_Does_Not_Exist()
     {
         // Arrange
         var id = new RecipeId(Guid.NewGuid());
         var query = new GetRecipeDetailQuery(id);
-        
+
         // Act
         var result = await Mediator.Send(query);
 

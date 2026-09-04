@@ -12,7 +12,9 @@ public record RecipeResponse(
     ImageUrl? ImageUrl,
     RecipeDuration Duration,
     RecipeType Type,
-    ICollection<RecipeIngredientResponse> Ingredients
+    ICollection<RecipeIngredientResponse> Ingredients,
+    ICollection<RecipeReviewResponse> Reviews,
+    decimal? AverageMark
 );
 
 public record RecipeIngredientResponse(
@@ -22,4 +24,10 @@ public record RecipeIngredientResponse(
     MeasurementUnit Unit,
     string IngredientName,
     ImageUrl? IngredientImageUrl
+);
+
+public record RecipeReviewResponse(
+    RecipeReviewId Id,
+    int Mark,
+    string Description
 );

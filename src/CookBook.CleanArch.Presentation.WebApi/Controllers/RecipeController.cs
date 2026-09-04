@@ -85,7 +85,7 @@ public class RecipeController : ControllerBase
     }
     
     [HttpPut(Name = "UpdateRecipe")]
-    public async Task<ActionResult<RecipeId>> Update(RecipeUpdateRequest requestOut)
+    public async Task<ActionResult<RecipeId>> Update(RecipeUpdateWithIngredientsRequest requestOut)
     {
         var result = await _mediator.Send(new UpdateRecipeCommand(requestOut));
         if (result.IsSuccess)
@@ -107,41 +107,31 @@ public class RecipeController : ControllerBase
         return NotFound(result.Error);
     }
 
-    [HttpPost("{id}/ingredient", Name = "AddIngredientToRecipe")]
-    public async Task<ActionResult<Guid>> AddIngredient(Guid id, RecipeAddIngredientRequest request)
+    [HttpPost("{id:guid}/review", Name = "AddReviewToRecipe")]
+    public async Task<ActionResult<RecipeReviewId>> AddReview(Guid id, AddRecipeReviewRequest request)
     {
         var recipeId = new RecipeId(id);
-        var result = await _mediator.Send(new AddIngredientToRecipeCommand(recipeId, request));
+        var result = await _mediator.Send(new AddReviewToRecipeCommand(recipeId, request));
         if (result.IsSuccess)
         {
             return Ok(result.Value);
         }
+
         return BadRequest(result.Error);
     }
 
-    [HttpDelete("{id:guid}/ingredient/{entryId:guid}", Name = "RemoveIngredientFromRecipe")]
-    public async Task<ActionResult> RemoveIngredient(Guid id, Guid entryId)
+    [HttpDelete("{id:guid}/review/{reviewId:guid}", Name = "RemoveReviewFromRecipe")]
+    public async Task<ActionResult> RemoveReview(Guid id, Guid reviewId)
     {
         var recipeId = new RecipeId(id);
-        var ingredientInRecipeId = new RecipeIngredientId(entryId);
-        
-        var result = await _mediator.Send(new RemoveIngredientFromRecipeByEntryIdCommand(recipeId, ingredientInRecipeId));
+        var recipeReviewId = new RecipeReviewId(reviewId);
+
+        var result = await _mediator.Send(new RemoveReviewFromRecipeCommand(recipeId, recipeReviewId));
         if (result.IsSuccess)
         {
             return NoContent();
         }
-        return BadRequest(result.Error);
-    }
-    
-    [HttpPut("{id}/ingredient", Name = "UpdateIngredientInRecipe")]
-    public async Task<ActionResult> Update(Guid id, RecipeUpdateIngredientRequest request)
-    {
-        var recipeId = new RecipeId(id);
-        var result = await _mediator.Send(new UpdateIngredientInRecipeCommand(recipeId, request));
-        if (result.IsSuccess)
-        {
-            return Ok();
-        }
+
         return BadRequest(result.Error);
     }
 }

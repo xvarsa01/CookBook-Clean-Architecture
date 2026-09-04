@@ -12,6 +12,7 @@ public class EfRecipeRepository(DbContext dbContext) : EfRepository<Recipe, Reci
     {
         return await DbSet
             .Include(r => r.Ingredients)
+            .Include(r => r.Reviews)
             .SingleOrDefaultAsync(e => e.Id == id);
     }
 
@@ -25,6 +26,7 @@ public class EfRecipeRepository(DbContext dbContext) : EfRepository<Recipe, Reci
         return await DbSet
             .Include(r => r.Ingredients)
             .ThenInclude(i => i.Ingredient)
+            .Include(r => r.Reviews)
             .SingleOrDefaultAsync(e => e.Id == id);
     }
 }

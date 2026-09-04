@@ -3,6 +3,7 @@ using System;
 using CookBook.CleanArch.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookBook.CleanArch.Infrastructure.Migrations
 {
     [DbContext(typeof(CookBookDbContext))]
-    partial class CookBookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260523125314_Added recipe reviews")]
+    partial class Addedrecipereviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.11");
@@ -118,7 +121,7 @@ namespace CookBook.CleanArch.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(100)
+                        .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Mark")

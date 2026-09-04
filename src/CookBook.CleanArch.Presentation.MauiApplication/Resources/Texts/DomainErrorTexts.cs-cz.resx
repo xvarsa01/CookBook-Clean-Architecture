@@ -46,6 +46,18 @@
     <data name="Recipes.RecipeTypeMustBeSelected" xml:space="preserve">
         <value>Typ receptu musí být vybrán.</value>
     </data>
+    <data name="Recipes.RecipeReviewNotFound" xml:space="preserve">
+        <value>Hodnocení {0} nebylo v receptu {1} nalezeno.</value>
+    </data>
+    <data name="Recipes.RecipeReviewMarkOutOfRange" xml:space="preserve">
+        <value>Známka hodnocení musí být mezi 1 a 5.</value>
+    </data>
+    <data name="Recipes.RecipeReviewDescriptionRequired" xml:space="preserve">
+        <value>Popis hodnocení je povinný.</value>
+    </data>
+    <data name="Recipes.RecipeReviewDescriptionTooLong" xml:space="preserve">
+        <value>Popis hodnocení nemůže být delší než 100 znaků.</value>
+    </data>
 
     <data name="RecipeIngredient.IngredientMustBeSelected" xml:space="preserve">
         <value>Ingredience musí být vybrána.</value>

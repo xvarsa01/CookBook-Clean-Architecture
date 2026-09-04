@@ -7,7 +7,7 @@ namespace CookBook.CleanArch.Common.Tests;
 
 public static class RecipeTestSeeds
 {
-    private static IReadOnlyCollection<RecipeCreateIngredient> SingleIngredient() =>
+    private static IReadOnlyCollection<RecipeIngredientData> SingleIngredient() =>
     [
         new(IngredientTestSeeds.Water.Id,
             IngredientAmount.CreateObject(100).Value,
@@ -46,9 +46,9 @@ public static class RecipeTestSeeds
             type: RecipeType.Other,
             ingredients:
             [
-                new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
+                new RecipeIngredientData(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
                     MeasurementUnit.Ml),
-                new RecipeCreateIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value,
+                new RecipeIngredientData(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value,
                     MeasurementUnit.Pieces)
             ]).Value;
     }
@@ -63,11 +63,11 @@ public static class RecipeTestSeeds
             type: RecipeType.Other,
             ingredients:
             [
-                new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(500).Value,
+                new RecipeIngredientData(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(500).Value,
                     MeasurementUnit.Ml),
-                new RecipeCreateIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(100).Value,
+                new RecipeIngredientData(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(100).Value,
                     MeasurementUnit.Ml),
-                new RecipeCreateIngredient(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value,
+                new RecipeIngredientData(IngredientTestSeeds.Lemon.Id, IngredientAmount.CreateObject(1).Value,
                     MeasurementUnit.Pieces)
             ]).Value;
     }
@@ -81,7 +81,7 @@ public static class RecipeTestSeeds
             duration: RecipeDuration.CreateObject(TimeSpan.FromMinutes(10)).Value,
             type: RecipeType.Other,
             ingredients: Enumerable.Range(0, 10)
-                .Select(_ => new RecipeCreateIngredient(
+                .Select(_ => new RecipeIngredientData(
                     IngredientTestSeeds.Water.Id,
                     IngredientAmount.CreateObject(100).Value,
                     MeasurementUnit.Ml))
@@ -98,7 +98,7 @@ public static class RecipeTestSeeds
             type: RecipeType.Other,
             ingredients:
             [
-                new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
+                new RecipeIngredientData(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
                     MeasurementUnit.Ml)
             ]).Value;
     }
@@ -112,7 +112,7 @@ public static class RecipeTestSeeds
             type: RecipeType.Other,
             ingredients:
             [
-                new RecipeCreateIngredient(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
+                new RecipeIngredientData(IngredientTestSeeds.Water.Id, IngredientAmount.CreateObject(100).Value,
                     MeasurementUnit.Ml)
             ]).Value;
     }
@@ -222,7 +222,7 @@ public static class RecipeTestSeeds
             type: RecipeType.Other,
             ingredients:
             [
-                new RecipeCreateIngredient(IngredientTestSeeds.UsedInSingleRecipe.Id, IngredientAmount.CreateObject(1).Value,
+                new RecipeIngredientData(IngredientTestSeeds.UsedInSingleRecipe.Id, IngredientAmount.CreateObject(1).Value,
                     MeasurementUnit.Pieces)
             ]).Value;
     }

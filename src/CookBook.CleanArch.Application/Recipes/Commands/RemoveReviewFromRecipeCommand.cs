@@ -7,23 +7,25 @@ using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Recipes.Commands;
 
-public record RemoveIngredientFromRecipeByEntryIdCommand(RecipeId RecipeId, RecipeIngredientId EntryId) : ICommand;
+public record RemoveReviewFromRecipeCommand(RecipeId RecipeId, RecipeReviewId ReviewId) : ICommand;
 
-internal sealed class RemoveIngredientFromRecipeByEntryIdCommandHandler(IRepository<Recipe, RecipeId > recipeRepository)
-    : ICommandHandler<RemoveIngredientFromRecipeByEntryIdCommand>
+internal sealed class RemoveReviewFromRecipeCommandHandler(IRepository<Recipe, RecipeId> recipeRepository)
+    : ICommandHandler<RemoveReviewFromRecipeCommand>
 {
-    public async Task<Result> Handle(RemoveIngredientFromRecipeByEntryIdCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(RemoveReviewFromRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipe = await recipeRepository.GetByIdAsync(request.RecipeId);
         if (recipe is null)
         {
             return Result.Failure(RecipeErrors.RecipeNotFoundError(request.RecipeId));
         }
-        
-        var result = recipe.RemoveIngredientByEntryId(request.EntryId);
+
+        var result = recipe.RemoveReview(request.ReviewId);
         if (result.IsFailure)
+        {
             return Result.Failure(result.Error);
-            
+        }
+
         return Result.Success();
     }
 }

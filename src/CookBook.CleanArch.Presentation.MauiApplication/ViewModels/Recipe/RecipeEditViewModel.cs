@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 using CookBook.CleanArch.Application.Recipes.Commands;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Application.Recipes.Queries;
@@ -17,10 +17,10 @@ public partial class RecipeEditViewModel(
     IMessengerService messengerService)
     : RecipeFormBaseViewModel(mediator, navigationService, messengerService)
 {
-    private RecipeResponse? _recipeResponse = null;
+    private RecipeResponse? _recipeResponse;
     
-    private readonly List<PendingAddIngredientChange> _pendingAddedIngredients = [];
-    private readonly List<RecipeUpdateIngredientRequest> _pendingUpdatedIngredients = [];
+    private readonly List<RecipeIngredientListModel> _pendingAddedIngredients = [];
+    private readonly List<RecipeIngredientListModel> _pendingUpdatedIngredients = [];
     private readonly List<Guid> _pendingRemovedIngredientIds = [];
 
     public RecipeId Id { get; set; } = new(Guid.Empty);
@@ -73,12 +73,7 @@ public partial class RecipeEditViewModel(
         OnPropertyChanged(nameof(Recipe));
         await ValidateRecipeAsync();
 
-        _pendingAddedIngredients.Add(new PendingAddIngredientChange(
-            model,
-            new RecipeAddIngredientRequest(
-                new IngredientId(model.IngredientId),
-                ingredientAmountResult.Value,
-                model.Unit)));
+        _pendingAddedIngredients.Add(model);
 
         IngredientAmountNew = RecipeIngredientListModel.Empty;
         SelectedNewIngredient = null;
@@ -91,6 +86,16 @@ public partial class RecipeEditViewModel(
     {
         if (model is null)
             return;
+
+        var pendingAdd = _pendingAddedIngredients.FirstOrDefault(x => ReferenceEquals(x, model));
+        if (pendingAdd is not null)
+        {
+            MessengerService.Send(new RecipeIngredientEditMessage());
+            return;
+        }
+
+        if (model.RecipeIngredientId == Guid.Empty || _pendingRemovedIngredientIds.Contains(model.RecipeIngredientId))
+            return;
         
         if (!await ValidateExistingIngredientAsync(model))
             return;
@@ -98,36 +103,15 @@ public partial class RecipeEditViewModel(
         var ingredientAmountResult = IngredientAmount.CreateObject(model.Amount);
         if (ingredientAmountResult.IsFailure)
             return;
-
-        var pendingAdd = _pendingAddedIngredients.FirstOrDefault(x => ReferenceEquals(x.Model, model));
-        if (pendingAdd is not null)
-        {
-            pendingAdd.Request = new RecipeAddIngredientRequest(
-                new IngredientId(model.IngredientId),
-                ingredientAmountResult.Value,
-                model.Unit);
-            MessengerService.Send(new RecipeIngredientEditMessage());
-            return;
-        }
-
-        if (model.RecipeIngredientId == Guid.Empty)
-            return;
-
-        if (_pendingRemovedIngredientIds.Contains(model.RecipeIngredientId))
-            return;
-
-        var updateRequest = new RecipeUpdateIngredientRequest(
-            new RecipeIngredientId(model.RecipeIngredientId),
-            ingredientAmountResult.Value,
-            model.Unit);
-        var existingUpdateIndex = _pendingUpdatedIngredients.FindIndex(x => x.EntryId.Value == model.RecipeIngredientId);
+        
+        var existingUpdateIndex = _pendingUpdatedIngredients.FindIndex(x => x.RecipeIngredientId == model.RecipeIngredientId);
         if (existingUpdateIndex >= 0)
         {
-            _pendingUpdatedIngredients[existingUpdateIndex] = updateRequest;
+            _pendingUpdatedIngredients[existingUpdateIndex] = model;
         }
         else
         {
-            _pendingUpdatedIngredients.Add(updateRequest);
+            _pendingUpdatedIngredients.Add(model);
         }
         MessengerService.Send(new RecipeIngredientEditMessage());
     }
@@ -139,21 +123,21 @@ public partial class RecipeEditViewModel(
         OnPropertyChanged(nameof(Recipe));
         await ValidateRecipeAsync();
 
-        var pendingAdd = _pendingAddedIngredients.FirstOrDefault(x => ReferenceEquals(x.Model, model));
+        var pendingAdd = _pendingAddedIngredients.FirstOrDefault(x => ReferenceEquals(x, model));
         if (pendingAdd is not null)
         {
             _pendingAddedIngredients.Remove(pendingAdd);
+            MessengerService.Send(new RecipeIngredientDeleteMessage());
+            return;
         }
-        else
+
+        if (model.RecipeIngredientId == Guid.Empty)
+            return;
+
+        _pendingUpdatedIngredients.RemoveAll(x => x.RecipeIngredientId == model.RecipeIngredientId);
+        if (!_pendingRemovedIngredientIds.Contains(model.RecipeIngredientId))
         {
-            if (model.RecipeIngredientId != Guid.Empty)
-            {
-                _pendingUpdatedIngredients.RemoveAll(x => x.EntryId.Value == model.RecipeIngredientId);
-                if (!_pendingRemovedIngredientIds.Contains(model.RecipeIngredientId))
-                {
-                    _pendingRemovedIngredientIds.Add(model.RecipeIngredientId);
-                }
-            }
+            _pendingRemovedIngredientIds.Add(model.RecipeIngredientId);
         }
 
         MessengerService.Send(new RecipeIngredientDeleteMessage());
@@ -165,22 +149,28 @@ public partial class RecipeEditViewModel(
         if (!await ValidateRecipeAsync())
             return;
 
-        if (!await ApplyPendingIngredientChangesAsync())
-            return;
-
         var imageUrl = TryCreateImageUrl();
 
-        var request = new RecipeUpdateRequest(
+        var ingredients = Recipe.Ingredients.Select(x => new RecipeUpdateIngredientRequest(
+            new IngredientId(x.IngredientId),
+            IngredientAmount.CreateObject(x.Amount).Value,
+            x.Unit)).ToList();
+
+        var request = new RecipeUpdateWithIngredientsRequest(
             new RecipeId(Recipe.Id),
             RecipeName.CreateObject(Recipe.Name).Value,
             Recipe.Description,
             imageUrl,
             RecipeDuration.CreateObject(Recipe.Duration).Value,
-            Recipe.RecipeType);
-
+            Recipe.RecipeType,
+            ingredients);
         var updateResult = await Mediator.Send(new UpdateRecipeCommand(request));
         if (!updateResult.IsSuccess)
             return;
+
+        _pendingAddedIngredients.Clear();
+        _pendingUpdatedIngredients.Clear();
+        _pendingRemovedIngredientIds.Clear();
 
         MessengerService.Send(new RecipeEditMessage { RecipeId = new RecipeId(Recipe.Id) });
 
@@ -198,99 +188,5 @@ public partial class RecipeEditViewModel(
         {
             Recipe = new RecipeFormModel(_recipeResponse!);
         }
-    }
-
-    private async Task<bool> ApplyPendingIngredientChangesAsync()
-    {
-        const int minIngredients = Domain.Recipes.Recipe.MinIngredients;
-        const int maxIngredients = Domain.Recipes.Recipe.MaxIngredients;
-
-        var pendingAdds = _pendingAddedIngredients.Count;
-        var pendingRemoves = _pendingRemovedIngredientIds.Count;
-        var finalCount = Recipe.Ingredients.Count;
-        var baseCount = finalCount - pendingAdds + pendingRemoves;
-
-        if (finalCount < minIngredients || finalCount > maxIngredients)
-            return false;
-
-        // Updates do not affect count, apply them first.
-        foreach (var request in _pendingUpdatedIngredients)
-        {
-            var result = await Mediator.Send(new UpdateIngredientInRecipeCommand(Id, request));
-            if (!result.IsSuccess)
-                return false;
-        }
-
-        var adds = _pendingAddedIngredients.ToList();
-        var removes = _pendingRemovedIngredientIds.ToList();
-        var currentCount = baseCount;
-
-        while (adds.Count > 0 || removes.Count > 0)
-        {
-            if (currentCount >= maxIngredients && removes.Count > 0)
-            {
-                var removeId = removes[0];
-                removes.RemoveAt(0);
-
-                var result = await Mediator.Send(
-                    new RemoveIngredientFromRecipeByEntryIdCommand(Id, new RecipeIngredientId(removeId)));
-                if (!result.IsSuccess)
-                    return false;
-
-                currentCount--;
-                continue;
-            }
-
-            if (currentCount <= minIngredients && adds.Count > 0)
-            {
-                var add = adds[0];
-                adds.RemoveAt(0);
-
-                var result = await Mediator.Send(new AddIngredientToRecipeCommand(Id, add.Request));
-                if (!result.IsSuccess)
-                    return false;
-
-                currentCount++;
-                continue;
-            }
-
-            if (adds.Count > 0)
-            {
-                var add = adds[0];
-                adds.RemoveAt(0);
-
-                var result = await Mediator.Send(new AddIngredientToRecipeCommand(Id, add.Request));
-                if (!result.IsSuccess)
-                    return false;
-
-                currentCount++;
-                continue;
-            }
-
-            if (removes.Count > 0)
-            {
-                var removeId = removes[0];
-                removes.RemoveAt(0);
-
-                var result = await Mediator.Send(
-                    new RemoveIngredientFromRecipeByEntryIdCommand(Id, new RecipeIngredientId(removeId)));
-                if (!result.IsSuccess)
-                    return false;
-
-                currentCount--;
-            }
-        }
-
-        _pendingRemovedIngredientIds.Clear();
-        _pendingAddedIngredients.Clear();
-        _pendingUpdatedIngredients.Clear();
-
-        return true;
-    }
-
-    private sealed class PendingAddIngredientChange(RecipeIngredientListModel model, RecipeAddIngredientRequest request)
-    {
-        public RecipeIngredientListModel Model { get; } = model;
-        public RecipeAddIngredientRequest Request { get; set; } = request;
     }
 }

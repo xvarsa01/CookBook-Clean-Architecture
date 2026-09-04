@@ -1,4 +1,4 @@
-﻿using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes.Enums;
 using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.Events;
@@ -25,9 +25,16 @@ public record Recipe : AggregateRootBase<RecipeId>
 
     private readonly List<RecipeIngredient> _ingredients = [];
     public IReadOnlyCollection<RecipeIngredient> Ingredients => _ingredients.AsReadOnly();
+
+    private readonly List<RecipeReview> _reviews = [];
+    public IReadOnlyCollection<RecipeReview> Reviews => _reviews.AsReadOnly();
+    public decimal? AverageMark => _reviews.Count == 0 ? null : _reviews.Average(review => (decimal)review.Mark);
     
     public const int MinIngredients = 1;
     public const int MaxIngredients = 10;
+    public const int MinReviewMark = 1;
+    public const int MaxReviewMark = 5;
+    public const int MaxReviewDescriptionLength = 100;
     
     private Recipe(RecipeId id, RecipeName name, string? description, ImageUrl? imageUrl, RecipeDuration duration, RecipeType type) : base(id)
     {
@@ -44,7 +51,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         ImageUrl? imageUrl,
         RecipeDuration duration,
         RecipeType type,
-        IReadOnlyCollection<RecipeCreateIngredient> ingredients)
+        IReadOnlyCollection<RecipeIngredientData> ingredients)
     {
         var id = new RecipeId(Guid.NewGuid());
 
@@ -87,7 +94,7 @@ public record Recipe : AggregateRootBase<RecipeId>
         if (removedCount == 0)
             return Result.Failure(RecipeErrors.RecipeIngredientByIdNotFoundError(ingredientId, Id));
 
-        if (_ingredients.Count - removedCount < 1)
+        if (_ingredients.Count - removedCount < MinIngredients)
             return Result.Failure(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
 
         _ingredients.RemoveAll(i => i.IngredientId == ingredientId);
@@ -102,10 +109,34 @@ public record Recipe : AggregateRootBase<RecipeId>
         if (idx < 0)
             return Result.Failure(RecipeErrors.RecipeIngredientByEntryIdNotFoundError(entryId, Id));
 
-        if (_ingredients.Count == 1)
+        if (_ingredients.Count == MinIngredients)
             return Result.Failure(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
         
         _ingredients.RemoveAt(idx);
+        return Result.Success();
+    }
+
+    public Result<RecipeReviewId> AddReview(int mark, string description)
+    {
+        var reviewResult = RecipeReview.Create(Id, mark, description);
+
+        if (reviewResult.IsFailure)
+            return Result.Failure<RecipeReviewId>(reviewResult.Error);
+
+        _reviews.Add(reviewResult.Value);
+
+        return Result.Success(reviewResult.Value.Id);
+    }
+
+    public Result RemoveReview(RecipeReviewId reviewId)
+    {
+        var idx = _reviews.FindIndex(review => review.Id == reviewId);
+
+        if (idx < 0)
+            return Result.Failure(RecipeReviewErrors.RecipeReviewNotFoundError(reviewId, Id));
+
+        _reviews.RemoveAt(idx);
+
         return Result.Success();
     }
 
@@ -162,6 +193,29 @@ public record Recipe : AggregateRootBase<RecipeId>
         return Result.Success();
     }
 
+    public Result UpdateIngredients(IReadOnlyCollection<RecipeIngredientData> ingredients)
+    {
+        if (ingredients.Count < MinIngredients)
+            return Result.Failure(RecipeErrors.RecipeMinimumNumberOfIngredientsError(Id));
+
+        if (ingredients.Count > MaxIngredients)
+            return Result.Failure(RecipeErrors.RecipeMaximumNumberOfIngredientsError(Id));
+
+        _ingredients.Clear();
+
+        foreach (var ingredient in ingredients)
+        {
+            var result = AddIngredient(
+                ingredient.IngredientId,
+                ingredient.Amount,
+                ingredient.Unit);
+
+            if (result.IsFailure)
+                return Result.Failure(result.Error);
+        }
+
+        return Result.Success();
+    }
     public Result Delete()
     {
         RaiseEvent(new RecipeDeletedEvent(Id));

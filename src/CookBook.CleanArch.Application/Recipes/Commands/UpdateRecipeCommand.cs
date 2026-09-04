@@ -2,42 +2,73 @@ using CookBook.CleanArch.Application.Abstraction;
 using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Application.Recipes.Models;
 using CookBook.CleanArch.Domain;
+using CookBook.CleanArch.Domain.Ingredients;
+using CookBook.CleanArch.Domain.Ingredients.Errors;
+using CookBook.CleanArch.Domain.Ingredients.ValueObjects;
 using CookBook.CleanArch.Domain.Recipes;
 using CookBook.CleanArch.Domain.Recipes.Errors;
 using CookBook.CleanArch.Domain.Recipes.ValueObjects;
 
 namespace CookBook.CleanArch.Application.Recipes.Commands;
 
-public record UpdateRecipeCommand(RecipeUpdateRequest Request) : ICommand<RecipeId>;
+public record UpdateRecipeCommand(RecipeUpdateWithIngredientsRequest Request) : ICommand<RecipeId>;
 
-internal sealed class UpdateRecipeCommandHandler(IRepository<Recipe, RecipeId> repository) : ICommandHandler<UpdateRecipeCommand,RecipeId>
+internal sealed class UpdateRecipeCommandHandler(
+    IRepository<Recipe, RecipeId> recipeRepository,
+    IRepository<Ingredient, IngredientId> ingredientRepository)
+    : ICommandHandler<UpdateRecipeCommand, RecipeId>
 {
     public async Task<Result<RecipeId>> Handle(UpdateRecipeCommand request, CancellationToken cancellationToken)
     {
-        var existing = await repository.GetByIdAsync(request.Request.Id);
-        if (existing is null)
+        var recipeRequest = request.Request;
+        var recipe = await recipeRepository.GetByIdAsync(recipeRequest.Id);
+        if (recipe is null)
+            return Result.Failure<RecipeId>(RecipeErrors.RecipeNotFoundError(recipeRequest.Id));
+
+        if (recipeRequest.Name is not null)
         {
-            return Result.Failure<RecipeId>(RecipeErrors.RecipeNotFoundError(request.Request.Id));
+            var result = recipe.UpdateName(recipeRequest.Name);
+            if (result.IsFailure)
+                return Result.Failure<RecipeId>(result.Error);
+        }
+        
+        if (recipeRequest.Description is not null)
+        {
+            var result = recipe.UpdateDescription(recipeRequest.Description);
+            if (result.IsFailure)
+                return Result.Failure<RecipeId>(result.Error);
         }
 
-        if (request.Request.Name is not null)
+        if (recipeRequest.ImageUrl is not null ||
+            recipeRequest.Duration is not null ||
+            recipeRequest.Type is not null)
         {
-            var result = existing.UpdateName(request.Request.Name);
+            var result = recipe.UpdateRest(
+                recipeRequest.ImageUrl ?? recipe.ImageUrl,
+                recipeRequest.Duration,
+                recipeRequest.Type);
+
             if (result.IsFailure)
                 return Result.Failure<RecipeId>(result.Error);
         }
-        
-        if (request.Request.Description is not null)
+
+        if (recipeRequest.Ingredients is not null)
         {
-            var result = existing.UpdateDescription(request.Request.Description);
+            List<RecipeIngredientData> ingredients = [];
+            foreach (var ingredientRequest in recipeRequest.Ingredients)
+            {
+                var ingredient = await ingredientRepository.GetByIdAsync(ingredientRequest.IngredientId);
+                if (ingredient is null)
+                    return Result.Failure<RecipeId>(IngredientErrors.IngredientNotFoundError(ingredientRequest.IngredientId));
+
+                ingredients.Add(new RecipeIngredientData(ingredientRequest.IngredientId, ingredientRequest.Amount, ingredientRequest.Unit));
+            }
+
+            var result = recipe.UpdateIngredients(ingredients);
             if (result.IsFailure)
                 return Result.Failure<RecipeId>(result.Error);
         }
-        
-        var restResult = existing.UpdateRest(request.Request.ImageUrl, request.Request.Duration, request.Request.Type);
-        if (restResult.IsFailure)
-            return Result.Failure<RecipeId>(restResult.Error);
-        
-        return Result.Success(existing.Id);
+
+        return Result.Success(recipe.Id);
     }
 }
