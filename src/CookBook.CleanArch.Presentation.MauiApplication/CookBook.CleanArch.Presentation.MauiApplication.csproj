@@ -34,7 +34,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="CookBook.CleanArch.Presentation.MauiApp.Tests" />
+        <InternalsVisibleTo Include="CookBook.CleanArch.Presentation.MauiApp.IntegrationTests" />
     </ItemGroup>
 
     <ItemGroup>
