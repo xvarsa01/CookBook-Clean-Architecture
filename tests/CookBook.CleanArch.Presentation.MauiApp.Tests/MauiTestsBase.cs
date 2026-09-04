@@ -1,132 +1,42 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using CookBook.CleanArch.Application;
-using CookBook.CleanArch.Application.ExternalInterfaces;
 using CookBook.CleanArch.Common.Tests;
 using CookBook.CleanArch.Infrastructure;
-using CookBook.CleanArch.Presentation.MauiApp.Tests.MockedServices;
-using CookBook.CleanArch.Presentation.MauiApplication.Services.Interfaces;
-using CookBook.CleanArch.Presentation.MauiApplication.ViewModels;
-using Microsoft.EntityFrameworkCore;
-using Moq;
+using CookBook.CleanArch.Presentation.MauiApp.Tests.Infrastructure;
 
 namespace CookBook.CleanArch.Presentation.MauiApp.Tests;
 
-public class MauiTestsBase : IAsyncLifetime, IDisposable
+public abstract class MauiTestsBase : IAsyncLifetime
 {
-    private readonly ServiceProvider _serviceProvider;
-
-    protected MauiTestsBase()
-    {
-        var services = new ServiceCollection();
-
-        var dbName = $"{GetType().FullName}_{Guid.NewGuid():N}.db";
-        services.AddDbContext<CookBookDbContext>(options =>
-        {
-            options.UseSqlite($"Data Source={dbName}");
-        });
-
-        services.AddScoped<ICookBookDbContext>(sp => sp.GetRequiredService<CookBookDbContext>());
-        services.AddScoped<DbContext>(sp => sp.GetRequiredService<CookBookDbContext>());
-        
-        var dbFolder = Path.Combine(Path.GetTempPath(), "CookBookTests", Guid.NewGuid().ToString());
-        Directory.CreateDirectory(dbFolder);
-        
-        services.AddInfraServices(new DbOptions
-        {
-            DatabaseName = dbName,
-            RecreateDatabaseEachTime = true,
-            SeedDemoData = false,
-            DatabaseDirectory = dbFolder
-        });
-
-        // --- Application layer ---
-        services.AddApplicationServices();
-
-        // --- Minimal MAUI service replacements ---
-        services.AddSingleton<IMessenger>(_ => WeakReferenceMessenger.Default);
-        services.AddScoped<INavigationService, TestNavigationService>();
-        services.AddScoped<IMessengerService, TestMessengerService>();
-        services.AddScoped<IAlertService, TestAlertService>();
-        
-        services.AddTransient<IngredientDetailViewModel>();
-        services.AddTransient<IngredientListViewModel>();
-        services.AddTransient<IngredientCreateViewModel>();
-        services.AddTransient<IngredientEditViewModel>();
-        
-        services.AddTransient<RecipeDetailViewModel>();
-        services.AddTransient<RecipeListViewModel>();
-        services.AddTransient<RecipeCreateViewModel>();
-        services.AddTransient<RecipeEditViewModel>();
-
-        services.AddLogging();
-
-        _serviceProvider = services.BuildServiceProvider();
-
-        // Mock the dispatcher
-        var dispatcherMock = new Mock<IDispatcher>();
-        var dispatcher = dispatcherMock.Object;
-        DispatcherProvider.SetCurrent(new TestDispatcherProvider(dispatcher));
-    }
-
-    protected IServiceScope CreateScope() => _serviceProvider.CreateScope();
-
-    public CookBookDbContext GetDbContext(IServiceProvider sp) => sp.GetRequiredService<CookBookDbContext>();
+    private SqliteMauiTestHost _testHost = null!;
 
     protected IngredientTestDataSet Ingredients { get; private set; } = null!;
     protected RecipeTestDataSet Recipes { get; private set; } = null!;
 
     public async Task InitializeAsync()
     {
-        using var scope = CreateScope();
-        var db = GetDbContext(scope.ServiceProvider);
+        _testHost = await SqliteMauiTestHost.CreateAsync();
 
-        await db.Database.EnsureDeletedAsync();
-        await db.Database.EnsureCreatedAsync();
-        
-        Ingredients = IngredientTestData.CreateSet();
-        Recipes = RecipeTestData.CreateSet(Ingredients);
+        await ExecuteScopeAsync(async services =>
+        {
+            var dbContext = GetDbContext(services);
+            await dbContext.Database.EnsureCreatedAsync();
 
-        db.AddRange(Ingredients.All);
-        db.AddRange(Recipes.All);
-        await db.SaveChangesAsync();
+            Ingredients = IngredientTestData.CreateSet();
+            Recipes = RecipeTestData.CreateSet(Ingredients);
+
+            dbContext.AddRange(Ingredients.All);
+            dbContext.AddRange(Recipes.All);
+            await dbContext.SaveChangesAsync();
+        });
     }
 
-    public async Task DisposeAsync()
-    {
-        using var scope = CreateScope();
-        var db = GetDbContext(scope.ServiceProvider);
+    public async Task DisposeAsync() => await _testHost.DisposeAsync();
 
-        await db.Database.EnsureDeletedAsync();
-        await db.DisposeAsync();
-
-        await _serviceProvider.DisposeAsync();
-    }
-    
     protected async Task ExecuteScopeAsync(Func<IServiceProvider, Task> action)
     {
-        using var scope = CreateScope();
-        var sp = scope.ServiceProvider;
-
-        await action(sp);
+        using var scope = _testHost.Services.CreateScope();
+        await action(scope.ServiceProvider);
     }
 
-    public void Dispose()
-    {
-        DispatcherProvider.SetCurrent(null);
-        GC.SuppressFinalize(this);
-    }
-
-    private sealed class TestDispatcherProvider : IDispatcherProvider
-    {
-        private readonly IDispatcher _dispatcher;
-
-        public TestDispatcherProvider(IDispatcher dispatcher)
-        {
-            _dispatcher = dispatcher;
-        }
-
-        public IDispatcher? GetForCurrentThread() => _dispatcher;
-
-        public IDispatcher? GetForMainThread() => _dispatcher;
-    }
+    protected static CookBookDbContext GetDbContext(IServiceProvider services) =>
+        services.GetRequiredService<CookBookDbContext>();
 }
